@@ -315,10 +315,10 @@ pnpm test:watch  # 开发模式下监听变更
 | `ai-trending.{locale}.md` | GitHub AI 趋势热榜 — 按维度分类 + 趋势信号分析（仅在有数据时生成） | `trending.{locale}` |
 | `ai-hn.{locale}.md` | Hacker News AI 社区动态 — 热门帖子分类 + 情绪分析（仅在抓取成功时生成） | `hn.{locale}` |
 
-其中 `{locale}` 对英语为空（如 `ai-cli.md`），对其他语言为语言代码（如 `ai-cli.zh.md`、`ai-cli.ja.md`）。GitHub Issue 标签使用相同的后缀规则（如 `digest`、`digest.zh`、`digest.ja`）。
+其中 `{locale}` 对中文（默认语言）为空（如 `ai-cli.md`），对其他语言为语言代码（如 `ai-cli.en.md`、`ai-cli.ja.md`）。GitHub Issue 标签使用相同的后缀规则。
 
 例如，配置 `["en", "zh"]` 时，`digests/2026-05-28/` 目录包含：
-- `ai-cli.md`（英语）、`ai-cli.zh.md`（中文）
+- `ai-cli.md`（中文）、`ai-cli.en.md`（英语）
 
 `digests/web-state.json` 用于记录已处理的 URL，随每日简报一并提交。
 

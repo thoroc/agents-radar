@@ -88,7 +88,7 @@ Files written to `digests/YYYY-MM-DD/`. Each report type generates one file per 
 | `ai-trending.{locale}.md` | `trending.{locale}` | Skipped if both data sources fail |
 | `ai-hn.{locale}.md` | `hn.{locale}` | Skipped if Algolia fetch fails |
 
-Where `{locale}` is empty for English (e.g. `ai-cli.md`) and the language code for other languages (e.g. `ai-cli.zh.md`, `ai-cli.ja.md`).
+Where `{locale}` is empty for Chinese (default, e.g. `ai-cli.md`) and the language code for other languages (e.g. `ai-cli.en.md`, `ai-cli.ja.md`).
 
 ## Tracked sources
 

@@ -51,7 +51,7 @@ export async function saveWebReport(
       const openaiTotal = webResults.find((r) => r.site === "openai")?.totalDiscovered ?? 0;
 
       const s = t(lang);
-      const fileName = lang === "en" ? "ai-web.md" : `ai-web.${lang}.md`;
+      const fileName = lang === "zh" ? "ai-web.md" : `ai-web.${lang}.md`;
       const mode = isFirstRun ? s.webFirstCrawl : s.webTodayUpdate;
 
       const webTitle = `# ${s.webTitle} ${dateStr}\n\n`;
@@ -111,7 +111,7 @@ export async function saveTrendingReport(
   }
 
   const s = t(lang);
-  const fileName = lang === "en" ? "ai-trending.md" : `ai-trending.${lang}.md`;
+  const fileName = lang === "zh" ? "ai-trending.md" : `ai-trending.${lang}.md`;
   const header =
     `# ${s.trendingTitle} ${dateStr}\n\n` +
     `> ${s.trendingSources} | ${lang === "en" ? "Generated" : "生成时间"}: ${utcStr} UTC\n\n---\n\n`;
@@ -149,7 +149,7 @@ export async function saveHnReport(
   try {
     const s = t(lang);
     const hnSummary = await callLlm(buildHnPrompt(hnData, dateStr, lang));
-    const fileName = lang === "en" ? "ai-hn.md" : `ai-hn.${lang}.md`;
+    const fileName = lang === "zh" ? "ai-hn.md" : `ai-hn.${lang}.md`;
     const header =
       lang === "en"
         ? `# ${s.hnTitle} ${dateStr}\n\n` +
@@ -197,7 +197,7 @@ export async function savePhReport(
   try {
     const s = t(lang);
     const phSummary = await callLlm(buildPhPrompt(phData, dateStr, lang));
-    const fileName = lang === "en" ? "ai-ph.md" : `ai-ph.${lang}.md`;
+    const fileName = lang === "zh" ? "ai-ph.md" : `ai-ph.${lang}.md`;
     const header =
       lang === "en"
         ? `# ${s.phTitle} ${dateStr}\n\n` +
@@ -245,7 +245,7 @@ export async function saveArxivReport(
   try {
     const s = t(lang);
     const summary = await callLlm(buildArxivPrompt(arxivData, dateStr, lang));
-    const fileName = lang === "en" ? "ai-arxiv.md" : `ai-arxiv.${lang}.md`;
+    const fileName = lang === "zh" ? "ai-arxiv.md" : `ai-arxiv.${lang}.md`;
     const header =
       lang === "en"
         ? `# ${s.arxivTitle} ${dateStr}\n\n` +
@@ -293,7 +293,7 @@ export async function saveHfReport(
   try {
     const s = t(lang);
     const summary = await callLlm(buildHfPrompt(hfData, dateStr, lang));
-    const fileName = lang === "en" ? "ai-hf.md" : `ai-hf.${lang}.md`;
+    const fileName = lang === "zh" ? "ai-hf.md" : `ai-hf.${lang}.md`;
     const header =
       lang === "en"
         ? `# ${s.hfTitle} ${dateStr}\n\n` +
@@ -343,7 +343,7 @@ export async function saveCommunityReport(
   try {
     const s = t(lang);
     const summary = await callLlm(buildCommunityPrompt(devtoData, lobstersData, dateStr, lang));
-    const fileName = lang === "en" ? "ai-community.md" : `ai-community.${lang}.md`;
+    const fileName = lang === "zh" ? "ai-community.md" : `ai-community.${lang}.md`;
     const devtoCount = devtoData.articles.length;
     const lobstersCount = lobstersData.stories.length;
     const header =

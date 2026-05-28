@@ -316,10 +316,10 @@ Files are written to `digests/YYYY-MM-DD/`. For each report type, the pipeline g
 | `ai-trending.{locale}.md` | GitHub AI trending report — repos classified by dimension + trend signals (only written when data is available) | `trending.{locale}` |
 | `ai-hn.{locale}.md` | Hacker News AI community digest — top stories + sentiment analysis (only written when fetch succeeds) | `hn.{locale}` |
 
-Where `{locale}` is empty for English (e.g. `ai-cli.md`) and the language code for other languages (e.g. `ai-cli.zh.md`, `ai-cli.ja.md`). The same suffix applies to GitHub Issue labels (e.g. `digest`, `digest.zh`, `digest.ja`).
+Where `{locale}` is empty for Chinese (default, e.g. `ai-cli.md`) and the language code for other languages (e.g. `ai-cli.en.md`, `ai-cli.ja.md`). The same suffix applies to GitHub Issue labels.
 
 For example, with `["en", "zh"]` configured, `digests/2026-05-28/` would contain:
-- `ai-cli.md` (English), `ai-cli.zh.md` (Chinese)
+- `ai-cli.md` (Chinese), `ai-cli.en.md` (English)
 | `ai-ph.md` | Product Hunt AI products digest (only written when `PRODUCTHUNT_TOKEN` is set and data is available) | `ph` |
 | `ai-arxiv.md` | ArXiv AI research digest — key papers from cs.AI/cs.CL/cs.LG | `arxiv` |
 | `ai-hf.md` | Hugging Face trending models digest — sorted by weekly likes | `hf` |
