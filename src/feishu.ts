@@ -16,34 +16,23 @@ import type { Highlights } from "./notify.ts";
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 
+const NOTIFY_LABEL_MAP: Record<string, keyof ReturnType<typeof t>> = {
+  "ai-cli": "notifyCli",
+  "ai-agents": "notifyAgents",
+  "ai-web": "notifyWeb",
+  "ai-trending": "notifyTrending",
+  "ai-hn": "notifyHn",
+  "ai-ph": "notifyPh",
+  "ai-arxiv": "notifyArxiv",
+  "ai-hf": "notifyHf",
+  "ai-community": "notifyCommunity",
+  "ai-weekly": "notifyWeekly",
+  "ai-monthly": "notifyMonthly",
+};
+
 function notifyLabel(id: string, lang: Lang = "zh"): string {
-  const s = t(lang);
-  switch (id) {
-    case "ai-cli":
-      return s.notifyCli;
-    case "ai-agents":
-      return s.notifyAgents;
-    case "ai-web":
-      return s.notifyWeb;
-    case "ai-trending":
-      return s.notifyTrending;
-    case "ai-hn":
-      return s.notifyHn;
-    case "ai-ph":
-      return s.notifyPh;
-    case "ai-arxiv":
-      return s.notifyArxiv;
-    case "ai-hf":
-      return s.notifyHf;
-    case "ai-community":
-      return s.notifyCommunity;
-    case "ai-weekly":
-      return s.notifyWeekly;
-    case "ai-monthly":
-      return s.notifyMonthly;
-    default:
-      return id;
-  }
+  const key = NOTIFY_LABEL_MAP[id];
+  return key ? t(lang)[key] : id;
 }
 
 function getWebhookUrls(): string[] {
