@@ -2,6 +2,8 @@
 # Edit this file to customize which repositories are tracked.
 # Changes take effect on the next workflow run.
 
+languages: ["en", "zh"]
+
 # ── AI CLI tools ──────────────────────────────────────────────────────────────
 # Tracked for per-tool digests and cross-tool comparison.
 # Each entry requires: id (filename slug), repo (owner/repo), name (display name).
