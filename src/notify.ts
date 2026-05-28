@@ -11,7 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { NOTIFY_LABELS } from "./i18n.ts";
+import { t, type Lang } from "./i18n.ts";
 import type { ReportHighlights } from "./prompts-data.ts";
 
 export interface Highlights {
@@ -20,6 +20,24 @@ export interface Highlights {
 }
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
+
+function notifyLabel(id: string, lang: Lang = "zh"): string {
+  const s = t(lang);
+  switch (id) {
+    case "ai-cli": return s.notifyCli;
+    case "ai-agents": return s.notifyAgents;
+    case "ai-web": return s.notifyWeb;
+    case "ai-trending": return s.notifyTrending;
+    case "ai-hn": return s.notifyHn;
+    case "ai-ph": return s.notifyPh;
+    case "ai-arxiv": return s.notifyArxiv;
+    case "ai-hf": return s.notifyHf;
+    case "ai-community": return s.notifyCommunity;
+    case "ai-weekly": return s.notifyWeekly;
+    case "ai-monthly": return s.notifyMonthly;
+    default: return id;
+  }
+}
 
 function escapeHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -69,13 +87,13 @@ export function buildMessage(
   const zhHighlights = highlights?.zh ?? {};
 
   for (const r of ordered) {
-    const zhLabel = NOTIFY_LABELS[r]?.zh ?? r;
+    const zhLabel = notifyLabel(r, "zh");
     const zhUrl = `${PAGES_URL}/#${date}/${r}`;
     const enKey = `${r}-en`;
 
     lines.push(""); // blank line before each report section
     if (reports.includes(enKey)) {
-      const enLabel = NOTIFY_LABELS[r]?.en ?? "EN";
+      const enLabel = notifyLabel(r, "en");
       const enUrl = `${PAGES_URL}/#${date}/${enKey}`;
       lines.push(`• <a href="${zhUrl}">${zhLabel}</a>  ·  <a href="${enUrl}">${enLabel}</a>`);
     } else {

@@ -29,7 +29,8 @@
     "dotenv": "^17.3.1",
     "js-yaml": "^4.1.1",
     "marked": "^17.0.4",
-    "openai": "^6.27.0"
+    "openai": "^6.27.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^9",

@@ -4,7 +4,7 @@
 
 import type { RepoConfig, RepoFetch } from "./github.ts";
 import type { RepoDigest } from "./prompts.ts";
-import { type Lang, CLI_REPORT, OPENCLAW_REPORT } from "./i18n.ts";
+import { t, type Lang } from "./i18n.ts";
 
 // ---------------------------------------------------------------------------
 // CLI Report
@@ -24,12 +24,15 @@ export function buildCliReportContent(
     cliDigests.map((d) => `- [${d.config.name}](https://github.com/${d.config.repo})`).join("\n") +
     `\n- [Claude Code Skills](https://github.com/${skillsRepo})`;
 
-  const title = `# ${CLI_REPORT.title[lang]} ${dateStr}\n\n`;
-  const meta = CLI_REPORT.meta(utcStr, cliDigests.length, lang);
+  const s = t(lang);
+  const title = `# ${s.cliTitle} ${dateStr}\n\n`;
+  const meta = lang === "en"
+    ? `> Generated: ${utcStr} UTC | Tools covered: ${cliDigests.length}\n\n`
+    : `> 生成时间: ${utcStr} UTC | 覆盖工具: ${cliDigests.length} 个\n\n`;
 
   const skillsSection =
-    `## ${CLI_REPORT.skillsHeading[lang]}\n\n` +
-    `> ${CLI_REPORT.skillsSource[lang]}: [anthropics/skills](https://github.com/${skillsRepo})\n\n` +
+    `## ${s.cliSkillsHeading}\n\n` +
+    `> ${s.cliSkillsSource}: [anthropics/skills](https://github.com/${skillsRepo})\n\n` +
     `${skillsSummary}\n\n---\n\n`;
 
   const toolSections = cliDigests
@@ -51,10 +54,10 @@ export function buildCliReportContent(
     meta +
     `${repoLinks}\n\n` +
     `---\n\n` +
-    `## ${CLI_REPORT.comparison[lang]}\n\n` +
+    `## ${s.cliComparison}\n\n` +
     comparison +
     `\n\n---\n\n` +
-    `## ${CLI_REPORT.detail[lang]}\n\n` +
+    `## ${s.cliDetail}\n\n` +
     toolSections +
     footer
   );
@@ -95,7 +98,8 @@ export function buildOpenclawReportContent(
     )
     .join("\n\n");
 
-  const title = `# ${OPENCLAW_REPORT.title[lang]} ${dateStr}\n\n`;
+  const s = t(lang);
+  const title = `# ${s.openclawTitle} ${dateStr}\n\n`;
   const meta =
     lang === "en"
       ? `> Issues: ${issues.length} | PRs: ${prs.length} | Projects covered: ${1 + openclawPeers.length} | Generated: ${utcStr} UTC\n\n`
@@ -106,13 +110,13 @@ export function buildOpenclawReportContent(
     meta +
     `${peersRepoLinks}\n\n` +
     `---\n\n` +
-    `## ${OPENCLAW_REPORT.deepDive[lang]}\n\n` +
+    `## ${s.openclawDeepDive}\n\n` +
     openclawSummary +
     `\n\n---\n\n` +
-    `## ${OPENCLAW_REPORT.comparison[lang]}\n\n` +
+    `## ${s.openclawComparison}\n\n` +
     peersComparison +
     `\n\n---\n\n` +
-    `## ${OPENCLAW_REPORT.peers[lang]}\n\n` +
+    `## ${s.openclawPeers}\n\n` +
     peerDetailSections +
     footer
   );

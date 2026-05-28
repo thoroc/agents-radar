@@ -14,7 +14,7 @@ import {
 } from "./prompts-data.ts";
 import { createGitHubIssue } from "./github.ts";
 import { toCstDateStr, toUtcStr } from "./date.ts";
-import { type Lang, WEEKLY_REPORT, MONTHLY_REPORT } from "./i18n.ts";
+import { t, type Lang } from "./i18n.ts";
 
 const DIGESTS_DIR = "digests";
 const MAX_CHARS_PER_REPORT = 2500;
@@ -165,15 +165,15 @@ export async function runWeeklyRollup(): Promise<void> {
   const enFooter = autoGenFooter("en");
 
   const zhContent =
-    `# ${WEEKLY_REPORT.title.zh} ${weekStr}\n\n` +
-    `> ${WEEKLY_REPORT.coverage.zh}: ${last7[last7.length - 1]} ~ ${last7[0]} | 生成时间: ${utcStr} UTC\n\n` +
+    `# ${t("zh").weeklyTitle} ${weekStr}\n\n` +
+    `> ${t("zh").weeklyCoverage}: ${last7[last7.length - 1]} ~ ${last7[0]} | 生成时间: ${utcStr} UTC\n\n` +
     `---\n\n` +
     zhSummary +
     footer;
 
   const enContent =
-    `# ${WEEKLY_REPORT.title.en} ${weekStr}\n\n` +
-    `> ${WEEKLY_REPORT.coverage.en}: ${last7[last7.length - 1]} ~ ${last7[0]} | Generated: ${utcStr} UTC\n\n` +
+    `# ${t("en").weeklyTitle} ${weekStr}\n\n` +
+    `> ${t("en").weeklyCoverage}: ${last7[last7.length - 1]} ~ ${last7[0]} | Generated: ${utcStr} UTC\n\n` +
     `---\n\n` +
     enSummary +
     enFooter;
@@ -184,7 +184,7 @@ export async function runWeeklyRollup(): Promise<void> {
   await generateRollupHighlights(zhContent, enContent, "ai-weekly", dateStr, 6);
 
   if (digestRepo) {
-    const url = await createGitHubIssue(WEEKLY_REPORT.issueTitle(weekStr), zhContent, "weekly");
+    const url = await createGitHubIssue(`${t("zh").weeklyTitle} ${weekStr}`, zhContent, "weekly");
     console.log(`  Created weekly issue: ${url}`);
   }
 
@@ -259,14 +259,14 @@ export async function runMonthlyRollup(): Promise<void> {
   const enFooter = autoGenFooter("en");
 
   const zhContent =
-    `# ${MONTHLY_REPORT.title.zh} ${monthStr}\n\n` +
+    `# ${t("zh").monthlyTitle} ${monthStr}\n\n` +
     `> 数据来源: ${sourceLabel.zh} | 生成时间: ${utcStr} UTC\n\n` +
     `---\n\n` +
     zhSummary +
     footer;
 
   const enContent =
-    `# ${MONTHLY_REPORT.title.en} ${monthStr}\n\n` +
+    `# ${t("en").monthlyTitle} ${monthStr}\n\n` +
     `> Sources: ${sourceLabel.en} | Generated: ${utcStr} UTC\n\n` +
     `---\n\n` +
     enSummary +
@@ -278,7 +278,7 @@ export async function runMonthlyRollup(): Promise<void> {
   await generateRollupHighlights(zhContent, enContent, "ai-monthly", dateStr, 6);
 
   if (digestRepo) {
-    const url = await createGitHubIssue(MONTHLY_REPORT.issueTitle(monthStr), zhContent, "monthly");
+    const url = await createGitHubIssue(`${t("zh").monthlyTitle} ${monthStr}`, zhContent, "monthly");
     console.log(`  Created monthly issue: ${url}`);
   }
 

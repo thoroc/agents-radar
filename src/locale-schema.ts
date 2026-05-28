@@ -1,0 +1,147 @@
+import { z } from "zod";
+
+const LocaleMetaSchema = z.object({
+  name: z.string(),
+  nativeName: z.string(),
+});
+
+const LocaleDataSchema = z.object({
+  noActivity: z.string(),
+  summaryFailed: z.string(),
+  skillsFailed: z.string(),
+  trendingNoData: z.string(),
+  trendingFailed: z.string(),
+  webNoNewContent: z.string(),
+  webFetchFailed: z.string(),
+  hnFetchFailed: z.string(),
+
+  cliTitle: z.string(),
+  cliMeta: z.string(),
+  cliSkillsHeading: z.string(),
+  cliSkillsSource: z.string(),
+  cliComparison: z.string(),
+  cliDetail: z.string(),
+
+  openclawTitle: z.string(),
+  openclawMeta: z.string(),
+  openclawDeepDive: z.string(),
+  openclawComparison: z.string(),
+  openclawPeers: z.string(),
+
+  webTitle: z.string(),
+  webMeta: z.string(),
+  webFirstCrawl: z.string(),
+  webTodayUpdate: z.string(),
+  webNewContent: z.string(),
+  webGenerated: z.string(),
+  webSourcesHeader: z.string(),
+
+  trendingTitle: z.string(),
+  trendingSources: z.string(),
+
+  hnTitle: z.string(),
+  phTitle: z.string(),
+  arxivTitle: z.string(),
+  hfTitle: z.string(),
+  communityTitle: z.string(),
+
+  weeklyTitle: z.string(),
+  weeklyCoverage: z.string(),
+  monthlyTitle: z.string(),
+
+  issueLabelCli: z.string(),
+  issueLabelOpenclaw: z.string(),
+  issueLabelWeb: z.string(),
+  issueLabelTrending: z.string(),
+  issueLabelHn: z.string(),
+  issueLabelPh: z.string(),
+  issueLabelArxiv: z.string(),
+  issueLabelHf: z.string(),
+  issueLabelCommunity: z.string(),
+
+  issueTitleCli: z.string(),
+  issueTitleOpenclaw: z.string(),
+  issueTitleWeb: z.string(),
+  issueTitleTrending: z.string(),
+  issueTitleHn: z.string(),
+  issueTitlePh: z.string(),
+  issueTitleArxiv: z.string(),
+  issueTitleHf: z.string(),
+  issueTitleCommunity: z.string(),
+
+  autoGen: z.string(),
+
+  reportLabelAiCli: z.string(),
+  reportLabelAiCliEn: z.string(),
+  reportLabelAiAgents: z.string(),
+  reportLabelAiAgentsEn: z.string(),
+  reportLabelAiWeb: z.string(),
+  reportLabelAiWebEn: z.string(),
+  reportLabelAiTrending: z.string(),
+  reportLabelAiTrendingEn: z.string(),
+  reportLabelAiHn: z.string(),
+  reportLabelAiHnEn: z.string(),
+  reportLabelAiPh: z.string(),
+  reportLabelAiPhEn: z.string(),
+  reportLabelAiArxiv: z.string(),
+  reportLabelAiArxivEn: z.string(),
+  reportLabelAiHf: z.string(),
+  reportLabelAiHfEn: z.string(),
+  reportLabelAiCommunity: z.string(),
+  reportLabelAiCommunityEn: z.string(),
+  reportLabelAiWeekly: z.string(),
+  reportLabelAiWeeklyEn: z.string(),
+  reportLabelAiMonthly: z.string(),
+  reportLabelAiMonthlyEn: z.string(),
+
+  notifyCli: z.string(),
+  notifyAgents: z.string(),
+  notifyWeb: z.string(),
+  notifyTrending: z.string(),
+  notifyHn: z.string(),
+  notifyPh: z.string(),
+  notifyArxiv: z.string(),
+  notifyHf: z.string(),
+  notifyCommunity: z.string(),
+  notifyWeekly: z.string(),
+  notifyMonthly: z.string(),
+  notifyFooter: z.string(),
+
+  formatItemAuthor: z.string(),
+  formatItemCreated: z.string(),
+  formatItemUpdated: z.string(),
+  formatItemComments: z.string(),
+  formatItemUrl: z.string(),
+  formatItemSummary: z.string(),
+
+  sampleNote: z.string(),
+  noneStr: z.string(),
+  unableToExtract: z.string(),
+  issueTruncation: z.string(),
+
+  digestTruncation: z.string(),
+  weeklyTruncation: z.string(),
+
+  weeklyMeta: z.string(),
+  monthlyMeta: z.string(),
+  sourceLabelWeekly: z.string(),
+  sourceLabelDailySampled: z.string(),
+
+  manifestCli: z.string(),
+  manifestAgents: z.string(),
+  manifestWeb: z.string(),
+  manifestTrending: z.string(),
+  manifestHn: z.string(),
+  manifestWeekly: z.string(),
+  manifestMonthly: z.string(),
+
+  autoGenFooter: z.string(),
+});
+
+const LocaleFileSchema = LocaleDataSchema.extend({
+  _meta: LocaleMetaSchema,
+});
+
+export type LocaleMeta = z.infer<typeof LocaleMetaSchema>;
+export type LocaleData = z.infer<typeof LocaleDataSchema>;
+export { LocaleMetaSchema, LocaleDataSchema, LocaleFileSchema };

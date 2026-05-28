@@ -1,7 +1,37 @@
 import fs from "fs";
 import path from "path";
 import { marked } from "marked";
-import { REPORT_LABELS } from "./i18n.ts";
+import { t } from "./i18n.ts";
+
+function reportLabel(id: string): string {
+  const zh = t("zh");
+  const en = t("en");
+  switch (id) {
+    case "ai-cli": return zh.reportLabelAiCli;
+    case "ai-cli-en": return en.reportLabelAiCliEn;
+    case "ai-agents": return zh.reportLabelAiAgents;
+    case "ai-agents-en": return en.reportLabelAiAgentsEn;
+    case "ai-web": return zh.reportLabelAiWeb;
+    case "ai-web-en": return en.reportLabelAiWebEn;
+    case "ai-trending": return zh.reportLabelAiTrending;
+    case "ai-trending-en": return en.reportLabelAiTrendingEn;
+    case "ai-hn": return zh.reportLabelAiHn;
+    case "ai-hn-en": return en.reportLabelAiHnEn;
+    case "ai-ph": return zh.reportLabelAiPh;
+    case "ai-ph-en": return en.reportLabelAiPhEn;
+    case "ai-arxiv": return zh.reportLabelAiArxiv;
+    case "ai-arxiv-en": return en.reportLabelAiArxivEn;
+    case "ai-hf": return zh.reportLabelAiHf;
+    case "ai-hf-en": return en.reportLabelAiHfEn;
+    case "ai-community": return zh.reportLabelAiCommunity;
+    case "ai-community-en": return en.reportLabelAiCommunityEn;
+    case "ai-weekly": return zh.reportLabelAiWeekly;
+    case "ai-weekly-en": return en.reportLabelAiWeeklyEn;
+    case "ai-monthly": return zh.reportLabelAiMonthly;
+    case "ai-monthly-en": return en.reportLabelAiMonthlyEn;
+    default: return id;
+  }
+}
 
 const DIGESTS_DIR = "digests";
 const MANIFEST_PATH = "manifest.json";
@@ -87,7 +117,7 @@ async function getReportContent(date: string, report: string): Promise<ReportCon
     };
   } catch {
     // Fallback to title-only content on any error
-    const label = REPORT_LABELS[report] ?? report;
+    const label = reportLabel(report);
     const title = `${label} ${date}`;
     return {
       summary: escapeXml(title),
@@ -130,7 +160,7 @@ async function main(): Promise<void> {
 
   const itemXmlChunks: string[] = [];
   for (const { date, report } of feedItems) {
-    const label = REPORT_LABELS[report] ?? report;
+    const label = reportLabel(report);
     const title = `${label} ${date}`;
     const link = `${SITE_URL}/#${date}/${report}`;
     const parts = date.split("-").map(Number);

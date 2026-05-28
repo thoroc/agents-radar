@@ -49,7 +49,7 @@ import { fetchDevtoData, type DevtoData } from "./devto.ts";
 import { fetchLobstersData, type LobstersData } from "./lobsters.ts";
 import { loadConfig } from "./config.ts";
 import { toCstDateStr, toUtcStr } from "./date.ts";
-import { type Lang, MSG, ISSUE_LABELS, CLI_ISSUE_TITLE, OPENCLAW_ISSUE_TITLE } from "./i18n.ts";
+import { t, type Lang } from "./i18n.ts";
 
 // ---------------------------------------------------------------------------
 // Repo config — loaded from config.yml, falls back to built-in defaults
@@ -226,8 +226,9 @@ async function generateSummaries(
   peerDigests: RepoDigest[];
   trendingSummary: string;
 }> {
-  const noActivity = MSG.noActivity[lang];
-  const fail = MSG.summaryFailed[lang];
+  const s = t(lang);
+  const noActivity = s.noActivity;
+  const fail = s.summaryFailed;
 
   const [cliDigests, openclawSummary, skillsSummary, peerDigests, trendingSummary] = await Promise.all([
     Promise.all(
@@ -253,7 +254,7 @@ async function generateSummaries(
     summarize(
       "claude-code-skills",
       buildSkillsPrompt(skillsData.prs, skillsData.issues, dateStr, lang),
-      MSG.skillsFailed[lang],
+      t(lang).skillsFailed,
     ),
     Promise.all(
       fetchedPeers.map((f) =>
@@ -268,12 +269,12 @@ async function generateSummaries(
     (async () => {
       const hasData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;
       if (!hasData) {
-        return MSG.trendingNoData[lang];
+        return t(lang).trendingNoData;
       }
       return summarize(
         "trending",
         buildTrendingPrompt(trendingData, dateStr, lang),
-        MSG.trendingFailed[lang],
+        t(lang).trendingFailed,
         LLM_TOKENS_TRENDING,
       );
     })(),
@@ -472,16 +473,16 @@ async function main(): Promise<void> {
   if (digestRepo) {
     for (const lang of ["zh", "en"] as const) {
       const cliUrl = await createGitHubIssue(
-        CLI_ISSUE_TITLE(dateStr, lang),
+        `${t(lang).issueTitleCli} ${dateStr}`,
         cliContent[lang],
-        ISSUE_LABELS.cli[lang],
+        t(lang).issueLabelCli,
       );
       console.log(`  Created CLI issue (${lang}): ${cliUrl}`);
 
       const ocUrl = await createGitHubIssue(
-        OPENCLAW_ISSUE_TITLE(dateStr, lang),
+        `${t(lang).issueTitleOpenclaw} ${dateStr}`,
         openclawContent[lang],
-        ISSUE_LABELS.openclaw[lang],
+        t(lang).issueLabelOpenclaw,
       );
       console.log(`  Created OpenClaw issue (${lang}): ${ocUrl}`);
     }
