@@ -1,36 +1,32 @@
 import fs from "fs";
 import path from "path";
 import { marked } from "marked";
-import { t } from "./i18n.ts";
+import { t, type Lang } from "./i18n.ts";
 
-const REPORT_LABEL_MAP: Record<string, [lang: "zh" | "en", key: keyof ReturnType<typeof t>]> = {
-  "ai-cli": ["zh", "reportLabelAiCli"],
-  "ai-cli-en": ["en", "reportLabelAiCliEn"],
-  "ai-agents": ["zh", "reportLabelAiAgents"],
-  "ai-agents-en": ["en", "reportLabelAiAgentsEn"],
-  "ai-web": ["zh", "reportLabelAiWeb"],
-  "ai-web-en": ["en", "reportLabelAiWebEn"],
-  "ai-trending": ["zh", "reportLabelAiTrending"],
-  "ai-trending-en": ["en", "reportLabelAiTrendingEn"],
-  "ai-hn": ["zh", "reportLabelAiHn"],
-  "ai-hn-en": ["en", "reportLabelAiHnEn"],
-  "ai-ph": ["zh", "reportLabelAiPh"],
-  "ai-ph-en": ["en", "reportLabelAiPhEn"],
-  "ai-arxiv": ["zh", "reportLabelAiArxiv"],
-  "ai-arxiv-en": ["en", "reportLabelAiArxivEn"],
-  "ai-hf": ["zh", "reportLabelAiHf"],
-  "ai-hf-en": ["en", "reportLabelAiHfEn"],
-  "ai-community": ["zh", "reportLabelAiCommunity"],
-  "ai-community-en": ["en", "reportLabelAiCommunityEn"],
-  "ai-weekly": ["zh", "reportLabelAiWeekly"],
-  "ai-weekly-en": ["en", "reportLabelAiWeeklyEn"],
-  "ai-monthly": ["zh", "reportLabelAiMonthly"],
-  "ai-monthly-en": ["en", "reportLabelAiMonthlyEn"],
+const REPORT_LABEL_KEY: Record<string, keyof ReturnType<typeof t>> = {
+  "ai-cli": "reportLabelAiCli",
+  "ai-agents": "reportLabelAiAgents",
+  "ai-web": "reportLabelAiWeb",
+  "ai-trending": "reportLabelAiTrending",
+  "ai-hn": "reportLabelAiHn",
+  "ai-ph": "reportLabelAiPh",
+  "ai-arxiv": "reportLabelAiArxiv",
+  "ai-hf": "reportLabelAiHf",
+  "ai-community": "reportLabelAiCommunity",
+  "ai-weekly": "reportLabelAiWeekly",
+  "ai-monthly": "reportLabelAiMonthly",
 };
 
 function reportLabel(id: string): string {
-  const entry = REPORT_LABEL_MAP[id];
-  return entry ? t(entry[0])[entry[1]] : id;
+  // id is either "ai-cli" (zh) or "ai-cli-en" (en, legacy convention)
+  let lang: Lang = "zh";
+  let base = id;
+  if (id.endsWith("-en")) {
+    lang = "en";
+    base = id.slice(0, -3);
+  }
+  const key = REPORT_LABEL_KEY[base];
+  return key ? t(lang)[key] : id;
 }
 
 const DIGESTS_DIR = "digests";
