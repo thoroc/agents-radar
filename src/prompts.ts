@@ -3,7 +3,7 @@
  */
 
 import type { RepoConfig, GitHubItem, GitHubRelease } from "./github.ts";
-import type { Lang } from "./strings";
+import type { Lang } from "./i18n";
 
 // ---------------------------------------------------------------------------
 // Types
