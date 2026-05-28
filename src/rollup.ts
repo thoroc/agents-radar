@@ -179,7 +179,7 @@ export async function runWeeklyRollup(): Promise<void> {
     enFooter;
 
   console.log(`  Saved ${saveFile(zhContent, dateStr, "ai-weekly.md")}`);
-  console.log(`  Saved ${saveFile(enContent, dateStr, "ai-weekly-en.md")}`);
+  console.log(`  Saved ${saveFile(enContent, dateStr, "ai-weekly.md")}`);
 
   await generateRollupHighlights(zhContent, enContent, "ai-weekly", dateStr, 6);
 
@@ -273,7 +273,7 @@ export async function runMonthlyRollup(): Promise<void> {
     enFooter;
 
   console.log(`  Saved ${saveFile(zhContent, dateStr, "ai-monthly.md")}`);
-  console.log(`  Saved ${saveFile(enContent, dateStr, "ai-monthly-en.md")}`);
+  console.log(`  Saved ${saveFile(enContent, dateStr, "ai-monthly.md")}`);
 
   await generateRollupHighlights(zhContent, enContent, "ai-monthly", dateStr, 6);
 

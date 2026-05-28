@@ -309,13 +309,13 @@ pnpm test:watch  # 开发模式下监听变更
 
 | 文件模式 | 内容 | GitHub Issue 标签 |
 |------|------|------------------|
-| `ai-cli{locale}.md` | CLI 简报 — 跨工具横向对比 + 各工具详细报告 | `digest{locale}` |
-| `ai-agents{locale}.md` | OpenClaw 深度报告 + 横向生态对比 + 11 个同赛道项目详情 | `openclaw{locale}` |
-| `ai-web{locale}.md` | 官网内容报告（仅在有新内容时生成） | `web{locale}` |
-| `ai-trending{locale}.md` | GitHub AI 趋势热榜 — 按维度分类 + 趋势信号分析（仅在有数据时生成） | `trending{locale}` |
-| `ai-hn{locale}.md` | Hacker News AI 社区动态 — 热门帖子分类 + 情绪分析（仅在抓取成功时生成） | `hn{locale}` |
+| `ai-cli.{locale}.md` | CLI 简报 — 跨工具横向对比 + 各工具详细报告 | `digest.{locale}` |
+| `ai-agents.{locale}.md` | OpenClaw 深度报告 + 横向生态对比 + 11 个同赛道项目详情 | `openclaw.{locale}` |
+| `ai-web.{locale}.md` | 官网内容报告（仅在有新内容时生成） | `web.{locale}` |
+| `ai-trending.{locale}.md` | GitHub AI 趋势热榜 — 按维度分类 + 趋势信号分析（仅在有数据时生成） | `trending.{locale}` |
+| `ai-hn.{locale}.md` | Hacker News AI 社区动态 — 热门帖子分类 + 情绪分析（仅在抓取成功时生成） | `hn.{locale}` |
 
-其中 `{locale}` 对英语为空（如 `ai-cli.md`），对其他语言为 `.代码`（如 `ai-cli.zh.md`、`ai-cli.ja.md`）。GitHub Issue 标签使用相同的后缀规则（如 `digest`、`digest-zh`、`digest-ja`）。
+其中 `{locale}` 对英语为空（如 `ai-cli.md`），对其他语言为语言代码（如 `ai-cli.zh.md`、`ai-cli.ja.md`）。GitHub Issue 标签使用相同的后缀规则（如 `digest`、`digest.zh`、`digest.ja`）。
 
 例如，配置 `["en", "zh"]` 时，`digests/2026-05-28/` 目录包含：
 - `ai-cli.md`（英语）、`ai-cli.zh.md`（中文）

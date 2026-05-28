@@ -82,13 +82,13 @@ Files written to `digests/YYYY-MM-DD/`. Each report type generates one file per 
 
 | File pattern | Label | Notes |
 |------|-------|-------|
-| `ai-cli{locale}.md` | `digest{locale}` | Always generated |
-| `ai-agents{locale}.md` | `openclaw{locale}` | Always generated |
-| `ai-web{locale}.md` | `web{locale}` | Skipped if no new sitemap content |
-| `ai-trending{locale}.md` | `trending{locale}` | Skipped if both data sources fail |
-| `ai-hn{locale}.md` | `hn{locale}` | Skipped if Algolia fetch fails |
+| `ai-cli.{locale}.md` | `digest.{locale}` | Always generated |
+| `ai-agents.{locale}.md` | `openclaw.{locale}` | Always generated |
+| `ai-web.{locale}.md` | `web.{locale}` | Skipped if no new sitemap content |
+| `ai-trending.{locale}.md` | `trending.{locale}` | Skipped if both data sources fail |
+| `ai-hn.{locale}.md` | `hn.{locale}` | Skipped if Algolia fetch fails |
 
-Where `{locale}` is empty for English (e.g. `ai-cli.md`) and `.{code}` for other languages (e.g. `ai-cli.zh.md`, `ai-cli.ja.md`).
+Where `{locale}` is empty for English (e.g. `ai-cli.md`) and the language code for other languages (e.g. `ai-cli.zh.md`, `ai-cli.ja.md`).
 
 ## Tracked sources
 

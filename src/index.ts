@@ -358,7 +358,7 @@ async function main(): Promise<void> {
   for (const lang of ENABLED_LANGS) {
     const s = summariesByLang[lang]!;
     const ft = autoGenFooter(lang as Lang);
-    const suffix = lang === "en" ? "-en" : lang !== "zh" ? `.${lang}` : "";
+    const suffix = lang === "en" ? "" : `.${lang}`;
 
     cliContent[lang] = buildCliReportContent(
       s.cliDigests,
@@ -440,13 +440,13 @@ async function main(): Promise<void> {
   const zhReports: Record<string, string> = { "ai-cli": cliContent.zh!, "ai-agents": openclawContent.zh! };
   const enReports: Record<string, string> = { "ai-cli": cliContent.en!, "ai-agents": openclawContent.en! };
   for (const [id, zhFile, enFile] of [
-    ["ai-trending", "ai-trending.md", "ai-trending-en.md"],
-    ["ai-web", "ai-web.md", "ai-web-en.md"],
-    ["ai-hn", "ai-hn.md", "ai-hn-en.md"],
-    ["ai-ph", "ai-ph.md", "ai-ph-en.md"],
-    ["ai-arxiv", "ai-arxiv.md", "ai-arxiv-en.md"],
-    ["ai-hf", "ai-hf.md", "ai-hf-en.md"],
-    ["ai-community", "ai-community.md", "ai-community-en.md"],
+    ["ai-trending", "ai-trending.zh.md", "ai-trending.md"],
+    ["ai-web", "ai-web.zh.md", "ai-web.md"],
+    ["ai-hn", "ai-hn.zh.md", "ai-hn.md"],
+    ["ai-ph", "ai-ph.zh.md", "ai-ph.md"],
+    ["ai-arxiv", "ai-arxiv.zh.md", "ai-arxiv.md"],
+    ["ai-hf", "ai-hf.zh.md", "ai-hf.md"],
+    ["ai-community", "ai-community.zh.md", "ai-community.md"],
   ] as const) {
     const zh = readReport(zhFile);
     const en = readReport(enFile);

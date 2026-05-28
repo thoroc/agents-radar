@@ -310,13 +310,13 @@ Files are written to `digests/YYYY-MM-DD/`. For each report type, the pipeline g
 
 | File pattern | Content | GitHub Issue label |
 |------|---------|-------------------|
-| `ai-cli{locale}.md` | CLI digest — cross-tool comparison + per-tool details | `digest{locale}` |
-| `ai-agents{locale}.md` | OpenClaw deep report + cross-ecosystem comparison + 11 peer details | `openclaw{locale}` |
-| `ai-web{locale}.md` | Official web content report (only written when new content exists) | `web{locale}` |
-| `ai-trending{locale}.md` | GitHub AI trending report — repos classified by dimension + trend signals (only written when data is available) | `trending{locale}` |
-| `ai-hn{locale}.md` | Hacker News AI community digest — top stories + sentiment analysis (only written when fetch succeeds) | `hn{locale}` |
+| `ai-cli.{locale}.md` | CLI digest — cross-tool comparison + per-tool details | `digest.{locale}` |
+| `ai-agents.{locale}.md` | OpenClaw deep report + cross-ecosystem comparison + 11 peer details | `openclaw.{locale}` |
+| `ai-web.{locale}.md` | Official web content report (only written when new content exists) | `web.{locale}` |
+| `ai-trending.{locale}.md` | GitHub AI trending report — repos classified by dimension + trend signals (only written when data is available) | `trending.{locale}` |
+| `ai-hn.{locale}.md` | Hacker News AI community digest — top stories + sentiment analysis (only written when fetch succeeds) | `hn.{locale}` |
 
-Where `{locale}` is empty for English (e.g. `ai-cli.md`) and `.{code}` for other languages (e.g. `ai-cli.zh.md`, `ai-cli.ja.md`). The same suffix applies to GitHub Issue labels (e.g. `digest`, `digest-zh`, `digest-ja`).
+Where `{locale}` is empty for English (e.g. `ai-cli.md`) and the language code for other languages (e.g. `ai-cli.zh.md`, `ai-cli.ja.md`). The same suffix applies to GitHub Issue labels (e.g. `digest`, `digest.zh`, `digest.ja`).
 
 For example, with `["en", "zh"]` configured, `digests/2026-05-28/` would contain:
 - `ai-cli.md` (English), `ai-cli.zh.md` (Chinese)
