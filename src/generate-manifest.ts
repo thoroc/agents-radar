@@ -3,57 +3,34 @@ import path from "path";
 import { marked } from "marked";
 import { t } from "./i18n.ts";
 
+const REPORT_LABEL_MAP: Record<string, [lang: "zh" | "en", key: keyof ReturnType<typeof t>]> = {
+  "ai-cli": ["zh", "reportLabelAiCli"],
+  "ai-cli-en": ["en", "reportLabelAiCliEn"],
+  "ai-agents": ["zh", "reportLabelAiAgents"],
+  "ai-agents-en": ["en", "reportLabelAiAgentsEn"],
+  "ai-web": ["zh", "reportLabelAiWeb"],
+  "ai-web-en": ["en", "reportLabelAiWebEn"],
+  "ai-trending": ["zh", "reportLabelAiTrending"],
+  "ai-trending-en": ["en", "reportLabelAiTrendingEn"],
+  "ai-hn": ["zh", "reportLabelAiHn"],
+  "ai-hn-en": ["en", "reportLabelAiHnEn"],
+  "ai-ph": ["zh", "reportLabelAiPh"],
+  "ai-ph-en": ["en", "reportLabelAiPhEn"],
+  "ai-arxiv": ["zh", "reportLabelAiArxiv"],
+  "ai-arxiv-en": ["en", "reportLabelAiArxivEn"],
+  "ai-hf": ["zh", "reportLabelAiHf"],
+  "ai-hf-en": ["en", "reportLabelAiHfEn"],
+  "ai-community": ["zh", "reportLabelAiCommunity"],
+  "ai-community-en": ["en", "reportLabelAiCommunityEn"],
+  "ai-weekly": ["zh", "reportLabelAiWeekly"],
+  "ai-weekly-en": ["en", "reportLabelAiWeeklyEn"],
+  "ai-monthly": ["zh", "reportLabelAiMonthly"],
+  "ai-monthly-en": ["en", "reportLabelAiMonthlyEn"],
+};
+
 function reportLabel(id: string): string {
-  const zh = t("zh");
-  const en = t("en");
-  switch (id) {
-    case "ai-cli":
-      return zh.reportLabelAiCli;
-    case "ai-cli-en":
-      return en.reportLabelAiCliEn;
-    case "ai-agents":
-      return zh.reportLabelAiAgents;
-    case "ai-agents-en":
-      return en.reportLabelAiAgentsEn;
-    case "ai-web":
-      return zh.reportLabelAiWeb;
-    case "ai-web-en":
-      return en.reportLabelAiWebEn;
-    case "ai-trending":
-      return zh.reportLabelAiTrending;
-    case "ai-trending-en":
-      return en.reportLabelAiTrendingEn;
-    case "ai-hn":
-      return zh.reportLabelAiHn;
-    case "ai-hn-en":
-      return en.reportLabelAiHnEn;
-    case "ai-ph":
-      return zh.reportLabelAiPh;
-    case "ai-ph-en":
-      return en.reportLabelAiPhEn;
-    case "ai-arxiv":
-      return zh.reportLabelAiArxiv;
-    case "ai-arxiv-en":
-      return en.reportLabelAiArxivEn;
-    case "ai-hf":
-      return zh.reportLabelAiHf;
-    case "ai-hf-en":
-      return en.reportLabelAiHfEn;
-    case "ai-community":
-      return zh.reportLabelAiCommunity;
-    case "ai-community-en":
-      return en.reportLabelAiCommunityEn;
-    case "ai-weekly":
-      return zh.reportLabelAiWeekly;
-    case "ai-weekly-en":
-      return en.reportLabelAiWeeklyEn;
-    case "ai-monthly":
-      return zh.reportLabelAiMonthly;
-    case "ai-monthly-en":
-      return en.reportLabelAiMonthlyEn;
-    default:
-      return id;
-  }
+  const entry = REPORT_LABEL_MAP[id];
+  return entry ? t(entry[0])[entry[1]] : id;
 }
 
 const DIGESTS_DIR = "digests";
