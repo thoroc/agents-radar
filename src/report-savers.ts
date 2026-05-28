@@ -70,9 +70,10 @@ export async function saveWebReport(
       console.log(`  Saved ${saveFile(webContent, dateStr, fileName)}`);
 
       if (digestRepo) {
-        const issueTitle = lang === "en"
-          ? `🌐 Official AI Content Report ${dateStr}${isFirstRun ? " (First Crawl)" : ""}`
-          : `🌐 AI 官方内容追踪报告 ${dateStr}${isFirstRun ? "（首次全量）" : ""}`;
+        const issueTitle =
+          lang === "en"
+            ? `🌐 Official AI Content Report ${dateStr}${isFirstRun ? " (First Crawl)" : ""}`
+            : `🌐 AI 官方内容追踪报告 ${dateStr}${isFirstRun ? "（首次全量）" : ""}`;
         const webLabel = s.issueLabelWeb;
         const webUrl = await createGitHubIssue(issueTitle, webContent, webLabel);
         console.log(`  Created web issue (${lang}): ${webUrl}`);

@@ -26,9 +26,10 @@ export function buildCliReportContent(
 
   const s = t(lang);
   const title = `# ${s.cliTitle} ${dateStr}\n\n`;
-  const meta = lang === "en"
-    ? `> Generated: ${utcStr} UTC | Tools covered: ${cliDigests.length}\n\n`
-    : `> 生成时间: ${utcStr} UTC | 覆盖工具: ${cliDigests.length} 个\n\n`;
+  const meta =
+    lang === "en"
+      ? `> Generated: ${utcStr} UTC | Tools covered: ${cliDigests.length}\n\n`
+      : `> 生成时间: ${utcStr} UTC | 覆盖工具: ${cliDigests.length} 个\n\n`;
 
   const skillsSection =
     `## ${s.cliSkillsHeading}\n\n` +

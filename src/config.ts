@@ -20,17 +20,33 @@ interface RawRepoEntry {
 }
 
 interface RawConfig {
+  languages?: string[];
   cli_repos?: RawRepoEntry[];
   skills_repo?: string;
   openclaw?: RawRepoEntry;
   openclaw_peers?: RawRepoEntry[];
 }
 
+export const DEFAULT_LANGUAGES: string[] = ["en", "zh"];
+
 export interface RadarConfig {
   cliRepos: RepoConfig[];
   skillsRepo: string;
   openclaw: RepoConfig;
   openclawPeers: RepoConfig[];
+  languages: string[];
+}
+
+export function getEnabledLangs(langConfig?: string[]): string[] {
+  const envLangs = process.env["REPORT_LANGS"];
+  if (envLangs) {
+    return envLangs
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+  }
+  if (langConfig && langConfig.length > 0) return langConfig;
+  return DEFAULT_LANGUAGES;
 }
 
 // ---------------------------------------------------------------------------
@@ -90,6 +106,7 @@ export function loadConfig(configPath = "config.yml"): RadarConfig {
       skillsRepo: DEFAULT_SKILLS_REPO,
       openclaw: DEFAULT_OPENCLAW,
       openclawPeers: DEFAULT_OPENCLAW_PEERS,
+      languages: DEFAULT_LANGUAGES,
     };
   }
 
@@ -112,10 +129,14 @@ export function loadConfig(configPath = "config.yml"): RadarConfig {
       ? raw.openclaw_peers.map(toRepoConfig)
       : DEFAULT_OPENCLAW_PEERS;
 
+  const languages =
+    Array.isArray(raw?.languages) && raw.languages.length > 0 ? raw.languages.map(String) : DEFAULT_LANGUAGES;
+
   console.log(
     `[config] Loaded from ${configPath}: ` +
-      `${cliRepos.length} CLI repos, ${openclawPeers.length} OpenClaw peers`,
+      `${cliRepos.length} CLI repos, ${openclawPeers.length} OpenClaw peers, ` +
+      `${languages.length} languages`,
   );
 
-  return { cliRepos, skillsRepo, openclaw, openclawPeers };
+  return { cliRepos, skillsRepo, openclaw, openclawPeers, languages };
 }

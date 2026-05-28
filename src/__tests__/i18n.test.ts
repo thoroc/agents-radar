@@ -30,8 +30,17 @@ describe("t() returns localized strings", () => {
 
 describe("notify labels via t()", () => {
   const ALL_NOTIFY_KEYS = [
-    "notifyCli", "notifyAgents", "notifyWeb", "notifyTrending", "notifyHn",
-    "notifyPh", "notifyArxiv", "notifyHf", "notifyCommunity", "notifyWeekly", "notifyMonthly",
+    "notifyCli",
+    "notifyAgents",
+    "notifyWeb",
+    "notifyTrending",
+    "notifyHn",
+    "notifyPh",
+    "notifyArxiv",
+    "notifyHf",
+    "notifyCommunity",
+    "notifyWeekly",
+    "notifyMonthly",
   ] as const;
 
   it("covers all report types in both languages", () => {
