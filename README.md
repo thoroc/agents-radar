@@ -1,8 +1,12 @@
 # agents-radar
 
+**Supported languages**
+
+🇬🇧 English · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
+
 English | [中文](./README.zh.md)
 
-A GitHub Actions workflow that runs every morning at 08:00 CST. It aggregates AI ecosystem signals from 10 data sources, then publishes bilingual (Chinese + English) daily digests as GitHub Issues and committed Markdown files. Weekly and monthly rollup reports are also generated automatically.
+A GitHub Actions workflow that runs every morning at 08:00 CST. It aggregates AI ecosystem signals from 10 data sources, then publishes daily digests (in all configured languages) as GitHub Issues and committed Markdown files. Weekly and monthly rollup reports are also generated automatically.
 
 ### Data Sources
 
@@ -29,7 +33,7 @@ Browse all historical digests in a clean, dark-themed interface — no login req
 
 ## Telegram Channel & Feishu Group
 
-Subscribe to get daily digest notifications pushed directly to your preferred platform. Each message links to all reports for that day (ZH and EN variants) plus the Web UI and RSS feed.
+Subscribe to get daily digest notifications pushed directly to your preferred platform. Each message links to all reports for that day plus the Web UI and RSS feed.
 
 <table>
   <tr>
@@ -192,6 +196,7 @@ New articles are detected by comparing sitemap `lastmod` timestamps against a pe
 - Publishes GitHub Issues for each report type; commits Markdown files to `digests/YYYY-MM-DD/`
 - Runs on a daily schedule via GitHub Actions; supports manual triggering
 - All tracked repositories are configurable via `config.yml` — no code changes needed
+- Centralized locale system via `locales/*.json` — 21 supported languages with `t()` catalog in `src/i18n.ts`
 
 ## Setup
 
@@ -214,6 +219,8 @@ openclaw_peers:
     repo: owner/my-agent
     name: My Agent
 ```
+
+> The `languages` field at the top of `config.yml` controls which locales are active. Defaults to `["en", "zh"]` if absent. To enable additional languages, add their ISO codes to the list (e.g. `["en", "zh", "ja", "ko"]`). See the full list of 21 supported languages at the top of this page. Each enabled language multiplies the LLM calls per run — be mindful of API costs when enabling many languages.
 
 ### 3. Add Secrets
 
@@ -290,17 +297,29 @@ export DIGEST_REPO=your-username/agents-radar  # optional; omit to only write fi
 pnpm start
 ```
 
+## Running tests
+
+```bash
+pnpm test        # run all tests (vitest)
+pnpm test:watch  # run in watch mode during development
+```
+
 ## Output format
 
-Files are written to `digests/YYYY-MM-DD/`:
+Files are written to `digests/YYYY-MM-DD/`. For each report type, the pipeline generates one file per enabled language:
 
-| File | Content | GitHub Issue label |
+| File pattern | Content | GitHub Issue label |
 |------|---------|-------------------|
-| `ai-cli.md` | CLI digest — cross-tool comparison + per-tool details | `digest` |
-| `ai-agents.md` | OpenClaw deep report + cross-ecosystem comparison + 11 peer details | `openclaw` |
-| `ai-web.md` | Official web content report (only written when new content exists) | `web` |
-| `ai-trending.md` | GitHub AI trending report — repos classified by dimension + trend signals (only written when data is available) | `trending` |
-| `ai-hn.md` | Hacker News AI community digest — top stories + sentiment analysis (only written when fetch succeeds) | `hn` |
+| `ai-cli{locale}.md` | CLI digest — cross-tool comparison + per-tool details | `digest{locale}` |
+| `ai-agents{locale}.md` | OpenClaw deep report + cross-ecosystem comparison + 11 peer details | `openclaw{locale}` |
+| `ai-web{locale}.md` | Official web content report (only written when new content exists) | `web{locale}` |
+| `ai-trending{locale}.md` | GitHub AI trending report — repos classified by dimension + trend signals (only written when data is available) | `trending{locale}` |
+| `ai-hn{locale}.md` | Hacker News AI community digest — top stories + sentiment analysis (only written when fetch succeeds) | `hn{locale}` |
+
+Where `{locale}` is empty for English (e.g. `ai-cli.md`) and `.{code}` for other languages (e.g. `ai-cli.zh.md`, `ai-cli.ja.md`). The same suffix applies to GitHub Issue labels (e.g. `digest`, `digest-zh`, `digest-ja`).
+
+For example, with `["en", "zh"]` configured, `digests/2026-05-28/` would contain:
+- `ai-cli.md` (English), `ai-cli.zh.md` (Chinese)
 | `ai-ph.md` | Product Hunt AI products digest (only written when `PRODUCTHUNT_TOKEN` is set and data is available) | `ph` |
 | `ai-arxiv.md` | ArXiv AI research digest — key papers from cs.AI/cs.CL/cs.LG | `arxiv` |
 | `ai-hf.md` | Hugging Face trending models digest — sorted by weekly likes | `hf` |
