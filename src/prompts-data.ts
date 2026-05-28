@@ -3,6 +3,11 @@
  * and rollup reports (weekly, monthly).
  *
  * Separated from prompts.ts to keep each module focused.
+ *
+ * NOTE: Each prompt function has EN/ZH branches. LLMs understand English
+ * instructions best and handle output language via a simple "write in {lang}"
+ * parameter. These should be collapsed to a single English prompt + t(lang)
+ * for data strings — see .context/plans/i18n-complete-plan.md (Phase 3).
  */
 
 import type { WebFetchResult } from "./web.ts";

@@ -1,5 +1,10 @@
 /**
  * LLM prompt builders and item formatting.
+ *
+ * NOTE: Each prompt function has EN/ZH branches. LLMs understand English
+ * instructions best and handle output language via a simple "write in {lang}"
+ * parameter. These should be collapsed to a single English prompt + t(lang)
+ * for data strings — see .context/plans/i18n-complete-plan.md (Phase 3).
  */
 
 import type { RepoConfig, GitHubItem, GitHubRelease } from "./github.ts";
