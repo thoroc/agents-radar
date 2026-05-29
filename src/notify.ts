@@ -11,7 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, type Lang } from "./i18n.ts";
+import { t, interpolate } from "./i18n.ts";
 import type { ReportHighlights } from "./prompts-data.ts";
 
 export interface Highlights {
@@ -35,7 +35,7 @@ const NOTIFY_LABEL_MAP: Record<string, keyof ReturnType<typeof t>> = {
   "ai-monthly": "notifyMonthly",
 };
 
-function notifyLabel(id: string, lang: Lang = "zh"): string {
+function notifyLabel(id: string, lang: string = "zh"): string {
   const key = NOTIFY_LABEL_MAP[id];
   return key ? t(lang)[key] : id;
 }
@@ -71,12 +71,12 @@ export function buildMessage(
   highlights?: Highlights | null,
 ): string {
   const PAGES_URL = (pagesUrl ?? process.env["PAGES_URL"] ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
-  const baseReports = reports.filter((r) => !r.endsWith("-en"));
+  const baseReports = reports.filter((r) => !r.includes("."));
   const isWeekly = baseReports.includes("ai-weekly");
   const isMonthly = baseReports.includes("ai-monthly");
 
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
-  const suffix = isMonthly ? " 月报" : isWeekly ? " 周报" : "";
+  const suffix = isMonthly ? t("zh").notifySuffixMonthly : isWeekly ? t("zh").notifySuffixWeekly : "";
   const lines: string[] = [`${icon} <b>agents-radar${suffix} · ${date}</b>`];
 
   // Daily reports first, then rollups
@@ -90,7 +90,7 @@ export function buildMessage(
   for (const r of ordered) {
     const zhLabel = notifyLabel(r, "zh");
     const zhUrl = `${PAGES_URL}/#${date}/${r}`;
-    const enKey = `${r}-en`;
+    const enKey = `${r}.en`;
 
     lines.push(""); // blank line before each report section
     if (reports.includes(enKey)) {
@@ -110,7 +110,7 @@ export function buildMessage(
     }
   }
 
-  lines.push(`\n<a href="${PAGES_URL}">🌐 Web UI</a>  ·  <a href="${PAGES_URL}/feed.xml">⊕ RSS</a>`);
+  lines.push(`\n${interpolate(t("zh").notifyFooterLinks, { pagesUrl: PAGES_URL })}`);
   return lines.join("\n");
 }
 

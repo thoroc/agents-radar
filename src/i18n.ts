@@ -9,7 +9,7 @@ export const SUPPORTED_LOCALES: string[] = [];
 export const STRINGS: Record<string, LocaleData> = {};
 export const LANGUAGE_NAMES: Record<string, string> = {};
 
-export type Lang = "zh" | "en";
+export type Lang = string;
 
 function ensureLocales(): void {
   if (_initialized) return;
@@ -54,3 +54,14 @@ export const t = (lang?: string): LocaleData => {
   const locale = lang ? validateLocale(lang) : "en";
   return STRINGS[locale] ?? STRINGS.en ?? EMPTY_FALLBACK;
 };
+
+export function asLang(code: string): Lang {
+  return validateLocale(code);
+}
+
+export function interpolate(template: string, vars: Record<string, string | number>): string {
+  return template.replace(/\{(\w+)\}/g, (_, key: string) => {
+    const val = vars[key];
+    return val !== undefined ? String(val) : `{${key}}`;
+  });
+}

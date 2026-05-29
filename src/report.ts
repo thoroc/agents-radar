@@ -4,7 +4,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, type Lang } from "./i18n.ts";
+import { t } from "./i18n.ts";
 import { sleep } from "./date.ts";
 
 // ---------------------------------------------------------------------------
@@ -106,8 +106,8 @@ export function saveFile(content: string, ...segments: string[]): string {
   return filepath;
 }
 
-export function autoGenFooter(lang: Lang = "zh"): string {
+export function autoGenFooter(lang: string = "zh"): string {
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
   if (!digestRepo) return "";
-  return `\n\n---\n*${t(lang).autoGen} [agents-radar](https://github.com/${digestRepo})${lang === "en" ? "." : " 自动生成。"}*`;
+  return `\n\n---\n*${t(lang).autoGen} [agents-radar](https://github.com/${digestRepo})${t(lang).autoGenFooter}*`;
 }

@@ -1,18 +1,5 @@
-/**
- * LLM prompt builders and item formatting.
- *
- * NOTE: Each prompt function has EN/ZH branches. LLMs understand English
- * instructions best and handle output language via a simple "write in {lang}"
- * parameter. These should be collapsed to a single English prompt + t(lang)
- * for data strings — see .context/plans/i18n-complete-plan.md (Phase 3).
- */
-
 import type { RepoConfig, GitHubItem, GitHubRelease } from "./github.ts";
-import type { Lang } from "./i18n";
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+import { t, interpolate } from "./i18n.ts";
 
 export interface RepoDigest {
   config: RepoConfig;
@@ -22,62 +9,37 @@ export interface RepoDigest {
   summary: string;
 }
 
-// ---------------------------------------------------------------------------
-// Formatting
-// ---------------------------------------------------------------------------
-
-export function formatItem(item: GitHubItem, lang: Lang = "zh"): string {
+export function formatItem(item: GitHubItem, lang: string = "zh"): string {
   const labels = item.labels.map((l) => l.name).join(", ");
   const labelStr = labels ? ` [${labels}]` : "";
   const body = (item.body ?? "").replace(/\n/g, " ").trim().slice(0, 300);
   const ellipsis = (item.body ?? "").length > 300 ? "..." : "";
-  const t =
-    lang === "en"
-      ? {
-          author: "Author",
-          created: "Created",
-          updated: "Updated",
-          comments: "Comments",
-          url: "URL",
-          summary: "Summary",
-        }
-      : { author: "作者", created: "创建", updated: "更新", comments: "评论", url: "链接", summary: "摘要" };
-  // Extract "owner/repo" from html_url to avoid full GitHub URLs that trigger cross-references
+  const s = t(lang);
   const repoSlug = item.html_url.replace(/^https:\/\/github\.com\//, "").replace(/\/(issues|pull)\/\d+$/, "");
   const itemKind = item.html_url.includes("/pull/") ? "PR" : "Issue";
   const refStr = `${repoSlug} ${itemKind} #${item.number}`;
   return [
     `#${item.number} [${item.state.toUpperCase()}]${labelStr} ${item.title}`,
-    `  ${t.author}: ${item.user.login} | ${t.created}: ${item.created_at.slice(0, 10)} | ${t.updated}: ${item.updated_at.slice(0, 10)} | ${t.comments}: ${item.comments} | 👍: ${item.reactions?.["+1"] ?? 0}`,
-    `  ${t.url}: ${refStr}`,
-    `  ${t.summary}: ${body}${ellipsis}`,
+    `  ${s.formatItemAuthor}: ${item.user.login} | ${s.formatItemCreated}: ${item.created_at.slice(0, 10)} | ${s.formatItemUpdated}: ${item.updated_at.slice(0, 10)} | ${s.formatItemComments}: ${item.comments} | 👍: ${item.reactions?.["+1"] ?? 0}`,
+    `  ${s.formatItemUrl}: ${refStr}`,
+    `  ${s.formatItemSummary}: ${body}${ellipsis}`,
   ].join("\n");
 }
-
-// ---------------------------------------------------------------------------
-// Sampling helpers (shared)
-// ---------------------------------------------------------------------------
 
 const CLI_ISSUE_LIMIT = 30;
 const CLI_PR_LIMIT = 20;
 
-/** Sort by comment count desc, take top N. */
 export function topN(items: GitHubItem[], n: number): GitHubItem[] {
   return [...items].sort((a, b) => b.comments - a.comments).slice(0, n);
 }
 
-export function sampleNote(total: number, sampled: number, lang: Lang = "zh"): string {
-  if (lang === "en") {
-    return total > sampled
-      ? `(Total: ${total} items; showing top ${sampled} by comment count)`
-      : `(Total: ${total} items)`;
+export function sampleNote(total: number, sampled: number, lang: string = "zh"): string {
+  if (total <= sampled) {
+    return lang === "en" ? `(Total: ${total} items)` : `（共 ${total} 条）`;
   }
-  return total > sampled ? `（共 ${total} 条，以下展示评论数最多的 ${sampled} 条）` : `（共 ${total} 条）`;
+  const s = t(lang);
+  return interpolate(s.sampleNote, { total, sampled });
 }
-
-// ---------------------------------------------------------------------------
-// Prompts
-// ---------------------------------------------------------------------------
 
 export function buildCliPrompt(
   cfg: RepoConfig,
@@ -85,19 +47,17 @@ export function buildCliPrompt(
   prs: GitHubItem[],
   releases: GitHubRelease[],
   dateStr: string,
-  lang: Lang = "zh",
+  lang: string = "zh",
 ): string {
   const sampledIssues = topN(issues, CLI_ISSUE_LIMIT);
   const sampledPrs = topN(prs, CLI_PR_LIMIT);
 
-  const issuesText =
-    sampledIssues.map((i) => formatItem(i, lang)).join("\n") || (lang === "en" ? "None" : "无");
-  const prsText = sampledPrs.map((p) => formatItem(p, lang)).join("\n") || (lang === "en" ? "None" : "无");
+  const noneStr = t(lang).noneStr;
+  const issuesText = sampledIssues.map((i) => formatItem(i, lang)).join("\n") || noneStr;
+  const prsText = sampledPrs.map((p) => formatItem(p, lang)).join("\n") || noneStr;
   const releasesText = releases.length
     ? releases.map((r) => `- ${r.tag_name}: ${r.name}\n  ${(r.body ?? "").slice(0, 300)}`).join("\n")
-    : lang === "en"
-      ? "None"
-      : "无";
+    : noneStr;
 
   const issueNote = sampleNote(issues.length, sampledIssues.length, lang);
   const prNote = sampleNote(prs.length, sampledPrs.length, lang);
@@ -170,7 +130,7 @@ export function buildPeerPrompt(
   dateStr: string,
   issueLimit = PEER_ISSUE_LIMIT,
   prLimit = PEER_PR_LIMIT,
-  lang: Lang = "zh",
+  lang: string = "zh",
 ): string {
   const totalIssues = issues.length;
   const totalPrs = prs.length;
@@ -178,7 +138,7 @@ export function buildPeerPrompt(
   const sampledIssues = topN(issues, issueLimit);
   const sampledPrs = topN(prs, prLimit);
 
-  const noneStr = lang === "en" ? "None" : "无";
+  const noneStr = t(lang).noneStr;
   const issuesText = sampledIssues.map((i) => formatItem(i, lang)).join("\n") || noneStr;
   const prsText = sampledPrs.map((p) => formatItem(p, lang)).join("\n") || noneStr;
   const releasesText = releases.length
@@ -264,9 +224,9 @@ export function buildPeersComparisonPrompt(
   openclawDigest: RepoDigest,
   peerDigests: RepoDigest[],
   dateStr: string,
-  lang: Lang = "zh",
+  lang: string = "zh",
 ): string {
-  const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "过去24小时无活动。";
+  const noActivityStr = t(lang).noActivity;
 
   const openclawSection =
     lang === "en"
@@ -334,12 +294,12 @@ export function buildSkillsPrompt(
   prs: GitHubItem[],
   issues: GitHubItem[],
   dateStr: string,
-  lang: Lang = "zh",
+  lang: string = "zh",
 ): string {
   const topPrs = topN(prs, 20);
   const topIssues = topN(issues, 15);
 
-  const noneStr = lang === "en" ? "None" : "无";
+  const noneStr = t(lang).noneStr;
   const prsText = topPrs.map((p) => formatItem(p, lang)).join("\n") || noneStr;
   const issuesText = topIssues.map((i) => formatItem(i, lang)).join("\n") || noneStr;
 
@@ -392,8 +352,8 @@ ${issuesText}
 `;
 }
 
-export function buildComparisonPrompt(digests: RepoDigest[], dateStr: string, lang: Lang = "zh"): string {
-  const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "过去24小时无活动。";
+export function buildComparisonPrompt(digests: RepoDigest[], dateStr: string, lang: string = "zh"): string {
+  const noActivityStr = t(lang).noActivity;
 
   const sections = digests
     .map((d) => {

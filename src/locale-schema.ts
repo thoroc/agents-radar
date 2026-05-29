@@ -125,6 +125,22 @@ const LocaleDataSchema = z.object({
   manifestMonthly: z.string(),
 
   autoGenFooter: z.string(),
+
+  hnMeta: z.string(),
+  phMeta: z.string(),
+  arxivMeta: z.string(),
+  hfMeta: z.string(),
+  communityMeta: z.string(),
+  trendingMeta: z.string(),
+  webSourcesAnthropic: z.string(),
+  webSourcesOpenai: z.string(),
+  webIssueTitle: z.string(),
+  webIssueTitleFirstCrawl: z.string(),
+
+  notifySuffixMonthly: z.string(),
+  notifySuffixWeekly: z.string(),
+  notifyFooterLinks: z.string(),
+  feishuFooterLinks: z.string(),
 });
 
 const LocaleFileSchema = LocaleDataSchema.extend({

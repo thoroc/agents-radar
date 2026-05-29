@@ -11,7 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, type Lang } from "./i18n.ts";
+import { t, interpolate } from "./i18n.ts";
 import type { Highlights } from "./notify.ts";
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
@@ -30,7 +30,7 @@ const NOTIFY_LABEL_MAP: Record<string, keyof ReturnType<typeof t>> = {
   "ai-monthly": "notifyMonthly",
 };
 
-function notifyLabel(id: string, lang: Lang = "zh"): string {
+function notifyLabel(id: string, lang: string = "zh"): string {
   const key = NOTIFY_LABEL_MAP[id];
   return key ? t(lang)[key] : id;
 }
@@ -82,12 +82,12 @@ export function buildFeishuMessage(
   highlights?: Highlights | null,
 ): string {
   const PAGES_URL = (pagesUrl ?? process.env["PAGES_URL"] ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
-  const baseReports = reports.filter((r) => !r.endsWith("-en"));
+  const baseReports = reports.filter((r) => !r.includes("."));
   const isWeekly = baseReports.includes("ai-weekly");
   const isMonthly = baseReports.includes("ai-monthly");
 
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
-  const suffix = isMonthly ? " 月报" : isWeekly ? " 周报" : "";
+  const suffix = isMonthly ? t("zh").notifySuffixMonthly : isWeekly ? t("zh").notifySuffixWeekly : "";
   const lines: string[] = [`${icon} **agents-radar${suffix} · ${date}**`];
 
   const ordered = [
@@ -100,7 +100,7 @@ export function buildFeishuMessage(
   for (const r of ordered) {
     const zhLabel = notifyLabel(r, "zh");
     const zhUrl = `${PAGES_URL}/#${date}/${r}`;
-    const enKey = `${r}-en`;
+    const enKey = `${r}.en`;
 
     lines.push("");
     if (reports.includes(enKey)) {
@@ -119,7 +119,7 @@ export function buildFeishuMessage(
     }
   }
 
-  lines.push(`\n[🌐 Web UI](${PAGES_URL})  ·  [⊕ RSS](${PAGES_URL}/feed.xml)`);
+  lines.push(`\n${interpolate(t("zh").feishuFooterLinks, { pagesUrl: PAGES_URL })}`);
   return lines.join("\n");
 }
 
@@ -159,7 +159,7 @@ async function main(): Promise<void> {
   const isMonthly = reports.some((r) => r === "ai-monthly");
   const isWeekly = reports.some((r) => r === "ai-weekly");
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
-  const suffix = isMonthly ? " 月报" : isWeekly ? " 周报" : "";
+  const suffix = isMonthly ? t("zh").notifySuffixMonthly : isWeekly ? t("zh").notifySuffixWeekly : "";
   const title = `${icon} agents-radar${suffix} · ${date}`;
 
   const content = buildFeishuMessage(date, reports, undefined, highlights);

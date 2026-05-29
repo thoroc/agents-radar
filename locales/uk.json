@@ -104,5 +104,19 @@
   "manifestHn": "Дайджест спільноти Hacker News AI",
   "manifestWeekly": "Щотижневий дайджест AI інструментів",
   "manifestMonthly": "Щомісячний дайджест AI інструментів",
-  "autoGenFooter": ""
+  "autoGenFooter": ".",
+  "hnMeta": "> Source: [Hacker News](https://news.ycombinator.com/) | {count} stories | Generated: {utcStr} UTC\n\n---\n\n",
+  "phMeta": "> Source: [Product Hunt](https://www.producthunt.com/) | {count} products | Generated: {utcStr} UTC\n\n---\n\n",
+  "arxivMeta": "> Source: [ArXiv](https://arxiv.org/) (cs.AI, cs.CL, cs.LG) | {count} papers | Generated: {utcStr} UTC\n\n---\n\n",
+  "hfMeta": "> Source: [Hugging Face Hub](https://huggingface.co/) | {count} models | Generated: {utcStr} UTC\n\n---\n\n",
+  "communityMeta": "> Sources: [Dev.to](https://dev.to/) ({devto} articles) + [Lobste.rs](https://lobste.rs/) ({lobsters} stories) | Generated: {utcStr} UTC\n\n---\n\n",
+  "trendingMeta": "> {sources} | Generated: {utcStr} UTC\n\n---\n\n",
+  "webSourcesAnthropic": "- Anthropic: [anthropic.com](https://www.anthropic.com) — {new} new articles (sitemap total: {total})",
+  "webSourcesOpenai": "- OpenAI: [openai.com](https://openai.com) — {new} new articles (sitemap total: {total})",
+  "webIssueTitle": "🌐 Official AI Content Report {dateStr}",
+  "webIssueTitleFirstCrawl": "🌐 Official AI Content Report {dateStr} (First Crawl)",
+  "notifySuffixMonthly": " Monthly",
+  "notifySuffixWeekly": " Weekly",
+  "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
 }

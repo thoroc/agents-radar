@@ -3,9 +3,7 @@
  * Reads GITHUB_TOKEN and DIGEST_REPO from environment at call time.
  */
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+import { t } from "./i18n.ts";
 
 export interface RepoConfig {
   /** Short identifier used for filenames */
@@ -189,29 +187,27 @@ export async function fetchSkillsData(repo: string): Promise<{ prs: GitHubItem[]
 }
 
 const GITHUB_ISSUE_BODY_LIMIT = 65536;
-const TRUNCATION_NOTICE = "\n\n---\n> ⚠️ 内容超过 GitHub Issue 上限，完整报告见提交的 Markdown 文件。";
 
-/** GitHub label colors by label name. Default: "0075ca". */
-const LABEL_COLORS: Record<string, string> = {
+/** GitHub label colors by base label name. Default: "0075ca". */
+const BASE_LABEL_COLORS: Record<string, string> = {
+  digest: "0075ca",
   openclaw: "e11d48",
+  web: "6366f1",
   trending: "f9a825",
   hn: "ff6600",
   ph: "da552f",
   weekly: "7c3aed",
   monthly: "0d9488",
-  "digest-en": "1d76db",
-  "openclaw-en": "f472b6",
-  "web-en": "6366f1",
-  "trending-en": "fbbf24",
-  "hn-en": "fb923c",
-  "ph-en": "e8854a",
   arxiv: "b31b1b",
-  "arxiv-en": "d44a4a",
   hf: "ff9d00",
-  "hf-en": "ffb84d",
   community: "2563eb",
-  "community-en": "60a5fa",
 };
+
+function labelColor(labelName: string): string {
+  // Strip language suffix like .en, .ja from label names
+  const base = labelName.replace(/\.[a-z]{2}$/, "");
+  return BASE_LABEL_COLORS[base] ?? BASE_LABEL_COLORS[labelName] ?? "0075ca";
+}
 
 /**
  * Break GitHub URLs in issue body to prevent cross-repository references.
@@ -265,13 +261,19 @@ export async function closeStaleIssues(days: number): Promise<number> {
   return closed;
 }
 
-export async function createGitHubIssue(title: string, body: string, label: string): Promise<string> {
+export async function createGitHubIssue(
+  title: string,
+  body: string,
+  label: string,
+  lang: string = "zh",
+): Promise<string> {
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
   body = neutralizeGitHubRefs(body);
   if (body.length > GITHUB_ISSUE_BODY_LIMIT) {
-    body = body.slice(0, GITHUB_ISSUE_BODY_LIMIT - TRUNCATION_NOTICE.length) + TRUNCATION_NOTICE;
+    const truncation = t(lang).issueTruncation;
+    body = body.slice(0, GITHUB_ISSUE_BODY_LIMIT - truncation.length) + truncation;
   }
-  await ensureLabel(label, LABEL_COLORS[label] ?? "0075ca");
+  await ensureLabel(label, labelColor(label));
   const resp = await fetch(`https://api.github.com/repos/${digestRepo}/issues`, {
     method: "POST",
     headers: { ...headers(), "Content-Type": "application/json" },

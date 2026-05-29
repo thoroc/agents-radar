@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { marked } from "marked";
-import { t, type Lang } from "./i18n.ts";
+import { t } from "./i18n.ts";
 
 const REPORT_LABEL_KEY: Record<string, keyof ReturnType<typeof t>> = {
   "ai-cli": "reportLabelAiCli",
@@ -18,13 +18,13 @@ const REPORT_LABEL_KEY: Record<string, keyof ReturnType<typeof t>> = {
 };
 
 function reportLabel(id: string): string {
-  // id is either "ai-cli" (zh) or "ai-cli-en" (en, legacy convention)
-  let lang: Lang = "zh";
-  let base = id;
-  if (id.endsWith("-en")) {
-    lang = "en";
-    base = id.slice(0, -3);
+  const dot = id.lastIndexOf(".");
+  if (dot === -1) {
+    const key = REPORT_LABEL_KEY[id];
+    return key ? t("zh")[key] : id;
   }
+  const base = id.slice(0, dot);
+  const lang = id.slice(dot + 1);
   const key = REPORT_LABEL_KEY[base];
   return key ? t(lang)[key] : id;
 }
@@ -34,29 +34,18 @@ const MANIFEST_PATH = "manifest.json";
 const FEED_PATH = "feed.xml";
 const SITE_URL = "https://duanyytop.github.io/agents-radar";
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-const REPORT_FILES = [
+const REPORT_BASES = [
   "ai-cli",
-  "ai-cli-en",
   "ai-agents",
-  "ai-agents-en",
   "ai-web",
-  "ai-web-en",
   "ai-trending",
-  "ai-trending-en",
   "ai-hn",
-  "ai-hn-en",
   "ai-ph",
-  "ai-ph-en",
   "ai-arxiv",
-  "ai-arxiv-en",
   "ai-hf",
-  "ai-hf-en",
   "ai-community",
-  "ai-community-en",
   "ai-weekly",
-  "ai-weekly-en",
   "ai-monthly",
-  "ai-monthly-en",
 ] as const;
 const MAX_FEED_ITEMS = 30;
 
@@ -129,7 +118,11 @@ async function main(): Promise<void> {
     .sort()
     .reverse()
     .map((date) => {
-      const reports = REPORT_FILES.filter((r) => fs.existsSync(path.join(DIGESTS_DIR, date, `${r}.md`)));
+      const dir = path.join(DIGESTS_DIR, date);
+      const files = fs.readdirSync(dir).filter((f) => f.endsWith(".md"));
+      const reports = files
+        .map((f) => f.replace(/\.md$/, ""))
+        .filter((f) => REPORT_BASES.some((base) => f === base || f.startsWith(base + ".")));
       return { date, reports };
     })
     .filter((e) => e.reports.length > 0);
@@ -183,8 +176,8 @@ async function main(): Promise<void> {
     `  <channel>\n` +
     `    <title>agents-radar</title>\n` +
     `    <link>${SITE_URL}</link>\n` +
-    `    <description>AI 开源生态每日简报 · Daily AI ecosystem digest</description>\n` +
-    `    <language>zh-CN</language>\n` +
+    `    <description>Daily AI ecosystem digest</description>\n` +
+    `    <language>en</language>\n` +
     `    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>\n` +
     `    <lastBuildDate>${buildDate}</lastBuildDate>\n` +
     itemsXml +

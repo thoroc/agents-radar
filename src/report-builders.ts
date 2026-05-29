@@ -1,14 +1,6 @@
-/**
- * Report content builders — extracted from index.ts for testability.
- */
-
 import type { RepoConfig, RepoFetch } from "./github.ts";
 import type { RepoDigest } from "./prompts.ts";
-import { t, type Lang } from "./i18n.ts";
-
-// ---------------------------------------------------------------------------
-// CLI Report
-// ---------------------------------------------------------------------------
+import { t, interpolate, type Lang } from "./i18n.ts";
 
 export function buildCliReportContent(
   cliDigests: RepoDigest[],
@@ -26,10 +18,7 @@ export function buildCliReportContent(
 
   const s = t(lang);
   const title = `# ${s.cliTitle} ${dateStr}\n\n`;
-  const meta =
-    lang === "en"
-      ? `> Generated: ${utcStr} UTC | Tools covered: ${cliDigests.length}\n\n`
-      : `> 生成时间: ${utcStr} UTC | 覆盖工具: ${cliDigests.length} 个\n\n`;
+  const meta = interpolate(s.cliMeta, { utcStr, count: cliDigests.length });
 
   const skillsSection =
     `## ${s.cliSkillsHeading}\n\n` +
@@ -64,10 +53,6 @@ export function buildCliReportContent(
   );
 }
 
-// ---------------------------------------------------------------------------
-// OpenClaw Report
-// ---------------------------------------------------------------------------
-
 export function buildOpenclawReportContent(
   fetchedOpenclaw: RepoFetch,
   peerDigests: RepoDigest[],
@@ -101,10 +86,12 @@ export function buildOpenclawReportContent(
 
   const s = t(lang);
   const title = `# ${s.openclawTitle} ${dateStr}\n\n`;
-  const meta =
-    lang === "en"
-      ? `> Issues: ${issues.length} | PRs: ${prs.length} | Projects covered: ${1 + openclawPeers.length} | Generated: ${utcStr} UTC\n\n`
-      : `> Issues: ${issues.length} | PRs: ${prs.length} | 覆盖项目: ${1 + openclawPeers.length} 个 | 生成时间: ${utcStr} UTC\n\n`;
+  const meta = interpolate(s.openclawMeta, {
+    issues: issues.length,
+    prs: prs.length,
+    projects: 1 + openclawPeers.length,
+    utcStr,
+  });
 
   return (
     title +

@@ -1,8 +1,3 @@
-/**
- * Weekly and monthly rollup report generator.
- * Reads existing daily digest files — no GitHub API calls needed.
- */
-
 import fs from "node:fs";
 import path from "node:path";
 import { callLlm, saveFile, autoGenFooter, LLM_TOKENS_ROLLUP } from "./report.ts";
@@ -14,17 +9,16 @@ import {
 } from "./prompts-data.ts";
 import { createGitHubIssue } from "./github.ts";
 import { toCstDateStr, toUtcStr } from "./date.ts";
-import { t, type Lang } from "./i18n.ts";
+import { t, interpolate } from "./i18n.ts";
+import { loadConfig, getEnabledLangs } from "./config.ts";
 
 const DIGESTS_DIR = "digests";
 const MAX_CHARS_PER_REPORT = 2500;
 
-// Source report types to read for rollups (in priority order)
-const ROLLUP_SOURCES = ["ai-cli", "ai-agents", "ai-trending", "ai-hn", "ai-web"];
+const { languages: CONFIG_LANGS } = loadConfig();
+const ENABLED_LANGS = getEnabledLangs(CONFIG_LANGS);
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+const ROLLUP_SOURCES = ["ai-cli", "ai-agents", "ai-trending", "ai-hn", "ai-web"];
 
 function getDateDirs(): string[] {
   if (!fs.existsSync(DIGESTS_DIR)) return [];
@@ -35,31 +29,35 @@ function getDateDirs(): string[] {
     .reverse();
 }
 
-/** Read and truncate all daily digest files for a date. Returns null if none found. */
-function readDailyDigest(date: string): string | null {
-  const parts: string[] = [];
-  for (const type of ROLLUP_SOURCES) {
-    const p = path.join(DIGESTS_DIR, date, `${type}.md`);
-    if (fs.existsSync(p)) {
-      const content = fs.readFileSync(p, "utf-8");
-      const truncated = content.slice(0, MAX_CHARS_PER_REPORT);
-      parts.push(truncated.length < content.length ? truncated + "\n...[摘要截断]" : truncated);
+/** Read and truncate all daily digest files for a date, per enabled language. Returns null if none found. */
+function readDailyDigest(date: string): Record<string, string> | null {
+  const result: Record<string, string> = {};
+  for (const lang of ENABLED_LANGS) {
+    const parts: string[] = [];
+    for (const type of ROLLUP_SOURCES) {
+      const file = lang === "zh" ? `${type}.md` : `${type}.${lang}.md`;
+      const p = path.join(DIGESTS_DIR, date, file);
+      if (fs.existsSync(p)) {
+        const content = fs.readFileSync(p, "utf-8");
+        const truncated = content.slice(0, MAX_CHARS_PER_REPORT);
+        parts.push(truncated.length < content.length ? truncated + t(lang).digestTruncation : truncated);
+      }
     }
+    if (parts.length > 0) result[lang] = parts.join("\n\n");
   }
-  return parts.length > 0 ? parts.join("\n\n") : null;
+  return Object.keys(result).length > 0 ? result : null;
 }
 
-/** Read a weekly report file. Returns null if not found. */
-function readWeeklyDigest(date: string): string | null {
-  const p = path.join(DIGESTS_DIR, date, "ai-weekly.md");
+/** Read a weekly report file for a given lang. Returns null if not found. */
+function readWeeklyDigest(date: string, lang: string): string | null {
+  const file = lang === "zh" ? "ai-weekly.md" : `ai-weekly.${lang}.md`;
+  const p = path.join(DIGESTS_DIR, date, file);
   if (!fs.existsSync(p)) return null;
   const content = fs.readFileSync(p, "utf-8");
-  return content.slice(0, 3000) + (content.length > 3000 ? "\n...[截断]" : "");
+  return content.slice(0, 3000) + (content.length > 3000 ? t(lang).weeklyTruncation : "");
 }
 
-/** Format a date as ISO week string, e.g. "2026-W10". */
 export function toWeekStr(date: Date): string {
-  // ISO week: week containing the first Thursday of the year
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
@@ -67,22 +65,16 @@ export function toWeekStr(date: Date): string {
   return `${d.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
 }
 
-// ---------------------------------------------------------------------------
-// Highlights generation for rollup reports
-// ---------------------------------------------------------------------------
-
 async function generateRollupHighlights(
-  zhContent: string,
-  enContent: string,
+  contents: Record<string, string>,
   reportId: string,
   dateStr: string,
   itemsPerReport: number,
 ): Promise<void> {
   console.log(`  [${reportId}] Generating highlights for Telegram...`);
 
-  // Read existing highlights (e.g. from daily digest) so we merge instead of overwrite
   const existingPath = path.join(DIGESTS_DIR, dateStr, "highlights.json");
-  let existing: Record<Lang, ReportHighlights> = { zh: {}, en: {} };
+  let existing: Record<string, ReportHighlights> = {};
   if (fs.existsSync(existingPath)) {
     try {
       existing = JSON.parse(fs.readFileSync(existingPath, "utf-8"));
@@ -91,40 +83,33 @@ async function generateRollupHighlights(
     }
   }
 
-  const highlights: Record<Lang, ReportHighlights> = {
-    zh: { ...existing.zh },
-    en: { ...existing.en },
-  };
+  const highlights: Record<string, ReportHighlights> = {};
+  for (const lang of ENABLED_LANGS) {
+    highlights[lang] = { ...(existing[lang] ?? {}) };
+  }
 
   try {
-    const [zhRaw, enRaw] = await Promise.all([
-      callLlm(buildHighlightsPrompt({ [reportId]: zhContent }, "zh", itemsPerReport), 1024),
-      callLlm(buildHighlightsPrompt({ [reportId]: enContent }, "en", itemsPerReport), 1024),
-    ]);
-    const zhNew = JSON.parse(
-      zhRaw
-        .replace(/```json?\n?/g, "")
-        .replace(/```/g, "")
-        .trim(),
-    ) as ReportHighlights;
-    const enNew = JSON.parse(
-      enRaw
-        .replace(/```json?\n?/g, "")
-        .replace(/```/g, "")
-        .trim(),
-    ) as ReportHighlights;
-    Object.assign(highlights.zh, zhNew);
-    Object.assign(highlights.en, enNew);
+    const results = await Promise.all(
+      Object.entries(contents).map(async ([lang, content]) => {
+        const raw = await callLlm(buildHighlightsPrompt({ [reportId]: content }, lang, itemsPerReport), 1024);
+        const parsed = JSON.parse(
+          raw
+            .replace(/```json?\n?/g, "")
+            .replace(/```/g, "")
+            .trim(),
+        ) as ReportHighlights;
+        return [lang, parsed] as const;
+      }),
+    );
+    for (const [lang, parsed] of results) {
+      Object.assign(highlights[lang]!, parsed);
+    }
   } catch (err) {
     console.error(`  [${reportId}] Highlights generation failed: ${err}`);
   }
   const p = saveFile(JSON.stringify(highlights, null, 2), dateStr, "highlights.json");
   console.log(`  Saved ${p}`);
 }
-
-// ---------------------------------------------------------------------------
-// Weekly rollup
-// ---------------------------------------------------------------------------
 
 export async function runWeeklyRollup(): Promise<void> {
   const now = new Date();
@@ -135,72 +120,71 @@ export async function runWeeklyRollup(): Promise<void> {
 
   console.log(`[weekly] Generating rollup for ${weekStr} (date: ${dateStr})`);
 
-  // Collect last 7 days of daily digests
   const allDates = getDateDirs();
   const last7 = allDates.slice(0, 7);
 
-  const dailyDigests: Record<string, string> = {};
+  const dailyDigestsByLang: Record<string, Record<string, string>> = {};
   for (const date of last7) {
-    const content = readDailyDigest(date);
-    if (content) dailyDigests[date] = content;
+    const contentByLang = readDailyDigest(date);
+    if (contentByLang) {
+      for (const [lang, content] of Object.entries(contentByLang)) {
+        if (!dailyDigestsByLang[lang]) dailyDigestsByLang[lang] = {};
+        dailyDigestsByLang[lang]![date] = content;
+      }
+    }
   }
 
-  if (Object.keys(dailyDigests).length === 0) {
+  if (Object.keys(dailyDigestsByLang).length === 0) {
     console.log("[weekly] No daily digests found, skipping.");
     return;
   }
 
-  console.log(
-    `[weekly] Found ${Object.keys(dailyDigests).length} daily digests: ${Object.keys(dailyDigests).join(", ")}`,
+  console.log(`[weekly] Found daily digests for: ${Object.keys(dailyDigestsByLang).join(", ")}`);
+
+  const summaryPromises = ENABLED_LANGS.map((lang) =>
+    callLlm(buildWeeklyPrompt(dailyDigestsByLang[lang] ?? {}, weekStr, lang), LLM_TOKENS_ROLLUP),
   );
+  const summaries = await Promise.all(summaryPromises);
 
-  // Generate ZH and EN in parallel
-  console.log("[weekly] Calling LLM for ZH and EN weekly reports in parallel...");
-  const [zhSummary, enSummary] = await Promise.all([
-    callLlm(buildWeeklyPrompt(dailyDigests, weekStr, "zh"), LLM_TOKENS_ROLLUP),
-    callLlm(buildWeeklyPrompt(dailyDigests, weekStr, "en"), LLM_TOKENS_ROLLUP),
-  ]);
+  const contentByLang: Record<string, string> = {};
+  const coverageStr = `${last7[last7.length - 1]} ~ ${last7[0]}`;
 
-  const footer = autoGenFooter("zh");
-  const enFooter = autoGenFooter("en");
+  for (let i = 0; i < ENABLED_LANGS.length; i++) {
+    const lang = ENABLED_LANGS[i]!;
+    const s = t(lang);
+    const suffix = lang === "zh" ? "" : `.${lang}`;
+    contentByLang[lang] =
+      `# ${s.weeklyTitle} ${weekStr}\n\n` +
+      interpolate(s.weeklyMeta, { range: coverageStr, utcStr }) +
+      `---\n\n` +
+      summaries[i]! +
+      autoGenFooter(lang);
+    console.log(`  Saved ${saveFile(contentByLang[lang]!, dateStr, `ai-weekly${suffix}.md`)}`);
+  }
 
-  const zhContent =
-    `# ${t("zh").weeklyTitle} ${weekStr}\n\n` +
-    `> ${t("zh").weeklyCoverage}: ${last7[last7.length - 1]} ~ ${last7[0]} | 生成时间: ${utcStr} UTC\n\n` +
-    `---\n\n` +
-    zhSummary +
-    footer;
-
-  const enContent =
-    `# ${t("en").weeklyTitle} ${weekStr}\n\n` +
-    `> ${t("en").weeklyCoverage}: ${last7[last7.length - 1]} ~ ${last7[0]} | Generated: ${utcStr} UTC\n\n` +
-    `---\n\n` +
-    enSummary +
-    enFooter;
-
-  console.log(`  Saved ${saveFile(zhContent, dateStr, "ai-weekly.md")}`);
-  console.log(`  Saved ${saveFile(enContent, dateStr, "ai-weekly.md")}`);
-
-  await generateRollupHighlights(zhContent, enContent, "ai-weekly", dateStr, 6);
+  await generateRollupHighlights(contentByLang, "ai-weekly", dateStr, 6);
 
   if (digestRepo) {
-    const url = await createGitHubIssue(`${t("zh").weeklyTitle} ${weekStr}`, zhContent, "weekly");
-    console.log(`  Created weekly issue: ${url}`);
+    for (const lang of ENABLED_LANGS) {
+      const url = await createGitHubIssue(
+        `${t(lang).weeklyTitle} ${weekStr}`,
+        contentByLang[lang]!,
+        "weekly",
+        lang,
+      );
+      console.log(`  Created weekly issue: ${url}`);
+      break;
+    }
   }
 
   console.log("[weekly] Done!");
 }
 
-// ---------------------------------------------------------------------------
-// Monthly rollup
-// ---------------------------------------------------------------------------
-
 export async function runMonthlyRollup(): Promise<void> {
   const now = new Date();
   const cstDate = new Date(now.getTime() + 8 * 60 * 60 * 1000);
-  // Monthly report covers the PREVIOUS month
   const prevMonth = new Date(Date.UTC(cstDate.getUTCFullYear(), cstDate.getUTCMonth() - 1, 1));
-  const monthStr = prevMonth.toISOString().slice(0, 7); // "2026-02"
+  const monthStr = prevMonth.toISOString().slice(0, 7);
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
@@ -208,78 +192,86 @@ export async function runMonthlyRollup(): Promise<void> {
   console.log(`[monthly] Generating rollup for ${monthStr} (date: ${dateStr})`);
 
   const allDates = getDateDirs();
-
-  // Prefer weekly reports from the target month
   const monthDates = allDates.filter((d) => d.startsWith(monthStr));
   const weeklyDates = monthDates.filter((d) => fs.existsSync(path.join(DIGESTS_DIR, d, "ai-weekly.md")));
 
-  let sourceDigests: Record<string, string>;
-  let sourceLabel: { zh: string; en: string };
+  const sourceDigests: Record<string, Record<string, string>> = {};
+  const sourceLangs: Record<string, string> = {};
 
   if (weeklyDates.length >= 2) {
-    // Use weekly reports
-    sourceLabel = {
-      zh: `${weeklyDates.length} 份周报`,
-      en: `${weeklyDates.length} weekly reports`,
-    };
-    sourceDigests = {};
-    for (const date of weeklyDates) {
-      const content = readWeeklyDigest(date);
-      if (content) sourceDigests[date] = content;
+    for (const lang of ENABLED_LANGS) {
+      for (const date of weeklyDates) {
+        const content = readWeeklyDigest(date, lang);
+        if (content) {
+          if (!sourceDigests[date]) sourceDigests[date] = {};
+          sourceDigests[date]![lang] = content;
+        }
+      }
+    }
+    for (const lang of ENABLED_LANGS) {
+      sourceLangs[lang] = t(lang).sourceLabelWeekly.replace("{n}", String(weeklyDates.length));
     }
   } else {
-    // Sample daily reports: every 4th day, max 10
     const sampled = monthDates.filter((_, i) => i % 4 === 0).slice(0, 10);
-    sourceLabel = {
-      zh: `${sampled.length} 份日报（每4日采样）`,
-      en: `${sampled.length} daily reports (sampled every 4 days)`,
-    };
-    sourceDigests = {};
-    for (const date of sampled) {
-      const content = readDailyDigest(date);
-      if (content) sourceDigests[date] = content;
+    for (const lang of ENABLED_LANGS) {
+      for (const date of sampled) {
+        const contentByLang = readDailyDigest(date);
+        if (contentByLang?.[lang]) {
+          if (!sourceDigests[date]) sourceDigests[date] = {};
+          sourceDigests[date]![lang] = contentByLang[lang]!;
+        }
+      }
+    }
+    for (const lang of ENABLED_LANGS) {
+      sourceLangs[lang] = t(lang).sourceLabelDailySampled.replace("{n}", String(sampled.length));
     }
   }
 
-  if (Object.keys(sourceDigests).length === 0) {
+  const hasContent = Object.values(sourceDigests).some((v) => v && Object.keys(v).length > 0);
+  if (!hasContent) {
     console.log(`[monthly] No source digests found for ${monthStr}, skipping.`);
     return;
   }
 
-  console.log(`[monthly] Source: ${sourceLabel.zh}`);
+  console.log(`[monthly] Source languages: ${ENABLED_LANGS.join(", ")}`);
 
-  // Generate ZH and EN in parallel
-  console.log("[monthly] Calling LLM for ZH and EN monthly reports in parallel...");
-  const [zhSummary, enSummary] = await Promise.all([
-    callLlm(buildMonthlyPrompt(sourceDigests, monthStr, "zh"), LLM_TOKENS_ROLLUP),
-    callLlm(buildMonthlyPrompt(sourceDigests, monthStr, "en"), LLM_TOKENS_ROLLUP),
-  ]);
+  const summaryPromises = ENABLED_LANGS.map((lang) => {
+    const langDigests: Record<string, string> = {};
+    for (const [date, contentByLang] of Object.entries(sourceDigests)) {
+      if (contentByLang?.[lang]) langDigests[date] = contentByLang[lang]!;
+    }
+    return callLlm(buildMonthlyPrompt(langDigests, monthStr, lang), LLM_TOKENS_ROLLUP);
+  });
+  const summaries = await Promise.all(summaryPromises);
 
-  const footer = autoGenFooter("zh");
-  const enFooter = autoGenFooter("en");
+  const contentByLang: Record<string, string> = {};
 
-  const zhContent =
-    `# ${t("zh").monthlyTitle} ${monthStr}\n\n` +
-    `> 数据来源: ${sourceLabel.zh} | 生成时间: ${utcStr} UTC\n\n` +
-    `---\n\n` +
-    zhSummary +
-    footer;
+  for (let i = 0; i < ENABLED_LANGS.length; i++) {
+    const lang = ENABLED_LANGS[i]!;
+    const s = t(lang);
+    const suffix = lang === "zh" ? "" : `.${lang}`;
+    contentByLang[lang] =
+      `# ${s.monthlyTitle} ${monthStr}\n\n` +
+      interpolate(s.monthlyMeta, { sources: sourceLangs[lang] ?? "", utcStr }) +
+      `---\n\n` +
+      summaries[i]! +
+      autoGenFooter(lang);
+    console.log(`  Saved ${saveFile(contentByLang[lang]!, dateStr, `ai-monthly${suffix}.md`)}`);
+  }
 
-  const enContent =
-    `# ${t("en").monthlyTitle} ${monthStr}\n\n` +
-    `> Sources: ${sourceLabel.en} | Generated: ${utcStr} UTC\n\n` +
-    `---\n\n` +
-    enSummary +
-    enFooter;
-
-  console.log(`  Saved ${saveFile(zhContent, dateStr, "ai-monthly.md")}`);
-  console.log(`  Saved ${saveFile(enContent, dateStr, "ai-monthly.md")}`);
-
-  await generateRollupHighlights(zhContent, enContent, "ai-monthly", dateStr, 6);
+  await generateRollupHighlights(contentByLang, "ai-monthly", dateStr, 6);
 
   if (digestRepo) {
-    const url = await createGitHubIssue(`${t("zh").monthlyTitle} ${monthStr}`, zhContent, "monthly");
-    console.log(`  Created monthly issue: ${url}`);
+    for (const lang of ENABLED_LANGS) {
+      const url = await createGitHubIssue(
+        `${t(lang).monthlyTitle} ${monthStr}`,
+        contentByLang[lang]!,
+        "monthly",
+        lang,
+      );
+      console.log(`  Created monthly issue: ${url}`);
+      break;
+    }
   }
 
   console.log("[monthly] Done!");
