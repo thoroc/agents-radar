@@ -133,9 +133,9 @@ describe("topN", () => {
 // ---------------------------------------------------------------------------
 
 describe("sampleNote", () => {
-  it("shows sampled note when total > sampled", () => {
+  it("shows sampled note in Chinese (default) when total > sampled", () => {
     const result = sampleNote(100, 30);
-    expect(result).toBe("(Total: 100 items; showing top 30 by comment count)");
+    expect(result).toBe("（共 100 条，以下展示评论数最多的 30 条）");
   });
 
   it("shows total-only note when total <= sampled", () => {
@@ -150,5 +150,11 @@ describe("sampleNote", () => {
 
   it("shows total-only note in English when total <= sampled", () => {
     expect(sampleNote(8, 8, "en")).toBe("(Total: 8 items)");
+  });
+
+  it("shows sampled note in Japanese when total > sampled", () => {
+    const result = sampleNote(30, 10, "ja");
+    expect(result).toContain("全 30 件");
+    expect(result).toContain("10 件");
   });
 });

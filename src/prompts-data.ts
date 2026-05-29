@@ -18,7 +18,7 @@ import type { ArxivData } from "./arxiv.ts";
 import type { HfData } from "./hf.ts";
 import type { DevtoData } from "./devto.ts";
 import type { LobstersData } from "./lobsters.ts";
-import { LANGUAGE_NAMES } from "./i18n.ts";
+import { t, LANGUAGE_NAMES } from "./i18n.ts";
 import type { Lang } from "./i18n";
 export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: Lang = "zh"): string {
   const trendingSection =
@@ -34,9 +34,7 @@ export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: L
               (r.description ? `\n  ${r.description}` : ""),
           )
           .join("\n")
-      : lang === "en"
-        ? "(Unable to fetch today's GitHub Trending list)"
-        : "（未能抓取今日 GitHub Trending 榜单）";
+      : t(lang).trendingFetchFailed;
 
   const searchSection =
     data.searchRepos.length > 0
@@ -50,9 +48,7 @@ export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: L
               (r.description ? `\n  ${r.description}` : ""),
           )
           .join("\n")
-      : lang === "en"
-        ? "(No search results)"
-        : "（无搜索结果）";
+      : t(lang).searchNoResults;
 
   return `You are a technical analyst focused on the AI open-source ecosystem. The following is ${dateStr} GitHub AI-related trending repository data. Please filter for AI relevance, categorize, and analyze trends.
 

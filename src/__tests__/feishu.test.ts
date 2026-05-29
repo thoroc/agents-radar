@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { buildFeishuMessage } from "../feishu.ts";
-import type { Highlights } from "../notify.ts";
+import { buildFeishuMessage } from "../feishu";
+import type { Highlights } from "../notify";
 
 const BASE_URL = "https://example.com/radar";
 
@@ -16,55 +16,55 @@ describe("buildFeishuMessage", () => {
   });
 
   it("builds a daily message with zh + en reports", () => {
-    const msg = buildFeishuMessage(
+    const { title, content } = buildFeishuMessage(
       "2026-03-09",
       ["ai-cli", "ai-cli.en", "ai-agents", "ai-agents.en"],
       BASE_URL,
     );
-    expect(msg).toContain("agents-radar");
-    expect(msg).toContain("2026-03-09");
-    expect(msg).toContain("📡");
-    expect(msg).toContain(`[AI CLI 工具](${BASE_URL}/#2026-03-09/ai-cli)`);
-    expect(msg).toContain(`[AI CLI Tools](${BASE_URL}/#2026-03-09/ai-cli.en)`);
+    expect(title).toContain("agents-radar");
+    expect(title).toContain("2026-03-09");
+    expect(title).toContain("📡");
+    expect(content).toContain(`[AI CLI 工具](${BASE_URL}/#2026-03-09/ai-cli)`);
+    expect(content).toContain(`[AI CLI Tools](${BASE_URL}/#2026-03-09/ai-cli.en)`);
   });
 
   it("shows weekly icon and suffix for weekly reports", () => {
-    const msg = buildFeishuMessage("2026-03-09", ["ai-weekly", "ai-weekly.en"], BASE_URL);
-    expect(msg).toContain("📅");
-    expect(msg).toContain("周报");
+    const { content } = buildFeishuMessage("2026-03-09", ["ai-weekly", "ai-weekly.en"], BASE_URL);
+    expect(content).toContain("📅");
+    expect(content).toContain("周报");
   });
 
   it("shows monthly icon and suffix for monthly reports", () => {
-    const msg = buildFeishuMessage("2026-03-09", ["ai-monthly", "ai-monthly.en"], BASE_URL);
-    expect(msg).toContain("📆");
-    expect(msg).toContain("月报");
+    const { content } = buildFeishuMessage("2026-03-09", ["ai-monthly", "ai-monthly.en"], BASE_URL);
+    expect(content).toContain("📆");
+    expect(content).toContain("月报");
   });
 
   it("monthly takes priority over weekly", () => {
-    const msg = buildFeishuMessage("2026-03-09", ["ai-weekly", "ai-monthly"], BASE_URL);
-    expect(msg).toContain("📆");
-    expect(msg).toContain("月报");
+    const { content } = buildFeishuMessage("2026-03-09", ["ai-weekly", "ai-monthly"], BASE_URL);
+    expect(content).toContain("📆");
+    expect(content).toContain("月报");
   });
 
   it("renders zh-only reports without en link", () => {
-    const msg = buildFeishuMessage("2026-03-09", ["ai-hn"], BASE_URL);
-    expect(msg).toContain("HN 社区动态");
-    expect(msg).not.toContain("HN Community");
+    const { content } = buildFeishuMessage("2026-03-09", ["ai-hn"], BASE_URL);
+    expect(content).toContain("HN 社区动态");
+    expect(content).not.toContain("HN Community");
   });
 
   it("includes Web UI and RSS links", () => {
-    const msg = buildFeishuMessage("2026-03-09", ["ai-cli"], BASE_URL);
-    expect(msg).toContain("🌐 Web UI");
-    expect(msg).toContain("RSS");
-    expect(msg).toContain(`${BASE_URL}/feed.xml`);
+    const { content } = buildFeishuMessage("2026-03-09", ["ai-cli"], BASE_URL);
+    expect(content).toContain("🌐 Web UI");
+    expect(content).toContain("RSS");
+    expect(content).toContain(`${BASE_URL}/feed.xml`);
   });
 
   it("uses markdown links instead of HTML", () => {
-    const msg = buildFeishuMessage("2026-03-09", ["ai-cli", "ai-cli.en"], BASE_URL);
-    expect(msg).not.toContain("<a href=");
-    expect(msg).not.toContain("<b>");
-    expect(msg).toContain("**agents-radar");
-    expect(msg).toContain(`[AI CLI 工具](`);
+    const { content } = buildFeishuMessage("2026-03-09", ["ai-cli", "ai-cli.en"], BASE_URL);
+    expect(content).not.toContain("<a href=");
+    expect(content).not.toContain("<b>");
+    expect(content).toContain("**agents-radar");
+    expect(content).toContain(`[AI CLI 工具](`);
   });
 
   it("includes highlights when provided", () => {
@@ -77,20 +77,20 @@ describe("buildFeishuMessage", () => {
         "ai-cli": ["Claude Code releases v1.2.0"],
       },
     };
-    const msg = buildFeishuMessage(
+    const { content } = buildFeishuMessage(
       "2026-03-09",
       ["ai-cli", "ai-cli.en", "ai-agents", "ai-agents.en"],
       BASE_URL,
       highlights,
     );
-    expect(msg).toContain("◦ Claude Code 发布 v1.2.0");
-    expect(msg).toContain("◦ Gemini CLI 修复 streaming");
-    expect(msg).toContain("◦ OpenClaw 新增 MCP 支持");
+    expect(content).toContain("◦ Claude Code 发布 v1.2.0");
+    expect(content).toContain("◦ Gemini CLI 修复 streaming");
+    expect(content).toContain("◦ OpenClaw 新增 MCP 支持");
   });
 
   it("works without highlights", () => {
-    const msg = buildFeishuMessage("2026-03-09", ["ai-cli", "ai-cli.en"], BASE_URL, null);
-    expect(msg).toContain("AI CLI 工具");
-    expect(msg).not.toContain("◦");
+    const { content } = buildFeishuMessage("2026-03-09", ["ai-cli", "ai-cli.en"], BASE_URL, null);
+    expect(content).toContain("AI CLI 工具");
+    expect(content).not.toContain("◦");
   });
 });

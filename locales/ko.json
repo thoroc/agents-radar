@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Korean",
-    "nativeName": "한국어"
+    "nativeName": "한국어",
+    "code": "ko"
   },
   "noActivity": "지난 24시간 동안 활동이 없습니다.",
   "summaryFailed": "⚠️ 요약 생성에 실패했습니다.",
@@ -118,5 +119,7 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today's GitHub Trending list)",
+  "searchNoResults": "(No search results)"
 }

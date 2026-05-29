@@ -12,7 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { t, interpolate } from "./i18n.ts";
-import type { Highlights } from "./notify.ts";
+import { getReportLangs, type Highlights } from "./notify.ts";
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 
@@ -80,7 +80,8 @@ export function buildFeishuMessage(
   reports: string[],
   pagesUrl?: string,
   highlights?: Highlights | null,
-): string {
+  enabledLangs?: string[],
+): { title: string; content: string } {
   const PAGES_URL = (pagesUrl ?? process.env["PAGES_URL"] ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
   const baseReports = reports.filter((r) => !r.includes("."));
   const isWeekly = baseReports.includes("ai-weekly");
@@ -88,6 +89,7 @@ export function buildFeishuMessage(
 
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
   const suffix = isMonthly ? t("zh").notifySuffixMonthly : isWeekly ? t("zh").notifySuffixWeekly : "";
+  const title = `${icon} agents-radar${suffix} · ${date}`;
   const lines: string[] = [`${icon} **agents-radar${suffix} · ${date}**`];
 
   const ordered = [
@@ -95,23 +97,23 @@ export function buildFeishuMessage(
     ...baseReports.filter((r) => r.includes("weekly") || r.includes("monthly")),
   ];
 
-  const zhHighlights = highlights?.zh ?? {};
-
   for (const r of ordered) {
-    const zhLabel = notifyLabel(r, "zh");
-    const zhUrl = `${PAGES_URL}/#${date}/${r}`;
-    const enKey = `${r}.en`;
+    const reportLangs = getReportLangs(reports, r);
+    const langs = enabledLangs?.filter((l) => reportLangs.includes(l)) ?? reportLangs;
 
     lines.push("");
-    if (reports.includes(enKey)) {
-      const enLabel = notifyLabel(r, "en");
-      const enUrl = `${PAGES_URL}/#${date}/${enKey}`;
-      lines.push(`• [${zhLabel}](${zhUrl})  ·  [${enLabel}](${enUrl})`);
-    } else {
-      lines.push(`• [${zhLabel}](${zhUrl})`);
-    }
 
-    const items = zhHighlights[r];
+    const linkParts: string[] = [];
+    for (const lang of langs) {
+      const label = notifyLabel(r, lang);
+      const reportKey = lang === "zh" ? r : `${r}.${lang}`;
+      const url = `${PAGES_URL}/#${date}/${reportKey}`;
+      linkParts.push(`[${label}](${url})`);
+    }
+    lines.push(`• ${linkParts.join("  ·  ")}`);
+
+    // Add highlights as indented sub-items (default language: zh)
+    const items = highlights?.zh?.[r];
     if (items?.length) {
       for (const h of items) {
         lines.push(`  ◦ ${h}`);
@@ -120,7 +122,7 @@ export function buildFeishuMessage(
   }
 
   lines.push(`\n${interpolate(t("zh").feishuFooterLinks, { pagesUrl: PAGES_URL })}`);
-  return lines.join("\n");
+  return { title, content: lines.join("\n") };
 }
 
 async function main(): Promise<void> {
@@ -156,13 +158,7 @@ async function main(): Promise<void> {
     }
   }
 
-  const isMonthly = reports.some((r) => r === "ai-monthly");
-  const isWeekly = reports.some((r) => r === "ai-weekly");
-  const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
-  const suffix = isMonthly ? t("zh").notifySuffixMonthly : isWeekly ? t("zh").notifySuffixWeekly : "";
-  const title = `${icon} agents-radar${suffix} · ${date}`;
-
-  const content = buildFeishuMessage(date, reports, undefined, highlights);
+  const { title, content } = buildFeishuMessage(date, reports, undefined, highlights);
 
   console.log(`[feishu] Sending to ${urls.length} webhook(s) for ${date} (${reports.length} reports)…`);
   await sendFeishu(title, content);

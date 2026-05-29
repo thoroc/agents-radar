@@ -81,7 +81,7 @@ describe("buildCliPrompt", () => {
 
   it("includes sample notes when items exceed limit", () => {
     const items = Array.from({ length: 50 }, (_, i) => makeItem({ number: i, comments: i }));
-    const result = buildCliPrompt(cfg, items, [], [], "2026-03-09");
+    const result = buildCliPrompt(cfg, items, [], [], "2026-03-09", "en");
     expect(result).toContain("showing top 30");
     expect(result).toContain("50 items");
   });

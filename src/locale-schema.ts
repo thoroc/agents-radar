@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const LocaleMetaSchema = z.object({
+  code: z.string(),
   name: z.string(),
   nativeName: z.string(),
 });
@@ -11,6 +12,8 @@ const LocaleDataSchema = z.object({
   skillsFailed: z.string(),
   trendingNoData: z.string(),
   trendingFailed: z.string(),
+  trendingFetchFailed: z.string(),
+  searchNoResults: z.string(),
   webNoNewContent: z.string(),
   webFetchFailed: z.string(),
   hnFetchFailed: z.string(),

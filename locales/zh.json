@@ -1,5 +1,6 @@
 {
   "_meta": {
+    "code": "zh",
     "name": "Chinese",
     "nativeName": "中文"
   },
@@ -8,6 +9,8 @@
   "skillsFailed": "⚠️ Skills 摘要生成失败。",
   "trendingNoData": "⚠️ 今日趋势数据获取失败，无法生成报告。",
   "trendingFailed": "⚠️ 趋势报告生成失败。",
+  "trendingFetchFailed": "（未能抓取今日 GitHub Trending 榜单）",
+  "searchNoResults": "（无搜索结果）",
   "webNoNewContent": "没有发现新内容。",
   "webFetchFailed": "⚠️ Web 内容获取失败。",
   "hnFetchFailed": "⚠️ HN 获取失败。",

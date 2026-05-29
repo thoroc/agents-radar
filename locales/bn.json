@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Bengali",
-    "nativeName": "বাংলা"
+    "nativeName": "বাংলা",
+    "code": "bn"
   },
   "noActivity": "গত ২৪ ঘন্টায় কোনো কার্যকলাপ নেই।",
   "summaryFailed": "⚠️ সারাংশ তৈরি ব্যর্থ হয়েছে।",
@@ -118,5 +119,7 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today's GitHub Trending list)",
+  "searchNoResults": "(No search results)"
 }

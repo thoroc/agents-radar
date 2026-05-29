@@ -1,5 +1,6 @@
 {
   "_meta": {
+    "code": "en",
     "name": "English",
     "nativeName": "English"
   },
@@ -8,6 +9,8 @@
   "skillsFailed": "⚠️ Skills summary generation failed.",
   "trendingNoData": "⚠️ Trending data unavailable, unable to generate report.",
   "trendingFailed": "⚠️ Trending report generation failed.",
+  "trendingFetchFailed": "(Unable to fetch today's GitHub Trending list)",
+  "searchNoResults": "(No search results)",
   "webNoNewContent": "No new content found.",
   "webFetchFailed": "⚠️ Web content fetch failed.",
   "hnFetchFailed": "⚠️ HN fetch failed.",

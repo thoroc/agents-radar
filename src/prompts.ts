@@ -33,11 +33,11 @@ export function topN(items: GitHubItem[], n: number): GitHubItem[] {
   return [...items].sort((a, b) => b.comments - a.comments).slice(0, n);
 }
 
-export function sampleNote(total: number, sampled: number, _lang: string = "zh"): string {
+export function sampleNote(total: number, sampled: number, lang: string = "zh"): string {
   if (total <= sampled) {
     return `(Total: ${total} items)`;
   }
-  const s = t("en");
+  const s = t(lang);
   return interpolate(s.sampleNote, { total, sampled });
 }
 

@@ -304,6 +304,25 @@ pnpm test        # run all tests (vitest)
 pnpm test:watch  # run in watch mode during development
 ```
 
+## Multi-language Support
+
+The pipeline supports any language with a corresponding `locales/*.json` file. 21 locale files are bundled; adding a new language requires only two steps:
+
+1. **Drop a JSON file** at `locales/{code}.json` following the structure of the existing files (validated by `src/locale-schema.ts`)
+2. **Add the ISO code** to the `languages` list in `config.yml`
+
+No code changes needed. The `t(lang)` catalog in `src/i18n.ts` loads all locale files at startup, falls back to `en` for any missing key, and the pipeline handles all supported languages identically.
+
+**Language selection priority:**
+
+1. `REPORT_LANGS` env var (overrides everything — comma-separated, e.g. `"en,zh,ja"`)
+2. `config.yml` → `languages` key
+3. Default: `["en", "zh"]`
+
+All report generation, highlights extraction, notification messages, and GitHub Issue creation iterate over this language list. Each enabled language multiplies the LLM calls proportionally.
+
+> **Note**: LLM prompt instructions and metadata labels use locale keys. While the system works for any language, LLM output quality may vary for less common languages — particularly for prompt labels that are currently authored in English and Chinese. Community PRs for improved translations and prompt refinements are welcome.
+
 ## Output format
 
 Files are written to `digests/YYYY-MM-DD/`. For each report type, the pipeline generates one file per enabled language:

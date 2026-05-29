@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Portuguese",
-    "nativeName": "Português"
+    "nativeName": "Português",
+    "code": "pt"
   },
   "noActivity": "Nenhuma atividade nas últimas 24 horas.",
   "summaryFailed": "⚠️ Falha ao gerar o resumo.",
@@ -118,5 +119,7 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today's GitHub Trending list)",
+  "searchNoResults": "(No search results)"
 }

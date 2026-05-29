@@ -14,10 +14,7 @@ import path from "node:path";
 import { t, interpolate } from "./i18n.ts";
 import type { ReportHighlights } from "./prompts-data.ts";
 
-export interface Highlights {
-  zh: ReportHighlights;
-  en: ReportHighlights;
-}
+export type Highlights = Record<string, ReportHighlights>;
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 
@@ -64,11 +61,21 @@ async function sendTelegram(text: string): Promise<void> {
   }
 }
 
+export function getReportLangs(reports: string[], base: string): string[] {
+  const result: string[] = [];
+  for (const r of reports) {
+    if (r === base) result.push("zh");
+    else if (r.startsWith(base + ".")) result.push(r.slice(base.length + 1));
+  }
+  return result;
+}
+
 export function buildMessage(
   date: string,
   reports: string[],
   pagesUrl?: string,
   highlights?: Highlights | null,
+  enabledLangs?: string[],
 ): string {
   const PAGES_URL = (pagesUrl ?? process.env["PAGES_URL"] ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
   const baseReports = reports.filter((r) => !r.includes("."));
@@ -85,24 +92,24 @@ export function buildMessage(
     ...baseReports.filter((r) => r.includes("weekly") || r.includes("monthly")),
   ];
 
-  const zhHighlights = highlights?.zh ?? {};
-
   for (const r of ordered) {
-    const zhLabel = notifyLabel(r, "zh");
-    const zhUrl = `${PAGES_URL}/#${date}/${r}`;
-    const enKey = `${r}.en`;
+    const reportLangs = getReportLangs(reports, r);
+    const langs = enabledLangs?.filter((l) => reportLangs.includes(l)) ?? reportLangs;
 
     lines.push(""); // blank line before each report section
-    if (reports.includes(enKey)) {
-      const enLabel = notifyLabel(r, "en");
-      const enUrl = `${PAGES_URL}/#${date}/${enKey}`;
-      lines.push(`• <a href="${zhUrl}">${zhLabel}</a>  ·  <a href="${enUrl}">${enLabel}</a>`);
-    } else {
-      lines.push(`• <a href="${zhUrl}">${zhLabel}</a>`);
-    }
 
-    // Add highlights as indented sub-items
-    const items = zhHighlights[r];
+    // Build links for all available language variants
+    const linkParts: string[] = [];
+    for (const lang of langs) {
+      const label = notifyLabel(r, lang);
+      const reportKey = lang === "zh" ? r : `${r}.${lang}`;
+      const url = `${PAGES_URL}/#${date}/${reportKey}`;
+      linkParts.push(`<a href="${url}">${label}</a>`);
+    }
+    lines.push(`• ${linkParts.join("  ·  ")}`);
+
+    // Add highlights as indented sub-items (default language: zh)
+    const items = highlights?.zh?.[r];
     if (items?.length) {
       for (const h of items) {
         lines.push(`  ◦ ${escapeHtml(h)}`);
