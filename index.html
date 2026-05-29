@@ -312,26 +312,7 @@ function renderMarkdown(raw) {
   });
 }
 
-const LABELS = {
-  'ai-cli':          'AI CLI 工具',
-  'ai-cli-en':       'AI CLI Tools',
-  'ai-agents':       'AI Agents 生态',
-  'ai-agents-en':    'AI Agents Ecosystem',
-  'ai-web':          'OpenAI & Anthropic 官网动态',
-  'ai-web-en':       'OpenAI & Anthropic Updates',
-  'ai-trending':     'GitHub AI 趋势',
-  'ai-trending-en':  'GitHub AI Trends',
-  'ai-hn':           'HN 社区动态',
-  'ai-hn-en':        'HN Community Digest',
-  'ai-ph':           'Product Hunt AI',
-  'ai-ph-en':        'Product Hunt AI',
-  'ai-arxiv':        'ArXiv AI 研究',
-  'ai-arxiv-en':     'ArXiv AI Research',
-  'ai-hf':           'HF 热门模型',
-  'ai-hf-en':        'HF Trending Models',
-  'ai-community':    '技术社区 AI',
-  'ai-community-en': 'Tech Community AI',
-};
+let manifestLabels = {};
 
 // ── Theme ──
 const htmlEl = document.documentElement;
@@ -496,8 +477,7 @@ function buildDateGroup(date, reports, isFirst) {
 
   const hdr = document.createElement('div');
   hdr.className = 'date-hdr';
-  // Show only the day part (DD) since month is already in the parent header
-  const dayLabel = date.slice(8); // "03" from "2026-04-03"
+  const dayLabel = date.slice(8);
   const dateText = document.createTextNode(dayLabel + '\u00a0');
   const arrSpan = document.createElement('span');
   arrSpan.className = 'arr';
@@ -509,46 +489,49 @@ function buildDateGroup(date, reports, isFirst) {
   const list = document.createElement('div');
   list.className = 'rpt-list';
 
-  const baseReports = reports.filter(r => !r.endsWith('-en'));
-  baseReports.forEach(r => {
-    const enKey = r + '-en';
-    const hasEn = reports.includes(enKey);
+  // Group reports by base ID (split on last '.')
+  const groups = new Map();
+  reports.forEach(r => {
+    const dot = r.lastIndexOf('.');
+    const base = dot === -1 ? r : r.slice(0, dot);
+    const lang = dot === -1 ? 'zh' : r.slice(dot + 1);
+    if (!groups.has(base)) groups.set(base, []);
+    groups.get(base).push({ report: r, lang });
+  });
 
-    if (hasEn) {
+  groups.forEach((variants, base) => {
+    const langLabels = manifestLabels[base] || {};
+
+    if (variants.length === 1) {
+      const btn = document.createElement('button');
+      btn.className = 'rpt-btn';
+      btn.dataset.key = `${date}/${variants[0].report}`;
+      btn.textContent = langLabels[variants[0].lang] || base;
+      btn.onclick = () => loadReport(date, variants[0].report);
+      list.appendChild(btn);
+    } else {
       const row = document.createElement('div');
       row.className = 'rpt-row';
 
       const label = document.createElement('span');
       label.className = 'rpt-label';
-      const baseLabel = LABELS[r] || r;
-      label.textContent = baseLabel;
-      label.title = baseLabel;
+      label.textContent = langLabels['zh'] || langLabels[variants[0].lang] || base;
+      label.title = label.textContent;
 
       const btns = document.createElement('div');
       btns.className = 'lang-btns';
 
-      const zhBtn = document.createElement('button');
-      zhBtn.className = 'lang-btn';
-      zhBtn.dataset.key = `${date}/${r}`;
-      zhBtn.textContent = 'ZH';
-      zhBtn.onclick = () => loadReport(date, r);
+      variants.forEach(v => {
+        const btn = document.createElement('button');
+        btn.className = 'lang-btn';
+        btn.dataset.key = `${date}/${v.report}`;
+        btn.textContent = v.lang.toUpperCase();
+        btn.onclick = () => loadReport(date, v.report);
+        btns.appendChild(btn);
+      });
 
-      const enBtn = document.createElement('button');
-      enBtn.className = 'lang-btn';
-      enBtn.dataset.key = `${date}/${enKey}`;
-      enBtn.textContent = 'EN';
-      enBtn.onclick = () => loadReport(date, enKey);
-
-      btns.append(zhBtn, enBtn);
       row.append(label, btns);
       list.appendChild(row);
-    } else {
-      const btn = document.createElement('button');
-      btn.className = 'rpt-btn';
-      btn.dataset.key = `${date}/${r}`;
-      btn.textContent = LABELS[r] || r;
-      btn.onclick = () => loadReport(date, r);
-      list.appendChild(btn);
     }
   });
 
@@ -607,7 +590,8 @@ window.addEventListener('popstate', () => {
   try {
     const res = await fetch('./manifest.json');
     if (!res.ok) throw new Error('manifest.json not found');
-    const { dates } = await res.json();
+    const { dates, labels } = await res.json();
+    manifestLabels = labels || {};
     if (!dates?.length) throw new Error('manifest is empty');
 
     buildNav(dates);

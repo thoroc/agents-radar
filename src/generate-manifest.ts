@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { marked } from "marked";
-import { t } from "./i18n.ts";
+import { t, SUPPORTED_LOCALES } from "./i18n.ts";
 
 const REPORT_LABEL_KEY: Record<string, keyof ReturnType<typeof t>> = {
   "ai-cli": "reportLabelAiCli",
@@ -57,6 +57,7 @@ interface DateEntry {
 interface Manifest {
   generated: string;
   dates: DateEntry[];
+  labels: Record<string, Record<string, string>>;
 }
 
 interface ReportContent {
@@ -127,9 +128,24 @@ async function main(): Promise<void> {
     })
     .filter((e) => e.reports.length > 0);
 
+  // Build labels for all supported locales
+  t("en"); // trigger locale loading
+  const labels: Record<string, Record<string, string>> = {};
+  for (const base of REPORT_BASES) {
+    const key = REPORT_LABEL_KEY[base];
+    if (key) {
+      const langLabels: Record<string, string> = {};
+      for (const lang of SUPPORTED_LOCALES) {
+        langLabels[lang] = t(lang)[key];
+      }
+      labels[base] = langLabels;
+    }
+  }
+
   const manifest: Manifest = {
     generated: new Date().toISOString(),
     dates: entries,
+    labels,
   };
 
   fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + "\n");
