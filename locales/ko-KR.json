@@ -2,7 +2,7 @@
   "_meta": {
     "name": "Korean",
     "nativeName": "한국어",
-    "code": "ko"
+    "code": "ko-KR"
   },
   "noActivity": "지난 24시간 동안 활동이 없습니다.",
   "summaryFailed": "⚠️ 요약 생성에 실패했습니다.",

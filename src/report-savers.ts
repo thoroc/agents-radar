@@ -1,4 +1,4 @@
-import { t, interpolate, type Lang } from "./i18n.ts";
+import { t, interpolate, type Lang, DEFAULT_PRIMARY_LANGUAGE } from "./i18n.ts";
 import {
   buildWebReportPrompt,
   buildHnPrompt,
@@ -25,7 +25,7 @@ export async function saveWebReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): Promise<void> {
   const hasNewContent = webResults.some((r) => r.newItems.length > 0);
 
@@ -42,7 +42,7 @@ export async function saveWebReport(
       const openaiTotal = webResults.find((r) => r.site === "openai")?.totalDiscovered ?? 0;
 
       const s = t(lang);
-      const fileName = lang === "zh" ? "ai-web.md" : `ai-web.${lang}.md`;
+      const fileName = lang === DEFAULT_PRIMARY_LANGUAGE ? "ai-web.md" : `ai-web.${lang}.md`;
       const mode = isFirstRun ? s.webFirstCrawl : s.webTodayUpdate;
 
       const webTitle = `# ${s.webTitle} ${dateStr}\n\n`;
@@ -71,7 +71,7 @@ export async function saveWebReport(
     console.log(`  [web/${lang}] No new content detected, skipping report.`);
   }
 
-  if (lang === "zh") {
+  if (lang === DEFAULT_PRIMARY_LANGUAGE) {
     saveWebState(webState);
     console.log("  [web] State saved.");
   }
@@ -84,7 +84,7 @@ export async function saveTrendingReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): Promise<void> {
   const hasData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;
   if (!hasData) {
@@ -93,7 +93,7 @@ export async function saveTrendingReport(
   }
 
   const s = t(lang);
-  const fileName = lang === "zh" ? "ai-trending.md" : `ai-trending.${lang}.md`;
+  const fileName = lang === DEFAULT_PRIMARY_LANGUAGE ? "ai-trending.md" : `ai-trending.${lang}.md`;
   const header =
     `# ${s.trendingTitle} ${dateStr}\n\n` +
     interpolate(s.trendingMeta, { sources: s.trendingSources, utcStr });
@@ -116,7 +116,7 @@ export async function saveHnReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): Promise<void> {
   if (!hnData.fetchSuccess) {
     console.log(`  [hn/${lang}] No data available, skipping report.`);
@@ -127,7 +127,7 @@ export async function saveHnReport(
   try {
     const s = t(lang);
     const hnSummary = await callLlm(buildHnPrompt(hnData, dateStr, lang));
-    const fileName = lang === "zh" ? "ai-hn.md" : `ai-hn.${lang}.md`;
+    const fileName = lang === DEFAULT_PRIMARY_LANGUAGE ? "ai-hn.md" : `ai-hn.${lang}.md`;
     const header = `# ${s.hnTitle} ${dateStr}\n\n${interpolate(s.hnMeta, { count: hnData.stories.length, utcStr })}`;
 
     const hnContent = header + hnSummary + footer;
@@ -151,7 +151,7 @@ export async function savePhReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): Promise<void> {
   if (!phData.fetchSuccess) {
     console.log(`  [ph/${lang}] No data available, skipping report.`);
@@ -162,7 +162,7 @@ export async function savePhReport(
   try {
     const s = t(lang);
     const phSummary = await callLlm(buildPhPrompt(phData, dateStr, lang));
-    const fileName = lang === "zh" ? "ai-ph.md" : `ai-ph.${lang}.md`;
+    const fileName = lang === DEFAULT_PRIMARY_LANGUAGE ? "ai-ph.md" : `ai-ph.${lang}.md`;
     const header = `# ${s.phTitle} ${dateStr}\n\n${interpolate(s.phMeta, { count: phData.products.length, utcStr })}`;
 
     const phContent = header + phSummary + footer;
@@ -186,7 +186,7 @@ export async function saveArxivReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): Promise<void> {
   if (!arxivData.fetchSuccess) {
     console.log(`  [arxiv/${lang}] No data available, skipping report.`);
@@ -197,7 +197,7 @@ export async function saveArxivReport(
   try {
     const s = t(lang);
     const summary = await callLlm(buildArxivPrompt(arxivData, dateStr, lang));
-    const fileName = lang === "zh" ? "ai-arxiv.md" : `ai-arxiv.${lang}.md`;
+    const fileName = lang === DEFAULT_PRIMARY_LANGUAGE ? "ai-arxiv.md" : `ai-arxiv.${lang}.md`;
     const header = `# ${s.arxivTitle} ${dateStr}\n\n${interpolate(s.arxivMeta, { count: arxivData.papers.length, utcStr })}`;
 
     const content = header + summary + footer;
@@ -221,7 +221,7 @@ export async function saveHfReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): Promise<void> {
   if (!hfData.fetchSuccess) {
     console.log(`  [hf/${lang}] No data available, skipping report.`);
@@ -232,7 +232,7 @@ export async function saveHfReport(
   try {
     const s = t(lang);
     const summary = await callLlm(buildHfPrompt(hfData, dateStr, lang));
-    const fileName = lang === "zh" ? "ai-hf.md" : `ai-hf.${lang}.md`;
+    const fileName = lang === DEFAULT_PRIMARY_LANGUAGE ? "ai-hf.md" : `ai-hf.${lang}.md`;
     const header = `# ${s.hfTitle} ${dateStr}\n\n${interpolate(s.hfMeta, { count: hfData.models.length, utcStr })}`;
 
     const content = header + summary + footer;
@@ -257,7 +257,7 @@ export async function saveCommunityReport(
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): Promise<void> {
   const hasData = devtoData.fetchSuccess || lobstersData.fetchSuccess;
   if (!hasData) {
@@ -269,7 +269,7 @@ export async function saveCommunityReport(
   try {
     const s = t(lang);
     const summary = await callLlm(buildCommunityPrompt(devtoData, lobstersData, dateStr, lang));
-    const fileName = lang === "zh" ? "ai-community.md" : `ai-community.${lang}.md`;
+    const fileName = lang === DEFAULT_PRIMARY_LANGUAGE ? "ai-community.md" : `ai-community.${lang}.md`;
     const devtoCount = devtoData.articles.length;
     const lobstersCount = lobstersData.stories.length;
     const header =

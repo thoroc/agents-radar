@@ -36,7 +36,7 @@ describe("buildCliReportContent", () => {
       "2026-03-09",
       "\n---\nfooter",
       "anthropics/skills",
-      "zh",
+      "zh-CN",
     );
 
     expect(result).toContain("# AI CLI 工具社区动态日报 2026-03-09");
@@ -59,7 +59,7 @@ describe("buildCliReportContent", () => {
       "2026-03-09",
       "",
       "anthropics/skills",
-      "en",
+      "en-US",
     );
     expect(result).toContain("# AI CLI Tools Community Digest 2026-03-09");
     expect(result).toContain("Cross-Tool Comparison");
@@ -78,7 +78,7 @@ describe("buildCliReportContent", () => {
       "",
       "",
       "anthropics/skills",
-      "zh",
+      "zh-CN",
     );
 
     // Skills should appear inside claude-code details
@@ -116,7 +116,7 @@ describe("buildOpenclawReportContent", () => {
       "\nfooter",
       openclaw,
       peers,
-      "zh",
+      "zh-CN",
     );
 
     expect(result).toContain("# OpenClaw 生态日报 2026-03-09");
@@ -142,7 +142,7 @@ describe("buildOpenclawReportContent", () => {
       "",
       openclaw,
       [],
-      "en",
+      "en-US",
     );
     expect(result).toContain("# OpenClaw Ecosystem Digest 2026-03-09");
     expect(result).toContain("OpenClaw Deep Dive");

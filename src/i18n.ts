@@ -11,6 +11,12 @@ export const LANGUAGE_NAMES: Record<string, string> = {};
 
 export type Lang = string;
 
+/** The default/primary language — used as the no-suffix filename convention. */
+export const DEFAULT_PRIMARY_LANGUAGE = "zh-CN";
+
+/** The fallback language when a locale is not found. */
+export const DEFAULT_FALLBACK_LANGUAGE = "en-US";
+
 function ensureLocales(): void {
   if (_initialized) return;
   _initialized = true;
@@ -45,14 +51,14 @@ const EMPTY_FALLBACK = new Proxy({} as LocaleData, { get: () => "" });
 export const validateLocale = (lang: string): string => {
   ensureLocales();
   if (SUPPORTED_LOCALES.includes(lang)) return lang;
-  console.warn(`Unsupported locale "${lang}", falling back to "en"`);
-  return "en";
+  console.warn(`Unsupported locale "${lang}", falling back to "${DEFAULT_FALLBACK_LANGUAGE}"`);
+  return DEFAULT_FALLBACK_LANGUAGE;
 };
 
 export const t = (lang?: string): LocaleData => {
   ensureLocales();
-  const locale = lang ? validateLocale(lang) : "en";
-  return STRINGS[locale] ?? STRINGS.en ?? EMPTY_FALLBACK;
+  const locale = lang ? validateLocale(lang) : DEFAULT_FALLBACK_LANGUAGE;
+  return STRINGS[locale] ?? STRINGS[DEFAULT_FALLBACK_LANGUAGE] ?? EMPTY_FALLBACK;
 };
 
 export function asLang(code: string): Lang {

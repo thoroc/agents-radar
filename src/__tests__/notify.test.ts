@@ -14,27 +14,31 @@ describe("buildMessage", () => {
     }
   });
 
-  it("builds a daily message with zh + en reports", () => {
-    const msg = buildMessage("2026-03-09", ["ai-cli", "ai-cli.en", "ai-agents", "ai-agents.en"], BASE_URL);
+  it("builds a daily message with zh-CN + en-US reports", () => {
+    const msg = buildMessage(
+      "2026-03-09",
+      ["ai-cli", "ai-cli.en-US", "ai-agents", "ai-agents.en-US"],
+      BASE_URL,
+    );
     expect(msg).toContain("agents-radar");
     expect(msg).toContain("2026-03-09");
     expect(msg).toContain("📡");
-    // zh links
+    // zh-CN links
     expect(msg).toContain(`${BASE_URL}/#2026-03-09/ai-cli`);
     expect(msg).toContain("AI CLI 工具");
-    // en links
-    expect(msg).toContain(`${BASE_URL}/#2026-03-09/ai-cli.en`);
+    // en-US links
+    expect(msg).toContain(`${BASE_URL}/#2026-03-09/ai-cli.en-US`);
     expect(msg).toContain("AI CLI Tools");
   });
 
   it("shows weekly icon and suffix for weekly reports", () => {
-    const msg = buildMessage("2026-03-09", ["ai-weekly", "ai-weekly.en"], BASE_URL);
+    const msg = buildMessage("2026-03-09", ["ai-weekly", "ai-weekly.en-US"], BASE_URL);
     expect(msg).toContain("📅");
     expect(msg).toContain("周报");
   });
 
   it("shows monthly icon and suffix for monthly reports", () => {
-    const msg = buildMessage("2026-03-09", ["ai-monthly", "ai-monthly.en"], BASE_URL);
+    const msg = buildMessage("2026-03-09", ["ai-monthly", "ai-monthly.en-US"], BASE_URL);
     expect(msg).toContain("📆");
     expect(msg).toContain("月报");
   });
@@ -45,7 +49,7 @@ describe("buildMessage", () => {
     expect(msg).toContain("月报");
   });
 
-  it("renders zh-only reports without en link", () => {
+  it("renders zh-CN-only reports without en-US link", () => {
     const msg = buildMessage("2026-03-09", ["ai-hn"], BASE_URL);
     expect(msg).toContain("HN 社区动态");
     expect(msg).not.toContain("HN Community");
@@ -66,17 +70,17 @@ describe("buildMessage", () => {
 
   it("includes highlights when provided", () => {
     const highlights: Highlights = {
-      zh: {
+      "zh-CN": {
         "ai-cli": ["Claude Code 发布 v1.2.0", "Gemini CLI 修复 streaming"],
         "ai-agents": ["OpenClaw 新增 MCP 支持"],
       },
-      en: {
+      "en-US": {
         "ai-cli": ["Claude Code releases v1.2.0"],
       },
     };
     const msg = buildMessage(
       "2026-03-09",
-      ["ai-cli", "ai-cli.en", "ai-agents", "ai-agents.en"],
+      ["ai-cli", "ai-cli.en-US", "ai-agents", "ai-agents.en-US"],
       BASE_URL,
       highlights,
     );
@@ -86,13 +90,13 @@ describe("buildMessage", () => {
   });
 
   it("works without highlights (null)", () => {
-    const msg = buildMessage("2026-03-09", ["ai-cli", "ai-cli.en"], BASE_URL, null);
+    const msg = buildMessage("2026-03-09", ["ai-cli", "ai-cli.en-US"], BASE_URL, null);
     expect(msg).toContain("AI CLI 工具");
     expect(msg).not.toContain("◦");
   });
 
   it("works without highlights (undefined)", () => {
-    const msg = buildMessage("2026-03-09", ["ai-cli", "ai-cli.en"], BASE_URL);
+    const msg = buildMessage("2026-03-09", ["ai-cli", "ai-cli.en-US"], BASE_URL);
     expect(msg).toContain("AI CLI 工具");
     expect(msg).not.toContain("◦");
   });

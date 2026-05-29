@@ -1,5 +1,5 @@
 import type { RepoConfig, GitHubItem, GitHubRelease } from "./github.ts";
-import { t, interpolate, LANGUAGE_NAMES } from "./i18n.ts";
+import { t, interpolate, LANGUAGE_NAMES, DEFAULT_PRIMARY_LANGUAGE } from "./i18n.ts";
 
 export interface RepoDigest {
   config: RepoConfig;
@@ -9,7 +9,7 @@ export interface RepoDigest {
   summary: string;
 }
 
-export function formatItem(item: GitHubItem, lang: string = "zh"): string {
+export function formatItem(item: GitHubItem, lang: string = DEFAULT_PRIMARY_LANGUAGE): string {
   const labels = item.labels.map((l) => l.name).join(", ");
   const labelStr = labels ? ` [${labels}]` : "";
   const body = (item.body ?? "").replace(/\n/g, " ").trim().slice(0, 300);
@@ -33,7 +33,7 @@ export function topN(items: GitHubItem[], n: number): GitHubItem[] {
   return [...items].sort((a, b) => b.comments - a.comments).slice(0, n);
 }
 
-export function sampleNote(total: number, sampled: number, lang: string = "zh"): string {
+export function sampleNote(total: number, sampled: number, lang: string = DEFAULT_PRIMARY_LANGUAGE): string {
   if (total <= sampled) {
     return `(Total: ${total} items)`;
   }
@@ -47,7 +47,7 @@ export function buildCliPrompt(
   prs: GitHubItem[],
   releases: GitHubRelease[],
   dateStr: string,
-  lang: string = "zh",
+  lang: string = DEFAULT_PRIMARY_LANGUAGE,
 ): string {
   const sampledIssues = topN(issues, CLI_ISSUE_LIMIT);
   const sampledPrs = topN(prs, CLI_PR_LIMIT);
@@ -103,7 +103,7 @@ export function buildPeerPrompt(
   dateStr: string,
   issueLimit = PEER_ISSUE_LIMIT,
   prLimit = PEER_PR_LIMIT,
-  lang: string = "zh",
+  lang: string = DEFAULT_PRIMARY_LANGUAGE,
 ): string {
   const totalIssues = issues.length;
   const totalPrs = prs.length;
@@ -165,7 +165,7 @@ export function buildPeersComparisonPrompt(
   openclawDigest: RepoDigest,
   peerDigests: RepoDigest[],
   dateStr: string,
-  lang: string = "zh",
+  lang: string = DEFAULT_PRIMARY_LANGUAGE,
 ): string {
   const noActivityStr = t(lang).noActivity;
 
@@ -209,7 +209,7 @@ export function buildSkillsPrompt(
   prs: GitHubItem[],
   issues: GitHubItem[],
   dateStr: string,
-  lang: string = "zh",
+  lang: string = DEFAULT_PRIMARY_LANGUAGE,
 ): string {
   const topPrs = topN(prs, 20);
   const topIssues = topN(issues, 15);
@@ -244,7 +244,11 @@ Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 `;
 }
 
-export function buildComparisonPrompt(digests: RepoDigest[], dateStr: string, lang: string = "zh"): string {
+export function buildComparisonPrompt(
+  digests: RepoDigest[],
+  dateStr: string,
+  lang: string = DEFAULT_PRIMARY_LANGUAGE,
+): string {
   const noActivityStr = t(lang).noActivity;
 
   const sections = digests

@@ -27,7 +27,7 @@ interface RawConfig {
   openclaw_peers?: RawRepoEntry[];
 }
 
-export const DEFAULT_LANGUAGES: string[] = ["en", "zh"];
+export const DEFAULT_LANGUAGES: string[] = ["en-US", "zh-CN"];
 
 export interface RadarConfig {
   cliRepos: RepoConfig[];

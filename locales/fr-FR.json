@@ -2,7 +2,7 @@
   "_meta": {
     "name": "French",
     "nativeName": "Français",
-    "code": "fr"
+    "code": "fr-FR"
   },
   "noActivity": "Aucune activité au cours des dernières 24 heures.",
   "summaryFailed": "⚠️ Échec de la génération du résumé.",

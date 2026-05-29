@@ -3,7 +3,7 @@
  * Reads GITHUB_TOKEN and DIGEST_REPO from environment at call time.
  */
 
-import { t } from "./i18n.ts";
+import { t, DEFAULT_PRIMARY_LANGUAGE } from "./i18n.ts";
 
 export interface RepoConfig {
   /** Short identifier used for filenames */
@@ -265,7 +265,7 @@ export async function createGitHubIssue(
   title: string,
   body: string,
   label: string,
-  lang: string = "zh",
+  lang: string = DEFAULT_PRIMARY_LANGUAGE,
 ): Promise<string> {
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
   body = neutralizeGitHubRefs(body);

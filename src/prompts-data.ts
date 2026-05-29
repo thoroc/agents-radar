@@ -18,9 +18,13 @@ import type { ArxivData } from "./arxiv.ts";
 import type { HfData } from "./hf.ts";
 import type { DevtoData } from "./devto.ts";
 import type { LobstersData } from "./lobsters.ts";
-import { t, LANGUAGE_NAMES } from "./i18n.ts";
+import { t, LANGUAGE_NAMES, DEFAULT_PRIMARY_LANGUAGE } from "./i18n.ts";
 import type { Lang } from "./i18n";
-export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: Lang = "zh"): string {
+export function buildTrendingPrompt(
+  data: TrendingData,
+  dateStr: string,
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
+): string {
   const trendingSection =
     data.trendingFetchSuccess && data.trendingRepos.length > 0
       ? data.trendingRepos
@@ -101,7 +105,11 @@ Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 `;
 }
 
-export function buildWebReportPrompt(results: WebFetchResult[], dateStr: string, lang: Lang = "zh"): string {
+export function buildWebReportPrompt(
+  results: WebFetchResult[],
+  dateStr: string,
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
+): string {
   const isAnyFirstRun = results.some((r) => r.isFirstRun);
 
   const siteSections = results
@@ -178,7 +186,7 @@ Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 export function buildWeeklyPrompt(
   dailyDigests: Record<string, string>,
   weekStr: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): string {
   const digestEntries = Object.entries(dailyDigests)
     .map(([date, content]) => `## ${date}\n\n${content}`)
@@ -209,7 +217,7 @@ Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 export function buildMonthlyPrompt(
   sourceDigests: Record<string, string>,
   monthStr: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): string {
   const digestEntries = Object.entries(sourceDigests)
     .map(([key, content]) => `## ${key}\n\n${content}`)
@@ -248,7 +256,7 @@ export interface ReportHighlights {
 
 export function buildHighlightsPrompt(
   reportContents: Record<string, string>,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
   itemsPerReport: number = 6,
 ): string {
   const sections = Object.entries(reportContents)
@@ -276,7 +284,7 @@ Rules:
 Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.`;
 }
 
-export function buildHnPrompt(data: HnData, dateStr: string, lang: Lang = "zh"): string {
+export function buildHnPrompt(data: HnData, dateStr: string, lang: Lang = DEFAULT_PRIMARY_LANGUAGE): string {
   const storiesText = data.stories
     .map(
       (s, i) =>
@@ -323,7 +331,7 @@ Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 `;
 }
 
-export function buildPhPrompt(data: PhData, dateStr: string, lang: Lang = "zh"): string {
+export function buildPhPrompt(data: PhData, dateStr: string, lang: Lang = DEFAULT_PRIMARY_LANGUAGE): string {
   const productsText = data.products
     .map(
       (p, i) =>
@@ -375,7 +383,11 @@ Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 // ArXiv prompt
 // ---------------------------------------------------------------------------
 
-export function buildArxivPrompt(data: ArxivData, dateStr: string, lang: Lang = "zh"): string {
+export function buildArxivPrompt(
+  data: ArxivData,
+  dateStr: string,
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
+): string {
   const papersText = data.papers
     .map((p, i) => {
       const authors =
@@ -428,7 +440,7 @@ Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 // Hugging Face prompt
 // ---------------------------------------------------------------------------
 
-export function buildHfPrompt(data: HfData, dateStr: string, lang: Lang = "zh"): string {
+export function buildHfPrompt(data: HfData, dateStr: string, lang: Lang = DEFAULT_PRIMARY_LANGUAGE): string {
   const modelsText = data.models
     .map(
       (m, i) =>
@@ -484,7 +496,7 @@ export function buildCommunityPrompt(
   devto: DevtoData,
   lobsters: LobstersData,
   dateStr: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): string {
   const devtoText =
     devto.articles.length > 0

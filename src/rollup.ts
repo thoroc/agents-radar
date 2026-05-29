@@ -9,7 +9,7 @@ import {
 } from "./prompts-data.ts";
 import { createGitHubIssue } from "./github.ts";
 import { toCstDateStr, toUtcStr } from "./date.ts";
-import { t, interpolate } from "./i18n.ts";
+import { t, interpolate, DEFAULT_PRIMARY_LANGUAGE } from "./i18n.ts";
 import { loadConfig, getEnabledLangs } from "./config.ts";
 
 const DIGESTS_DIR = "digests";
@@ -35,7 +35,7 @@ function readDailyDigest(date: string): Record<string, string> | null {
   for (const lang of ENABLED_LANGS) {
     const parts: string[] = [];
     for (const type of ROLLUP_SOURCES) {
-      const file = lang === "zh" ? `${type}.md` : `${type}.${lang}.md`;
+      const file = lang === DEFAULT_PRIMARY_LANGUAGE ? `${type}.md` : `${type}.${lang}.md`;
       const p = path.join(DIGESTS_DIR, date, file);
       if (fs.existsSync(p)) {
         const content = fs.readFileSync(p, "utf-8");
@@ -50,7 +50,7 @@ function readDailyDigest(date: string): Record<string, string> | null {
 
 /** Read a weekly report file for a given lang. Returns null if not found. */
 function readWeeklyDigest(date: string, lang: string): string | null {
-  const file = lang === "zh" ? "ai-weekly.md" : `ai-weekly.${lang}.md`;
+  const file = lang === DEFAULT_PRIMARY_LANGUAGE ? "ai-weekly.md" : `ai-weekly.${lang}.md`;
   const p = path.join(DIGESTS_DIR, date, file);
   if (!fs.existsSync(p)) return null;
   const content = fs.readFileSync(p, "utf-8");
@@ -152,7 +152,7 @@ export async function runWeeklyRollup(): Promise<void> {
   for (let i = 0; i < ENABLED_LANGS.length; i++) {
     const lang = ENABLED_LANGS[i]!;
     const s = t(lang);
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === DEFAULT_PRIMARY_LANGUAGE ? "" : `.${lang}`;
     contentByLang[lang] =
       `# ${s.weeklyTitle} ${weekStr}\n\n` +
       interpolate(s.weeklyMeta, { range: coverageStr, utcStr }) +
@@ -249,7 +249,7 @@ export async function runMonthlyRollup(): Promise<void> {
   for (let i = 0; i < ENABLED_LANGS.length; i++) {
     const lang = ENABLED_LANGS[i]!;
     const s = t(lang);
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === DEFAULT_PRIMARY_LANGUAGE ? "" : `.${lang}`;
     contentByLang[lang] =
       `# ${s.monthlyTitle} ${monthStr}\n\n` +
       interpolate(s.monthlyMeta, { sources: sourceLangs[lang] ?? "", utcStr }) +

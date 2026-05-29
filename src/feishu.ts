@@ -11,7 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, interpolate } from "./i18n.ts";
+import { t, interpolate, DEFAULT_PRIMARY_LANGUAGE } from "./i18n.ts";
 import { getReportLangs, type Highlights } from "./notify.ts";
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
@@ -30,7 +30,7 @@ const NOTIFY_LABEL_MAP: Record<string, keyof ReturnType<typeof t>> = {
   "ai-monthly": "notifyMonthly",
 };
 
-function notifyLabel(id: string, lang: string = "zh"): string {
+function notifyLabel(id: string, lang: string = DEFAULT_PRIMARY_LANGUAGE): string {
   const key = NOTIFY_LABEL_MAP[id];
   return key ? t(lang)[key] : id;
 }
@@ -88,7 +88,11 @@ export function buildFeishuMessage(
   const isMonthly = baseReports.includes("ai-monthly");
 
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
-  const suffix = isMonthly ? t("zh").notifySuffixMonthly : isWeekly ? t("zh").notifySuffixWeekly : "";
+  const suffix = isMonthly
+    ? t(DEFAULT_PRIMARY_LANGUAGE).notifySuffixMonthly
+    : isWeekly
+      ? t(DEFAULT_PRIMARY_LANGUAGE).notifySuffixWeekly
+      : "";
   const title = `${icon} agents-radar${suffix} · ${date}`;
   const lines: string[] = [`${icon} **agents-radar${suffix} · ${date}**`];
 
@@ -106,14 +110,14 @@ export function buildFeishuMessage(
     const linkParts: string[] = [];
     for (const lang of langs) {
       const label = notifyLabel(r, lang);
-      const reportKey = lang === "zh" ? r : `${r}.${lang}`;
+      const reportKey = lang === DEFAULT_PRIMARY_LANGUAGE ? r : `${r}.${lang}`;
       const url = `${PAGES_URL}/#${date}/${reportKey}`;
       linkParts.push(`[${label}](${url})`);
     }
     lines.push(`• ${linkParts.join("  ·  ")}`);
 
-    // Add highlights as indented sub-items (default language: zh)
-    const items = highlights?.zh?.[r];
+    // Add highlights as indented sub-items (default language)
+    const items = highlights?.[DEFAULT_PRIMARY_LANGUAGE]?.[r];
     if (items?.length) {
       for (const h of items) {
         lines.push(`  ◦ ${h}`);
@@ -121,7 +125,7 @@ export function buildFeishuMessage(
     }
   }
 
-  lines.push(`\n${interpolate(t("zh").feishuFooterLinks, { pagesUrl: PAGES_URL })}`);
+  lines.push(`\n${interpolate(t(DEFAULT_PRIMARY_LANGUAGE).feishuFooterLinks, { pagesUrl: PAGES_URL })}`);
   return { title, content: lines.join("\n") };
 }
 

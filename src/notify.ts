@@ -11,7 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, interpolate } from "./i18n.ts";
+import { t, interpolate, DEFAULT_PRIMARY_LANGUAGE } from "./i18n.ts";
 import type { ReportHighlights } from "./prompts-data.ts";
 
 export type Highlights = Record<string, ReportHighlights>;
@@ -32,7 +32,7 @@ const NOTIFY_LABEL_MAP: Record<string, keyof ReturnType<typeof t>> = {
   "ai-monthly": "notifyMonthly",
 };
 
-function notifyLabel(id: string, lang: string = "zh"): string {
+function notifyLabel(id: string, lang: string = DEFAULT_PRIMARY_LANGUAGE): string {
   const key = NOTIFY_LABEL_MAP[id];
   return key ? t(lang)[key] : id;
 }
@@ -64,7 +64,7 @@ async function sendTelegram(text: string): Promise<void> {
 export function getReportLangs(reports: string[], base: string): string[] {
   const result: string[] = [];
   for (const r of reports) {
-    if (r === base) result.push("zh");
+    if (r === base) result.push(DEFAULT_PRIMARY_LANGUAGE);
     else if (r.startsWith(base + ".")) result.push(r.slice(base.length + 1));
   }
   return result;
@@ -83,7 +83,11 @@ export function buildMessage(
   const isMonthly = baseReports.includes("ai-monthly");
 
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
-  const suffix = isMonthly ? t("zh").notifySuffixMonthly : isWeekly ? t("zh").notifySuffixWeekly : "";
+  const suffix = isMonthly
+    ? t(DEFAULT_PRIMARY_LANGUAGE).notifySuffixMonthly
+    : isWeekly
+      ? t(DEFAULT_PRIMARY_LANGUAGE).notifySuffixWeekly
+      : "";
   const lines: string[] = [`${icon} <b>agents-radar${suffix} · ${date}</b>`];
 
   // Daily reports first, then rollups
@@ -102,14 +106,14 @@ export function buildMessage(
     const linkParts: string[] = [];
     for (const lang of langs) {
       const label = notifyLabel(r, lang);
-      const reportKey = lang === "zh" ? r : `${r}.${lang}`;
+      const reportKey = lang === DEFAULT_PRIMARY_LANGUAGE ? r : `${r}.${lang}`;
       const url = `${PAGES_URL}/#${date}/${reportKey}`;
       linkParts.push(`<a href="${url}">${label}</a>`);
     }
     lines.push(`• ${linkParts.join("  ·  ")}`);
 
-    // Add highlights as indented sub-items (default language: zh)
-    const items = highlights?.zh?.[r];
+    // Add highlights as indented sub-items (default language)
+    const items = highlights?.[DEFAULT_PRIMARY_LANGUAGE]?.[r];
     if (items?.length) {
       for (const h of items) {
         lines.push(`  ◦ ${escapeHtml(h)}`);
@@ -117,7 +121,7 @@ export function buildMessage(
     }
   }
 
-  lines.push(`\n${interpolate(t("zh").notifyFooterLinks, { pagesUrl: PAGES_URL })}`);
+  lines.push(`\n${interpolate(t(DEFAULT_PRIMARY_LANGUAGE).notifyFooterLinks, { pagesUrl: PAGES_URL })}`);
   return lines.join("\n");
 }
 

@@ -1,6 +1,6 @@
 import type { RepoConfig, RepoFetch } from "./github.ts";
 import type { RepoDigest } from "./prompts.ts";
-import { t, interpolate, type Lang } from "./i18n.ts";
+import { t, interpolate, type Lang, DEFAULT_PRIMARY_LANGUAGE } from "./i18n.ts";
 
 export function buildCliReportContent(
   cliDigests: RepoDigest[],
@@ -10,7 +10,7 @@ export function buildCliReportContent(
   dateStr: string,
   footer: string,
   skillsRepo: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): string {
   const repoLinks =
     cliDigests.map((d) => `- [${d.config.name}](https://github.com/${d.config.repo})`).join("\n") +
@@ -63,7 +63,7 @@ export function buildOpenclawReportContent(
   footer: string,
   openclaw: RepoConfig,
   openclawPeers: RepoConfig[],
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): string {
   const { issues, prs } = fetchedOpenclaw;
 

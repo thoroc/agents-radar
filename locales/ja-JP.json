@@ -2,7 +2,7 @@
   "_meta": {
     "name": "Japanese",
     "nativeName": "日本語",
-    "code": "ja"
+    "code": "ja-JP"
   },
   "noActivity": "過去24時間にアクティビティはありません。",
   "summaryFailed": "⚠️ サマリーの生成に失敗しました。",

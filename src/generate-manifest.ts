@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { marked } from "marked";
-import { t, SUPPORTED_LOCALES } from "./i18n.ts";
+import { t, SUPPORTED_LOCALES, DEFAULT_PRIMARY_LANGUAGE, DEFAULT_FALLBACK_LANGUAGE } from "./i18n.ts";
 
 const REPORT_LABEL_KEY: Record<string, keyof ReturnType<typeof t>> = {
   "ai-cli": "reportLabelAiCli",
@@ -21,7 +21,7 @@ function reportLabel(id: string): string {
   const dot = id.lastIndexOf(".");
   if (dot === -1) {
     const key = REPORT_LABEL_KEY[id];
-    return key ? t("zh")[key] : id;
+    return key ? t(DEFAULT_PRIMARY_LANGUAGE)[key] : id;
   }
   const base = id.slice(0, dot);
   const lang = id.slice(dot + 1);
@@ -129,7 +129,7 @@ async function main(): Promise<void> {
     .filter((e) => e.reports.length > 0);
 
   // Build labels for all supported locales
-  t("en"); // trigger locale loading
+  t(DEFAULT_FALLBACK_LANGUAGE); // trigger locale loading
   const labels: Record<string, Record<string, string>> = {};
   for (const base of REPORT_BASES) {
     const key = REPORT_LABEL_KEY[base];

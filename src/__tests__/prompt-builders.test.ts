@@ -68,7 +68,7 @@ describe("buildCliPrompt", () => {
   });
 
   it("generates English prompt", () => {
-    const result = buildCliPrompt(cfg, [makeItem()], [], [], "2026-03-09", "en");
+    const result = buildCliPrompt(cfg, [makeItem()], [], [], "2026-03-09", "en-US");
     expect(result).toContain("technical analyst");
     expect(result).toContain("TestTool");
     expect(result).toContain("Hot Issues");
@@ -81,7 +81,7 @@ describe("buildCliPrompt", () => {
 
   it("includes sample notes when items exceed limit", () => {
     const items = Array.from({ length: 50 }, (_, i) => makeItem({ number: i, comments: i }));
-    const result = buildCliPrompt(cfg, items, [], [], "2026-03-09", "en");
+    const result = buildCliPrompt(cfg, items, [], [], "2026-03-09", "en-US");
     expect(result).toContain("showing top 30");
     expect(result).toContain("50 items");
   });
@@ -101,7 +101,7 @@ describe("buildPeerPrompt", () => {
   });
 
   it("generates English prompt", () => {
-    const result = buildPeerPrompt(cfg, [], [], [], "2026-03-09", 30, 20, "en");
+    const result = buildPeerPrompt(cfg, [], [], [], "2026-03-09", 30, 20, "en-US");
     expect(result).toContain("Data Overview");
     expect(result).toContain("None");
   });
@@ -163,7 +163,7 @@ describe("buildSkillsPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildSkillsPrompt([], [], "2026-03-09", "en");
+    const result = buildSkillsPrompt([], [], "2026-03-09", "en-US");
     expect(result).toContain("Claude Code ecosystem");
     expect(result).toContain("None");
   });
@@ -280,7 +280,7 @@ describe("buildWeeklyPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildWeeklyPrompt({ "2026-03-03": "content" }, "2026-W10", "en");
+    const result = buildWeeklyPrompt({ "2026-03-03": "content" }, "2026-W10", "en-US");
     expect(result).toContain("weekly recap");
   });
 });
@@ -299,7 +299,7 @@ describe("buildMonthlyPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildMonthlyPrompt({ "2026-02-01": "w1" }, "2026-02", "en");
+    const result = buildMonthlyPrompt({ "2026-02-01": "w1" }, "2026-02", "en-US");
     expect(result).toContain("monthly review");
   });
 });
@@ -349,7 +349,7 @@ describe("buildHnPrompt", () => {
       ],
       fetchSuccess: true,
     };
-    const result = buildHnPrompt(data, "2026-03-09", "en");
+    const result = buildHnPrompt(data, "2026-03-09", "en-US");
     expect(result).toContain("Score: 10");
     expect(result).toContain("Comments: 2");
     expect(result).toContain("Hacker News");

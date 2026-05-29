@@ -40,7 +40,7 @@ describe("formatItem", () => {
   });
 
   it("formats an item in English", () => {
-    const result = formatItem(makeItem(), "en");
+    const result = formatItem(makeItem(), "en-US");
     expect(result).toContain("Author: alice");
     expect(result).toContain("Comments: 5");
     expect(result).toContain("URL:");
@@ -144,16 +144,16 @@ describe("sampleNote", () => {
   });
 
   it("shows sampled note in English when total > sampled", () => {
-    const result = sampleNote(50, 20, "en");
+    const result = sampleNote(50, 20, "en-US");
     expect(result).toBe("(Total: 50 items; showing top 20 by comment count)");
   });
 
   it("shows total-only note in English when total <= sampled", () => {
-    expect(sampleNote(8, 8, "en")).toBe("(Total: 8 items)");
+    expect(sampleNote(8, 8, "en-US")).toBe("(Total: 8 items)");
   });
 
   it("shows sampled note in Japanese when total > sampled", () => {
-    const result = sampleNote(30, 10, "ja");
+    const result = sampleNote(30, 10, "ja-JP");
     expect(result).toContain("全 30 件");
     expect(result).toContain("10 件");
   });

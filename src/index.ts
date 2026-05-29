@@ -49,7 +49,7 @@ import { fetchDevtoData, type DevtoData } from "./devto.ts";
 import { fetchLobstersData, type LobstersData } from "./lobsters.ts";
 import { loadConfig, getEnabledLangs } from "./config.ts";
 import { toCstDateStr, toUtcStr } from "./date.ts";
-import { t, type Lang } from "./i18n.ts";
+import { t, type Lang, DEFAULT_PRIMARY_LANGUAGE } from "./i18n.ts";
 
 // ---------------------------------------------------------------------------
 // Repo config — loaded from config.yml, falls back to built-in defaults
@@ -221,7 +221,7 @@ async function generateSummaries(
   fetchedPeers: RepoFetch[],
   trendingData: TrendingData,
   dateStr: string,
-  lang: Lang = "zh",
+  lang: Lang = DEFAULT_PRIMARY_LANGUAGE,
 ): Promise<{
   cliDigests: RepoDigest[];
   openclawSummary: string;
@@ -368,7 +368,7 @@ async function main(): Promise<void> {
   for (const lang of ENABLED_LANGS) {
     const s = summariesByLang[lang]!;
     const ft = autoGenFooter(lang);
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === DEFAULT_PRIMARY_LANGUAGE ? "" : `.${lang}`;
 
     cliContent[lang] = buildCliReportContent(
       s.cliDigests,
@@ -433,7 +433,7 @@ async function main(): Promise<void> {
   }
   for (const id of ["ai-trending", "ai-web", "ai-hn", "ai-ph", "ai-arxiv", "ai-hf", "ai-community"]) {
     for (const lang of ENABLED_LANGS) {
-      const file = lang === "zh" ? `${id}.md` : `${id}.${lang}.md`;
+      const file = lang === DEFAULT_PRIMARY_LANGUAGE ? `${id}.md` : `${id}.${lang}.md`;
       const content = readReport(file);
       if (content) reportsByLang[lang]![id] = content;
     }
