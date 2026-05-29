@@ -38,6 +38,8 @@ const LocaleDataSchema = z.object({
   webNewContent: z.string(),
   webGenerated: z.string(),
   webSourcesHeader: z.string(),
+  webFirstCrawlNote: z.string(),
+  webIncrementalNote: z.string(),
 
   trendingTitle: z.string(),
   trendingSources: z.string(),
@@ -107,6 +109,7 @@ const LocaleDataSchema = z.object({
   formatItemSummary: z.string(),
 
   sampleNote: z.string(),
+  sampleNoteAll: z.string(),
   noneStr: z.string(),
   unableToExtract: z.string(),
   issueTruncation: z.string(),

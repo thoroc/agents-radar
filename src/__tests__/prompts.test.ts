@@ -139,8 +139,8 @@ describe("sampleNote", () => {
   });
 
   it("shows total-only note when total <= sampled", () => {
-    expect(sampleNote(10, 10)).toBe("(Total: 10 items)");
-    expect(sampleNote(5, 10)).toBe("(Total: 5 items)");
+    expect(sampleNote(10, 10)).toBe("（共 10 条）");
+    expect(sampleNote(5, 10)).toBe("（共 5 条）");
   });
 
   it("shows sampled note in English when total > sampled", () => {
@@ -156,5 +156,9 @@ describe("sampleNote", () => {
     const result = sampleNote(30, 10, "ja-JP");
     expect(result).toContain("全 30 件");
     expect(result).toContain("10 件");
+  });
+
+  it("shows total-only note in Japanese when total <= sampled", () => {
+    expect(sampleNote(5, 5, "ja-JP")).toBe("（全 5 件）");
   });
 });

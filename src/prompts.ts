@@ -34,10 +34,10 @@ export function topN(items: GitHubItem[], n: number): GitHubItem[] {
 }
 
 export function sampleNote(total: number, sampled: number, lang: string = DEFAULT_PRIMARY_LANGUAGE): string {
-  if (total <= sampled) {
-    return `(Total: ${total} items)`;
-  }
   const s = t(lang);
+  if (total <= sampled) {
+    return interpolate(s.sampleNoteAll, { total });
+  }
   return interpolate(s.sampleNote, { total, sampled });
 }
 
