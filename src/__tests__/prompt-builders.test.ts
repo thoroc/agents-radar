@@ -58,9 +58,9 @@ function makeDigest(overrides: Partial<RepoDigest> = {}): RepoDigest {
 // ---------------------------------------------------------------------------
 
 describe("buildCliPrompt", () => {
-  it("generates Chinese prompt by default", () => {
+  it("generates English prompt with write-in-{lang} instruction by default", () => {
     const result = buildCliPrompt(cfg, [makeItem()], [makeItem()], [release], "2026-03-09");
-    expect(result).toContain("技术分析师");
+    expect(result).toContain("technical analyst");
     expect(result).toContain("TestTool");
     expect(result).toContain("2026-03-09");
     expect(result).toContain("org/test");
@@ -82,8 +82,8 @@ describe("buildCliPrompt", () => {
   it("includes sample notes when items exceed limit", () => {
     const items = Array.from({ length: 50 }, (_, i) => makeItem({ number: i, comments: i }));
     const result = buildCliPrompt(cfg, items, [], [], "2026-03-09");
-    expect(result).toContain("共 50 条");
-    expect(result).toContain("30 条");
+    expect(result).toContain("showing top 30");
+    expect(result).toContain("50 items");
   });
 });
 
@@ -95,9 +95,9 @@ describe("buildPeerPrompt", () => {
   it("includes data overview section", () => {
     const issues = [makeItem({ state: "open" }), makeItem({ state: "closed" })];
     const result = buildPeerPrompt(cfg, issues, [makeItem()], [release], "2026-03-09");
-    expect(result).toContain("数据概览");
-    expect(result).toContain("新开/活跃: 1");
-    expect(result).toContain("已关闭: 1");
+    expect(result).toContain("Data Overview");
+    expect(result).toContain("open/active: 1");
+    expect(result).toContain("closed: 1");
   });
 
   it("generates English prompt", () => {
@@ -145,7 +145,7 @@ describe("buildPeersComparisonPrompt", () => {
       makeDigest({ config: { ...cfg, name: "Peer" }, summary: "Peer summary", issues: [makeItem()] }),
     ];
     const result = buildPeersComparisonPrompt(openclawDigest, peerDigests, "2026-03-09");
-    expect(result).toContain("OpenClaw（核心参照");
+    expect(result).toContain("core reference");
     expect(result).toContain("OC summary");
     expect(result).toContain("Peer summary");
   });
@@ -250,9 +250,9 @@ describe("buildWebReportPrompt", () => {
       },
     ];
     const result = buildWebReportPrompt(results, "2026-03-09");
-    expect(result).toContain("首次全量抓取");
+    expect(result).toContain("First full crawl");
     expect(result).toContain("Anthropic");
-    expect(result).toContain("内容格局总览"); // first-run-only section
+    expect(result).toContain("Content Landscape Overview"); // first-run-only section
   });
 
   it("shows incremental mode for non-first-run", () => {
@@ -260,8 +260,8 @@ describe("buildWebReportPrompt", () => {
       { site: "openai", siteName: "OpenAI", isFirstRun: false, newItems: [], totalDiscovered: 100 },
     ];
     const result = buildWebReportPrompt(results, "2026-03-09");
-    expect(result).toContain("增量更新");
-    expect(result).not.toContain("内容格局总览");
+    expect(result).toContain("Incremental update");
+    expect(result).not.toContain("Content Landscape Overview");
   });
 });
 
@@ -276,7 +276,7 @@ describe("buildWeeklyPrompt", () => {
     expect(result).toContain("2026-03-03");
     expect(result).toContain("Day 1 content");
     expect(result).toContain("2026-W10");
-    expect(result).toContain("周报");
+    expect(result).toContain("Weekly Report");
   });
 
   it("generates English variant", () => {
@@ -294,8 +294,8 @@ describe("buildMonthlyPrompt", () => {
     const digests = { "2026-02-01": "Week 1", "2026-02-08": "Week 2" };
     const result = buildMonthlyPrompt(digests, "2026-02");
     expect(result).toContain("2026-02");
-    expect(result).toContain("2 份报告");
-    expect(result).toContain("月报");
+    expect(result).toContain("2 reports total");
+    expect(result).toContain("Monthly Report");
   });
 
   it("generates English variant", () => {
@@ -327,10 +327,10 @@ describe("buildHnPrompt", () => {
     };
     const result = buildHnPrompt(data, "2026-03-09");
     expect(result).toContain("AI News");
-    expect(result).toContain("分数: 200");
-    expect(result).toContain("评论: 50");
-    expect(result).toContain("作者: bob");
-    expect(result).toContain("共 1 条");
+    expect(result).toContain("Score: 200");
+    expect(result).toContain("Comments: 50");
+    expect(result).toContain("Author: bob");
+    expect(result).toContain("1 total");
   });
 
   it("generates English variant", () => {

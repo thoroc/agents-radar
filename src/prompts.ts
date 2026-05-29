@@ -1,5 +1,5 @@
 import type { RepoConfig, GitHubItem, GitHubRelease } from "./github.ts";
-import { t, interpolate } from "./i18n.ts";
+import { t, interpolate, LANGUAGE_NAMES } from "./i18n.ts";
 
 export interface RepoDigest {
   config: RepoConfig;
@@ -33,11 +33,11 @@ export function topN(items: GitHubItem[], n: number): GitHubItem[] {
   return [...items].sort((a, b) => b.comments - a.comments).slice(0, n);
 }
 
-export function sampleNote(total: number, sampled: number, lang: string = "zh"): string {
+export function sampleNote(total: number, sampled: number, _lang: string = "zh"): string {
   if (total <= sampled) {
-    return lang === "en" ? `(Total: ${total} items)` : `（共 ${total} 条）`;
+    return `(Total: ${total} items)`;
   }
-  const s = t(lang);
+  const s = t("en");
   return interpolate(s.sampleNote, { total, sampled });
 }
 
@@ -62,8 +62,7 @@ export function buildCliPrompt(
   const issueNote = sampleNote(issues.length, sampledIssues.length, lang);
   const prNote = sampleNote(prs.length, sampledPrs.length, lang);
 
-  if (lang === "en") {
-    return `You are a technical analyst focused on AI developer tools. Based on the following GitHub data, generate the ${cfg.name} community digest for ${dateStr}.
+  return `You are a technical analyst focused on AI developer tools. Based on the following GitHub data, generate the ${cfg.name} community digest for ${dateStr}.
 
 # Data source: github.com/${cfg.repo}
 
@@ -88,34 +87,8 @@ Generate a structured English digest with the following sections:
 6. **Developer Pain Points** - Summarize recurring developer frustrations or high-frequency requests
 
 Style: concise and professional, suited for technical developers. Include GitHub links for each item.
-`;
-  }
 
-  return `你是一位专注于 AI 开发工具的技术分析师。请根据以下 GitHub 数据，生成 ${dateStr} 的 ${cfg.name} 社区动态日报。
-
-# 数据来源: github.com/${cfg.repo}
-
-## 最新 Releases（过去24小时）
-${releasesText}
-
-## 最新 Issues（过去24小时内更新）${issueNote}
-${issuesText}
-
-## 最新 Pull Requests（过去24小时内更新）${prNote}
-${prsText}
-
----
-
-请生成一份结构清晰的中文日报，包含以下部分：
-
-1. **今日速览** - 用2-3句话概括今天最重要的动态
-2. **版本发布** - 如有新版本，总结更新内容；无则省略
-3. **社区热点 Issues** - 挑选 10 个最值得关注的 Issue，说明为什么重要、社区反应如何
-4. **重要 PR 进展** - 挑选 10 个重要的 PR，说明功能或修复内容
-5. **功能需求趋势** - 从所有 Issues 中提炼出社区最关注的功能方向（如 IDE 集成、性能、新模型支持等）
-6. **开发者关注点** - 总结开发者反馈中的痛点或高频需求
-
-语言要求：简洁专业，适合技术开发者阅读。每个条目附上 GitHub 链接。
+Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 `;
 }
 
@@ -153,8 +126,7 @@ export function buildPeerPrompt(
   const issueSampleNote = sampleNote(totalIssues, sampledIssues.length, lang);
   const prSampleNote = sampleNote(totalPrs, sampledPrs.length, lang);
 
-  if (lang === "en") {
-    return `You are an analyst of AI agent and personal AI assistant open-source projects. Based on the following GitHub data from ${cfg.name} (github.com/${cfg.repo}), generate a project digest for ${dateStr}.
+  return `You are an analyst of AI agent and personal AI assistant open-source projects. Based on the following GitHub data from ${cfg.name} (github.com/${cfg.repo}), generate a project digest for ${dateStr}.
 
 # Data Overview
 - Issues updated in last 24h: ${totalIssues} (open/active: ${openIssues}, closed: ${closedIssues})
@@ -184,39 +156,8 @@ Generate a structured English ${cfg.name} project digest with the following sect
 8. **Backlog Watch** - Long-unanswered important Issues or PRs needing maintainer attention
 
 Style: objective, data-driven, highlighting project health. Include GitHub links for each item.
-`;
-  }
 
-  return `你是一位 AI 智能体与个人 AI 助手领域开源项目分析师。请根据以下来自 ${cfg.name} (github.com/${cfg.repo}) 的 GitHub 数据，生成 ${dateStr} 的项目动态日报。
-
-# 数据概览
-- 过去24小时 Issues 更新：${totalIssues} 条（新开/活跃: ${openIssues}，已关闭: ${closedIssues}）
-- 过去24小时 PR 更新：${totalPrs} 条（待合并: ${openPrs}，已合并/关闭: ${mergedPrs}）
-- 新版本发布：${releases.length} 个
-
-## 最新 Releases
-${releasesText}
-
-## 最新 Issues ${issueSampleNote}
-${issuesText}
-
-## 最新 Pull Requests ${prSampleNote}
-${prsText}
-
----
-
-请生成一份结构清晰的 ${cfg.name} 项目日报，包含以下部分：
-
-1. **今日速览** - 用3-5句话概括项目今日整体状态，包括活跃度评估
-2. **版本发布** - 如有新版本，详细说明更新内容、破坏性变更、迁移注意事项；无则省略
-3. **项目进展** - 今日合并/关闭的重要 PR，说明推进了哪些功能或修复，项目整体向前迈进了多少
-4. **社区热点** - 今日讨论最活跃、评论最多、反应最多的 Issues/PRs（附链接），分析背后的诉求
-5. **Bug 与稳定性** - 今日报告的 Bug、崩溃、回归问题，按严重程度排列，标注是否已有 fix PR
-6. **功能请求与路线图信号** - 用户提出的新功能需求，结合已有 PR 判断哪些可能被纳入下一版本
-7. **用户反馈摘要** - 从 Issues 评论中提炼真实用户痛点、使用场景、满意/不满意的地方
-8. **待处理积压** - 长期未响应的重要 Issue 或 PR，提醒维护者关注
-
-语言要求：客观专业，数据驱动，突出项目健康度。每个条目附上 GitHub 链接。
+Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 `;
 }
 
@@ -228,10 +169,7 @@ export function buildPeersComparisonPrompt(
 ): string {
   const noActivityStr = t(lang).noActivity;
 
-  const openclawSection =
-    lang === "en"
-      ? `## OpenClaw (core reference, github.com/${openclawDigest.config.repo})\n${openclawDigest.summary}`
-      : `## OpenClaw（核心参照，github.com/${openclawDigest.config.repo}）\n${openclawDigest.summary}`;
+  const openclawSection = `## OpenClaw (core reference, github.com/${openclawDigest.config.repo})\n${openclawDigest.summary}`;
 
   const peerSections = peerDigests
     .map((d) => {
@@ -241,8 +179,7 @@ export function buildPeersComparisonPrompt(
     })
     .join("\n\n---\n\n");
 
-  if (lang === "en") {
-    return `You are a senior analyst of the AI agent and personal AI assistant open-source ecosystem. The following are ${dateStr} community digest summaries for each project.
+  return `You are a senior analyst of the AI agent and personal AI assistant open-source ecosystem. The following are ${dateStr} community digest summaries for each project.
 
 ${openclawSection}
 
@@ -263,30 +200,8 @@ Generate a cross-project comparison report in English with these sections:
 7. **Trend Signals** - Industry trends extracted from community feedback, value for AI agent developers
 
 Style: concise and professional, data-backed, suited for technical decision-makers and developers.
-`;
-  }
 
-  return `你是一位专注于 AI 智能体与个人 AI 助手开源生态的资深技术分析师。以下是 ${dateStr} 各开源项目的社区动态摘要。
-
-${openclawSection}
-
----
-
-${peerSections}
-
----
-
-请基于上述各项目的动态，生成一份横向对比分析报告，包含以下部分：
-
-1. **生态全景** - 用3-5句话概括个人 AI 助手/自主智能体开源生态整体态势
-2. **各项目活跃度对比** - 以表格形式汇总各项目今日的 Issues 数、PR 数、Release 情况及健康度评估
-3. **OpenClaw 在生态中的定位** - 与同类相比的优势、技术路线差异、社区规模对比
-4. **共同关注的技术方向** - 多项目共同涌现的需求（注明涉及哪些项目、具体诉求）
-5. **差异化定位分析** - 功能侧重、目标用户、技术架构的关键差异
-6. **社区热度与成熟度** - 活跃度分层，哪些处于快速迭代阶段，哪些在质量巩固阶段
-7. **值得关注的趋势信号** - 从社区反馈中提炼行业趋势，对 AI 智能体开发者的参考价值
-
-语言要求：简洁专业，有数据支撑，适合技术决策者和开发者阅读。
+Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 `;
 }
 
@@ -303,8 +218,7 @@ export function buildSkillsPrompt(
   const prsText = topPrs.map((p) => formatItem(p, lang)).join("\n") || noneStr;
   const issuesText = topIssues.map((i) => formatItem(i, lang)).join("\n") || noneStr;
 
-  if (lang === "en") {
-    return `You are a technical analyst focused on the Claude Code ecosystem. The following data is from github.com/anthropics/skills (official Claude Code Skills repository). Analyze the community's most-watched Skills activity (data as of ${dateStr}).
+  return `You are a technical analyst focused on the Claude Code ecosystem. The following data is from github.com/anthropics/skills (official Claude Code Skills repository). Analyze the community's most-watched Skills activity (data as of ${dateStr}).
 
 ## Repository Context
 anthropics/skills is the official Claude Code Skills collection. Each PR typically represents a new or improved Skill. The community proposes new Skills and reports issues via Issues; PRs represent actual Skill submissions.
@@ -325,30 +239,8 @@ Generate a Claude Code Skills community highlights report in English with these 
 4. **Skills Ecosystem Insight** - One-sentence summary: what is the community's most concentrated demand at the Skills level?
 
 Style: concise and professional, include GitHub links for each item.
-`;
-  }
 
-  return `你是一位专注于 Claude Code 生态的技术分析师。以下是来自 github.com/anthropics/skills（Claude Code Skills 官方仓库）的数据，请分析社区最关注的 Skills 动态（数据截止 ${dateStr}）。
-
-## 仓库说明
-anthropics/skills 是 Claude Code 官方 Skills 集合仓库，每个 PR 通常对应一个新增或改进的 Skill。社区通过 Issues 提出新 Skill 需求或反馈问题，PR 则代表实际提交的 Skill。
-
-## 热门 Pull Requests（按评论数排序，共 ${prs.length} 条，展示前 ${topPrs.length} 条）
-${prsText}
-
-## 社区 Issues（按评论数排序，共 ${issues.length} 条，展示前 ${topIssues.length} 条）
-${issuesText}
-
----
-
-请生成一份 Claude Code Skills 社区热点报告，包含以下部分：
-
-1. **热门 Skills 排行** - 列出评论/关注度最高的 5~8 个 Skills（PR），说明每个 Skill 的功能、社区讨论热点及当前状态（open/merged/draft）
-2. **社区需求趋势** - 从 Issues 中提炼社区最期待的新 Skill 方向（如工作流自动化、代码审查、测试生成、文档等）
-3. **高潜力待合并 Skills** - 评论活跃但尚未合并的 PR，这些 Skills 可能近期落地
-4. **Skills 生态洞察** - 一句话总结：当前社区在 Skills 层面最集中的诉求是什么
-
-语言要求：简洁专业，每个条目附上 GitHub 链接。
+Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 `;
 }
 
@@ -363,8 +255,7 @@ export function buildComparisonPrompt(digests: RepoDigest[], dateStr: string, la
     })
     .join("\n\n---\n\n");
 
-  if (lang === "en") {
-    return `You are a senior technical analyst of the AI developer tools ecosystem. The following are ${dateStr} community digest summaries for each major AI CLI tool:
+  return `You are a senior technical analyst of the AI developer tools ecosystem. The following are ${dateStr} community digest summaries for each major AI CLI tool:
 
 ${sections}
 
@@ -380,24 +271,7 @@ Generate a cross-tool comparison report in English with these sections:
 6. **Trend Signals** - Industry trends from community feedback, reference value for developers
 
 Style: concise and professional, data-backed, suited for technical decision-makers and developers.
-`;
-  }
 
-  return `你是一位专注于 AI 开发工具生态的资深技术分析师。以下是 ${dateStr} 各主流 AI CLI 工具的社区动态摘要：
-
-${sections}
-
----
-
-请基于上述各工具的动态，生成一份横向对比分析报告，包含以下部分：
-
-1. **生态全景** - 用3-5句话概括当前 AI CLI 工具整体发展态势
-2. **各工具活跃度对比** - 以表格形式汇总各工具今日的 Issues 数、PR 数、Release 情况
-3. **共同关注的功能方向** - 多个工具社区都在关注的需求（说明哪些工具、具体诉求）
-4. **差异化定位分析** - 各工具在功能侧重、目标用户、技术路线上的差异
-5. **社区热度与成熟度** - 哪些工具社区更活跃，哪些处于快速迭代阶段
-6. **值得关注的趋势信号** - 从社区反馈中提炼出的行业趋势，对开发者有何参考价值
-
-语言要求：简洁专业，有数据支撑，适合技术决策者和开发者阅读。
+Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.
 `;
 }

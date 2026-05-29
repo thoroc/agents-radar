@@ -96,7 +96,9 @@ ${reports}
 - 陈述事实为主，少用感叹号和夸张形容词
 - 不要加任何链接（小红书不支持外链）
 
-直接输出标题和正文，不要加额外说明。`;
+直接输出标题和正文，不要加额外说明。
+
+Write the response in Chinese.`;
 }
 
 function buildWechatPrompt(dateRange: string, reports: string): string {
@@ -146,7 +148,9 @@ ${reports}
 - 善于发现跨天的趋势和规律，不要简单罗列每天的内容
 - 结尾附注：数据来源为 agents-radar 项目（https://github.com/duanyytop/agents-radar）
 
-直接输出标题和正文，不要加额外说明。`;
+直接输出标题和正文，不要加额外说明。
+
+Write the response in Chinese.`;
 }
 
 function buildWechatMonthlyPrompt(dateRange: string, reports: string): string {
@@ -202,7 +206,9 @@ ${reports}
 - 有明确的观点和判断，不要只做信息搬运
 - 结尾附注：数据来源为 agents-radar 项目（https://github.com/duanyytop/agents-radar）
 
-直接输出标题和正文，不要加额外说明。`;
+直接输出标题和正文，不要加额外说明。
+
+Write the response in Chinese.`;
 }
 
 type Platform = "xiaohongshu" | "wechat" | "wechat:monthly";
