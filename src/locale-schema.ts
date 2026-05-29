@@ -151,6 +151,8 @@ const LocaleDataSchema = z.object({
 
 const LocaleFileSchema = LocaleDataSchema.extend({
   _meta: LocaleMetaSchema,
+}).extend({
+  $schema: z.string().optional(),
 });
 
 export type LocaleMeta = z.infer<typeof LocaleMetaSchema>;

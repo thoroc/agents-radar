@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Arabic",
-    "nativeName": "العربية",
-    "code": "ar-SA"
-  },
   "noActivity": "لا يوجد نشاط في آخر 24 ساعة.",
   "summaryFailed": "⚠️ فشل إنشاء الملخص.",
   "skillsFailed": "⚠️ فشل إنشاء ملخص المهارات.",
   "trendingNoData": "⚠️ بيانات الاتجاهات غير متوفرة، تعذر إنشاء التقرير.",
   "trendingFailed": "⚠️ فشل إنشاء تقرير الاتجاهات.",
+  "trendingFetchFailed": "(تعذر جلب قائمة الاتجاهات اليومية على GitHub)",
+  "searchNoResults": "(لا توجد نتائج بحث)",
   "webNoNewContent": "لم يتم العثور على محتوى جديد.",
   "webFetchFailed": "⚠️ فشل جلب محتوى الويب.",
   "hnFetchFailed": "⚠️ فشل جلب بيانات HN.",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " أسبوعي",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(تعذر جلب قائمة الاتجاهات اليومية على GitHub)",
-  "searchNoResults": "(لا توجد نتائج بحث)"
+  "_meta": {
+    "name": "Arabic",
+    "nativeName": "العربية",
+    "code": "ar-SA"
+  },
+  "$schema": "../locale-schema.json"
 }

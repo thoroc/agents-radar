@@ -1,9 +1,4 @@
 {
-  "_meta": {
-    "code": "en-US",
-    "name": "English",
-    "nativeName": "English"
-  },
   "noActivity": "No activity in the last 24 hours.",
   "summaryFailed": "⚠️ Summary generation failed.",
   "skillsFailed": "⚠️ Skills summary generation failed.",
@@ -124,5 +119,11 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "_meta": {
+    "code": "en-US",
+    "name": "English",
+    "nativeName": "English"
+  },
+  "$schema": "../locale-schema.json"
 }

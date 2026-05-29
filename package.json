@@ -22,6 +22,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "generate-locale-schema": "tsx scripts/generate-locale-schema.ts",
+    "validate-locales": "npx ajv-cli validate -s locale-schema.json -d \"locales/*.json\" --spec=draft2020",
     "prepare": "husky"
   },
   "dependencies": {
@@ -38,6 +40,7 @@
     "@types/marked": "^6.0.0",
     "@types/node": "^25.3.5",
     "@vitest/coverage-v8": "^4.0.18",
+    "ajv-cli": "^5.0.0",
     "eslint": "^9",
     "eslint-config-prettier": "^10",
     "husky": "^9.1.7",

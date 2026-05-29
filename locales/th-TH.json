@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Thai",
-    "nativeName": "ไทย",
-    "code": "th-TH"
-  },
   "noActivity": "ไม่มีกิจกรรมใน 24 ชั่วโมงที่ผ่านมา",
   "summaryFailed": "⚠️ การสร้างสรุปผลล้มเหลว",
   "skillsFailed": "⚠️ การสร้างสรุปทักษะล้มเหลว",
   "trendingNoData": "⚠️ ไม่มีข้อมูลเทรนด์ ไม่สามารถสร้างรายงานได้",
   "trendingFailed": "⚠️ การสร้างรายงานเทรนด์ล้มเหลว",
+  "trendingFetchFailed": "(ไม่สามารถดึงรายการเทรนด์ GitHub ของวันนี้ได้)",
+  "searchNoResults": "(ไม่พบผลการค้นหา)",
   "webNoNewContent": "ไม่พบเนื้อหาใหม่",
   "webFetchFailed": "⚠️ การดึงข้อมูลเว็บล้มเหลว",
   "hnFetchFailed": "⚠️ การดึงข้อมูล HN ล้มเหลว",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " รายสัปดาห์",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(ไม่สามารถดึงรายการเทรนด์ GitHub ของวันนี้ได้)",
-  "searchNoResults": "(ไม่พบผลการค้นหา)"
+  "_meta": {
+    "name": "Thai",
+    "nativeName": "ไทย",
+    "code": "th-TH"
+  },
+  "$schema": "../locale-schema.json"
 }

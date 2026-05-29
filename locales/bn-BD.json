@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Bengali",
-    "nativeName": "বাংলা",
-    "code": "bn-BD"
-  },
   "noActivity": "গত ২৪ ঘন্টায় কোনো কার্যকলাপ নেই।",
   "summaryFailed": "⚠️ সারাংশ তৈরি ব্যর্থ হয়েছে।",
   "skillsFailed": "⚠️ দক্ষতা সারাংশ তৈরি ব্যর্থ হয়েছে।",
   "trendingNoData": "⚠️ ট্রেন্ডিং ডেটা উপলব্ধ নেই, রিপোর্ট তৈরি করা যাচ্ছে না।",
   "trendingFailed": "⚠️ ট্রেন্ডিং রিপোর্ট তৈরি ব্যর্থ হয়েছে।",
+  "trendingFetchFailed": "(আজকের GitHub ট্রেন্ডিং তালিকা আনা যায়নি)",
+  "searchNoResults": "(কোনো অনুসন্ধান ফলাফল নেই)",
   "webNoNewContent": "কোনো নতুন বিষয়বস্তু পাওয়া যায়নি।",
   "webFetchFailed": "⚠️ ওয়েব বিষয়বস্তু আনতে ব্যর্থ।",
   "hnFetchFailed": "⚠️ HN ডেটা আনতে ব্যর্থ।",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " সাপ্তাহিক",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(আজকের GitHub ট্রেন্ডিং তালিকা আনা যায়নি)",
-  "searchNoResults": "(কোনো অনুসন্ধান ফলাফল নেই)"
+  "_meta": {
+    "name": "Bengali",
+    "nativeName": "বাংলা",
+    "code": "bn-BD"
+  },
+  "$schema": "../locale-schema.json"
 }

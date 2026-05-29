@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Indonesian",
-    "nativeName": "Bahasa Indonesia",
-    "code": "id-ID"
-  },
   "noActivity": "Tidak ada aktivitas dalam 24 jam terakhir.",
   "summaryFailed": "⚠️ Gagal membuat ringkasan.",
   "skillsFailed": "⚠️ Gagal membuat ringkasan keterampilan.",
   "trendingNoData": "⚠️ Data tren tidak tersedia, tidak dapat membuat laporan.",
   "trendingFailed": "⚠️ Gagal membuat laporan tren.",
+  "trendingFetchFailed": "(Tidak dapat mengambil daftar Tren GitHub hari ini)",
+  "searchNoResults": "(Tidak ada hasil pencarian)",
   "webNoNewContent": "Tidak ada konten baru ditemukan.",
   "webFetchFailed": "⚠️ Gagal mengambil konten web.",
   "hnFetchFailed": "⚠️ Gagal mengambil data HN.",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " Mingguan",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(Tidak dapat mengambil daftar Tren GitHub hari ini)",
-  "searchNoResults": "(Tidak ada hasil pencarian)"
+  "_meta": {
+    "name": "Indonesian",
+    "nativeName": "Bahasa Indonesia",
+    "code": "id-ID"
+  },
+  "$schema": "../locale-schema.json"
 }

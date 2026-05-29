@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Russian",
-    "nativeName": "Русский",
-    "code": "ru-RU"
-  },
   "noActivity": "За последние 24 часа активности не было.",
   "summaryFailed": "⚠️ Не удалось создать сводку.",
   "skillsFailed": "⚠️ Не удалось создать сводку навыков.",
   "trendingNoData": "⚠️ Данные трендов недоступны, невозможно создать отчёт.",
   "trendingFailed": "⚠️ Не удалось создать отчёт о трендах.",
+  "trendingFetchFailed": "(Не удалось получить сегодняшний список трендов GitHub)",
+  "searchNoResults": "(Нет результатов поиска)",
   "webNoNewContent": "Новый контент не найден.",
   "webFetchFailed": "⚠️ Не удалось получить веб-контент.",
   "hnFetchFailed": "⚠️ Не удалось получить данные HN.",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " Еженедельный",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(Не удалось получить сегодняшний список трендов GitHub)",
-  "searchNoResults": "(Нет результатов поиска)"
+  "_meta": {
+    "name": "Russian",
+    "nativeName": "Русский",
+    "code": "ru-RU"
+  },
+  "$schema": "../locale-schema.json"
 }

@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Hindi",
-    "nativeName": "हिन्दी",
-    "code": "hi-IN"
-  },
   "noActivity": "पिछले 24 घंटों में कोई गतिविधि नहीं।",
   "summaryFailed": "⚠️ सारांश निर्माण विफल रहा।",
   "skillsFailed": "⚠️ कौशल सारांश निर्माण विफल रहा।",
   "trendingNoData": "⚠️ ट्रेंडिंग डेटा उपलब्ध नहीं, रिपोर्ट तैयार करने में असमर्थ।",
   "trendingFailed": "⚠️ ट्रेंडिंग रिपोर्ट निर्माण विफल रहा।",
+  "trendingFetchFailed": "(आज की GitHub ट्रेंडिंग सूची प्राप्त नहीं की जा सकी)",
+  "searchNoResults": "(कोई खोज परिणाम नहीं)",
   "webNoNewContent": "कोई नई सामग्री नहीं मिली।",
   "webFetchFailed": "⚠️ वेब सामग्री प्राप्त करने में विफल।",
   "hnFetchFailed": "⚠️ HN डेटा प्राप्त करने में विफल।",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " साप्ताहिक",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(आज की GitHub ट्रेंडिंग सूची प्राप्त नहीं की जा सकी)",
-  "searchNoResults": "(कोई खोज परिणाम नहीं)"
+  "_meta": {
+    "name": "Hindi",
+    "nativeName": "हिन्दी",
+    "code": "hi-IN"
+  },
+  "$schema": "../locale-schema.json"
 }

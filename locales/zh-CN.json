@@ -1,9 +1,4 @@
 {
-  "_meta": {
-    "code": "zh-CN",
-    "name": "Chinese",
-    "nativeName": "中文"
-  },
   "noActivity": "过去24小时无活动。",
   "summaryFailed": "⚠️ 摘要生成失败。",
   "skillsFailed": "⚠️ Skills 摘要生成失败。",
@@ -124,5 +119,11 @@
   "notifySuffixMonthly": " 月报",
   "notifySuffixWeekly": " 周报",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "_meta": {
+    "code": "zh-CN",
+    "name": "Chinese",
+    "nativeName": "中文"
+  },
+  "$schema": "../locale-schema.json"
 }

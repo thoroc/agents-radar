@@ -36,3 +36,6 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+      - name: Validate locale files
+        run: pnpm validate-locales

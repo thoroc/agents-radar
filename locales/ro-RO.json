@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Romanian",
-    "nativeName": "Română",
-    "code": "ro-RO"
-  },
   "noActivity": "Nicio activitate în ultimele 24 de ore.",
   "summaryFailed": "⚠️ Generarea sumarului a eșuat.",
   "skillsFailed": "⚠️ Generarea sumarului de competențe a eșuat.",
   "trendingNoData": "⚠️ Datele de tendințe indisponibile, nu se poate genera raportul.",
   "trendingFailed": "⚠️ Generarea raportului de tendințe a eșuat.",
+  "trendingFetchFailed": "(Nu s-a putut obține lista de tendințe GitHub de astăzi)",
+  "searchNoResults": "(Niciun rezultat de căutare)",
   "webNoNewContent": "Niciun conținut nou găsit.",
   "webFetchFailed": "⚠️ Preluarea conținutului web a eșuat.",
   "hnFetchFailed": "⚠️ Preluarea HN a eșuat.",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " Săptămânal",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(Nu s-a putut obține lista de tendințe GitHub de astăzi)",
-  "searchNoResults": "(Niciun rezultat de căutare)"
+  "_meta": {
+    "name": "Romanian",
+    "nativeName": "Română",
+    "code": "ro-RO"
+  },
+  "$schema": "../locale-schema.json"
 }

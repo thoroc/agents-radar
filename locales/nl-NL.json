@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Dutch",
-    "nativeName": "Nederlands",
-    "code": "nl-NL"
-  },
   "noActivity": "Geen activiteit in de afgelopen 24 uur.",
   "summaryFailed": "⚠️ Samenvatting genereren mislukt.",
   "skillsFailed": "⚠️ Vaardighedensamenvatting genereren mislukt.",
   "trendingNoData": "⚠️ Trendgegevens niet beschikbaar, kan geen rapport genereren.",
   "trendingFailed": "⚠️ Trendrapport genereren mislukt.",
+  "trendingFetchFailed": "(Kan de GitHub Trending-lijst van vandaag niet ophalen)",
+  "searchNoResults": "(Geen zoekresultaten)",
   "webNoNewContent": "Geen nieuwe inhoud gevonden.",
   "webFetchFailed": "⚠️ Webinhoud ophalen mislukt.",
   "hnFetchFailed": "⚠️ HN-gegevens ophalen mislukt.",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " Wekelijks",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(Kan de GitHub Trending-lijst van vandaag niet ophalen)",
-  "searchNoResults": "(Geen zoekresultaten)"
+  "_meta": {
+    "name": "Dutch",
+    "nativeName": "Nederlands",
+    "code": "nl-NL"
+  },
+  "$schema": "../locale-schema.json"
 }

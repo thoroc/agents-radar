@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Turkish",
-    "nativeName": "Türkçe",
-    "code": "tr-TR"
-  },
   "noActivity": "Son 24 saatte herhangi bir etkinlik yok.",
   "summaryFailed": "⚠️ Özet oluşturma başarısız oldu.",
   "skillsFailed": "⚠️ Beceri özeti oluşturma başarısız oldu.",
   "trendingNoData": "⚠️ Trend verileri mevcut değil, rapor oluşturulamıyor.",
   "trendingFailed": "⚠️ Trend raporu oluşturma başarısız oldu.",
+  "trendingFetchFailed": "(Bugünün GitHub Trend listesi alınamadı)",
+  "searchNoResults": "(Arama sonucu bulunamadı)",
   "webNoNewContent": "Yeni içerik bulunamadı.",
   "webFetchFailed": "⚠️ Web içeriği getirme başarısız oldu.",
   "hnFetchFailed": "⚠️ HN verileri getirme başarısız oldu.",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " Haftalık",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(Bugünün GitHub Trend listesi alınamadı)",
-  "searchNoResults": "(Arama sonucu bulunamadı)"
+  "_meta": {
+    "name": "Turkish",
+    "nativeName": "Türkçe",
+    "code": "tr-TR"
+  },
+  "$schema": "../locale-schema.json"
 }

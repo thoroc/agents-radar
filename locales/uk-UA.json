@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Ukrainian",
-    "nativeName": "Українська",
-    "code": "uk-UA"
-  },
   "noActivity": "Жодної активності за останні 24 години.",
   "summaryFailed": "⚠️ Не вдалося створити підсумок.",
   "skillsFailed": "⚠️ Не вдалося створити підсумок навичок.",
   "trendingNoData": "⚠️ Дані трендів недоступні, неможливо створити звіт.",
   "trendingFailed": "⚠️ Не вдалося створити звіт трендів.",
+  "trendingFetchFailed": "(Не вдалося отримати сьогоднішній список трендів GitHub)",
+  "searchNoResults": "(Немає результатів пошуку)",
   "webNoNewContent": "Нового вмісту не знайдено.",
   "webFetchFailed": "⚠️ Не вдалося отримати веб-вміст.",
   "hnFetchFailed": "⚠️ Не вдалося отримати дані HN.",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " Щотижневий",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(Не вдалося отримати сьогоднішній список трендів GitHub)",
-  "searchNoResults": "(Немає результатів пошуку)"
+  "_meta": {
+    "name": "Ukrainian",
+    "nativeName": "Українська",
+    "code": "uk-UA"
+  },
+  "$schema": "../locale-schema.json"
 }

@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Spanish",
-    "nativeName": "Español",
-    "code": "es-ES"
-  },
   "noActivity": "Sin actividad en las últimas 24 horas.",
   "summaryFailed": "⚠️ Error al generar el resumen.",
   "skillsFailed": "⚠️ Error al generar el resumen de habilidades.",
   "trendingNoData": "⚠️ Datos de tendencias no disponibles, no se puede generar el informe.",
   "trendingFailed": "⚠️ Error al generar el informe de tendencias.",
+  "trendingFetchFailed": "(No se pudo obtener la lista de tendencias de GitHub de hoy)",
+  "searchNoResults": "(Sin resultados de búsqueda)",
   "webNoNewContent": "No se encontró contenido nuevo.",
   "webFetchFailed": "⚠️ Error al obtener contenido web.",
   "hnFetchFailed": "⚠️ Error al obtener datos de HN.",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " Semanal",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(No se pudo obtener la lista de tendencias de GitHub de hoy)",
-  "searchNoResults": "(Sin resultados de búsqueda)"
+  "_meta": {
+    "name": "Spanish",
+    "nativeName": "Español",
+    "code": "es-ES"
+  },
+  "$schema": "../locale-schema.json"
 }

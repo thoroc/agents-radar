@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "French",
-    "nativeName": "Français",
-    "code": "fr-FR"
-  },
   "noActivity": "Aucune activité au cours des dernières 24 heures.",
   "summaryFailed": "⚠️ Échec de la génération du résumé.",
   "skillsFailed": "⚠️ Échec de la génération du résumé des compétences.",
   "trendingNoData": "⚠️ Données de tendances indisponibles, impossible de générer le rapport.",
   "trendingFailed": "⚠️ Échec de la génération du rapport de tendances.",
+  "trendingFetchFailed": "(Impossible de récupérer la liste des tendances GitHub du jour)",
+  "searchNoResults": "(Aucun résultat de recherche)",
   "webNoNewContent": "Aucun nouveau contenu trouvé.",
   "webFetchFailed": "⚠️ Échec de la récupération du contenu web.",
   "hnFetchFailed": "⚠️ Échec de la récupération des données HN.",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " Hebdomadaire",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "(Impossible de récupérer la liste des tendances GitHub du jour)",
-  "searchNoResults": "(Aucun résultat de recherche)"
+  "_meta": {
+    "name": "French",
+    "nativeName": "Français",
+    "code": "fr-FR"
+  },
+  "$schema": "../locale-schema.json"
 }

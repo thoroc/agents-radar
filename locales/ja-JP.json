@@ -1,14 +1,11 @@
 {
-  "_meta": {
-    "name": "Japanese",
-    "nativeName": "日本語",
-    "code": "ja-JP"
-  },
   "noActivity": "過去24時間にアクティビティはありません。",
   "summaryFailed": "⚠️ サマリーの生成に失敗しました。",
   "skillsFailed": "⚠️ スキルサマリーの生成に失敗しました。",
   "trendingNoData": "⚠️ トレンドデータが利用できないため、レポートを生成できません。",
   "trendingFailed": "⚠️ トレンドレポートの生成に失敗しました。",
+  "trendingFetchFailed": "（今日のGitHub Trendingリストを取得できませんでした）",
+  "searchNoResults": "（検索結果なし）",
   "webNoNewContent": "新しいコンテンツは見つかりませんでした。",
   "webFetchFailed": "⚠️ Webコンテンツの取得に失敗しました。",
   "hnFetchFailed": "⚠️ HNの取得に失敗しました。",
@@ -123,6 +120,10 @@
   "notifySuffixWeekly": " 週報",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
-  "trendingFetchFailed": "（今日のGitHub Trendingリストを取得できませんでした）",
-  "searchNoResults": "（検索結果なし）"
+  "_meta": {
+    "name": "Japanese",
+    "nativeName": "日本語",
+    "code": "ja-JP"
+  },
+  "$schema": "../locale-schema.json"
 }
