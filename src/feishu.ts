@@ -87,11 +87,12 @@ export function buildFeishuMessage(
   const isWeekly = baseReports.includes("ai-weekly");
   const isMonthly = baseReports.includes("ai-monthly");
 
+  const primaryLang = enabledLangs?.[0] ?? DEFAULT_PRIMARY_LANGUAGE;
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
   const suffix = isMonthly
-    ? t(DEFAULT_PRIMARY_LANGUAGE).notifySuffixMonthly
+    ? t(primaryLang).notifySuffixMonthly
     : isWeekly
-      ? t(DEFAULT_PRIMARY_LANGUAGE).notifySuffixWeekly
+      ? t(primaryLang).notifySuffixWeekly
       : "";
   const title = `${icon} agents-radar${suffix} · ${date}`;
   const lines: string[] = [`${icon} **agents-radar${suffix} · ${date}**`];
@@ -116,16 +117,20 @@ export function buildFeishuMessage(
     }
     lines.push(`• ${linkParts.join("  ·  ")}`);
 
-    // Add highlights as indented sub-items (default language)
-    const items = highlights?.[DEFAULT_PRIMARY_LANGUAGE]?.[r];
-    if (items?.length) {
-      for (const h of items) {
-        lines.push(`  ◦ ${h}`);
+    const langsWithHighlights = langs.filter((l) => highlights?.[l]?.[r]?.length);
+    const showLangPrefix = langsWithHighlights.length > 1;
+    for (const lang of langs) {
+      const items = highlights?.[lang]?.[r];
+      if (items?.length) {
+        const prefix = showLangPrefix ? `[${lang}] ` : "";
+        for (const h of items) {
+          lines.push(`  ◦ ${prefix}${h}`);
+        }
       }
     }
   }
 
-  lines.push(`\n${interpolate(t(DEFAULT_PRIMARY_LANGUAGE).feishuFooterLinks, { pagesUrl: PAGES_URL })}`);
+  lines.push(`\n${interpolate(t(primaryLang).feishuFooterLinks, { pagesUrl: PAGES_URL })}`);
   return { title, content: lines.join("\n") };
 }
 

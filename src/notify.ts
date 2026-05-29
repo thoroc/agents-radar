@@ -82,11 +82,12 @@ export function buildMessage(
   const isWeekly = baseReports.includes("ai-weekly");
   const isMonthly = baseReports.includes("ai-monthly");
 
+  const primaryLang = enabledLangs?.[0] ?? DEFAULT_PRIMARY_LANGUAGE;
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
   const suffix = isMonthly
-    ? t(DEFAULT_PRIMARY_LANGUAGE).notifySuffixMonthly
+    ? t(primaryLang).notifySuffixMonthly
     : isWeekly
-      ? t(DEFAULT_PRIMARY_LANGUAGE).notifySuffixWeekly
+      ? t(primaryLang).notifySuffixWeekly
       : "";
   const lines: string[] = [`${icon} <b>agents-radar${suffix} · ${date}</b>`];
 
@@ -112,16 +113,20 @@ export function buildMessage(
     }
     lines.push(`• ${linkParts.join("  ·  ")}`);
 
-    // Add highlights as indented sub-items (default language)
-    const items = highlights?.[DEFAULT_PRIMARY_LANGUAGE]?.[r];
-    if (items?.length) {
-      for (const h of items) {
-        lines.push(`  ◦ ${escapeHtml(h)}`);
+    const langsWithHighlights = langs.filter((l) => highlights?.[l]?.[r]?.length);
+    const showLangPrefix = langsWithHighlights.length > 1;
+    for (const lang of langs) {
+      const items = highlights?.[lang]?.[r];
+      if (items?.length) {
+        const prefix = showLangPrefix ? `[${lang}] ` : "";
+        for (const h of items) {
+          lines.push(`  ◦ ${prefix}${escapeHtml(h)}`);
+        }
       }
     }
   }
 
-  lines.push(`\n${interpolate(t(DEFAULT_PRIMARY_LANGUAGE).notifyFooterLinks, { pagesUrl: PAGES_URL })}`);
+  lines.push(`\n${interpolate(t(primaryLang).notifyFooterLinks, { pagesUrl: PAGES_URL })}`);
   return lines.join("\n");
 }
 

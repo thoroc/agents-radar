@@ -83,9 +83,47 @@ describe("buildFeishuMessage", () => {
       BASE_URL,
       highlights,
     );
-    expect(content).toContain("◦ Claude Code 发布 v1.2.0");
-    expect(content).toContain("◦ Gemini CLI 修复 streaming");
+    expect(content).toContain("◦ [zh-CN] Claude Code 发布 v1.2.0");
+    expect(content).toContain("◦ [zh-CN] Gemini CLI 修复 streaming");
     expect(content).toContain("◦ OpenClaw 新增 MCP 支持");
+    expect(content).toContain("◦ [en-US] Claude Code releases v1.2.0");
+  });
+
+  it("omits language prefix when only one lang has highlights", () => {
+    const highlights: Highlights = {
+      "zh-CN": {
+        "ai-cli": ["Claude Code 发布 v1.2.0"],
+      },
+    };
+    const { content } = buildFeishuMessage("2026-03-09", ["ai-cli", "ai-cli.en-US"], BASE_URL, highlights);
+    expect(content).toContain("◦ Claude Code 发布 v1.2.0");
+    expect(content).not.toContain("[zh-CN]");
+  });
+
+  it("supports 3+ languages in highlights", () => {
+    const highlights: Highlights = {
+      "zh-CN": { "ai-cli": ["中文摘要"] },
+      "en-US": { "ai-cli": ["English summary"] },
+      "ja-JP": { "ai-cli": ["日本語要約"] },
+    };
+    const { content } = buildFeishuMessage(
+      "2026-03-09",
+      ["ai-cli", "ai-cli.en-US", "ai-cli.ja-JP"],
+      BASE_URL,
+      highlights,
+      ["zh-CN", "en-US", "ja-JP"],
+    );
+    expect(content).toContain("◦ [zh-CN] 中文摘要");
+    expect(content).toContain("◦ [en-US] English summary");
+    expect(content).toContain("◦ [ja-JP] 日本語要約");
+  });
+
+  it("uses enabledLangs[0] for suffix and footer", () => {
+    const { content } = buildFeishuMessage("2026-03-09", ["ai-weekly", "ai-weekly.en-US"], BASE_URL, null, [
+      "en-US",
+      "zh-CN",
+    ]);
+    expect(content).toContain("agents-radar Weekly");
   });
 
   it("works without highlights", () => {
