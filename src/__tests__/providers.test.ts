@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  AnthropicProvider,
+  createAnthropicProvider,
+  createGitHubCopilotProvider,
+  createOpenAIProvider,
+  createOpenRouterProvider,
   createProvider,
-  GitHubCopilotProvider,
   type LlmProvider,
-  OpenAIProvider,
-  OpenRouterProvider,
   VALID_PROVIDER_NAMES,
 } from "../providers/index";
 
@@ -80,32 +80,32 @@ function withEnv(vars: Record<string, string | undefined>, fn: () => void | Prom
 // ---------------------------------------------------------------------------
 
 describe("LlmProvider interface", () => {
-  it("AnthropicProvider has correct name", () => {
-    const p = new AnthropicProvider();
+  it("createAnthropicProvider has correct name", () => {
+    const p = createAnthropicProvider();
     expect(p.name).toBe("anthropic");
   });
 
-  it("OpenAIProvider has correct name", () => {
-    const p = new OpenAIProvider({ apiKey: "test" });
+  it("createOpenAIProvider has correct name", () => {
+    const p = createOpenAIProvider({ apiKey: "test" });
     expect(p.name).toBe("openai");
   });
 
-  it("GitHubCopilotProvider has correct name", () => {
-    const p = new GitHubCopilotProvider({ apiKey: "test" });
+  it("createGitHubCopilotProvider has correct name", () => {
+    const p = createGitHubCopilotProvider({ apiKey: "test" });
     expect(p.name).toBe("github-copilot");
   });
 
-  it("OpenRouterProvider has correct name", () => {
-    const p = new OpenRouterProvider({ apiKey: "test" });
+  it("createOpenRouterProvider has correct name", () => {
+    const p = createOpenRouterProvider({ apiKey: "test" });
     expect(p.name).toBe("openrouter");
   });
 
   it("all providers implement LlmProvider with call()", () => {
     const providers: LlmProvider[] = [
-      new AnthropicProvider(),
-      new OpenAIProvider({ apiKey: "k" }),
-      new GitHubCopilotProvider({ apiKey: "k" }),
-      new OpenRouterProvider({ apiKey: "k" }),
+      createAnthropicProvider(),
+      createOpenAIProvider({ apiKey: "k" }),
+      createGitHubCopilotProvider({ apiKey: "k" }),
+      createOpenRouterProvider({ apiKey: "k" }),
     ];
     for (const p of providers) {
       expect(typeof p.name).toBe("string");
@@ -125,30 +125,30 @@ describe("VALID_PROVIDER_NAMES", () => {
 });
 
 // ---------------------------------------------------------------------------
-// AnthropicProvider
+// createAnthropicProvider
 // ---------------------------------------------------------------------------
 
-describe("AnthropicProvider", () => {
+describe("createAnthropicProvider", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("uses default model when ANTHROPIC_MODEL is not set", () => {
-    delete process.env["ANTHROPIC_MODEL"];
-    const p = new AnthropicProvider();
+    delete process.env.ANTHROPIC_MODEL;
+    const p = createAnthropicProvider();
     expect(p.name).toBe("anthropic");
   });
 
   it(
     "uses ANTHROPIC_MODEL env var",
     withEnv({ ANTHROPIC_MODEL: "claude-opus-99" }, () => {
-      const p = new AnthropicProvider();
+      const p = createAnthropicProvider();
       expect(p.name).toBe("anthropic");
     }),
   );
 
   it("uses constructor model parameter over env", () => {
-    const p = new AnthropicProvider("custom-model");
+    const p = createAnthropicProvider("custom-model");
     expect(p.name).toBe("anthropic");
   });
 
@@ -158,7 +158,7 @@ describe("AnthropicProvider", () => {
       content: [{ type: "text", text: "Hello from Anthropic" }],
     });
 
-    const p = new AnthropicProvider("test-model");
+    const p = createAnthropicProvider("test-model");
     const result = await p.call("test prompt", 1024);
     expect(result).toBe("Hello from Anthropic");
     expect(mockCreate).toHaveBeenCalledWith({
@@ -174,16 +174,16 @@ describe("AnthropicProvider", () => {
       content: [{ type: "image", source: {} }],
     });
 
-    const p = new AnthropicProvider();
+    const p = createAnthropicProvider();
     await expect(p.call("prompt", 100)).rejects.toThrow("Unexpected response type from Anthropic");
   });
 });
 
 // ---------------------------------------------------------------------------
-// OpenAIProvider
+// createOpenAIProvider
 // ---------------------------------------------------------------------------
 
-describe("OpenAIProvider", () => {
+describe("createOpenAIProvider", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -191,14 +191,14 @@ describe("OpenAIProvider", () => {
   it(
     "uses OPENAI_MODEL env var as default",
     withEnv({ OPENAI_MODEL: "gpt-4-turbo" }, () => {
-      const p = new OpenAIProvider({ apiKey: "k" });
+      const p = createOpenAIProvider({ apiKey: "k" });
       expect(p.name).toBe("openai");
     }),
   );
 
   it("uses gpt-4o when no env or constructor model given", () => {
-    delete process.env["OPENAI_MODEL"];
-    const p = new OpenAIProvider({ apiKey: "k" });
+    delete process.env.OPENAI_MODEL;
+    const p = createOpenAIProvider({ apiKey: "k" });
     expect(p.name).toBe("openai");
   });
 
@@ -208,7 +208,7 @@ describe("OpenAIProvider", () => {
       choices: [{ message: { content: "Hello from OpenAI" } }],
     });
 
-    const p = new OpenAIProvider({ apiKey: "k", model: "gpt-test" });
+    const p = createOpenAIProvider({ apiKey: "k", model: "gpt-test" });
     const result = await p.call("test prompt", 2048);
     expect(result).toBe("Hello from OpenAI");
     expect(mockCreate).toHaveBeenCalledWith({
@@ -224,7 +224,7 @@ describe("OpenAIProvider", () => {
       choices: [{ message: { content: null } }],
     });
 
-    const p = new OpenAIProvider({ apiKey: "k" });
+    const p = createOpenAIProvider({ apiKey: "k" });
     await expect(p.call("prompt", 100)).rejects.toThrow("Unexpected empty response from openai");
   });
 
@@ -232,16 +232,16 @@ describe("OpenAIProvider", () => {
     const mockCreate = await getOpenAIMockCreate();
     mockCreate.mockResolvedValueOnce({ choices: [] });
 
-    const p = new OpenAIProvider({ apiKey: "k" });
+    const p = createOpenAIProvider({ apiKey: "k" });
     await expect(p.call("prompt", 100)).rejects.toThrow("Unexpected empty response from openai");
   });
 });
 
 // ---------------------------------------------------------------------------
-// GitHubCopilotProvider
+// createGitHubCopilotProvider
 // ---------------------------------------------------------------------------
 
-describe("GitHubCopilotProvider", () => {
+describe("createGitHubCopilotProvider", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -252,7 +252,7 @@ describe("GitHubCopilotProvider", () => {
       choices: [{ message: { content: "Hello from Copilot" } }],
     });
 
-    const p = new GitHubCopilotProvider({ apiKey: "ghp_test" });
+    const p = createGitHubCopilotProvider({ apiKey: "ghp_test" });
     const result = await p.call("prompt", 512);
     expect(result).toBe("Hello from Copilot");
   });
@@ -260,7 +260,7 @@ describe("GitHubCopilotProvider", () => {
   it(
     "uses GITHUB_COPILOT_MODEL env",
     withEnv({ GITHUB_COPILOT_MODEL: "o3-mini" }, () => {
-      const p = new GitHubCopilotProvider({ apiKey: "ghp_test" });
+      const p = createGitHubCopilotProvider({ apiKey: "ghp_test" });
       expect(p.name).toBe("github-copilot");
     }),
   );
@@ -269,16 +269,16 @@ describe("GitHubCopilotProvider", () => {
     const mockCreate = await getOpenAIMockCreate();
     mockCreate.mockResolvedValueOnce({ choices: [] });
 
-    const p = new GitHubCopilotProvider({ apiKey: "k" });
+    const p = createGitHubCopilotProvider({ apiKey: "k" });
     await expect(p.call("prompt", 100)).rejects.toThrow("Unexpected empty response from github-copilot");
   });
 });
 
 // ---------------------------------------------------------------------------
-// OpenRouterProvider
+// createOpenRouterProvider
 // ---------------------------------------------------------------------------
 
-describe("OpenRouterProvider", () => {
+describe("createOpenRouterProvider", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -289,7 +289,7 @@ describe("OpenRouterProvider", () => {
       choices: [{ message: { content: "Hello from OpenRouter" } }],
     });
 
-    const p = new OpenRouterProvider({ apiKey: "or_test" });
+    const p = createOpenRouterProvider({ apiKey: "or_test" });
     const result = await p.call("prompt", 256);
     expect(result).toBe("Hello from OpenRouter");
   });
@@ -297,7 +297,7 @@ describe("OpenRouterProvider", () => {
   it(
     "uses OPENROUTER_MODEL env",
     withEnv({ OPENROUTER_MODEL: "meta-llama/llama-3-70b" }, () => {
-      const p = new OpenRouterProvider({ apiKey: "k" });
+      const p = createOpenRouterProvider({ apiKey: "k" });
       expect(p.name).toBe("openrouter");
     }),
   );
@@ -308,7 +308,7 @@ describe("OpenRouterProvider", () => {
       choices: [{ message: { content: "" } }],
     });
 
-    const p = new OpenRouterProvider({ apiKey: "k" });
+    const p = createOpenRouterProvider({ apiKey: "k" });
     await expect(p.call("prompt", 100)).rejects.toThrow("Unexpected empty response from openrouter");
   });
 });
@@ -318,48 +318,47 @@ describe("OpenRouterProvider", () => {
 // ---------------------------------------------------------------------------
 
 describe("createProvider", () => {
-  const original = process.env["LLM_PROVIDER"];
+  const original = process.env.LLM_PROVIDER;
 
   afterEach(() => {
     if (original !== undefined) {
-      process.env["LLM_PROVIDER"] = original;
+      process.env.LLM_PROVIDER = original;
     } else {
-      delete process.env["LLM_PROVIDER"];
+      delete process.env.LLM_PROVIDER;
     }
   });
 
   it("defaults to anthropic when LLM_PROVIDER is not set", () => {
-    delete process.env["LLM_PROVIDER"];
+    delete process.env.LLM_PROVIDER;
     const p = createProvider();
     expect(p.name).toBe("anthropic");
-    expect(p).toBeInstanceOf(AnthropicProvider);
   });
 
   it("creates anthropic provider", () => {
     const p = createProvider("anthropic");
-    expect(p).toBeInstanceOf(AnthropicProvider);
+    expect(p.name).toBe("anthropic");
   });
 
   it("creates openai provider", () => {
     const p = createProvider("openai");
-    expect(p).toBeInstanceOf(OpenAIProvider);
+    expect(p.name).toBe("openai");
   });
 
   it("creates github-copilot provider", () => {
     const p = createProvider("github-copilot");
-    expect(p).toBeInstanceOf(GitHubCopilotProvider);
+    expect(p.name).toBe("github-copilot");
   });
 
   it("creates openrouter provider", () => {
     const p = createProvider("openrouter");
-    expect(p).toBeInstanceOf(OpenRouterProvider);
+    expect(p.name).toBe("openrouter");
   });
 
   it(
     "reads LLM_PROVIDER from env",
     withEnv({ LLM_PROVIDER: "openai" }, () => {
       const p = createProvider();
-      expect(p).toBeInstanceOf(OpenAIProvider);
+      expect(p.name).toBe("openai");
     }),
   );
 

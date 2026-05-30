@@ -7,16 +7,16 @@
  *   OPENAI_MODEL     - model name (default: gpt-4o)
  */
 
-import { OpenAICompatibleProvider } from "./openai-compatible";
+import { createOpenAICompatibleProvider } from "./openai-compatible";
+import type { LlmProvider } from "./types";
 
-export class OpenAIProvider extends OpenAICompatibleProvider {
-  readonly name = "openai";
-
-  constructor(opts?: { apiKey?: string; baseURL?: string; model?: string }) {
-    super({
-      apiKey: opts?.apiKey ?? process.env["OPENAI_API_KEY"],
-      baseURL: opts?.baseURL ?? process.env["OPENAI_BASE_URL"],
-      model: opts?.model ?? process.env["OPENAI_MODEL"] ?? "gpt-4o",
-    });
-  }
-}
+export const createOpenAIProvider = (opts?: {
+  apiKey?: string;
+  baseURL?: string;
+  model?: string;
+}): LlmProvider =>
+  createOpenAICompatibleProvider("openai", {
+    apiKey: opts?.apiKey ?? process.env.OPENAI_API_KEY,
+    baseURL: opts?.baseURL ?? process.env.OPENAI_BASE_URL,
+    model: opts?.model ?? process.env.OPENAI_MODEL ?? "gpt-4o",
+  });

@@ -10,24 +10,20 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { LlmProvider } from "./types";
 
-export class AnthropicProvider implements LlmProvider {
-  readonly name = "anthropic";
-  private readonly client: Anthropic;
-  private readonly model: string;
-
-  constructor(model?: string) {
-    this.model = model ?? process.env["ANTHROPIC_MODEL"] ?? "claude-sonnet-4-6";
-    this.client = new Anthropic();
-  }
-
-  async call(prompt: string, maxTokens: number): Promise<string> {
-    const message = await this.client.messages.create({
-      model: this.model,
-      max_tokens: maxTokens,
-      messages: [{ role: "user", content: prompt }],
-    });
-    const block = message.content.find((b) => b.type === "text");
-    if (!block) throw new Error("Unexpected response type from Anthropic");
-    return block.text;
-  }
-}
+export const createAnthropicProvider = (model?: string): LlmProvider => {
+  const mdl = model ?? process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
+  const client = new Anthropic();
+  return {
+    name: "anthropic",
+    call: async (prompt: string, maxTokens: number): Promise<string> => {
+      const message = await client.messages.create({
+        model: mdl,
+        max_tokens: maxTokens,
+        messages: [{ role: "user", content: prompt }],
+      });
+      const block = message.content.find((b) => b.type === "text");
+      if (!block) throw new Error("Unexpected response type from Anthropic");
+      return block.text;
+    },
+  };
+};

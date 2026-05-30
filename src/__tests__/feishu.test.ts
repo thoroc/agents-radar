@@ -5,13 +5,13 @@ import type { Highlights } from "../notify";
 const BASE_URL = "https://example.com/radar";
 
 describe("buildFeishuMessage", () => {
-  const origPagesUrl = process.env["PAGES_URL"];
+  const origPagesUrl = process.env.PAGES_URL;
 
   afterEach(() => {
     if (origPagesUrl !== undefined) {
-      process.env["PAGES_URL"] = origPagesUrl;
+      process.env.PAGES_URL = origPagesUrl;
     } else {
-      delete process.env["PAGES_URL"];
+      delete process.env.PAGES_URL;
     }
   });
 

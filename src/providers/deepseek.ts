@@ -1,13 +1,9 @@
-import { OpenAICompatibleProvider } from "./openai-compatible";
+import { createOpenAICompatibleProvider } from "./openai-compatible";
+import type { LlmProvider } from "./types";
 
-export class DeepSeekProvider extends OpenAICompatibleProvider {
-  readonly name = "deepseek";
-
-  constructor(apiKey: string, model?: string) {
-    super({
-      apiKey,
-      baseURL: "https://api.deepseek.com",
-      model: model ?? "deepseek-chat",
-    });
-  }
-}
+export const createDeepSeekProvider = (apiKey: string, model?: string): LlmProvider =>
+  createOpenAICompatibleProvider("deepseek", {
+    apiKey,
+    baseURL: "https://api.deepseek.com",
+    model: model ?? "deepseek-chat",
+  });

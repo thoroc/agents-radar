@@ -62,7 +62,7 @@ describe("formatItem", () => {
   it("truncates body at 300 chars with ellipsis", () => {
     const longBody = "A".repeat(400);
     const result = formatItem(makeItem({ body: longBody }));
-    expect(result).toContain("A".repeat(300) + "...");
+    expect(result).toContain(`${"A".repeat(300)}...`);
   });
 
   it("does not add ellipsis for body <= 300 chars", () => {

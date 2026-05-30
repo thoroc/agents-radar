@@ -5,17 +5,17 @@
  *   import { createProvider, type LlmProvider } from "./providers/index";
  */
 
-export { AnthropicProvider } from "./anthropic";
-export { GitHubCopilotProvider } from "./github-copilot";
-export { OpenAIProvider } from "./openai";
-export { OpenAICompatibleProvider } from "./openai-compatible";
-export { OpenRouterProvider } from "./openrouter";
+export { createAnthropicProvider } from "./anthropic";
+export { createGitHubCopilotProvider } from "./github-copilot";
+export { createOpenAIProvider } from "./openai";
+export { createOpenAICompatibleProvider } from "./openai-compatible";
+export { createOpenRouterProvider } from "./openrouter";
 export type { LlmProvider, ProviderFactory } from "./types";
 
-import { AnthropicProvider } from "./anthropic";
-import { GitHubCopilotProvider } from "./github-copilot";
-import { OpenAIProvider } from "./openai";
-import { OpenRouterProvider } from "./openrouter";
+import { createAnthropicProvider } from "./anthropic";
+import { createGitHubCopilotProvider } from "./github-copilot";
+import { createOpenAIProvider } from "./openai";
+import { createOpenRouterProvider } from "./openrouter";
 import type { LlmProvider, ProviderFactory } from "./types";
 
 // ---------------------------------------------------------------------------
@@ -23,10 +23,10 @@ import type { LlmProvider, ProviderFactory } from "./types";
 // ---------------------------------------------------------------------------
 
 const PROVIDERS = {
-  anthropic: () => new AnthropicProvider(),
-  openai: () => new OpenAIProvider(),
-  "github-copilot": () => new GitHubCopilotProvider(),
-  openrouter: () => new OpenRouterProvider(),
+  anthropic: () => createAnthropicProvider(),
+  openai: () => createOpenAIProvider(),
+  "github-copilot": () => createGitHubCopilotProvider(),
+  openrouter: () => createOpenRouterProvider(),
 } satisfies Record<string, ProviderFactory>;
 
 /** Supported provider name — derived from the PROVIDERS registry. */
@@ -45,7 +45,7 @@ export const VALID_PROVIDER_NAMES = Object.keys(PROVIDERS) as ProviderName[];
  * endpoint URLs.
  */
 export function createProvider(name?: ProviderName): LlmProvider {
-  const providerName = name ?? (process.env["LLM_PROVIDER"] as ProviderName | undefined) ?? "anthropic";
+  const providerName = name ?? (process.env.LLM_PROVIDER as ProviderName | undefined) ?? "anthropic";
 
   const factory = (PROVIDERS as Record<string, ProviderFactory | undefined>)[providerName];
   if (!factory) {

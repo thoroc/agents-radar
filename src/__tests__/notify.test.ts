@@ -4,13 +4,13 @@ import { buildMessage, type Highlights } from "../notify";
 const BASE_URL = "https://example.com/radar";
 
 describe("buildMessage", () => {
-  const origPagesUrl = process.env["PAGES_URL"];
+  const origPagesUrl = process.env.PAGES_URL;
 
   afterEach(() => {
     if (origPagesUrl !== undefined) {
-      process.env["PAGES_URL"] = origPagesUrl;
+      process.env.PAGES_URL = origPagesUrl;
     } else {
-      delete process.env["PAGES_URL"];
+      delete process.env.PAGES_URL;
     }
   });
 
@@ -59,7 +59,7 @@ describe("buildMessage", () => {
   });
 
   it("strips trailing slash from pagesUrl", () => {
-    const msg = buildMessage("2026-03-09", ["ai-cli"], BASE_URL + "/");
+    const msg = buildMessage("2026-03-09", ["ai-cli"], `${BASE_URL}/`);
     expect(msg).not.toContain("//feed.xml");
     expect(msg).toContain(`${BASE_URL}/feed.xml`);
   });

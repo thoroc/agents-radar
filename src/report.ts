@@ -16,7 +16,7 @@ export const LLM_TOKENS_TRENDING = 6144;
 export const LLM_TOKENS_WEB = 8192;
 export const LLM_TOKENS_ROLLUP = 8192;
 
-import { DeepSeekProvider } from "./providers/deepseek";
+import { createDeepSeekProvider } from "./providers/deepseek";
 import { createProvider, type LlmProvider } from "./providers/index";
 
 type CallLlmDeps = {
@@ -24,9 +24,9 @@ type CallLlmDeps = {
 };
 
 function getFallbackProvider(): LlmProvider | null {
-  const key = process.env["DEEPSEEK_API_KEY"];
+  const key = process.env.DEEPSEEK_API_KEY;
   if (!key) return null;
-  return new DeepSeekProvider(key);
+  return createDeepSeekProvider(key);
 }
 
 // ---------------------------------------------------------------------------
@@ -117,7 +117,7 @@ export const saveFile = (content: string, ...segments: string[]): string => {
 };
 
 export const autoGenFooter = (lang: Lang = "zh"): string => {
-  const digestRepo = process.env["DIGEST_REPO"] ?? "";
+  const digestRepo = process.env.DIGEST_REPO ?? "";
   if (!digestRepo) return "";
   return `\n\n---\n*${t(lang).autoGen} [agents-radar](https://github.com/${digestRepo})${lang === "en" ? "." : " 自动生成。"}*`;
 };
