@@ -10,10 +10,12 @@
  * Reads API keys from .env (local only).
  */
 
-import "dotenv/config";
+import dotenvx from "@dotenvx/dotenvx";
 import fs from "node:fs";
 import path from "node:path";
 import { callLlm } from "./report.ts";
+
+dotenvx.config({ quiet: true });
 
 const DIGESTS_DIR = "digests";
 const SOCIAL_DIR = "social";
