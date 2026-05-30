@@ -51,7 +51,7 @@ interface HfApiModel {
 // Fetch
 // ---------------------------------------------------------------------------
 
-export async function fetchHfData(): Promise<HfData> {
+export const fetchHfData = async (): Promise<HfData> => {
   try {
     // Fetch trending models (sorted by likes, recently modified)
     const params = new URLSearchParams({

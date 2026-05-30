@@ -37,7 +37,7 @@ export interface RadarConfig {
   languages: string[];
 }
 
-export function getEnabledLangs(langConfig?: string[]): string[] {
+export const getEnabledLangs = (langConfig?: string[]): string[] => {
   const envLangs = process.env["REPORT_LANGS"];
   if (envLangs) {
     return envLangs
@@ -92,11 +92,11 @@ const DEFAULT_OPENCLAW_PEERS: RepoConfig[] = [
 // Loader
 // ---------------------------------------------------------------------------
 
-export function toRepoConfig(e: RawRepoEntry): RepoConfig {
+export const toRepoConfig = (e: RawRepoEntry): RepoConfig => {
   return { id: e.id, repo: e.repo, name: e.name, ...(e.paginated ? { paginated: true } : {}) };
 }
 
-export function loadConfig(configPath = "config.yml"): RadarConfig {
+export const loadConfig = (configPath = "config.yml"): RadarConfig => {
   const resolved = path.resolve(configPath);
 
   if (!fs.existsSync(resolved)) {

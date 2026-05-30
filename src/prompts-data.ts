@@ -14,7 +14,7 @@ import type { LobstersData } from "./lobsters";
 import type { PhData } from "./ph";
 import type { TrendingData } from "./trending";
 import type { WebFetchResult } from "./web";
-export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: Lang = "zh"): string {
+export const buildTrendingPrompt = (data: TrendingData, dateStr: string, lang: Lang = "zh"): string => {
   const trendingSection =
     data.trendingFetchSuccess && data.trendingRepos.length > 0
       ? data.trendingRepos
@@ -147,7 +147,7 @@ ${searchSection}
 `;
 }
 
-export function buildWebReportPrompt(results: WebFetchResult[], dateStr: string, lang: Lang = "zh"): string {
+export const buildWebReportPrompt = (results: WebFetchResult[], dateStr: string, lang: Lang = "zh"): string => {
   const isAnyFirstRun = results.some((r) => r.isFirstRun);
 
   const siteSections = results
@@ -274,11 +274,11 @@ ${isAnyFirstRun ? "6. **内容格局总览** — 首次全量独有：汇总两�
 `;
 }
 
-export function buildWeeklyPrompt(
+export const buildWeeklyPrompt = (
   dailyDigests: Record<string, string>,
   weekStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const digestEntries = Object.entries(dailyDigests)
     .map(([date, content]) => `## ${date}\n\n${content}`)
     .join("\n\n---\n\n");
@@ -324,11 +324,11 @@ ${digestEntries}
 `;
 }
 
-export function buildMonthlyPrompt(
+export const buildMonthlyPrompt = (
   sourceDigests: Record<string, string>,
   monthStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const digestEntries = Object.entries(sourceDigests)
     .map(([key, content]) => `## ${key}\n\n${content}`)
     .join("\n\n---\n\n");
@@ -383,11 +383,11 @@ export interface ReportHighlights {
   [reportId: string]: string[];
 }
 
-export function buildHighlightsPrompt(
+export const buildHighlightsPrompt = (
   reportContents: Record<string, string>,
   lang: Lang = "zh",
   itemsPerReport: number = 6,
-): string {
+): string => {
   const sections = Object.entries(reportContents)
     .map(([id, content]) => `## [${id}]\n\n${content.slice(0, 2000)}`)
     .join("\n\n---\n\n");
@@ -431,7 +431,7 @@ ${sections}
 - 要具体：包含项目名、版本号、star 数等关键信息`;
 }
 
-export function buildHnPrompt(data: HnData, dateStr: string, lang: Lang = "zh"): string {
+export const buildHnPrompt = (data: HnData, dateStr: string, lang: Lang = "zh"): string => {
   const storiesText = data.stories
     .map((s, i) =>
       lang === "en"
@@ -515,7 +515,7 @@ ${storiesText}
 `;
 }
 
-export function buildPhPrompt(data: PhData, dateStr: string, lang: Lang = "zh"): string {
+export const buildPhPrompt = (data: PhData, dateStr: string, lang: Lang = "zh"): string => {
   const productsText = data.products
     .map((p, i) =>
       lang === "en"
@@ -605,7 +605,7 @@ ${productsText}
 // ArXiv prompt
 // ---------------------------------------------------------------------------
 
-export function buildArxivPrompt(data: ArxivData, dateStr: string, lang: Lang = "zh"): string {
+export const buildArxivPrompt = (data: ArxivData, dateStr: string, lang: Lang = "zh"): string => {
   const papersText = data.papers
     .map((p, i) => {
       const authors =
@@ -692,7 +692,7 @@ ${papersText}
 // Hugging Face prompt
 // ---------------------------------------------------------------------------
 
-export function buildHfPrompt(data: HfData, dateStr: string, lang: Lang = "zh"): string {
+export const buildHfPrompt = (data: HfData, dateStr: string, lang: Lang = "zh"): string => {
   const modelsText = data.models
     .map((m, i) =>
       lang === "en"
@@ -782,12 +782,12 @@ ${modelsText}
 // Community prompt (Dev.to + Lobste.rs combined)
 // ---------------------------------------------------------------------------
 
-export function buildCommunityPrompt(
+export const buildCommunityPrompt = (
   devto: DevtoData,
   lobsters: LobstersData,
   dateStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const devtoText =
     devto.articles.length > 0
       ? devto.articles

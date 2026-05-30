@@ -69,7 +69,7 @@ const ENABLED_LANGS = getEnabledLangs(CONFIG_LANGS);
 // Helpers
 // ---------------------------------------------------------------------------
 
-function requireEnv(name: string): string {
+const requireEnv = (name: string): string => {
   const value = process.env[name];
   if (!value) throw new Error(`Missing required environment variable: ${name}`);
   return value;
@@ -79,7 +79,7 @@ function requireEnv(name: string): string {
 // Phase 1: Fetch
 // ---------------------------------------------------------------------------
 
-async function fetchAllData(
+const fetchAllData = async (
   since: Date,
   webState: WebState,
 ): Promise<{
@@ -93,7 +93,7 @@ async function fetchAllData(
   hfData: HfData;
   devtoData: DevtoData;
   lobstersData: LobstersData;
-}> {
+}> => {
   const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
   console.error(
     `  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web, hn, ph, arxiv, hf, devto, lobsters`,
@@ -189,7 +189,7 @@ async function fetchAllData(
 // ---------------------------------------------------------------------------
 
 /** Call LLM with logging and error fallback. */
-async function summarize(id: string, prompt: string, failMsg: string, maxTokens?: number): Promise<string> {
+const summarize = async (id: string, prompt: string, failMsg: string, maxTokens?: number): Promise<string> => {
   console.error(`  [${id}] Calling LLM for summary...`);
   try {
     return await callLlm(prompt, maxTokens);
@@ -200,12 +200,12 @@ async function summarize(id: string, prompt: string, failMsg: string, maxTokens?
 }
 
 /** Summarize a repo's activity, returning a RepoDigest. Skips LLM if no data. */
-async function summarizeRepo(
+const summarizeRepo = async (
   { cfg, issues, prs, releases }: RepoFetch,
   prompt: string,
   noActivityMsg: string,
   failMsg: string,
-): Promise<RepoDigest> {
+): Promise<RepoDigest> => {
   if (!issues.length && !prs.length && !releases.length) {
     console.error(`  [${cfg.id}] No activity, skipping LLM call`);
     return { config: cfg, issues, prs, releases, summary: noActivityMsg };
@@ -214,7 +214,7 @@ async function summarizeRepo(
   return { config: cfg, issues, prs, releases, summary };
 }
 
-async function generateSummaries(
+const generateSummaries = async (
   fetchedCli: RepoFetch[],
   fetchedOpenclaw: RepoFetch,
   skillsData: { prs: GitHubItem[]; issues: GitHubItem[] },
@@ -228,7 +228,7 @@ async function generateSummaries(
   skillsSummary: string;
   peerDigests: RepoDigest[];
   trendingSummary: string;
-}> {
+}> => {
   const s = t(lang);
   const noActivity = s.noActivity;
   const fail = s.summaryFailed;
@@ -290,7 +290,7 @@ async function generateSummaries(
 // Main
 // ---------------------------------------------------------------------------
 
-async function main(): Promise<void> {
+const main = async (): Promise<void> => {
   requireEnv("GITHUB_TOKEN");
 
   const now = new Date();

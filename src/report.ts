@@ -38,7 +38,7 @@ const LLM_CONCURRENCY = 5;
 let llmSlots = LLM_CONCURRENCY;
 const llmQueue: Array<() => void> = [];
 
-function acquireSlot(): Promise<void> {
+const acquireSlot = (): Promise<void> => {
   if (llmSlots > 0) {
     llmSlots--;
     return Promise.resolve();
@@ -46,7 +46,7 @@ function acquireSlot(): Promise<void> {
   return new Promise((resolve) => llmQueue.push(resolve));
 }
 
-function releaseSlot(): void {
+const releaseSlot = (): void => {
   const next = llmQueue.shift();
   if (next) {
     next();
@@ -62,15 +62,15 @@ function releaseSlot(): void {
 const MAX_RETRIES = 3;
 const RETRY_BASE_MS = 5_000; // 5 s, 10 s, 20 s
 
-export function is429(err: unknown): boolean {
+export const is429 = (err: unknown): boolean => {
   return (err as { status?: number })?.status === 429 || String(err).includes("429");
 }
 
-function is403(err: unknown): boolean {
+const is403 = (err: unknown): boolean => {
   return (err as { status?: number })?.status === 403 || String(err).includes("permission_error");
 }
 
-export async function callLlm(prompt: string, maxTokens = LLM_TOKENS_DEFAULT): Promise<string> {
+export const callLlm = async (prompt: string, maxTokens = LLM_TOKENS_DEFAULT): Promise<string> => {
   for (let attempt = 0; ; attempt++) {
     await acquireSlot();
     let released = false;
@@ -100,14 +100,14 @@ export async function callLlm(prompt: string, maxTokens = LLM_TOKENS_DEFAULT): P
 // File output
 // ---------------------------------------------------------------------------
 
-export function saveFile(content: string, ...segments: string[]): string {
+export const saveFile = (content: string, ...segments: string[]): string => {
   const filepath = path.join("digests", ...segments);
   fs.mkdirSync(path.dirname(filepath), { recursive: true });
   fs.writeFileSync(filepath, content, "utf-8");
   return filepath;
 }
 
-export function autoGenFooter(lang: Lang = "zh"): string {
+export const autoGenFooter = (lang: Lang = "zh"): string => {
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
   if (!digestRepo) return "";
   return `\n\n---\n*${t(lang).autoGen} [agents-radar](https://github.com/${digestRepo})${lang === "en" ? "." : " 自动生成。"}*`;

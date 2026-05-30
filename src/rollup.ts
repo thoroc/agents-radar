@@ -26,7 +26,7 @@ const ROLLUP_SOURCES = ["ai-cli", "ai-agents", "ai-trending", "ai-hn", "ai-web"]
 // Helpers
 // ---------------------------------------------------------------------------
 
-function getDateDirs(): string[] {
+const getDateDirs = (): string[] => {
   if (!fs.existsSync(DIGESTS_DIR)) return [];
   return fs
     .readdirSync(DIGESTS_DIR)
@@ -36,7 +36,7 @@ function getDateDirs(): string[] {
 }
 
 /** Read and truncate all daily digest files for a date. Returns null if none found. */
-function readDailyDigest(date: string): string | null {
+const readDailyDigest = (date: string): string | null => {
   const parts: string[] = [];
   for (const type of ROLLUP_SOURCES) {
     const p = path.join(DIGESTS_DIR, date, `${type}.md`);
@@ -50,7 +50,7 @@ function readDailyDigest(date: string): string | null {
 }
 
 /** Read a weekly report file. Returns null if not found. */
-function readWeeklyDigest(date: string): string | null {
+const readWeeklyDigest = (date: string): string | null => {
   const p = path.join(DIGESTS_DIR, date, "ai-weekly.md");
   if (!fs.existsSync(p)) return null;
   const content = fs.readFileSync(p, "utf-8");
@@ -58,7 +58,7 @@ function readWeeklyDigest(date: string): string | null {
 }
 
 /** Format a date as ISO week string, e.g. "2026-W10". */
-export function toWeekStr(date: Date): string {
+export const toWeekStr = (date: Date): string => {
   // ISO week: week containing the first Thursday of the year
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
@@ -71,13 +71,13 @@ export function toWeekStr(date: Date): string {
 // Highlights generation for rollup reports
 // ---------------------------------------------------------------------------
 
-async function generateRollupHighlights(
+const generateRollupHighlights = async (
   zhContent: string,
   enContent: string,
   reportId: string,
   dateStr: string,
   itemsPerReport: number,
-): Promise<void> {
+): Promise<void> => {
   console.error(`  [${reportId}] Generating highlights for Telegram...`);
 
   // Read existing highlights (e.g. from daily digest) so we merge instead of overwrite
@@ -126,7 +126,7 @@ async function generateRollupHighlights(
 // Weekly rollup
 // ---------------------------------------------------------------------------
 
-export async function runWeeklyRollup(): Promise<void> {
+export const runWeeklyRollup = async (): Promise<void> => {
   const now = new Date();
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
@@ -195,7 +195,7 @@ export async function runWeeklyRollup(): Promise<void> {
 // Monthly rollup
 // ---------------------------------------------------------------------------
 
-export async function runMonthlyRollup(): Promise<void> {
+export const runMonthlyRollup = async (): Promise<void> => {
   const now = new Date();
   const cstDate = new Date(now.getTime() + 8 * 60 * 60 * 1000);
   // Monthly report covers the PREVIOUS month

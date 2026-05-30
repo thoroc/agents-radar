@@ -55,7 +55,7 @@ interface DevtoApiArticle {
 // Fetch
 // ---------------------------------------------------------------------------
 
-export async function fetchDevtoData(): Promise<DevtoData> {
+export const fetchDevtoData = async (): Promise<DevtoData> => {
   const seen = new Map<number, DevtoArticle>();
 
   try {

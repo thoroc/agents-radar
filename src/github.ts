@@ -69,7 +69,7 @@ export interface RepoFetch {
 /** Maximum pages to fetch for paginated repos (100 items/page). */
 const MAX_PAGES = 5;
 
-function headers(): Record<string, string> {
+const headers = (): Record<string, string> => {
   return {
     Authorization: `Bearer ${process.env["GITHUB_TOKEN"] ?? ""}`,
     Accept: "application/vnd.github+json",
@@ -77,7 +77,7 @@ function headers(): Record<string, string> {
   };
 }
 
-async function githubGet<T>(url: string, params: Record<string, string> = {}): Promise<T> {
+const githubGet = async <T>(url: string, params: Record<string, string> = {}): Promise<T> => {
   const u = new URL(url);
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
   const resp = await fetch(u.toString(), { headers: headers() });
@@ -85,12 +85,12 @@ async function githubGet<T>(url: string, params: Record<string, string> = {}): P
   return resp.json() as Promise<T>;
 }
 
-async function fetchItemPage(
+const fetchItemPage = async (
   repo: string,
   itemType: "issues" | "pulls",
   since: Date,
   page: number,
-): Promise<GitHubItem[]> {
+): Promise<GitHubItem[]> => {
   const params: Record<string, string> = {
     state: "all",
     sort: "updated",
@@ -114,11 +114,11 @@ async function fetchItemPage(
  * Paginated repos: keeps fetching until a page ends before `since` or MAX_PAGES reached.
  * Regular repos: single page of 50.
  */
-export async function fetchRecentItems(
+export const fetchRecentItems = async (
   cfg: RepoConfig,
   itemType: "issues" | "pulls",
   since: Date,
-): Promise<GitHubItem[]> {
+): Promise<GitHubItem[]> => {
   if (!cfg.paginated) {
     const params: Record<string, string> = {
       state: "all",
@@ -146,14 +146,14 @@ export async function fetchRecentItems(
   return all;
 }
 
-export async function fetchRecentReleases(repo: string, since: Date): Promise<GitHubRelease[]> {
+export const fetchRecentReleases = async (repo: string, since: Date): Promise<GitHubRelease[]> => {
   const releases = await githubGet<GitHubRelease[]>(`https://api.github.com/repos/${repo}/releases`, {
     per_page: "10",
   });
   return releases.filter((r) => new Date(r.published_at) >= since);
 }
 
-export async function ensureLabel(name: string, color: string): Promise<void> {
+export const ensureLabel = async (name: string, color: string): Promise<void> => {
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
   const resp = await fetch(`https://api.github.com/repos/${digestRepo}/labels`, {
     method: "POST",
@@ -170,7 +170,7 @@ export async function ensureLabel(name: string, color: string): Promise<void> {
  * PRs sorted by popularity (comment count); issues sorted by comments.
  * No `since` filter — we want all-time hot items, not just the last 24 h.
  */
-export async function fetchSkillsData(repo: string): Promise<{ prs: GitHubItem[]; issues: GitHubItem[] }> {
+export const fetchSkillsData = async (repo: string): Promise<{ prs: GitHubItem[]; issues: GitHubItem[] }> => {
   const [prs, issuesRaw] = await Promise.all([
     githubGet<GitHubItem[]>(`https://api.github.com/repos/${repo}/pulls`, {
       state: "open",
@@ -218,7 +218,7 @@ const LABEL_COLORS: Record<string, string> = {
  * Inserts a zero-width space in "github.com" so GitHub's auto-linker
  * won't create "mentioned this issue" notifications on external repos.
  */
-function neutralizeGitHubRefs(text: string): string {
+const neutralizeGitHubRefs = (text: string): string => {
   return (
     text
       // Prevent "mentioned this issue" cross-references
@@ -232,7 +232,7 @@ function neutralizeGitHubRefs(text: string): string {
  * Close open issues created more than `days` days ago.
  * Uses pagination to handle large backlogs. Returns the number of issues closed.
  */
-export async function closeStaleIssues(days: number): Promise<number> {
+export const closeStaleIssues = async (days: number): Promise<number> => {
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
   if (!digestRepo) return 0;
   const cutoff = new Date(Date.now() - days * 86_400_000);
@@ -265,7 +265,7 @@ export async function closeStaleIssues(days: number): Promise<number> {
   return closed;
 }
 
-export async function createGitHubIssue(title: string, body: string, label: string): Promise<string> {
+export const createGitHubIssue = async (title: string, body: string, label: string): Promise<string> => {
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
   body = neutralizeGitHubRefs(body);
   if (body.length > GITHUB_ISSUE_BODY_LIMIT) {

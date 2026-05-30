@@ -49,7 +49,7 @@ const SEARCH_QUERIES = [
 // GitHub Trending HTML fetch
 // ---------------------------------------------------------------------------
 
-async function fetchGitHubTrending(): Promise<{ repos: TrendingRepo[]; success: boolean }> {
+const fetchGitHubTrending = async (): Promise<{ repos: TrendingRepo[]; success: boolean }> => {
   try {
     const resp = await fetch("https://github.com/trending?since=daily&spoken_language_code=", {
       headers: {
@@ -141,7 +141,7 @@ interface SearchApiResponse {
   items: SearchApiItem[];
 }
 
-async function searchAiRepos(sevenDaysAgo: string): Promise<SearchRepo[]> {
+const searchAiRepos = async (sevenDaysAgo: string): Promise<SearchRepo[]> => {
   const token = process.env["GITHUB_TOKEN"] ?? "";
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
@@ -193,7 +193,7 @@ async function searchAiRepos(sevenDaysAgo: string): Promise<SearchRepo[]> {
 // Export
 // ---------------------------------------------------------------------------
 
-export async function fetchTrendingData(): Promise<TrendingData> {
+export const fetchTrendingData = async (): Promise<TrendingData> => {
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
   const [{ repos: trendingRepos, success }, searchRepos] = await Promise.all([

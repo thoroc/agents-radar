@@ -21,7 +21,7 @@ export interface RepoDigest {
 // Formatting
 // ---------------------------------------------------------------------------
 
-export function formatItem(item: GitHubItem, lang: Lang = "zh"): string {
+export const formatItem = (item: GitHubItem, lang: Lang = "zh"): string => {
   const labels = item.labels.map((l) => l.name).join(", ");
   const labelStr = labels ? ` [${labels}]` : "";
   const body = (item.body ?? "").replace(/\n/g, " ").trim().slice(0, 300);
@@ -57,11 +57,11 @@ const CLI_ISSUE_LIMIT = 30;
 const CLI_PR_LIMIT = 20;
 
 /** Sort by comment count desc, take top N. */
-export function topN(items: GitHubItem[], n: number): GitHubItem[] {
+export const topN = (items: GitHubItem[], n: number): GitHubItem[] => {
   return [...items].sort((a, b) => b.comments - a.comments).slice(0, n);
 }
 
-export function sampleNote(total: number, sampled: number, lang: Lang = "zh"): string {
+export const sampleNote = (total: number, sampled: number, lang: Lang = "zh"): string => {
   if (lang === "en") {
     return total > sampled
       ? `(Total: ${total} items; showing top ${sampled} by comment count)`
@@ -74,14 +74,14 @@ export function sampleNote(total: number, sampled: number, lang: Lang = "zh"): s
 // Prompts
 // ---------------------------------------------------------------------------
 
-export function buildCliPrompt(
+export const buildCliPrompt = (
   cfg: RepoConfig,
   issues: GitHubItem[],
   prs: GitHubItem[],
   releases: GitHubRelease[],
   dateStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const sampledIssues = topN(issues, CLI_ISSUE_LIMIT);
   const sampledPrs = topN(prs, CLI_PR_LIMIT);
 
@@ -157,7 +157,7 @@ ${prsText}
 const PEER_ISSUE_LIMIT = 30;
 const PEER_PR_LIMIT = 20;
 
-export function buildPeerPrompt(
+export const buildPeerPrompt = (
   cfg: RepoConfig,
   issues: GitHubItem[],
   prs: GitHubItem[],
@@ -166,7 +166,7 @@ export function buildPeerPrompt(
   issueLimit = PEER_ISSUE_LIMIT,
   prLimit = PEER_PR_LIMIT,
   lang: Lang = "zh",
-): string {
+): string => {
   const totalIssues = issues.length;
   const totalPrs = prs.length;
 
@@ -255,12 +255,12 @@ ${prsText}
 `;
 }
 
-export function buildPeersComparisonPrompt(
+export const buildPeersComparisonPrompt = (
   openclawDigest: RepoDigest,
   peerDigests: RepoDigest[],
   dateStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "过去24小时无活动。";
 
   const openclawSection =
@@ -325,12 +325,12 @@ ${peerSections}
 `;
 }
 
-export function buildSkillsPrompt(
+export const buildSkillsPrompt = (
   prs: GitHubItem[],
   issues: GitHubItem[],
   dateStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const topPrs = topN(prs, 20);
   const topIssues = topN(issues, 15);
 
@@ -387,7 +387,7 @@ ${issuesText}
 `;
 }
 
-export function buildComparisonPrompt(digests: RepoDigest[], dateStr: string, lang: Lang = "zh"): string {
+export const buildComparisonPrompt = (digests: RepoDigest[], dateStr: string, lang: Lang = "zh"): string => {
   const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "过去24小时无活动。";
 
   const sections = digests

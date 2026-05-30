@@ -43,13 +43,13 @@ const REQUEST_DELAY_MS = 3000;
 // XML helpers (lightweight, no dependency)
 // ---------------------------------------------------------------------------
 
-function extractTag(xml: string, tag: string): string {
+const extractTag = (xml: string, tag: string): string => {
   const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`);
   const m = xml.match(re);
   return m ? m[1]!.trim() : "";
 }
 
-function extractAllTags(xml: string, tag: string): string[] {
+const extractAllTags = (xml: string, tag: string): string[] => {
   const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, "g");
   const results: string[] = [];
   let m: RegExpExecArray | null;
@@ -59,7 +59,7 @@ function extractAllTags(xml: string, tag: string): string[] {
   return results;
 }
 
-function extractAttr(xml: string, tag: string, attr: string): string[] {
+const extractAttr = (xml: string, tag: string, attr: string): string[] => {
   const re = new RegExp(`<${tag}[^>]*${attr}="([^"]*)"[^>]*/?>`, "g");
   const results: string[] = [];
   let m: RegExpExecArray | null;
@@ -69,7 +69,7 @@ function extractAttr(xml: string, tag: string, attr: string): string[] {
   return results;
 }
 
-function extractLinkHref(xml: string, rel: string): string {
+const extractLinkHref = (xml: string, rel: string): string => {
   const re = new RegExp(`<link[^>]*rel="${rel}"[^>]*href="([^"]*)"[^>]*/?>`, "g");
   const m = re.exec(xml);
   return m ? m[1]! : "";
@@ -79,7 +79,7 @@ function extractLinkHref(xml: string, rel: string): string {
 // Parse
 // ---------------------------------------------------------------------------
 
-function parseEntry(entryXml: string): ArxivPaper | null {
+const parseEntry = (entryXml: string): ArxivPaper | null => {
   const id = extractTag(entryXml, "id");
   if (!id) return null;
 
@@ -100,11 +100,11 @@ function parseEntry(entryXml: string): ArxivPaper | null {
 // Fetch
 // ---------------------------------------------------------------------------
 
-async function sleep(ms: number): Promise<void> {
+const sleep = async (ms: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function fetchArxivData(): Promise<ArxivData> {
+export const fetchArxivData = async (): Promise<ArxivData> => {
   const seen = new Map<string, ArxivPaper>();
 
   for (let i = 0; i < CATEGORIES.length; i++) {
