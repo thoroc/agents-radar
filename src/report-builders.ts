@@ -3,7 +3,7 @@
  */
 
 import type { RepoConfig, RepoFetch } from "./github";
-import { type Lang, t } from "./i18n";
+import { type Locale, t } from "./i18n";
 import type { RepoDigest } from "./prompts";
 
 // ---------------------------------------------------------------------------
@@ -18,7 +18,7 @@ export const buildCliReportContent = (
   dateStr: string,
   footer: string,
   skillsRepo: string,
-  lang: Lang = "zh",
+  lang: Locale = "zh",
 ): string => {
   const repoLinks =
     cliDigests.map((d) => `- [${d.config.name}](https://github.com/${d.config.repo})`).join("\n") +
@@ -78,7 +78,7 @@ export const buildOpenclawReportContent = (
   footer: string,
   openclaw: RepoConfig,
   openclawPeers: RepoConfig[],
-  lang: Lang = "zh",
+  lang: Locale = "zh",
 ): string => {
   const { issues, prs } = fetchedOpenclaw;
 

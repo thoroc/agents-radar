@@ -26,7 +26,7 @@ import {
 } from "./github";
 import { fetchHfData, type HfData } from "./hf";
 import { fetchHnData, type HnData } from "./hn";
-import { type Lang, t } from "./i18n";
+import { type Locale, t } from "./i18n";
 import { fetchLobstersData, type LobstersData } from "./lobsters";
 import { fetchPhData, type PhData } from "./ph";
 import {
@@ -214,7 +214,7 @@ const generateSummaries = async (
   fetchedPeers: RepoFetch[],
   trendingData: TrendingData,
   dateStr: string,
-  lang: Lang = "zh",
+  lang: Locale = "zh",
 ): Promise<{
   cliDigests: RepoDigest[];
   openclawSummary: string;
@@ -300,9 +300,9 @@ const main = async (): Promise<void> => {
   const since = new Date(now.getTime() - 24 * 60 * 60 * 1000);
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
-  const digestRepo = process.env["DIGEST_REPO"] ?? "";
+  const digestRepo = process.env.DIGEST_REPO ?? "";
 
-  const providerName = process.env["LLM_PROVIDER"] ?? "anthropic";
+  const providerName = process.env.LLM_PROVIDER ?? "anthropic";
   console.error(`[${now.toISOString()}] Starting digest | provider: ${providerName}`);
 
   // 1. Fetch all data in parallel
@@ -360,7 +360,7 @@ const main = async (): Promise<void> => {
 
   for (const lang of ENABLED_LANGS) {
     const s = summariesByLang[lang]!;
-    const ft = autoGenFooter(lang as Lang);
+    const ft = autoGenFooter(lang as Locale);
     const suffix = lang === "zh" ? "" : `.${lang}`;
 
     cliContent[lang] = buildCliReportContent(
@@ -371,7 +371,7 @@ const main = async (): Promise<void> => {
       dateStr,
       ft,
       CLAUDE_SKILLS_REPO,
-      lang as Lang,
+      lang as Locale,
     );
     openclawContent[lang] = buildOpenclawReportContent(
       fetchedOpenclaw,
@@ -383,7 +383,7 @@ const main = async (): Promise<void> => {
       ft,
       OPENCLAW,
       OPENCLAW_PEERS,
-      lang as Lang,
+      lang as Locale,
     );
 
     console.error(`  Saved ${saveFile(cliContent[lang], dateStr, `ai-cli${suffix}.md`)}`);
@@ -398,8 +398,8 @@ const main = async (): Promise<void> => {
       utcStr,
       dateStr,
       digestRepo,
-      autoGenFooter(lang as Lang),
-      lang as Lang,
+      autoGenFooter(lang as Locale),
+      lang as Locale,
     );
   }
 

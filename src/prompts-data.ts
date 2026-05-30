@@ -9,12 +9,12 @@ import type { ArxivData } from "./arxiv";
 import type { DevtoData } from "./devto";
 import type { HfData } from "./hf";
 import type { HnData } from "./hn";
-import type { Lang } from "./i18n";
 import type { LobstersData } from "./lobsters";
 import type { PhData } from "./ph";
 import type { TrendingData } from "./trending";
+import type { PromptLang } from "./types";
 import type { WebFetchResult } from "./web";
-export const buildTrendingPrompt = (data: TrendingData, dateStr: string, lang: Lang = "zh"): string => {
+export const buildTrendingPrompt = (data: TrendingData, dateStr: string, lang: PromptLang = "zh"): string => {
   const trendingSection =
     data.trendingFetchSuccess && data.trendingRepos.length > 0
       ? data.trendingRepos
@@ -150,7 +150,7 @@ ${searchSection}
 export const buildWebReportPrompt = (
   results: WebFetchResult[],
   dateStr: string,
-  lang: Lang = "zh",
+  lang: PromptLang = "zh",
 ): string => {
   const isAnyFirstRun = results.some((r) => r.isFirstRun);
 
@@ -281,7 +281,7 @@ ${isAnyFirstRun ? "6. **内容格局总览** — 首次全量独有：汇总两�
 export const buildWeeklyPrompt = (
   dailyDigests: Record<string, string>,
   weekStr: string,
-  lang: Lang = "zh",
+  lang: PromptLang = "zh",
 ): string => {
   const digestEntries = Object.entries(dailyDigests)
     .map(([date, content]) => `## ${date}\n\n${content}`)
@@ -331,7 +331,7 @@ ${digestEntries}
 export const buildMonthlyPrompt = (
   sourceDigests: Record<string, string>,
   monthStr: string,
-  lang: Lang = "zh",
+  lang: PromptLang = "zh",
 ): string => {
   const digestEntries = Object.entries(sourceDigests)
     .map(([key, content]) => `## ${key}\n\n${content}`)
@@ -389,7 +389,7 @@ export interface ReportHighlights {
 
 export const buildHighlightsPrompt = (
   reportContents: Record<string, string>,
-  lang: Lang = "zh",
+  lang: PromptLang = "zh",
   itemsPerReport: number = 6,
 ): string => {
   const sections = Object.entries(reportContents)
@@ -435,7 +435,7 @@ ${sections}
 - 要具体：包含项目名、版本号、star 数等关键信息`;
 };
 
-export const buildHnPrompt = (data: HnData, dateStr: string, lang: Lang = "zh"): string => {
+export const buildHnPrompt = (data: HnData, dateStr: string, lang: PromptLang = "zh"): string => {
   const storiesText = data.stories
     .map((s, i) =>
       lang === "en"
@@ -519,7 +519,7 @@ ${storiesText}
 `;
 };
 
-export const buildPhPrompt = (data: PhData, dateStr: string, lang: Lang = "zh"): string => {
+export const buildPhPrompt = (data: PhData, dateStr: string, lang: PromptLang = "zh"): string => {
   const productsText = data.products
     .map((p, i) =>
       lang === "en"
@@ -609,11 +609,11 @@ ${productsText}
 // ArXiv prompt
 // ---------------------------------------------------------------------------
 
-export const buildArxivPrompt = (data: ArxivData, dateStr: string, lang: Lang = "zh"): string => {
+export const buildArxivPrompt = (data: ArxivData, dateStr: string, lang: PromptLang = "zh"): string => {
   const papersText = data.papers
     .map((p, i) => {
       const authors =
-        p.authors.length > 3 ? p.authors.slice(0, 3).join(", ") + " et al." : p.authors.join(", ");
+        p.authors.length > 3 ? `${p.authors.slice(0, 3).join(", ")} et al.` : p.authors.join(", ");
       const cats = p.categories.slice(0, 3).join(", ");
       return lang === "en"
         ? `${i + 1}. **${p.title}**\n` +
@@ -696,7 +696,7 @@ ${papersText}
 // Hugging Face prompt
 // ---------------------------------------------------------------------------
 
-export const buildHfPrompt = (data: HfData, dateStr: string, lang: Lang = "zh"): string => {
+export const buildHfPrompt = (data: HfData, dateStr: string, lang: PromptLang = "zh"): string => {
   const modelsText = data.models
     .map((m, i) =>
       lang === "en"
@@ -790,7 +790,7 @@ export const buildCommunityPrompt = (
   devto: DevtoData,
   lobsters: LobstersData,
   dateStr: string,
-  lang: Lang = "zh",
+  lang: PromptLang = "zh",
 ): string => {
   const devtoText =
     devto.articles.length > 0

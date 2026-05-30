@@ -5,7 +5,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { sleep } from "./date";
-import { type Lang, t } from "./i18n";
+import { type Locale, t } from "./i18n";
 
 // ---------------------------------------------------------------------------
 // LLM token budget constants
@@ -116,7 +116,7 @@ export const saveFile = (content: string, ...segments: string[]): string => {
   return filepath;
 };
 
-export const autoGenFooter = (lang: Lang = "zh"): string => {
+export const autoGenFooter = (lang: Locale = "zh"): string => {
   const digestRepo = process.env.DIGEST_REPO ?? "";
   if (!digestRepo) return "";
   return `\n\n---\n*${t(lang).autoGen} [agents-radar](https://github.com/${digestRepo})${lang === "en" ? "." : " 自动生成。"}*`;

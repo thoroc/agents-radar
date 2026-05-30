@@ -17,7 +17,7 @@ import { notifyLabel } from "./notify";
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 
 const getWebhookUrls = (): string[] => {
-  const raw = process.env["FEISHU_WEBHOOK_URLS"] ?? process.env["FEISHU_WEBHOOK_URL"] ?? "";
+  const raw = process.env.FEISHU_WEBHOOK_URLS ?? process.env.FEISHU_WEBHOOK_URL ?? "";
   return raw
     .split(",")
     .map((u) => u.trim())
@@ -62,7 +62,7 @@ export const buildFeishuMessage = (
   pagesUrl?: string,
   highlights?: Highlights | null,
 ): string => {
-  const PAGES_URL = (pagesUrl ?? process.env["PAGES_URL"] ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
+  const PAGES_URL = (pagesUrl ?? process.env.PAGES_URL ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
   const baseReports = reports.filter((r) => !r.endsWith("-en"));
   const isWeekly = baseReports.includes("ai-weekly");
   const isMonthly = baseReports.includes("ai-monthly");

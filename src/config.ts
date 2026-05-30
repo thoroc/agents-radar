@@ -38,7 +38,7 @@ export interface RadarConfig {
 }
 
 export const getEnabledLangs = (langConfig?: string[]): string[] => {
-  const envLangs = process.env["REPORT_LANGS"];
+  const envLangs = process.env.REPORT_LANGS;
   if (envLangs) {
     return envLangs
       .split(",")

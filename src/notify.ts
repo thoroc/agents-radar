@@ -11,7 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { type Lang, t } from "./i18n";
+import { type Locale, t } from "./i18n";
 import type { ReportHighlights } from "./prompts-data";
 
 export interface Highlights {
@@ -21,7 +21,7 @@ export interface Highlights {
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 
-export const notifyLabel = (id: string, lang: Lang = "zh"): string => {
+export const notifyLabel = (id: string, lang: Locale = "zh"): string => {
   const s = t(lang);
   switch (id) {
     case "ai-cli":
@@ -56,8 +56,8 @@ const escapeHtml = (s: string): string => {
 };
 
 const sendTelegram = async (text: string): Promise<void> => {
-  const BOT_TOKEN = process.env["TELEGRAM_BOT_TOKEN"] ?? "";
-  const CHAT_ID = process.env["TELEGRAM_CHAT_ID"] || "@agents_radar";
+  const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN ?? "";
+  const CHAT_ID = process.env.TELEGRAM_CHAT_ID || "@agents_radar";
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
   const res = await fetch(url, {
     method: "POST",
@@ -81,7 +81,7 @@ export const buildMessage = (
   pagesUrl?: string,
   highlights?: Highlights | null,
 ): string => {
-  const PAGES_URL = (pagesUrl ?? process.env["PAGES_URL"] ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
+  const PAGES_URL = (pagesUrl ?? process.env.PAGES_URL ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
   const baseReports = reports.filter((r) => !r.endsWith("-en"));
   const isWeekly = baseReports.includes("ai-weekly");
   const isMonthly = baseReports.includes("ai-monthly");
@@ -126,7 +126,7 @@ export const buildMessage = (
 };
 
 const main = async (): Promise<void> => {
-  const BOT_TOKEN = process.env["TELEGRAM_BOT_TOKEN"] ?? "";
+  const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN ?? "";
   if (!BOT_TOKEN) {
     console.error("[notify] TELEGRAM_BOT_TOKEN not set — skipping.");
     return;

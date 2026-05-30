@@ -1,6 +1,6 @@
-import fs from "fs";
+import fs from "node:fs";
+import path from "node:path";
 import { marked } from "marked";
-import path from "path";
 import { t } from "./i18n";
 
 const reportLabel = (id: string): string => {
@@ -129,7 +129,7 @@ const getReportContent = async (date: string, report: string): Promise<ReportCon
       .replace(/<[^>]+>/g, "")
       .replace(/\s+/g, " ")
       .trim();
-    const summary = textOnly.length > 500 ? textOnly.slice(0, 500) + "..." : textOnly;
+    const summary = textOnly.length > 500 ? `${textOnly.slice(0, 500)}...` : textOnly;
 
     // Escape CDATA end marker to prevent injection
     const safeHtml = html.replace(/]]>/g, "]]]]><![CDATA[");
@@ -166,7 +166,7 @@ const main = async (): Promise<void> => {
     dates: entries,
   };
 
-  fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + "\n");
+  fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`);
   console.error(`manifest.json updated: ${entries.length} dates`);
 
   // ── RSS Feed ──────────────────────────────────────────────────────────────────

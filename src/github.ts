@@ -71,7 +71,7 @@ const MAX_PAGES = 5;
 
 const headers = (): Record<string, string> => {
   return {
-    Authorization: `Bearer ${process.env["GITHUB_TOKEN"] ?? ""}`,
+    Authorization: `Bearer ${process.env.GITHUB_TOKEN ?? ""}`,
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
   };
@@ -99,7 +99,7 @@ const fetchItemPage = async (
     page: String(page),
   };
   // /pulls does not support `since`; filter client-side instead
-  if (itemType === "issues") params["since"] = since.toISOString();
+  if (itemType === "issues") params.since = since.toISOString();
 
   const items = await githubGet<GitHubItem[]>(`https://api.github.com/repos/${repo}/${itemType}`, params);
   return itemType === "pulls" ? items.filter((i) => new Date(i.updated_at) >= since) : items;
@@ -126,7 +126,7 @@ export const fetchRecentItems = async (
       direction: "desc",
       per_page: "50",
     };
-    if (itemType === "issues") params["since"] = since.toISOString();
+    if (itemType === "issues") params.since = since.toISOString();
     const items = await githubGet<GitHubItem[]>(
       `https://api.github.com/repos/${cfg.repo}/${itemType}`,
       params,
@@ -154,7 +154,7 @@ export const fetchRecentReleases = async (repo: string, since: Date): Promise<Gi
 };
 
 export const ensureLabel = async (name: string, color: string): Promise<void> => {
-  const digestRepo = process.env["DIGEST_REPO"] ?? "";
+  const digestRepo = process.env.DIGEST_REPO ?? "";
   const resp = await fetch(`https://api.github.com/repos/${digestRepo}/labels`, {
     method: "POST",
     headers: { ...headers(), "Content-Type": "application/json" },
@@ -233,7 +233,7 @@ const neutralizeGitHubRefs = (text: string): string => {
  * Uses pagination to handle large backlogs. Returns the number of issues closed.
  */
 export const closeStaleIssues = async (days: number): Promise<number> => {
-  const digestRepo = process.env["DIGEST_REPO"] ?? "";
+  const digestRepo = process.env.DIGEST_REPO ?? "";
   if (!digestRepo) return 0;
   const cutoff = new Date(Date.now() - days * 86_400_000);
   let closed = 0;
@@ -266,7 +266,7 @@ export const closeStaleIssues = async (days: number): Promise<number> => {
 };
 
 export const createGitHubIssue = async (title: string, body: string, label: string): Promise<string> => {
-  const digestRepo = process.env["DIGEST_REPO"] ?? "";
+  const digestRepo = process.env.DIGEST_REPO ?? "";
   body = neutralizeGitHubRefs(body);
   if (body.length > GITHUB_ISSUE_BODY_LIMIT) {
     body = body.slice(0, GITHUB_ISSUE_BODY_LIMIT - TRUNCATION_NOTICE.length) + TRUNCATION_NOTICE;

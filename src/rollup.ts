@@ -7,7 +7,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { toCstDateStr, toUtcStr } from "./date";
 import { createGitHubIssue } from "./github";
-import { type Lang, t } from "./i18n";
+import { type Locale, t } from "./i18n";
 import {
   buildHighlightsPrompt,
   buildMonthlyPrompt,
@@ -43,7 +43,7 @@ const readDailyDigest = (date: string): string | null => {
     if (fs.existsSync(p)) {
       const content = fs.readFileSync(p, "utf-8");
       const truncated = content.slice(0, MAX_CHARS_PER_REPORT);
-      parts.push(truncated.length < content.length ? truncated + "\n...[摘要截断]" : truncated);
+      parts.push(truncated.length < content.length ? `${truncated}\n...[摘要截断]` : truncated);
     }
   }
   return parts.length > 0 ? parts.join("\n\n") : null;
@@ -82,7 +82,7 @@ const generateRollupHighlights = async (
 
   // Read existing highlights (e.g. from daily digest) so we merge instead of overwrite
   const existingPath = path.join(DIGESTS_DIR, dateStr, "highlights.json");
-  let existing: Record<Lang, ReportHighlights> = { zh: {}, en: {} };
+  let existing: Record<Locale, ReportHighlights> = { zh: {}, en: {} };
   if (fs.existsSync(existingPath)) {
     try {
       existing = JSON.parse(fs.readFileSync(existingPath, "utf-8"));
@@ -91,7 +91,7 @@ const generateRollupHighlights = async (
     }
   }
 
-  const highlights: Record<Lang, ReportHighlights> = {
+  const highlights: Record<Locale, ReportHighlights> = {
     zh: { ...existing.zh },
     en: { ...existing.en },
   };
@@ -131,7 +131,7 @@ export const runWeeklyRollup = async (): Promise<void> => {
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
   const weekStr = toWeekStr(new Date(now.getTime() + 8 * 60 * 60 * 1000));
-  const digestRepo = process.env["DIGEST_REPO"] ?? "";
+  const digestRepo = process.env.DIGEST_REPO ?? "";
 
   console.error(`[weekly] Generating rollup for ${weekStr} (date: ${dateStr})`);
 
@@ -203,7 +203,7 @@ export const runMonthlyRollup = async (): Promise<void> => {
   const monthStr = prevMonth.toISOString().slice(0, 7); // "2026-02"
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
-  const digestRepo = process.env["DIGEST_REPO"] ?? "";
+  const digestRepo = process.env.DIGEST_REPO ?? "";
 
   console.error(`[monthly] Generating rollup for ${monthStr} (date: ${dateStr})`);
 

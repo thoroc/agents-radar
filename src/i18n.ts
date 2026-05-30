@@ -9,7 +9,7 @@ export const SUPPORTED_LOCALES: string[] = [];
 export const STRINGS: Record<string, LocaleData> = {};
 export const LANGUAGE_NAMES: Record<string, string> = {};
 
-export type Lang = "zh" | "en";
+export type Locale = "zh" | "en";
 
 const ensureLocales = (): void => {
   if (_initialized) return;

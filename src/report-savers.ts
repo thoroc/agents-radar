@@ -8,7 +8,7 @@ import type { DevtoData } from "./devto";
 import { createGitHubIssue } from "./github";
 import type { HfData } from "./hf";
 import type { HnData } from "./hn";
-import { type Lang, t } from "./i18n";
+import { type Locale, t } from "./i18n";
 import type { LobstersData } from "./lobsters";
 import type { PhData } from "./ph";
 import {
@@ -34,7 +34,7 @@ export const saveWebReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Locale = "zh",
 ): Promise<void> => {
   const hasNewContent = webResults.some((r) => r.newItems.length > 0);
 
@@ -65,7 +65,7 @@ export const saveWebReport = async (
             `- Anthropic: [anthropic.com](https://www.anthropic.com) — 新增 ${anthropicNew} 篇（sitemap 共 ${anthropicTotal} 条）\n` +
             `- OpenAI: [openai.com](https://openai.com) — 新增 ${openaiNew} 篇（sitemap 共 ${openaiTotal} 条）\n\n`;
 
-      const webContent = webTitle + webMeta + webSources + `---\n\n` + webSummary + footer;
+      const webContent = `${webTitle + webMeta + webSources}---\n\n${webSummary}${footer}`;
 
       console.error(`  Saved ${saveFile(webContent, dateStr, fileName)}`);
 
@@ -102,7 +102,7 @@ export const saveTrendingReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Locale = "zh",
 ): Promise<void> => {
   const hasData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;
   if (!hasData) {
@@ -138,7 +138,7 @@ export const saveHnReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Locale = "zh",
 ): Promise<void> => {
   if (!hnData.fetchSuccess) {
     console.error(`  [hn/${lang}] No data available, skipping report.`);
@@ -186,7 +186,7 @@ export const savePhReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Locale = "zh",
 ): Promise<void> => {
   if (!phData.fetchSuccess) {
     console.error(`  [ph/${lang}] No data available, skipping report.`);
@@ -234,7 +234,7 @@ export const saveArxivReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Locale = "zh",
 ): Promise<void> => {
   if (!arxivData.fetchSuccess) {
     console.error(`  [arxiv/${lang}] No data available, skipping report.`);
@@ -282,7 +282,7 @@ export const saveHfReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Locale = "zh",
 ): Promise<void> => {
   if (!hfData.fetchSuccess) {
     console.error(`  [hf/${lang}] No data available, skipping report.`);
@@ -331,7 +331,7 @@ export const saveCommunityReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Lang = "zh",
+  lang: Locale = "zh",
 ): Promise<void> => {
   const hasData = devtoData.fetchSuccess || lobstersData.fetchSuccess;
   if (!hasData) {

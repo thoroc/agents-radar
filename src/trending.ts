@@ -142,12 +142,12 @@ interface SearchApiResponse {
 }
 
 const searchAiRepos = async (sevenDaysAgo: string): Promise<SearchRepo[]> => {
-  const token = process.env["GITHUB_TOKEN"] ?? "";
+  const token = process.env.GITHUB_TOKEN ?? "";
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
   };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
+  if (token) headers.Authorization = `Bearer ${token}`;
 
   const seen = new Set<string>();
   const all: SearchRepo[] = [];

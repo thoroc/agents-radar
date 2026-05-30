@@ -133,7 +133,7 @@ export const fetchArxivData = async (): Promise<ArxivData> => {
       // Split into entries
       const entryBlocks = xml.split("<entry>").slice(1);
       for (const block of entryBlocks) {
-        const paper = parseEntry("<entry>" + block);
+        const paper = parseEntry(`<entry>${block}`);
         if (paper && !seen.has(paper.id)) {
           seen.set(paper.id, paper);
         }
