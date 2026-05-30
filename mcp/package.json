@@ -11,5 +11,8 @@
     "@cloudflare/workers-types": "^4",
     "typescript": "^5",
     "wrangler": "^3"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
   }
 }
