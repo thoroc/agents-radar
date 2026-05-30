@@ -1,3 +1,3 @@
-pnpm lint
-pnpm format:check
-pnpm typecheck
+bun run lint
+bun run format:check
+bun run typecheck
