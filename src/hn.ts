@@ -98,7 +98,7 @@ export async function fetchHnData(): Promise<HnData> {
 
     const stories = [...seen.values()].sort((a, b) => b.points - a.points).slice(0, HN_TOP_STORIES);
 
-    console.log(`  [hn] ${stories.length} stories (from ${seen.size} unique)`);
+    console.error(`  [hn] ${stories.length} stories (from ${seen.size} unique)`);
     return { stories, fetchSuccess: stories.length > 0 };
   } catch (err) {
     console.error(`  [hn] fetch failed: ${err}`);

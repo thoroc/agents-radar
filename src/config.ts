@@ -100,7 +100,7 @@ export function loadConfig(configPath = "config.yml"): RadarConfig {
   const resolved = path.resolve(configPath);
 
   if (!fs.existsSync(resolved)) {
-    console.log(`[config] ${configPath} not found — using built-in defaults.`);
+    console.error(`[config] ${configPath} not found — using built-in defaults.`);
     return {
       cliRepos: DEFAULT_CLI_REPOS,
       skillsRepo: DEFAULT_SKILLS_REPO,
@@ -132,7 +132,7 @@ export function loadConfig(configPath = "config.yml"): RadarConfig {
   const languages =
     Array.isArray(raw?.languages) && raw.languages.length > 0 ? raw.languages.map(String) : DEFAULT_LANGUAGES;
 
-  console.log(
+  console.error(
     `[config] Loaded from ${configPath}: ` +
       `${cliRepos.length} CLI repos, ${openclawPeers.length} OpenClaw peers, ` +
       `${languages.length} languages`,

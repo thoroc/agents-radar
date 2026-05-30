@@ -374,7 +374,7 @@ describe("createProvider", () => {
   });
 
   it("log does not leak API keys", () => {
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     createProvider("anthropic");
     const logged = spy.mock.calls.flat().join(" ");
     // Must log provider name, must NOT log any key-like strings

@@ -107,7 +107,7 @@ interface PhResponse {
 export async function fetchPhData(): Promise<PhData> {
   const token = process.env["PRODUCTHUNT_TOKEN"] ?? "";
   if (!token) {
-    console.log("  [ph] PRODUCTHUNT_TOKEN not set — skipping.");
+    console.error("  [ph] PRODUCTHUNT_TOKEN not set — skipping.");
     return { products: [], fetchSuccess: false };
   }
 
@@ -171,7 +171,9 @@ export async function fetchPhData(): Promise<PhData> {
 
     const products = allProducts.sort((a, b) => b.votesCount - a.votesCount).slice(0, PH_TOP_PRODUCTS);
 
-    console.log(`  [ph] ${products.length} AI products (from ${json.data?.posts?.edges?.length ?? 0} total)`);
+    console.error(
+      `  [ph] ${products.length} AI products (from ${json.data?.posts?.edges?.length ?? 0} total)`,
+    );
     return { products, fetchSuccess: products.length > 0 };
   } catch (err) {
     console.error(`  [ph] fetch failed: ${err}`);

@@ -83,7 +83,7 @@ export async function fetchHfData(): Promise<HfData> {
       url: `https://huggingface.co/${m.id}`,
     }));
 
-    console.log(`  [hf] ${models.length} trending models`);
+    console.error(`  [hf] ${models.length} trending models`);
     return { models, fetchSuccess: models.length > 0 };
   } catch (err) {
     console.error(`  [hf] fetch failed: ${err}`);

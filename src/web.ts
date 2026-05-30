@@ -279,9 +279,9 @@ export async function fetchSiteContent(
   const siteState = state[site];
   const isFirstRun = Object.keys(siteState.seenUrls).length === 0;
 
-  console.log(`  [web/${site}] Discovering URLs from sitemap...`);
+  console.error(`  [web/${site}] Discovering URLs from sitemap...`);
   const allDiscovered = await discoverUrls(site);
-  console.log(`  [web/${site}] Discovered ${allDiscovered.length} URLs`);
+  console.error(`  [web/${site}] Discovered ${allDiscovered.length} URLs`);
 
   // Newest first
   allDiscovered.sort((a, b) => {
@@ -305,7 +305,7 @@ export async function fetchSiteContent(
   // Cap content fetches on first run to avoid excessive runtime
   const toFetch = isFirstRun ? newUrls.slice(0, MAX_CONTENT_FETCH_FIRST_RUN) : newUrls;
 
-  console.log(
+  console.error(
     `  [web/${site}] ${isFirstRun ? "First run" : "Incremental"}: ` +
       `${newUrls.length} new URLs, fetching content for ${toFetch.length}`,
   );

@@ -78,7 +78,7 @@ async function generateRollupHighlights(
   dateStr: string,
   itemsPerReport: number,
 ): Promise<void> {
-  console.log(`  [${reportId}] Generating highlights for Telegram...`);
+  console.error(`  [${reportId}] Generating highlights for Telegram...`);
 
   // Read existing highlights (e.g. from daily digest) so we merge instead of overwrite
   const existingPath = path.join(DIGESTS_DIR, dateStr, "highlights.json");
@@ -119,7 +119,7 @@ async function generateRollupHighlights(
     console.error(`  [${reportId}] Highlights generation failed: ${err}`);
   }
   const p = saveFile(JSON.stringify(highlights, null, 2), dateStr, "highlights.json");
-  console.log(`  Saved ${p}`);
+  console.error(`  Saved ${p}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -133,7 +133,7 @@ export async function runWeeklyRollup(): Promise<void> {
   const weekStr = toWeekStr(new Date(now.getTime() + 8 * 60 * 60 * 1000));
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
 
-  console.log(`[weekly] Generating rollup for ${weekStr} (date: ${dateStr})`);
+  console.error(`[weekly] Generating rollup for ${weekStr} (date: ${dateStr})`);
 
   // Collect last 7 days of daily digests
   const allDates = getDateDirs();
@@ -146,16 +146,16 @@ export async function runWeeklyRollup(): Promise<void> {
   }
 
   if (Object.keys(dailyDigests).length === 0) {
-    console.log("[weekly] No daily digests found, skipping.");
+    console.error("[weekly] No daily digests found, skipping.");
     return;
   }
 
-  console.log(
+  console.error(
     `[weekly] Found ${Object.keys(dailyDigests).length} daily digests: ${Object.keys(dailyDigests).join(", ")}`,
   );
 
   // Generate ZH and EN in parallel
-  console.log("[weekly] Calling LLM for ZH and EN weekly reports in parallel...");
+  console.error("[weekly] Calling LLM for ZH and EN weekly reports in parallel...");
   const [zhSummary, enSummary] = await Promise.all([
     callLlm(buildWeeklyPrompt(dailyDigests, weekStr, "zh"), LLM_TOKENS_ROLLUP),
     callLlm(buildWeeklyPrompt(dailyDigests, weekStr, "en"), LLM_TOKENS_ROLLUP),
@@ -178,17 +178,17 @@ export async function runWeeklyRollup(): Promise<void> {
     enSummary +
     enFooter;
 
-  console.log(`  Saved ${saveFile(zhContent, dateStr, "ai-weekly.md")}`);
-  console.log(`  Saved ${saveFile(enContent, dateStr, "ai-weekly.md")}`);
+  console.error(`  Saved ${saveFile(zhContent, dateStr, "ai-weekly.md")}`);
+  console.error(`  Saved ${saveFile(enContent, dateStr, "ai-weekly.md")}`);
 
   await generateRollupHighlights(zhContent, enContent, "ai-weekly", dateStr, 6);
 
   if (digestRepo) {
     const url = await createGitHubIssue(`${t("zh").weeklyTitle} ${weekStr}`, zhContent, "weekly");
-    console.log(`  Created weekly issue: ${url}`);
+    console.error(`  Created weekly issue: ${url}`);
   }
 
-  console.log("[weekly] Done!");
+  console.error("[weekly] Done!");
 }
 
 // ---------------------------------------------------------------------------
@@ -205,7 +205,7 @@ export async function runMonthlyRollup(): Promise<void> {
   const utcStr = toUtcStr(now);
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
 
-  console.log(`[monthly] Generating rollup for ${monthStr} (date: ${dateStr})`);
+  console.error(`[monthly] Generating rollup for ${monthStr} (date: ${dateStr})`);
 
   const allDates = getDateDirs();
 
@@ -242,14 +242,14 @@ export async function runMonthlyRollup(): Promise<void> {
   }
 
   if (Object.keys(sourceDigests).length === 0) {
-    console.log(`[monthly] No source digests found for ${monthStr}, skipping.`);
+    console.error(`[monthly] No source digests found for ${monthStr}, skipping.`);
     return;
   }
 
-  console.log(`[monthly] Source: ${sourceLabel.zh}`);
+  console.error(`[monthly] Source: ${sourceLabel.zh}`);
 
   // Generate ZH and EN in parallel
-  console.log("[monthly] Calling LLM for ZH and EN monthly reports in parallel...");
+  console.error("[monthly] Calling LLM for ZH and EN monthly reports in parallel...");
   const [zhSummary, enSummary] = await Promise.all([
     callLlm(buildMonthlyPrompt(sourceDigests, monthStr, "zh"), LLM_TOKENS_ROLLUP),
     callLlm(buildMonthlyPrompt(sourceDigests, monthStr, "en"), LLM_TOKENS_ROLLUP),
@@ -272,15 +272,15 @@ export async function runMonthlyRollup(): Promise<void> {
     enSummary +
     enFooter;
 
-  console.log(`  Saved ${saveFile(zhContent, dateStr, "ai-monthly.md")}`);
-  console.log(`  Saved ${saveFile(enContent, dateStr, "ai-monthly.md")}`);
+  console.error(`  Saved ${saveFile(zhContent, dateStr, "ai-monthly.md")}`);
+  console.error(`  Saved ${saveFile(enContent, dateStr, "ai-monthly.md")}`);
 
   await generateRollupHighlights(zhContent, enContent, "ai-monthly", dateStr, 6);
 
   if (digestRepo) {
     const url = await createGitHubIssue(`${t("zh").monthlyTitle} ${monthStr}`, zhContent, "monthly");
-    console.log(`  Created monthly issue: ${url}`);
+    console.error(`  Created monthly issue: ${url}`);
   }
 
-  console.log("[monthly] Done!");
+  console.error("[monthly] Done!");
 }

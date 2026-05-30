@@ -217,27 +217,27 @@ async function generate(platform: Platform): Promise<void> {
     const reports = loadReports(date);
     if (!reports) throw new Error(`No reports found for ${date}`);
 
-    console.log(`[social] Generating xiaohongshu article for ${date}…`);
+    console.error(`[social] Generating xiaohongshu article for ${date}…`);
     const content = await callLlm(buildXiaohongshuPrompt(reports, date), 4096);
     const filepath = saveSocialFile(content, `${date}-xiaohongshu.md`);
-    console.log(`[social] Saved to ${filepath}`);
+    console.error(`[social] Saved to ${filepath}`);
   } else if (platform === "wechat") {
     const { dateRange, content: reports } = loadMultiDayReports(7, 2000);
     const latestDate = getRecentDates(1)[0]!;
 
-    console.log(`[social] Generating wechat weekly article for ${dateRange}…`);
+    console.error(`[social] Generating wechat weekly article for ${dateRange}…`);
     const content = await callLlm(buildWechatPrompt(dateRange, reports), 16384);
     const filepath = saveSocialFile(content, `${latestDate}-wechat.md`);
-    console.log(`[social] Saved to ${filepath}`);
+    console.error(`[social] Saved to ${filepath}`);
   } else {
     // wechat:monthly — use 30 days, smaller truncation per day to fit context
     const { dateRange, content: reports } = loadMultiDayReports(30, 1000);
     const latestDate = getRecentDates(1)[0]!;
 
-    console.log(`[social] Generating wechat monthly article for ${dateRange}…`);
+    console.error(`[social] Generating wechat monthly article for ${dateRange}…`);
     const content = await callLlm(buildWechatMonthlyPrompt(dateRange, reports), 16384);
     const filepath = saveSocialFile(content, `${latestDate}-wechat-monthly.md`);
-    console.log(`[social] Saved to ${filepath}`);
+    console.error(`[social] Saved to ${filepath}`);
   }
 }
 

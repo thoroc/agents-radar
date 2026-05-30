@@ -95,7 +95,7 @@ export async function fetchLobstersData(): Promise<LobstersData> {
       .sort((a, b) => b.score - a.score)
       .slice(0, LOBSTERS_TOP);
 
-    console.log(`  [lobsters] ${stories.length} stories (from ${seen.size} unique)`);
+    console.error(`  [lobsters] ${stories.length} stories (from ${seen.size} unique)`);
     return { stories, fetchSuccess: stories.length > 0 };
   } catch (err) {
     console.error(`  [lobsters] fetch failed: ${err}`);

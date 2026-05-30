@@ -23,7 +23,7 @@ const provider: LlmProvider = createProvider();
 const fallbackProvider: LlmProvider | null = (() => {
   const key = process.env["DEEPSEEK_API_KEY"];
   if (!key) return null;
-  console.log("[providers] Fallback provider configured: deepseek");
+  console.error("[providers] Fallback provider configured: deepseek");
   return new DeepSeekProvider(key);
 })();
 

@@ -56,6 +56,6 @@ export function createProvider(name?: ProviderName): LlmProvider {
     );
   }
 
-  console.log(`[providers] Using LLM provider: ${providerName}`);
+  console.error(`[providers] Using LLM provider: ${providerName}`);
   return factory();
 }

@@ -95,7 +95,7 @@ async function fetchAllData(
   lobstersData: LobstersData;
 }> {
   const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
-  console.log(
+  console.error(
     `  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web, hn, ph, arxiv, hf, devto, lobsters`,
   );
 
@@ -120,7 +120,7 @@ async function fetchAllData(
             fetchRecentReleases(cfg.repo, since),
           ]);
           const issues = issuesRaw.filter((i) => !i.pull_request);
-          console.log(
+          console.error(
             `  [${cfg.id}] issues: ${issues.length}, prs: ${prs.length}, releases: ${releases.length}`,
           );
           return { cfg, issues, prs, releases };
@@ -132,7 +132,7 @@ async function fetchAllData(
     ),
     fetchSkillsData(CLAUDE_SKILLS_REPO)
       .then((d) => {
-        console.log(`  [claude-code-skills] prs: ${d.prs.length}, issues: ${d.issues.length}`);
+        console.error(`  [claude-code-skills] prs: ${d.prs.length}, issues: ${d.issues.length}`);
         return d;
       })
       .catch((err) => {
@@ -190,7 +190,7 @@ async function fetchAllData(
 
 /** Call LLM with logging and error fallback. */
 async function summarize(id: string, prompt: string, failMsg: string, maxTokens?: number): Promise<string> {
-  console.log(`  [${id}] Calling LLM for summary...`);
+  console.error(`  [${id}] Calling LLM for summary...`);
   try {
     return await callLlm(prompt, maxTokens);
   } catch (err) {
@@ -207,7 +207,7 @@ async function summarizeRepo(
   failMsg: string,
 ): Promise<RepoDigest> {
   if (!issues.length && !prs.length && !releases.length) {
-    console.log(`  [${cfg.id}] No activity, skipping LLM call`);
+    console.error(`  [${cfg.id}] No activity, skipping LLM call`);
     return { config: cfg, issues, prs, releases, summary: noActivityMsg };
   }
   const summary = await summarize(cfg.id, prompt, failMsg);
@@ -300,7 +300,7 @@ async function main(): Promise<void> {
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
 
   const providerName = process.env["LLM_PROVIDER"] ?? "anthropic";
-  console.log(`[${now.toISOString()}] Starting digest | provider: ${providerName}`);
+  console.error(`[${now.toISOString()}] Starting digest | provider: ${providerName}`);
 
   // 1. Fetch all data in parallel
   const webState = loadWebState();
@@ -323,14 +323,14 @@ async function main(): Promise<void> {
   const fetchedPeers = fetched.filter((f) => peerIds.has(f.cfg.id));
 
   // 2. Generate per-repo LLM summaries in parallel (zh + en simultaneously)
-  console.log("  Generating summaries in ZH and EN in parallel...");
+  console.error("  Generating summaries in ZH and EN in parallel...");
   const [zhSummaries, enSummaries] = await Promise.all([
     generateSummaries(fetchedCli, fetchedOpenclaw, skillsData, fetchedPeers, trendingData, dateStr, "zh"),
     generateSummaries(fetchedCli, fetchedOpenclaw, skillsData, fetchedPeers, trendingData, dateStr, "en"),
   ]);
 
   // 3. Generate cross-repo comparisons in parallel (zh + en)
-  console.log("  Calling LLM for comparative analyses (ZH + EN)...");
+  console.error("  Calling LLM for comparative analyses (ZH + EN)...");
   const summariesByLang: Record<string, typeof zhSummaries> = { zh: zhSummaries, en: enSummaries };
 
   const makeOpenclawDigest = (lang: string): RepoDigest => ({
@@ -383,8 +383,8 @@ async function main(): Promise<void> {
       lang as Lang,
     );
 
-    console.log(`  Saved ${saveFile(cliContent[lang], dateStr, `ai-cli${suffix}.md`)}`);
-    console.log(`  Saved ${saveFile(openclawContent[lang], dateStr, `ai-agents${suffix}.md`)}`);
+    console.error(`  Saved ${saveFile(cliContent[lang], dateStr, `ai-cli${suffix}.md`)}`);
+    console.error(`  Saved ${saveFile(openclawContent[lang], dateStr, `ai-agents${suffix}.md`)}`);
   }
 
   // Web report: zh saves state, en skips state save
@@ -454,7 +454,7 @@ async function main(): Promise<void> {
     if (en) enReports[id] = en;
   }
 
-  console.log("  Generating highlights for Telegram...");
+  console.error("  Generating highlights for Telegram...");
   const highlights: Record<string, ReportHighlights> = { zh: {}, en: {} };
   try {
     const [zhRaw, enRaw] = await Promise.all([
@@ -478,7 +478,7 @@ async function main(): Promise<void> {
   }
 
   const highlightsPath = saveFile(JSON.stringify(highlights, null, 2), dateStr, "highlights.json");
-  console.log(`  Saved ${highlightsPath}`);
+  console.error(`  Saved ${highlightsPath}`);
 
   // 6. Create GitHub issues for CLI + OpenClaw (zh + en)
   if (digestRepo) {
@@ -488,18 +488,18 @@ async function main(): Promise<void> {
         cliContent[lang]!,
         t(lang).issueLabelCli,
       );
-      console.log(`  Created CLI issue (${lang}): ${cliUrl}`);
+      console.error(`  Created CLI issue (${lang}): ${cliUrl}`);
 
       const ocUrl = await createGitHubIssue(
         `${t(lang).issueTitleOpenclaw} ${dateStr}`,
         openclawContent[lang]!,
         t(lang).issueLabelOpenclaw,
       );
-      console.log(`  Created OpenClaw issue (${lang}): ${ocUrl}`);
+      console.error(`  Created OpenClaw issue (${lang}): ${ocUrl}`);
     }
   }
 
-  console.log("Done!");
+  console.error("Done!");
 }
 
 main().catch((err) => {
