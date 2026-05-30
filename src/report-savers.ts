@@ -39,7 +39,7 @@ export async function saveWebReport(
   const hasNewContent = webResults.some((r) => r.newItems.length > 0);
 
   if (hasNewContent) {
-    console.log(`  [web/${lang}] Calling LLM for web content report...`);
+    console.error(`  [web/${lang}] Calling LLM for web content report...`);
     try {
       const webSummary = await callLlm(buildWebReportPrompt(webResults, dateStr, lang), LLM_TOKENS_WEB);
       const isFirstRun = webResults.some((r) => r.isFirstRun);
@@ -67,7 +67,7 @@ export async function saveWebReport(
 
       const webContent = webTitle + webMeta + webSources + `---\n\n` + webSummary + footer;
 
-      console.log(`  Saved ${saveFile(webContent, dateStr, fileName)}`);
+      console.error(`  Saved ${saveFile(webContent, dateStr, fileName)}`);
 
       if (digestRepo) {
         const issueTitle =
@@ -76,18 +76,18 @@ export async function saveWebReport(
             : `🌐 AI 官方内容追踪报告 ${dateStr}${isFirstRun ? "（首次全量）" : ""}`;
         const webLabel = s.issueLabelWeb;
         const webUrl = await createGitHubIssue(issueTitle, webContent, webLabel);
-        console.log(`  Created web issue (${lang}): ${webUrl}`);
+        console.error(`  Created web issue (${lang}): ${webUrl}`);
       }
     } catch (err) {
       console.error(`  [web/${lang}] Report generation failed: ${err}`);
     }
   } else {
-    console.log(`  [web/${lang}] No new content detected, skipping report.`);
+    console.error(`  [web/${lang}] No new content detected, skipping report.`);
   }
 
   if (lang === "zh") {
     saveWebState(webState);
-    console.log("  [web] State saved.");
+    console.error("  [web] State saved.");
   }
 }
 
@@ -106,7 +106,7 @@ export async function saveTrendingReport(
 ): Promise<void> {
   const hasData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;
   if (!hasData) {
-    console.log(`  [trending/${lang}] No data available, skipping report.`);
+    console.error(`  [trending/${lang}] No data available, skipping report.`);
     return;
   }
 
@@ -118,13 +118,13 @@ export async function saveTrendingReport(
 
   const trendingContent = header + trendingSummary + footer;
 
-  console.log(`  Saved ${saveFile(trendingContent, dateStr, fileName)}`);
+  console.error(`  Saved ${saveFile(trendingContent, dateStr, fileName)}`);
 
   if (digestRepo) {
     const trendingTitle = `${s.issueTitleTrending} ${dateStr}`;
     const trendingLabel = s.issueLabelTrending;
     const trendingUrl = await createGitHubIssue(trendingTitle, trendingContent, trendingLabel);
-    console.log(`  Created trending issue (${lang}): ${trendingUrl}`);
+    console.error(`  Created trending issue (${lang}): ${trendingUrl}`);
   }
 }
 
@@ -141,11 +141,11 @@ export async function saveHnReport(
   lang: Lang = "zh",
 ): Promise<void> {
   if (!hnData.fetchSuccess) {
-    console.log(`  [hn/${lang}] No data available, skipping report.`);
+    console.error(`  [hn/${lang}] No data available, skipping report.`);
     return;
   }
 
-  console.log(`  [hn/${lang}] Calling LLM for HN report...`);
+  console.error(`  [hn/${lang}] Calling LLM for HN report...`);
   try {
     const s = t(lang);
     const hnSummary = await callLlm(buildHnPrompt(hnData, dateStr, lang));
@@ -163,13 +163,13 @@ export async function saveHnReport(
 
     const hnContent = header + hnSummary + footer;
 
-    console.log(`  Saved ${saveFile(hnContent, dateStr, fileName)}`);
+    console.error(`  Saved ${saveFile(hnContent, dateStr, fileName)}`);
 
     if (digestRepo) {
       const hnTitle = `${s.issueTitleHn} ${dateStr}`;
       const hnLabel = s.issueLabelHn;
       const hnUrl = await createGitHubIssue(hnTitle, hnContent, hnLabel);
-      console.log(`  Created HN issue (${lang}): ${hnUrl}`);
+      console.error(`  Created HN issue (${lang}): ${hnUrl}`);
     }
   } catch (err) {
     console.error(`  [hn/${lang}] Report generation failed: ${err}`);
@@ -189,11 +189,11 @@ export async function savePhReport(
   lang: Lang = "zh",
 ): Promise<void> {
   if (!phData.fetchSuccess) {
-    console.log(`  [ph/${lang}] No data available, skipping report.`);
+    console.error(`  [ph/${lang}] No data available, skipping report.`);
     return;
   }
 
-  console.log(`  [ph/${lang}] Calling LLM for Product Hunt report...`);
+  console.error(`  [ph/${lang}] Calling LLM for Product Hunt report...`);
   try {
     const s = t(lang);
     const phSummary = await callLlm(buildPhPrompt(phData, dateStr, lang));
@@ -211,13 +211,13 @@ export async function savePhReport(
 
     const phContent = header + phSummary + footer;
 
-    console.log(`  Saved ${saveFile(phContent, dateStr, fileName)}`);
+    console.error(`  Saved ${saveFile(phContent, dateStr, fileName)}`);
 
     if (digestRepo) {
       const phTitle = `${s.issueTitlePh} ${dateStr}`;
       const phLabel = s.issueLabelPh;
       const phUrl = await createGitHubIssue(phTitle, phContent, phLabel);
-      console.log(`  Created PH issue (${lang}): ${phUrl}`);
+      console.error(`  Created PH issue (${lang}): ${phUrl}`);
     }
   } catch (err) {
     console.error(`  [ph/${lang}] Report generation failed: ${err}`);
@@ -237,11 +237,11 @@ export async function saveArxivReport(
   lang: Lang = "zh",
 ): Promise<void> {
   if (!arxivData.fetchSuccess) {
-    console.log(`  [arxiv/${lang}] No data available, skipping report.`);
+    console.error(`  [arxiv/${lang}] No data available, skipping report.`);
     return;
   }
 
-  console.log(`  [arxiv/${lang}] Calling LLM for ArXiv report...`);
+  console.error(`  [arxiv/${lang}] Calling LLM for ArXiv report...`);
   try {
     const s = t(lang);
     const summary = await callLlm(buildArxivPrompt(arxivData, dateStr, lang));
@@ -259,13 +259,13 @@ export async function saveArxivReport(
 
     const content = header + summary + footer;
 
-    console.log(`  Saved ${saveFile(content, dateStr, fileName)}`);
+    console.error(`  Saved ${saveFile(content, dateStr, fileName)}`);
 
     if (digestRepo) {
       const title = `${s.issueTitleArxiv} ${dateStr}`;
       const label = s.issueLabelArxiv;
       const url = await createGitHubIssue(title, content, label);
-      console.log(`  Created ArXiv issue (${lang}): ${url}`);
+      console.error(`  Created ArXiv issue (${lang}): ${url}`);
     }
   } catch (err) {
     console.error(`  [arxiv/${lang}] Report generation failed: ${err}`);
@@ -285,11 +285,11 @@ export async function saveHfReport(
   lang: Lang = "zh",
 ): Promise<void> {
   if (!hfData.fetchSuccess) {
-    console.log(`  [hf/${lang}] No data available, skipping report.`);
+    console.error(`  [hf/${lang}] No data available, skipping report.`);
     return;
   }
 
-  console.log(`  [hf/${lang}] Calling LLM for Hugging Face report...`);
+  console.error(`  [hf/${lang}] Calling LLM for Hugging Face report...`);
   try {
     const s = t(lang);
     const summary = await callLlm(buildHfPrompt(hfData, dateStr, lang));
@@ -307,13 +307,13 @@ export async function saveHfReport(
 
     const content = header + summary + footer;
 
-    console.log(`  Saved ${saveFile(content, dateStr, fileName)}`);
+    console.error(`  Saved ${saveFile(content, dateStr, fileName)}`);
 
     if (digestRepo) {
       const title = `${s.issueTitleHf} ${dateStr}`;
       const label = s.issueLabelHf;
       const url = await createGitHubIssue(title, content, label);
-      console.log(`  Created HF issue (${lang}): ${url}`);
+      console.error(`  Created HF issue (${lang}): ${url}`);
     }
   } catch (err) {
     console.error(`  [hf/${lang}] Report generation failed: ${err}`);
@@ -335,11 +335,11 @@ export async function saveCommunityReport(
 ): Promise<void> {
   const hasData = devtoData.fetchSuccess || lobstersData.fetchSuccess;
   if (!hasData) {
-    console.log(`  [community/${lang}] No data available, skipping report.`);
+    console.error(`  [community/${lang}] No data available, skipping report.`);
     return;
   }
 
-  console.log(`  [community/${lang}] Calling LLM for community report...`);
+  console.error(`  [community/${lang}] Calling LLM for community report...`);
   try {
     const s = t(lang);
     const summary = await callLlm(buildCommunityPrompt(devtoData, lobstersData, dateStr, lang));
@@ -357,13 +357,13 @@ export async function saveCommunityReport(
 
     const content = header + summary + footer;
 
-    console.log(`  Saved ${saveFile(content, dateStr, fileName)}`);
+    console.error(`  Saved ${saveFile(content, dateStr, fileName)}`);
 
     if (digestRepo) {
       const title = `${s.issueTitleCommunity} ${dateStr}`;
       const label = s.issueLabelCommunity;
       const url = await createGitHubIssue(title, content, label);
-      console.log(`  Created community issue (${lang}): ${url}`);
+      console.error(`  Created community issue (${lang}): ${url}`);
     }
   } catch (err) {
     console.error(`  [community/${lang}] Report generation failed: ${err}`);

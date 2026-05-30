@@ -139,7 +139,7 @@ export async function fetchArxivData(): Promise<ArxivData> {
         }
       }
 
-      console.log(`  [arxiv] ${cat}: ${entryBlocks.length} papers`);
+      console.error(`  [arxiv] ${cat}: ${entryBlocks.length} papers`);
     } catch (err) {
       console.error(`  [arxiv] ${cat}: ${err}`);
     }
@@ -152,6 +152,6 @@ export async function fetchArxivData(): Promise<ArxivData> {
     .sort((a, b) => new Date(b.published).getTime() - new Date(a.published).getTime())
     .slice(0, ARXIV_MAX_RESULTS);
 
-  console.log(`  [arxiv] ${papers.length} papers (from ${seen.size} unique)`);
+  console.error(`  [arxiv] ${papers.length} papers (from ${seen.size} unique)`);
   return { papers, fetchSuccess: papers.length > 0 };
 }

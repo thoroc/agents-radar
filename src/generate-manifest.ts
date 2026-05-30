@@ -167,7 +167,7 @@ async function main(): Promise<void> {
   };
 
   fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + "\n");
-  console.log(`manifest.json updated: ${entries.length} dates`);
+  console.error(`manifest.json updated: ${entries.length} dates`);
 
   // ── RSS Feed ──────────────────────────────────────────────────────────────────
 
@@ -219,7 +219,7 @@ async function main(): Promise<void> {
     `</rss>\n`;
 
   fs.writeFileSync(FEED_PATH, feedXml);
-  console.log(`feed.xml updated: ${feedItems.length} items`);
+  console.error(`feed.xml updated: ${feedItems.length} items`);
 }
 
 // Run only when executed directly (not imported for testing)

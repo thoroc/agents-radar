@@ -11,7 +11,6 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, type Lang } from "./i18n.ts";
 import { notifyLabel } from "./notify.ts";
 import type { Highlights } from "./notify.ts";
 
@@ -108,12 +107,12 @@ export function buildFeishuMessage(
 async function main(): Promise<void> {
   const urls = getWebhookUrls();
   if (!urls.length) {
-    console.log("[feishu] FEISHU_WEBHOOK_URLS not set — skipping.");
+    console.error("[feishu] FEISHU_WEBHOOK_URLS not set — skipping.");
     return;
   }
 
   if (!fs.existsSync("manifest.json")) {
-    console.log("[feishu] manifest.json not found — skipping.");
+    console.error("[feishu] manifest.json not found — skipping.");
     return;
   }
 
@@ -123,7 +122,7 @@ async function main(): Promise<void> {
 
   const latest = dates?.[0];
   if (!latest) {
-    console.log("[feishu] manifest is empty — skipping.");
+    console.error("[feishu] manifest is empty — skipping.");
     return;
   }
   const { date, reports } = latest;
@@ -134,7 +133,7 @@ async function main(): Promise<void> {
     try {
       highlights = JSON.parse(fs.readFileSync(highlightsPath, "utf-8")) as Highlights;
     } catch {
-      console.log("[feishu] Failed to parse highlights.json — sending without highlights.");
+      console.error("[feishu] Failed to parse highlights.json — sending without highlights.");
     }
   }
 
@@ -146,9 +145,9 @@ async function main(): Promise<void> {
 
   const content = buildFeishuMessage(date, reports, undefined, highlights);
 
-  console.log(`[feishu] Sending to ${urls.length} webhook(s) for ${date} (${reports.length} reports)…`);
+  console.error(`[feishu] Sending to ${urls.length} webhook(s) for ${date} (${reports.length} reports)…`);
   await sendFeishu(title, content);
-  console.log("[feishu] Done!");
+  console.error("[feishu] Done!");
 }
 
 main().catch((e: unknown) => {

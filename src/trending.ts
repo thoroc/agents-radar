@@ -116,7 +116,7 @@ async function fetchGitHubTrending(): Promise<{ repos: TrendingRepo[]; success: 
       return { repos: [], success: false };
     }
 
-    console.log(`  [trending] Parsed ${repos.length} trending repos from HTML`);
+    console.error(`  [trending] Parsed ${repos.length} trending repos from HTML`);
     return { repos, success: true };
   } catch (err) {
     console.error(`  [trending] Fetch failed: ${err}`);
@@ -179,7 +179,7 @@ async function searchAiRepos(sevenDaysAgo: string): Promise<SearchRepo[]> {
             added++;
           }
         }
-        console.log(`  [trending/search] "${label}": ${added} new repos`);
+        console.error(`  [trending/search] "${label}": ${added} new repos`);
       } catch (err) {
         console.error(`  [trending/search] "${label}": ${err}`);
       }

@@ -104,7 +104,7 @@ export async function fetchDevtoData(): Promise<DevtoData> {
       .sort((a, b) => b.positiveReactionsCount - a.positiveReactionsCount)
       .slice(0, DEVTO_PER_PAGE);
 
-    console.log(`  [devto] ${articles.length} articles (from ${seen.size} unique)`);
+    console.error(`  [devto] ${articles.length} articles (from ${seen.size} unique)`);
     return { articles, fetchSuccess: articles.length > 0 };
   } catch (err) {
     console.error(`  [devto] fetch failed: ${err}`);

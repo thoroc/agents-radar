@@ -128,12 +128,12 @@ export function buildMessage(
 async function main(): Promise<void> {
   const BOT_TOKEN = process.env["TELEGRAM_BOT_TOKEN"] ?? "";
   if (!BOT_TOKEN) {
-    console.log("[notify] TELEGRAM_BOT_TOKEN not set — skipping.");
+    console.error("[notify] TELEGRAM_BOT_TOKEN not set — skipping.");
     return;
   }
 
   if (!fs.existsSync("manifest.json")) {
-    console.log("[notify] manifest.json not found — skipping.");
+    console.error("[notify] manifest.json not found — skipping.");
     return;
   }
 
@@ -143,7 +143,7 @@ async function main(): Promise<void> {
 
   const latest = dates?.[0];
   if (!latest) {
-    console.log("[notify] manifest is empty — skipping.");
+    console.error("[notify] manifest is empty — skipping.");
     return;
   }
   const { date, reports } = latest;
@@ -155,15 +155,15 @@ async function main(): Promise<void> {
     try {
       highlights = JSON.parse(fs.readFileSync(highlightsPath, "utf-8")) as Highlights;
     } catch {
-      console.log("[notify] Failed to parse highlights.json — sending without highlights.");
+      console.error("[notify] Failed to parse highlights.json — sending without highlights.");
     }
   }
 
   const text = buildMessage(date, reports, undefined, highlights);
 
-  console.log(`[notify] Sending Telegram message for ${date} (${reports.length} reports)…`);
+  console.error(`[notify] Sending Telegram message for ${date} (${reports.length} reports)…`);
   await sendTelegram(text);
-  console.log("[notify] Done!");
+  console.error("[notify] Done!");
 }
 
 main().catch((e: unknown) => {
