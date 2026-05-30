@@ -2,7 +2,7 @@
  * LLM prompt builders and item formatting.
  */
 
-import type { RepoConfig, GitHubItem, GitHubRelease } from "./github.ts";
+import type { RepoConfig, GitHubItem, GitHubRelease } from "./github";
 import type { Lang } from "./i18n";
 
 // ---------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import fs from "node:fs";
-import { toRepoConfig, loadConfig } from "../config.ts";
+import { toRepoConfig, loadConfig } from "../config";
 
 // ---------------------------------------------------------------------------
 // toRepoConfig

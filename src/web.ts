@@ -12,7 +12,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { sleep } from "./date.ts";
+import { sleep } from "./date";
 
 // ---------------------------------------------------------------------------
 // Types

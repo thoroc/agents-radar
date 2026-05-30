@@ -7,7 +7,7 @@
  *   OPENAI_MODEL     - model name (default: gpt-4o)
  */
 
-import { OpenAICompatibleProvider } from "./openai-compatible.ts";
+import { OpenAICompatibleProvider } from "./openai-compatible";
 
 export class OpenAIProvider extends OpenAICompatibleProvider {
   readonly name = "openai";

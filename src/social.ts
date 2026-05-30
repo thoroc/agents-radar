@@ -13,7 +13,7 @@
 import dotenvx from "@dotenvx/dotenvx";
 import fs from "node:fs";
 import path from "node:path";
-import { callLlm } from "./report.ts";
+import { callLlm } from "./report";
 
 dotenvx.config({ quiet: true });
 

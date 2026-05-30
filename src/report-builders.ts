@@ -2,9 +2,9 @@
  * Report content builders — extracted from index.ts for testability.
  */
 
-import type { RepoConfig, RepoFetch } from "./github.ts";
-import type { RepoDigest } from "./prompts.ts";
-import { t, type Lang } from "./i18n.ts";
+import type { RepoConfig, RepoFetch } from "./github";
+import type { RepoDigest } from "./prompts";
+import { t, type Lang } from "./i18n";
 
 // ---------------------------------------------------------------------------
 // CLI Report

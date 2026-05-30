@@ -5,7 +5,7 @@
  */
 
 import OpenAI from "openai";
-import type { LlmProvider } from "./types.ts";
+import type { LlmProvider } from "./types";
 
 export abstract class OpenAICompatibleProvider implements LlmProvider {
   abstract readonly name: string;

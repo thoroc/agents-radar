@@ -6,7 +6,7 @@
  *   GITHUB_COPILOT_MODEL   - model name (default: gpt-4o)
  */
 
-import { OpenAICompatibleProvider } from "./openai-compatible.ts";
+import { OpenAICompatibleProvider } from "./openai-compatible";
 
 const GITHUB_COPILOT_BASE_URL = "https://models.github.ai/inference";
 

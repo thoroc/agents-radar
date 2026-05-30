@@ -3,7 +3,7 @@
  * Extracted from index.ts for separation of concerns.
  */
 
-import { t, type Lang } from "./i18n.ts";
+import { t, type Lang } from "./i18n";
 import {
   buildWebReportPrompt,
   buildHnPrompt,
@@ -11,17 +11,17 @@ import {
   buildArxivPrompt,
   buildHfPrompt,
   buildCommunityPrompt,
-} from "./prompts-data.ts";
-import { callLlm, saveFile, LLM_TOKENS_WEB } from "./report.ts";
-import { createGitHubIssue } from "./github.ts";
-import { saveWebState, type WebFetchResult, type WebState } from "./web.ts";
-import type { HnData } from "./hn.ts";
-import type { PhData } from "./ph.ts";
-import type { TrendingData } from "./trending.ts";
-import type { ArxivData } from "./arxiv.ts";
-import type { HfData } from "./hf.ts";
-import type { DevtoData } from "./devto.ts";
-import type { LobstersData } from "./lobsters.ts";
+} from "./prompts-data";
+import { callLlm, saveFile, LLM_TOKENS_WEB } from "./report";
+import { createGitHubIssue } from "./github";
+import { saveWebState, type WebFetchResult, type WebState } from "./web";
+import type { HnData } from "./hn";
+import type { PhData } from "./ph";
+import type { TrendingData } from "./trending";
+import type { ArxivData } from "./arxiv";
+import type { HfData } from "./hf";
+import type { DevtoData } from "./devto";
+import type { LobstersData } from "./lobsters";
 
 // ---------------------------------------------------------------------------
 // Web report

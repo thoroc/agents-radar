@@ -11,9 +11,9 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, type Lang } from "./i18n.ts";
-import { notifyLabel } from "./notify.ts";
-import type { Highlights } from "./notify.ts";
+import { t, type Lang } from "./i18n";
+import { notifyLabel } from "./notify";
+import type { Highlights } from "./notify";
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 

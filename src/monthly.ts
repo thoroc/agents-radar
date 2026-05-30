@@ -1,4 +1,4 @@
-import { runMonthlyRollup } from "./rollup.ts";
+import { runMonthlyRollup } from "./rollup";
 
 runMonthlyRollup().catch((err) => {
   console.error(err);

@@ -6,7 +6,7 @@
  *   OPENROUTER_MODEL    - model name (default: anthropic/claude-sonnet-4)
  */
 
-import { OpenAICompatibleProvider } from "./openai-compatible.ts";
+import { OpenAICompatibleProvider } from "./openai-compatible";
 
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
 

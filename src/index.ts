@@ -18,7 +18,7 @@ import {
   fetchRecentReleases,
   fetchSkillsData,
   createGitHubIssue,
-} from "./github.ts";
+} from "./github";
 import {
   type RepoDigest,
   buildCliPrompt,
@@ -26,10 +26,10 @@ import {
   buildComparisonPrompt,
   buildPeersComparisonPrompt,
   buildSkillsPrompt,
-} from "./prompts.ts";
-import { buildTrendingPrompt, buildHighlightsPrompt, type ReportHighlights } from "./prompts-data.ts";
-import { callLlm, saveFile, autoGenFooter, LLM_TOKENS_TRENDING } from "./report.ts";
-import { buildCliReportContent, buildOpenclawReportContent } from "./report-builders.ts";
+} from "./prompts";
+import { buildTrendingPrompt, buildHighlightsPrompt, type ReportHighlights } from "./prompts-data";
+import { callLlm, saveFile, autoGenFooter, LLM_TOKENS_TRENDING } from "./report";
+import { buildCliReportContent, buildOpenclawReportContent } from "./report-builders";
 import {
   saveWebReport,
   saveTrendingReport,
@@ -38,18 +38,18 @@ import {
   saveArxivReport,
   saveHfReport,
   saveCommunityReport,
-} from "./report-savers.ts";
-import { loadWebState, fetchSiteContent, type WebFetchResult, type WebState } from "./web.ts";
-import { fetchTrendingData, type TrendingData } from "./trending.ts";
-import { fetchHnData, type HnData } from "./hn.ts";
-import { fetchPhData, type PhData } from "./ph.ts";
-import { fetchArxivData, type ArxivData } from "./arxiv.ts";
-import { fetchHfData, type HfData } from "./hf.ts";
-import { fetchDevtoData, type DevtoData } from "./devto.ts";
-import { fetchLobstersData, type LobstersData } from "./lobsters.ts";
-import { loadConfig, getEnabledLangs } from "./config.ts";
-import { toCstDateStr, toUtcStr } from "./date.ts";
-import { t, type Lang } from "./i18n.ts";
+} from "./report-savers";
+import { loadWebState, fetchSiteContent, type WebFetchResult, type WebState } from "./web";
+import { fetchTrendingData, type TrendingData } from "./trending";
+import { fetchHnData, type HnData } from "./hn";
+import { fetchPhData, type PhData } from "./ph";
+import { fetchArxivData, type ArxivData } from "./arxiv";
+import { fetchHfData, type HfData } from "./hf";
+import { fetchDevtoData, type DevtoData } from "./devto";
+import { fetchLobstersData, type LobstersData } from "./lobsters";
+import { loadConfig, getEnabledLangs } from "./config";
+import { toCstDateStr, toUtcStr } from "./date";
+import { t, type Lang } from "./i18n";
 
 // ---------------------------------------------------------------------------
 // Repo config — loaded from config.yml, falls back to built-in defaults

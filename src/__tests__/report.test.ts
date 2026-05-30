@@ -18,7 +18,7 @@ vi.mock("../providers/index.ts", async (importOriginal) => {
   };
 });
 
-import { is429, callLlm, saveFile, autoGenFooter } from "../report.ts";
+import { is429, callLlm, saveFile, autoGenFooter } from "../report";
 
 // ---------------------------------------------------------------------------
 // is429

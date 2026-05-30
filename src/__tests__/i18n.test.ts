@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { t, validateLocale, SUPPORTED_LOCALES, LANGUAGE_NAMES } from "../i18n.ts";
+import { t, validateLocale, SUPPORTED_LOCALES, LANGUAGE_NAMES } from "../i18n";
 import { LocaleFileSchema } from "../locale-schema";
 
 const __filename = fileURLToPath(import.meta.url);

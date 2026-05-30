@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { buildFeishuMessage } from "../feishu.ts";
-import type { Highlights } from "../notify.ts";
+import { buildFeishuMessage } from "../feishu";
+import type { Highlights } from "../notify";
 
 const BASE_URL = "https://example.com/radar";
 

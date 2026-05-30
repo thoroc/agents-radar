@@ -8,7 +8,7 @@
  */
 
 import Anthropic from "@anthropic-ai/sdk";
-import type { LlmProvider } from "./types.ts";
+import type { LlmProvider } from "./types";
 
 export class AnthropicProvider implements LlmProvider {
   readonly name = "anthropic";

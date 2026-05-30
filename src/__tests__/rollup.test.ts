@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { toWeekStr } from "../rollup.ts";
+import { toWeekStr } from "../rollup";
 
 describe("toWeekStr", () => {
   it("returns correct ISO week for a known date", () => {

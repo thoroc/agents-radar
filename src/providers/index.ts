@@ -2,21 +2,21 @@
  * Provider barrel — re-exports and factory.
  *
  * Usage:
- *   import { createProvider, type LlmProvider } from "./providers/index.ts";
+ *   import { createProvider, type LlmProvider } from "./providers/index";
  */
 
-export type { LlmProvider, ProviderFactory } from "./types.ts";
-export { OpenAICompatibleProvider } from "./openai-compatible.ts";
-export { AnthropicProvider } from "./anthropic.ts";
-export { OpenAIProvider } from "./openai.ts";
-export { GitHubCopilotProvider } from "./github-copilot.ts";
-export { OpenRouterProvider } from "./openrouter.ts";
+export type { LlmProvider, ProviderFactory } from "./types";
+export { OpenAICompatibleProvider } from "./openai-compatible";
+export { AnthropicProvider } from "./anthropic";
+export { OpenAIProvider } from "./openai";
+export { GitHubCopilotProvider } from "./github-copilot";
+export { OpenRouterProvider } from "./openrouter";
 
-import type { LlmProvider, ProviderFactory } from "./types.ts";
-import { AnthropicProvider } from "./anthropic.ts";
-import { OpenAIProvider } from "./openai.ts";
-import { GitHubCopilotProvider } from "./github-copilot.ts";
-import { OpenRouterProvider } from "./openrouter.ts";
+import type { LlmProvider, ProviderFactory } from "./types";
+import { AnthropicProvider } from "./anthropic";
+import { OpenAIProvider } from "./openai";
+import { GitHubCopilotProvider } from "./github-copilot";
+import { OpenRouterProvider } from "./openrouter";
 
 // ---------------------------------------------------------------------------
 // Single source of truth — add new providers here only.

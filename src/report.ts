@@ -4,8 +4,8 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, type Lang } from "./i18n.ts";
-import { sleep } from "./date.ts";
+import { t, type Lang } from "./i18n";
+import { sleep } from "./date";
 
 // ---------------------------------------------------------------------------
 // LLM token budget constants
@@ -15,8 +15,8 @@ export const LLM_TOKENS_DEFAULT = 4096;
 export const LLM_TOKENS_TRENDING = 6144;
 export const LLM_TOKENS_WEB = 8192;
 export const LLM_TOKENS_ROLLUP = 8192;
-import { type LlmProvider, createProvider } from "./providers/index.ts";
-import { DeepSeekProvider } from "./providers/deepseek.ts";
+import { type LlmProvider, createProvider } from "./providers/index";
+import { DeepSeekProvider } from "./providers/deepseek";
 
 const provider: LlmProvider = createProvider();
 

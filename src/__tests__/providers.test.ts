@@ -7,7 +7,7 @@ import {
   createProvider,
   VALID_PROVIDER_NAMES,
   type LlmProvider,
-} from "../providers/index.ts";
+} from "../providers/index";
 
 // ---------------------------------------------------------------------------
 // Mock the SDKs at module level

@@ -5,19 +5,19 @@ import {
   buildComparisonPrompt,
   buildPeersComparisonPrompt,
   buildSkillsPrompt,
-} from "../prompts.ts";
+} from "../prompts";
 import {
   buildTrendingPrompt,
   buildWebReportPrompt,
   buildWeeklyPrompt,
   buildMonthlyPrompt,
   buildHnPrompt,
-} from "../prompts-data.ts";
-import type { RepoConfig, GitHubItem, GitHubRelease } from "../github.ts";
-import type { RepoDigest } from "../prompts.ts";
-import type { TrendingData } from "../trending.ts";
-import type { HnData } from "../hn.ts";
-import type { WebFetchResult } from "../web.ts";
+} from "../prompts-data";
+import type { RepoConfig, GitHubItem, GitHubRelease } from "../github";
+import type { RepoDigest } from "../prompts";
+import type { TrendingData } from "../trending";
+import type { HnData } from "../hn";
+import type { WebFetchResult } from "../web";
 
 // ---------------------------------------------------------------------------
 // Fixtures

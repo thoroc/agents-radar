@@ -1,4 +1,4 @@
-import { OpenAICompatibleProvider } from "./openai-compatible.ts";
+import { OpenAICompatibleProvider } from "./openai-compatible";
 
 export class DeepSeekProvider extends OpenAICompatibleProvider {
   readonly name = "deepseek";

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { marked } from "marked";
-import { t } from "./i18n.ts";
+import { t } from "./i18n";
 
 function reportLabel(id: string): string {
   const zh = t("zh");

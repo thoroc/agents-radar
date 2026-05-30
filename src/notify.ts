@@ -11,8 +11,8 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, type Lang } from "./i18n.ts";
-import type { ReportHighlights } from "./prompts-data.ts";
+import { t, type Lang } from "./i18n";
+import type { ReportHighlights } from "./prompts-data";
 
 export interface Highlights {
   zh: ReportHighlights;
