@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { buildMessage, type Highlights } from "../notify";
 
 const BASE_URL = "https://example.com/radar";

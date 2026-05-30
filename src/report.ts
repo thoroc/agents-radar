@@ -4,8 +4,8 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, type Lang } from "./i18n";
 import { sleep } from "./date";
+import { type Lang, t } from "./i18n";
 
 // ---------------------------------------------------------------------------
 // LLM token budget constants
@@ -15,17 +15,19 @@ export const LLM_TOKENS_DEFAULT = 4096;
 export const LLM_TOKENS_TRENDING = 6144;
 export const LLM_TOKENS_WEB = 8192;
 export const LLM_TOKENS_ROLLUP = 8192;
-import { type LlmProvider, createProvider } from "./providers/index";
+
 import { DeepSeekProvider } from "./providers/deepseek";
+import { createProvider, type LlmProvider } from "./providers/index";
 
-const provider: LlmProvider = createProvider();
+type CallLlmDeps = {
+  provider?: LlmProvider;
+};
 
-const fallbackProvider: LlmProvider | null = (() => {
+function getFallbackProvider(): LlmProvider | null {
   const key = process.env["DEEPSEEK_API_KEY"];
   if (!key) return null;
-  console.error("[providers] Fallback provider configured: deepseek");
   return new DeepSeekProvider(key);
-})();
+}
 
 // ---------------------------------------------------------------------------
 // Concurrency limiter — prevents rate-limit (429) errors when many LLM calls
@@ -69,7 +71,12 @@ function is403(err: unknown): boolean {
   return (err as { status?: number })?.status === 403 || String(err).includes("permission_error");
 }
 
-export async function callLlm(prompt: string, maxTokens = LLM_TOKENS_DEFAULT): Promise<string> {
+export async function callLlm(
+  prompt: string,
+  maxTokens = LLM_TOKENS_DEFAULT,
+  deps: CallLlmDeps = {},
+): Promise<string> {
+  const provider = deps.provider ?? createProvider();
   for (let attempt = 0; ; attempt++) {
     await acquireSlot();
     let released = false;
@@ -84,9 +91,12 @@ export async function callLlm(prompt: string, maxTokens = LLM_TOKENS_DEFAULT): P
         await sleep(wait);
         continue;
       }
-      if (is403(err) && fallbackProvider) {
-        console.error(`[llm] 403 quota exceeded — switching to fallback provider`);
-        return await fallbackProvider.call(prompt, maxTokens);
+      if (is403(err)) {
+        const fb = getFallbackProvider();
+        if (fb) {
+          console.error(`[llm] 403 quota exceeded — switching to fallback provider`);
+          return await fb.call(prompt, maxTokens);
+        }
       }
       throw err;
     } finally {

@@ -11,59 +11,46 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { type ArxivData, fetchArxivData } from "./arxiv";
+import { getEnabledLangs, loadConfig } from "./config";
+import { toCstDateStr, toUtcStr } from "./date";
+import { type DevtoData, fetchDevtoData } from "./devto";
 import {
-  type GitHubItem,
-  type RepoFetch,
+  createGitHubIssue,
   fetchRecentItems,
   fetchRecentReleases,
   fetchSkillsData,
-  createGitHubIssue,
+  type GitHubItem,
+  type RepoConfig,
+  type RepoFetch,
 } from "./github";
+import { fetchHfData, type HfData } from "./hf";
+import { fetchHnData, type HnData } from "./hn";
+import { type Lang, t } from "./i18n";
+import { fetchLobstersData, type LobstersData } from "./lobsters";
+import { fetchPhData, type PhData } from "./ph";
 import {
-  type RepoDigest,
   buildCliPrompt,
-  buildPeerPrompt,
   buildComparisonPrompt,
+  buildPeerPrompt,
   buildPeersComparisonPrompt,
   buildSkillsPrompt,
+  type RepoDigest,
 } from "./prompts";
-import { buildTrendingPrompt, buildHighlightsPrompt, type ReportHighlights } from "./prompts-data";
-import { callLlm, saveFile, autoGenFooter, LLM_TOKENS_TRENDING } from "./report";
+import { buildHighlightsPrompt, buildTrendingPrompt, type ReportHighlights } from "./prompts-data";
+import { autoGenFooter, callLlm, LLM_TOKENS_TRENDING, saveFile } from "./report";
 import { buildCliReportContent, buildOpenclawReportContent } from "./report-builders";
 import {
-  saveWebReport,
-  saveTrendingReport,
+  saveArxivReport,
+  saveCommunityReport,
+  saveHfReport,
   saveHnReport,
   savePhReport,
-  saveArxivReport,
-  saveHfReport,
-  saveCommunityReport,
+  saveTrendingReport,
+  saveWebReport,
 } from "./report-savers";
-import { loadWebState, fetchSiteContent, type WebFetchResult, type WebState } from "./web";
 import { fetchTrendingData, type TrendingData } from "./trending";
-import { fetchHnData, type HnData } from "./hn";
-import { fetchPhData, type PhData } from "./ph";
-import { fetchArxivData, type ArxivData } from "./arxiv";
-import { fetchHfData, type HfData } from "./hf";
-import { fetchDevtoData, type DevtoData } from "./devto";
-import { fetchLobstersData, type LobstersData } from "./lobsters";
-import { loadConfig, getEnabledLangs } from "./config";
-import { toCstDateStr, toUtcStr } from "./date";
-import { t, type Lang } from "./i18n";
-
-// ---------------------------------------------------------------------------
-// Repo config — loaded from config.yml, falls back to built-in defaults
-// ---------------------------------------------------------------------------
-
-const {
-  cliRepos: CLI_REPOS,
-  skillsRepo: CLAUDE_SKILLS_REPO,
-  openclaw: OPENCLAW,
-  openclawPeers: OPENCLAW_PEERS,
-  languages: CONFIG_LANGS,
-} = loadConfig();
-
-const ENABLED_LANGS = getEnabledLangs(CONFIG_LANGS);
+import { fetchSiteContent, loadWebState, type WebFetchResult, type WebState } from "./web";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -82,6 +69,8 @@ function requireEnv(name: string): string {
 async function fetchAllData(
   since: Date,
   webState: WebState,
+  allConfigs: RepoConfig[],
+  claudeSkillsRepo: string,
 ): Promise<{
   fetched: RepoFetch[];
   skillsData: { prs: GitHubItem[]; issues: GitHubItem[] };
@@ -94,7 +83,6 @@ async function fetchAllData(
   devtoData: DevtoData;
   lobstersData: LobstersData;
 }> {
-  const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
   console.error(
     `  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web, hn, ph, arxiv, hf, devto, lobsters`,
   );
@@ -130,7 +118,7 @@ async function fetchAllData(
         }
       }),
     ),
-    fetchSkillsData(CLAUDE_SKILLS_REPO)
+    fetchSkillsData(claudeSkillsRepo)
       .then((d) => {
         console.error(`  [claude-code-skills] prs: ${d.prs.length}, issues: ${d.issues.length}`);
         return d;
@@ -293,6 +281,16 @@ async function generateSummaries(
 async function main(): Promise<void> {
   requireEnv("GITHUB_TOKEN");
 
+  const {
+    cliRepos: CLI_REPOS,
+    skillsRepo: CLAUDE_SKILLS_REPO,
+    openclaw: OPENCLAW,
+    openclawPeers: OPENCLAW_PEERS,
+    languages: CONFIG_LANGS,
+  } = loadConfig();
+  const ENABLED_LANGS = getEnabledLangs(CONFIG_LANGS);
+  const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
+
   const now = new Date();
   const since = new Date(now.getTime() - 24 * 60 * 60 * 1000);
   const dateStr = toCstDateStr(now);
@@ -315,7 +313,7 @@ async function main(): Promise<void> {
     hfData,
     devtoData,
     lobstersData,
-  } = await fetchAllData(since, webState);
+  } = await fetchAllData(since, webState, allConfigs, CLAUDE_SKILLS_REPO);
 
   const peerIds = new Set(OPENCLAW_PEERS.map((p) => p.id));
   const fetchedCli = fetched.filter((f) => f.cfg.id !== OPENCLAW.id && !peerIds.has(f.cfg.id));

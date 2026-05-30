@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { LocaleFileSchema, type LocaleData } from "./locale-schema";
+import { type LocaleData, LocaleFileSchema } from "./locale-schema";
 
 let _initialized = false;
 
