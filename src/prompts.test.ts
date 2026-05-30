@@ -1,23 +1,23 @@
 import { describe, expect, it } from "vitest";
-import type { GitHubItem, GitHubRelease, RepoConfig } from "../github";
-import type { HnData } from "../hn";
-import type { RepoDigest } from "../prompts";
+import type { GitHubItem, GitHubRelease, RepoConfig } from "./github";
+import type { HnData } from "./hn";
+import type { RepoDigest } from "./prompts";
 import {
   buildCliPrompt,
   buildComparisonPrompt,
   buildPeerPrompt,
   buildPeersComparisonPrompt,
   buildSkillsPrompt,
-} from "../prompts";
+} from "./prompts";
 import {
   buildHnPrompt,
   buildMonthlyPrompt,
   buildTrendingPrompt,
   buildWebReportPrompt,
   buildWeeklyPrompt,
-} from "../prompts-data";
-import type { TrendingData } from "../trending";
-import type { WebFetchResult } from "../web";
+} from "./prompts-data";
+import type { TrendingData } from "./trending";
+import type { WebFetchResult } from "./web";
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -125,7 +125,7 @@ describe("buildComparisonPrompt", () => {
   });
 
   it("shows no-activity for empty digests", () => {
-    const digests = [makeDigest({ summary: "Summary" })]; // no issues/prs/releases
+    const digests = [makeDigest({ summary: "Summary" })];
     const result = buildComparisonPrompt(digests, "2026-03-09");
     expect(result).toContain("过去24小时无活动");
   });
@@ -252,7 +252,7 @@ describe("buildWebReportPrompt", () => {
     const result = buildWebReportPrompt(results, "2026-03-09");
     expect(result).toContain("首次全量抓取");
     expect(result).toContain("Anthropic");
-    expect(result).toContain("内容格局总览"); // first-run-only section
+    expect(result).toContain("内容格局总览");
   });
 
   it("shows incremental mode for non-first-run", () => {

@@ -2,8 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { LANGUAGE_NAMES, SUPPORTED_LOCALES, t, validateLocale } from "../i18n";
-import { LocaleFileSchema } from "../locale-schema";
+import { LANGUAGE_NAMES, SUPPORTED_LOCALES, t, validateLocale } from "./i18n";
+import { LocaleFileSchema } from "./locale-schema";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -104,7 +104,7 @@ describe("LANGUAGE_NAMES", () => {
 });
 
 describe("all locale files pass Zod schema", () => {
-  const localesDir = path.resolve(__dirname, "../../locales");
+  const localesDir = path.resolve(__dirname, "../locales");
   const files = fs.readdirSync(localesDir).filter((f) => f.endsWith(".json"));
 
   for (const file of files) {

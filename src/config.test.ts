@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { loadConfig, toRepoConfig } from "../config";
+import { getEnabledLangs, loadConfig, toRepoConfig } from "./config";
 
 // ---------------------------------------------------------------------------
 // toRepoConfig
@@ -20,6 +20,41 @@ describe("toRepoConfig", () => {
   it("omits paginated when false", () => {
     const result = toRepoConfig({ id: "test", repo: "org/test", name: "Test", paginated: false });
     expect(result).not.toHaveProperty("paginated");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// getEnabledLangs
+// ---------------------------------------------------------------------------
+
+describe("getEnabledLangs", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("returns env var langs when REPORT_LANGS is set", () => {
+    vi.stubEnv("REPORT_LANGS", "fr,de");
+    expect(getEnabledLangs()).toEqual(["fr", "de"]);
+  });
+
+  it("returns configured langs when no env var", () => {
+    vi.stubEnv("REPORT_LANGS", "");
+    expect(getEnabledLangs(["ja", "ko"])).toEqual(["ja", "ko"]);
+  });
+
+  it("returns defaults when nothing configured", () => {
+    vi.stubEnv("REPORT_LANGS", "");
+    expect(getEnabledLangs([])).toEqual(["en", "zh"]);
+  });
+
+  it("returns defaults when langConfig undefined", () => {
+    vi.stubEnv("REPORT_LANGS", "");
+    expect(getEnabledLangs(undefined)).toEqual(["en", "zh"]);
+  });
+
+  it("filters empty strings from env var", () => {
+    vi.stubEnv("REPORT_LANGS", "en,,zh,");
+    expect(getEnabledLangs()).toEqual(["en", "zh"]);
   });
 });
 
@@ -88,6 +123,6 @@ openclaw:
     vi.spyOn(fs, "existsSync").mockReturnValue(true);
     vi.spyOn(fs, "readFileSync").mockReturnValue("openclaw:\n  id: partial\n");
     const config = loadConfig("test.yml");
-    expect(config.openclaw.id).toBe("openclaw"); // default
+    expect(config.openclaw.id).toBe("openclaw");
   });
 });
