@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { Command } from "@cliffy/command";
 import { marked } from "marked";
 import { t } from "./i18n";
 
@@ -149,7 +150,8 @@ const getReportContent = async (date: string, report: string): Promise<ReportCon
   }
 };
 
-const main = async (): Promise<void> => {
+const main = async (opts: { verbose?: boolean[] }): Promise<void> => {
+  const verbosity = opts.verbose?.length ?? 0;
   const entries = fs
     .readdirSync(DIGESTS_DIR)
     .filter((name) => DATE_RE.test(name) && fs.statSync(path.join(DIGESTS_DIR, name)).isDirectory())
@@ -220,15 +222,20 @@ const main = async (): Promise<void> => {
 
   fs.writeFileSync(FEED_PATH, feedXml);
   console.error(`feed.xml updated: ${feedItems.length} items`);
+
+  if (verbosity >= 1) {
+    console.error(`[manifest] ${feedItems.length} feed items, ${entries.length} dates`);
+  }
 };
 
-// Run only when executed directly (not imported for testing)
-const isDirectRun =
-  process.argv[1] &&
-  (process.argv[1].endsWith("generate-manifest.ts") || process.argv[1].endsWith("generate-manifest.js"));
-if (isDirectRun) {
-  main().catch((err) => {
-    console.error(err);
-    process.exit(1);
+const command = new Command()
+  .name("generate-manifest")
+  .description("Generate manifest.json and feed.xml from digest directories")
+  .option("-V, --verbose", "Enable verbose output", { collect: true })
+  .action(async (opts) => {
+    await main(opts);
   });
+
+if (import.meta.main) {
+  await command.parse(process.argv.slice(2));
 }
