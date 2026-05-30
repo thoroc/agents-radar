@@ -11,6 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { Command } from "@cliffy/command";
 import type { Highlights } from "./notify";
 import { notifyLabel } from "./notify";
 
@@ -104,7 +105,8 @@ export const buildFeishuMessage = (
   return lines.join("\n");
 };
 
-const main = async (): Promise<void> => {
+const main = async (opts: { verbose?: boolean[] }): Promise<void> => {
+  const verbosity = opts.verbose?.length ?? 0;
   const urls = getWebhookUrls();
   if (!urls.length) {
     console.error("[feishu] FEISHU_WEBHOOK_URLS not set — skipping.");
@@ -126,6 +128,10 @@ const main = async (): Promise<void> => {
     return;
   }
   const { date, reports } = latest;
+
+  if (verbosity >= 1) {
+    console.error(`[feishu] Latest date: ${date}, reports: ${reports.length}, webhooks: ${urls.length}`);
+  }
 
   let highlights: Highlights | null = null;
   const highlightsPath = path.join("digests", date, "highlights.json");
@@ -150,7 +156,14 @@ const main = async (): Promise<void> => {
   console.error("[feishu] Done!");
 };
 
-main().catch((e: unknown) => {
-  console.error("[feishu]", e instanceof Error ? e.message : e);
-  process.exit(1);
-});
+const command = new Command()
+  .name("feishu")
+  .description("Send Feishu (Lark) notification with latest report links")
+  .option("-V, --verbose", "Enable verbose output", { collect: true })
+  .action(async (opts) => {
+    await main(opts);
+  });
+
+if (import.meta.main) {
+  await command.parse(process.argv.slice(2));
+}
