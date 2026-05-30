@@ -4,3 +4,10 @@ node_modules/
 dist/
 social/
 coverage/
+.claude/skills/
+.codex/
+.cursor/
+.gemini/
+.github/skills/
+.tessl/
+.vscode/skills/
