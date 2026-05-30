@@ -113,7 +113,7 @@ const WEB_HEADERS = {
   "Accept-Language": "en-US,en;q=0.9",
 };
 
-async function httpGet(url: string): Promise<string> {
+const httpGet = async (url: string): Promise<string> => {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
@@ -123,13 +123,13 @@ async function httpGet(url: string): Promise<string> {
   } finally {
     clearTimeout(timer);
   }
-}
+};
 
 // ---------------------------------------------------------------------------
 // Sitemap parsing (plain-text XML; no DOM needed)
 // ---------------------------------------------------------------------------
 
-export function parseSitemapUrls(xml: string): Array<{ loc: string; lastmod?: string }> {
+export const parseSitemapUrls = (xml: string): Array<{ loc: string; lastmod?: string }> => {
   const results: Array<{ loc: string; lastmod?: string }> = [];
   for (const block of xml.match(/<url>[\s\S]*?<\/url>/g) ?? []) {
     const loc = block.match(/<loc>\s*(.*?)\s*<\/loc>/)?.[1];
@@ -137,17 +137,17 @@ export function parseSitemapUrls(xml: string): Array<{ loc: string; lastmod?: st
     if (loc) results.push({ loc, lastmod });
   }
   return results;
-}
+};
 
-export function isSitemapIndex(xml: string): boolean {
+export const isSitemapIndex = (xml: string): boolean => {
   return /<sitemapindex[\s>]/.test(xml);
-}
+};
 
 // ---------------------------------------------------------------------------
 // HTML content extraction
 // ---------------------------------------------------------------------------
 
-export function extractTitle(html: string): string {
+export const extractTitle = (html: string): string => {
   return (
     // Prefer OpenGraph title for cleaner strings
     (
@@ -157,9 +157,9 @@ export function extractTitle(html: string): string {
       ""
     ).trim()
   );
-}
+};
 
-export function extractText(html: string): string {
+export const extractText = (html: string): string => {
   // Prefer <main> or <article> to avoid nav/header/footer boilerplate
   const source =
     html.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1] ??
@@ -179,31 +179,33 @@ export function extractText(html: string): string {
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, MAX_CONTENT_LENGTH);
-}
+};
 
-export function urlCategory(url: string): string {
+export const urlCategory = (url: string): string => {
   try {
     return new URL(url).pathname.split("/").filter(Boolean)[0] ?? "article";
   } catch {
     return "article";
   }
-}
+};
 
 /** Derive a human-readable title from the last URL path segment. */
-export function titleFromUrl(url: string): string {
+export const titleFromUrl = (url: string): string => {
   try {
     const slug = new URL(url).pathname.split("/").filter(Boolean).pop() ?? "";
     return slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   } catch {
     return url;
   }
-}
+};
 
 // ---------------------------------------------------------------------------
 // URL discovery
 // ---------------------------------------------------------------------------
 
-async function discoverUrls(site: "anthropic" | "openai"): Promise<Array<{ loc: string; lastmod?: string }>> {
+const discoverUrls = async (
+  site: "anthropic" | "openai",
+): Promise<Array<{ loc: string; lastmod?: string }>> => {
   const cfg = SITE_CONFIGS[site];
   const results: Array<{ loc: string; lastmod?: string }> = [];
 
@@ -239,7 +241,7 @@ async function discoverUrls(site: "anthropic" | "openai"): Promise<Array<{ loc: 
   }
 
   return results;
-}
+};
 
 // ---------------------------------------------------------------------------
 // State persistence
@@ -247,34 +249,34 @@ async function discoverUrls(site: "anthropic" | "openai"): Promise<Array<{ loc: 
 
 const STATE_FILE = path.join("digests", "web-state.json");
 
-export function emptyState(): WebState {
+export const emptyState = (): WebState => {
   return {
     anthropic: { lastChecked: "", seenUrls: {} },
     openai: { lastChecked: "", seenUrls: {} },
   };
-}
+};
 
-export function loadWebState(): WebState {
+export const loadWebState = (): WebState => {
   try {
     return JSON.parse(fs.readFileSync(STATE_FILE, "utf-8")) as WebState;
   } catch {
     return emptyState();
   }
-}
+};
 
-export function saveWebState(state: WebState): void {
+export const saveWebState = (state: WebState): void => {
   fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2), "utf-8");
-}
+};
 
 // ---------------------------------------------------------------------------
 // Main export
 // ---------------------------------------------------------------------------
 
-export async function fetchSiteContent(
+export const fetchSiteContent = async (
   site: "anthropic" | "openai",
   state: WebState,
-): Promise<WebFetchResult> {
+): Promise<WebFetchResult> => {
   const cfg = SITE_CONFIGS[site];
   const siteState = state[site];
   const isFirstRun = Object.keys(siteState.seenUrls).length === 0;
@@ -357,4 +359,4 @@ export async function fetchSiteContent(
     newItems: items,
     totalDiscovered: allDiscovered.length,
   };
-}
+};

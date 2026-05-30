@@ -20,17 +20,17 @@ dotenvx.config({ quiet: true });
 const DIGESTS_DIR = "digests";
 const SOCIAL_DIR = "social";
 
-function saveSocialFile(content: string, filename: string): string {
+const saveSocialFile = (content: string, filename: string): string => {
   fs.mkdirSync(SOCIAL_DIR, { recursive: true });
   const filepath = path.join(SOCIAL_DIR, filename);
   fs.writeFileSync(filepath, content, "utf-8");
   return filepath;
-}
+};
 
 // Reports to include as source material (zh only)
 const SOURCE_REPORTS = ["ai-cli", "ai-agents", "ai-web", "ai-trending", "ai-hn"];
 
-function getRecentDates(n: number): string[] {
+const getRecentDates = (n: number): string[] => {
   const dateRe = /^\d{4}-\d{2}-\d{2}$/;
   return fs
     .readdirSync(DIGESTS_DIR)
@@ -38,9 +38,9 @@ function getRecentDates(n: number): string[] {
     .sort()
     .reverse()
     .slice(0, n);
-}
+};
 
-function loadReports(date: string, truncate = 3000): string {
+const loadReports = (date: string, truncate = 3000): string => {
   const sections: string[] = [];
   for (const report of SOURCE_REPORTS) {
     const filePath = path.join(DIGESTS_DIR, date, `${report}.md`);
@@ -50,9 +50,9 @@ function loadReports(date: string, truncate = 3000): string {
     }
   }
   return sections.join("\n\n---\n\n");
-}
+};
 
-function loadMultiDayReports(days: number, truncate: number): { dateRange: string; content: string } {
+const loadMultiDayReports = (days: number, truncate: number): { dateRange: string; content: string } => {
   const dates = getRecentDates(days);
   if (dates.length === 0) throw new Error("No digest directories found");
 
@@ -67,9 +67,9 @@ function loadMultiDayReports(days: number, truncate: number): { dateRange: strin
 
   const dateRange = `${dates[dates.length - 1]} ~ ${dates[0]}`;
   return { dateRange, content: sections.join("\n\n===\n\n") };
-}
+};
 
-function buildXiaohongshuPrompt(reports: string, date: string): string {
+const buildXiaohongshuPrompt = (reports: string, date: string): string => {
   return `你是一位 AI 技术领域的内容创作者，风格平实专业，擅长简洁地传达技术动态。
 
 以下是 ${date} 的 AI 生态日报原始内容：
@@ -99,9 +99,9 @@ ${reports}
 - 不要加任何链接（小红书不支持外链）
 
 直接输出标题和正文，不要加额外说明。`;
-}
+};
 
-function buildWechatPrompt(dateRange: string, reports: string): string {
+const buildWechatPrompt = (dateRange: string, reports: string): string => {
   return `你是一位专注 AI 领域的公众号作者，文风专业但可读性强，擅长把一周的技术动态梳理成结构清晰、有深度的周刊长文。
 
 以下是 ${dateRange} 这一周的 AI 生态日报原始内容（按日期倒序排列）：
@@ -149,9 +149,9 @@ ${reports}
 - 结尾附注：数据来源为 agents-radar 项目（https://github.com/duanyytop/agents-radar）
 
 直接输出标题和正文，不要加额外说明。`;
-}
+};
 
-function buildWechatMonthlyPrompt(dateRange: string, reports: string): string {
+const buildWechatMonthlyPrompt = (dateRange: string, reports: string): string => {
   return `你是一位专注 AI 领域的公众号作者，文风专业但可读性强，擅长从一个月的海量信息中提炼出清晰的脉络和深刻的洞察。
 
 以下是 ${dateRange} 这一个月的 AI 生态日报原始内容（按日期倒序排列，每天的内容已做摘要）：
@@ -205,11 +205,11 @@ ${reports}
 - 结尾附注：数据来源为 agents-radar 项目（https://github.com/duanyytop/agents-radar）
 
 直接输出标题和正文，不要加额外说明。`;
-}
+};
 
 type Platform = "xiaohongshu" | "wechat" | "wechat:monthly";
 
-async function generate(platform: Platform): Promise<void> {
+const generate = async (platform: Platform): Promise<void> => {
   if (platform === "xiaohongshu") {
     const dates = getRecentDates(1);
     if (dates.length === 0) throw new Error("No digest directories found");
@@ -239,7 +239,7 @@ async function generate(platform: Platform): Promise<void> {
     const filepath = saveSocialFile(content, `${latestDate}-wechat-monthly.md`);
     console.error(`[social] Saved to ${filepath}`);
   }
-}
+};
 
 const VALID_PLATFORMS: Platform[] = ["xiaohongshu", "wechat", "wechat:monthly"];
 const platform = process.argv[2] as Platform | undefined;

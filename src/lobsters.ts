@@ -51,7 +51,7 @@ interface LobstersApiStory {
 // Fetch
 // ---------------------------------------------------------------------------
 
-export async function fetchLobstersData(): Promise<LobstersData> {
+export const fetchLobstersData = async (): Promise<LobstersData> => {
   const seen = new Map<string, LobstersStory>();
 
   try {
@@ -101,4 +101,4 @@ export async function fetchLobstersData(): Promise<LobstersData> {
     console.error(`  [lobsters] fetch failed: ${err}`);
     return { stories: [], fetchSuccess: false };
   }
-}
+};

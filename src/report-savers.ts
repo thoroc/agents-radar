@@ -27,7 +27,7 @@ import { saveWebState, type WebFetchResult, type WebState } from "./web";
 // Web report
 // ---------------------------------------------------------------------------
 
-export async function saveWebReport(
+export const saveWebReport = async (
   webResults: WebFetchResult[],
   webState: WebState,
   utcStr: string,
@@ -35,7 +35,7 @@ export async function saveWebReport(
   digestRepo: string,
   footer: string,
   lang: Lang = "zh",
-): Promise<void> {
+): Promise<void> => {
   const hasNewContent = webResults.some((r) => r.newItems.length > 0);
 
   if (hasNewContent) {
@@ -89,13 +89,13 @@ export async function saveWebReport(
     saveWebState(webState);
     console.error("  [web] State saved.");
   }
-}
+};
 
 // ---------------------------------------------------------------------------
 // Trending report
 // ---------------------------------------------------------------------------
 
-export async function saveTrendingReport(
+export const saveTrendingReport = async (
   trendingData: TrendingData,
   trendingSummary: string,
   utcStr: string,
@@ -103,7 +103,7 @@ export async function saveTrendingReport(
   digestRepo: string,
   footer: string,
   lang: Lang = "zh",
-): Promise<void> {
+): Promise<void> => {
   const hasData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;
   if (!hasData) {
     console.error(`  [trending/${lang}] No data available, skipping report.`);
@@ -126,20 +126,20 @@ export async function saveTrendingReport(
     const trendingUrl = await createGitHubIssue(trendingTitle, trendingContent, trendingLabel);
     console.error(`  Created trending issue (${lang}): ${trendingUrl}`);
   }
-}
+};
 
 // ---------------------------------------------------------------------------
 // Hacker News report
 // ---------------------------------------------------------------------------
 
-export async function saveHnReport(
+export const saveHnReport = async (
   hnData: HnData,
   utcStr: string,
   dateStr: string,
   digestRepo: string,
   footer: string,
   lang: Lang = "zh",
-): Promise<void> {
+): Promise<void> => {
   if (!hnData.fetchSuccess) {
     console.error(`  [hn/${lang}] No data available, skipping report.`);
     return;
@@ -174,20 +174,20 @@ export async function saveHnReport(
   } catch (err) {
     console.error(`  [hn/${lang}] Report generation failed: ${err}`);
   }
-}
+};
 
 // ---------------------------------------------------------------------------
 // Product Hunt
 // ---------------------------------------------------------------------------
 
-export async function savePhReport(
+export const savePhReport = async (
   phData: PhData,
   utcStr: string,
   dateStr: string,
   digestRepo: string,
   footer: string,
   lang: Lang = "zh",
-): Promise<void> {
+): Promise<void> => {
   if (!phData.fetchSuccess) {
     console.error(`  [ph/${lang}] No data available, skipping report.`);
     return;
@@ -222,20 +222,20 @@ export async function savePhReport(
   } catch (err) {
     console.error(`  [ph/${lang}] Report generation failed: ${err}`);
   }
-}
+};
 
 // ---------------------------------------------------------------------------
 // ArXiv report
 // ---------------------------------------------------------------------------
 
-export async function saveArxivReport(
+export const saveArxivReport = async (
   arxivData: ArxivData,
   utcStr: string,
   dateStr: string,
   digestRepo: string,
   footer: string,
   lang: Lang = "zh",
-): Promise<void> {
+): Promise<void> => {
   if (!arxivData.fetchSuccess) {
     console.error(`  [arxiv/${lang}] No data available, skipping report.`);
     return;
@@ -270,20 +270,20 @@ export async function saveArxivReport(
   } catch (err) {
     console.error(`  [arxiv/${lang}] Report generation failed: ${err}`);
   }
-}
+};
 
 // ---------------------------------------------------------------------------
 // Hugging Face report
 // ---------------------------------------------------------------------------
 
-export async function saveHfReport(
+export const saveHfReport = async (
   hfData: HfData,
   utcStr: string,
   dateStr: string,
   digestRepo: string,
   footer: string,
   lang: Lang = "zh",
-): Promise<void> {
+): Promise<void> => {
   if (!hfData.fetchSuccess) {
     console.error(`  [hf/${lang}] No data available, skipping report.`);
     return;
@@ -318,13 +318,13 @@ export async function saveHfReport(
   } catch (err) {
     console.error(`  [hf/${lang}] Report generation failed: ${err}`);
   }
-}
+};
 
 // ---------------------------------------------------------------------------
 // Community report (Dev.to + Lobste.rs)
 // ---------------------------------------------------------------------------
 
-export async function saveCommunityReport(
+export const saveCommunityReport = async (
   devtoData: DevtoData,
   lobstersData: LobstersData,
   utcStr: string,
@@ -332,7 +332,7 @@ export async function saveCommunityReport(
   digestRepo: string,
   footer: string,
   lang: Lang = "zh",
-): Promise<void> {
+): Promise<void> => {
   const hasData = devtoData.fetchSuccess || lobstersData.fetchSuccess;
   if (!hasData) {
     console.error(`  [community/${lang}] No data available, skipping report.`);
@@ -368,4 +368,4 @@ export async function saveCommunityReport(
   } catch (err) {
     console.error(`  [community/${lang}] Report generation failed: ${err}`);
   }
-}
+};

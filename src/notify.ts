@@ -21,7 +21,7 @@ export interface Highlights {
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 
-export function notifyLabel(id: string, lang: Lang = "zh"): string {
+export const notifyLabel = (id: string, lang: Lang = "zh"): string => {
   const s = t(lang);
   switch (id) {
     case "ai-cli":
@@ -49,13 +49,13 @@ export function notifyLabel(id: string, lang: Lang = "zh"): string {
     default:
       return id;
   }
-}
+};
 
-function escapeHtml(s: string): string {
+const escapeHtml = (s: string): string => {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
+};
 
-async function sendTelegram(text: string): Promise<void> {
+const sendTelegram = async (text: string): Promise<void> => {
   const BOT_TOKEN = process.env["TELEGRAM_BOT_TOKEN"] ?? "";
   const CHAT_ID = process.env["TELEGRAM_CHAT_ID"] || "@agents_radar";
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
@@ -73,14 +73,14 @@ async function sendTelegram(text: string): Promise<void> {
     const body = await res.text();
     throw new Error(`Telegram API ${res.status}: ${body}`);
   }
-}
+};
 
-export function buildMessage(
+export const buildMessage = (
   date: string,
   reports: string[],
   pagesUrl?: string,
   highlights?: Highlights | null,
-): string {
+): string => {
   const PAGES_URL = (pagesUrl ?? process.env["PAGES_URL"] ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
   const baseReports = reports.filter((r) => !r.endsWith("-en"));
   const isWeekly = baseReports.includes("ai-weekly");
@@ -123,9 +123,9 @@ export function buildMessage(
 
   lines.push(`\n<a href="${PAGES_URL}">🌐 Web UI</a>  ·  <a href="${PAGES_URL}/feed.xml">⊕ RSS</a>`);
   return lines.join("\n");
-}
+};
 
-async function main(): Promise<void> {
+const main = async (): Promise<void> => {
   const BOT_TOKEN = process.env["TELEGRAM_BOT_TOKEN"] ?? "";
   if (!BOT_TOKEN) {
     console.error("[notify] TELEGRAM_BOT_TOKEN not set — skipping.");
@@ -164,7 +164,7 @@ async function main(): Promise<void> {
   console.error(`[notify] Sending Telegram message for ${date} (${reports.length} reports)…`);
   await sendTelegram(text);
   console.error("[notify] Done!");
-}
+};
 
 main().catch((e: unknown) => {
   console.error("[notify]", e instanceof Error ? e.message : e);

@@ -21,7 +21,7 @@ export interface RepoDigest {
 // Formatting
 // ---------------------------------------------------------------------------
 
-export function formatItem(item: GitHubItem, lang: Lang = "zh"): string {
+export const formatItem = (item: GitHubItem, lang: Lang = "zh"): string => {
   const labels = item.labels.map((l) => l.name).join(", ");
   const labelStr = labels ? ` [${labels}]` : "";
   const body = (item.body ?? "").replace(/\n/g, " ").trim().slice(0, 300);
@@ -47,7 +47,7 @@ export function formatItem(item: GitHubItem, lang: Lang = "zh"): string {
     `  ${t.url}: ${refStr}`,
     `  ${t.summary}: ${body}${ellipsis}`,
   ].join("\n");
-}
+};
 
 // ---------------------------------------------------------------------------
 // Sampling helpers (shared)
@@ -57,31 +57,31 @@ const CLI_ISSUE_LIMIT = 30;
 const CLI_PR_LIMIT = 20;
 
 /** Sort by comment count desc, take top N. */
-export function topN(items: GitHubItem[], n: number): GitHubItem[] {
+export const topN = (items: GitHubItem[], n: number): GitHubItem[] => {
   return [...items].sort((a, b) => b.comments - a.comments).slice(0, n);
-}
+};
 
-export function sampleNote(total: number, sampled: number, lang: Lang = "zh"): string {
+export const sampleNote = (total: number, sampled: number, lang: Lang = "zh"): string => {
   if (lang === "en") {
     return total > sampled
       ? `(Total: ${total} items; showing top ${sampled} by comment count)`
       : `(Total: ${total} items)`;
   }
   return total > sampled ? `（共 ${total} 条，以下展示评论数最多的 ${sampled} 条）` : `（共 ${total} 条）`;
-}
+};
 
 // ---------------------------------------------------------------------------
 // Prompts
 // ---------------------------------------------------------------------------
 
-export function buildCliPrompt(
+export const buildCliPrompt = (
   cfg: RepoConfig,
   issues: GitHubItem[],
   prs: GitHubItem[],
   releases: GitHubRelease[],
   dateStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const sampledIssues = topN(issues, CLI_ISSUE_LIMIT);
   const sampledPrs = topN(prs, CLI_PR_LIMIT);
 
@@ -152,12 +152,12 @@ ${prsText}
 
 语言要求：简洁专业，适合技术开发者阅读。每个条目附上 GitHub 链接。
 `;
-}
+};
 
 const PEER_ISSUE_LIMIT = 30;
 const PEER_PR_LIMIT = 20;
 
-export function buildPeerPrompt(
+export const buildPeerPrompt = (
   cfg: RepoConfig,
   issues: GitHubItem[],
   prs: GitHubItem[],
@@ -166,7 +166,7 @@ export function buildPeerPrompt(
   issueLimit = PEER_ISSUE_LIMIT,
   prLimit = PEER_PR_LIMIT,
   lang: Lang = "zh",
-): string {
+): string => {
   const totalIssues = issues.length;
   const totalPrs = prs.length;
 
@@ -253,14 +253,14 @@ ${prsText}
 
 语言要求：客观专业，数据驱动，突出项目健康度。每个条目附上 GitHub 链接。
 `;
-}
+};
 
-export function buildPeersComparisonPrompt(
+export const buildPeersComparisonPrompt = (
   openclawDigest: RepoDigest,
   peerDigests: RepoDigest[],
   dateStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "过去24小时无活动。";
 
   const openclawSection =
@@ -323,14 +323,14 @@ ${peerSections}
 
 语言要求：简洁专业，有数据支撑，适合技术决策者和开发者阅读。
 `;
-}
+};
 
-export function buildSkillsPrompt(
+export const buildSkillsPrompt = (
   prs: GitHubItem[],
   issues: GitHubItem[],
   dateStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const topPrs = topN(prs, 20);
   const topIssues = topN(issues, 15);
 
@@ -385,9 +385,9 @@ ${issuesText}
 
 语言要求：简洁专业，每个条目附上 GitHub 链接。
 `;
-}
+};
 
-export function buildComparisonPrompt(digests: RepoDigest[], dateStr: string, lang: Lang = "zh"): string {
+export const buildComparisonPrompt = (digests: RepoDigest[], dateStr: string, lang: Lang = "zh"): string => {
   const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "过去24小时无活动。";
 
   const sections = digests
@@ -435,4 +435,4 @@ ${sections}
 
 语言要求：简洁专业，有数据支撑，适合技术决策者和开发者阅读。
 `;
-}
+};

@@ -53,7 +53,7 @@ interface AlgoliaResponse {
 // Fetch
 // ---------------------------------------------------------------------------
 
-export async function fetchHnData(): Promise<HnData> {
+export const fetchHnData = async (): Promise<HnData> => {
   const since = Math.floor((Date.now() - 24 * 60 * 60 * 1000) / 1000);
   const seen = new Map<string, HnStory>();
 
@@ -104,4 +104,4 @@ export async function fetchHnData(): Promise<HnData> {
     console.error(`  [hn] fetch failed: ${err}`);
     return { stories: [], fetchSuccess: false };
   }
-}
+};

@@ -3,7 +3,7 @@ import { marked } from "marked";
 import path from "path";
 import { t } from "./i18n";
 
-function reportLabel(id: string): string {
+const reportLabel = (id: string): string => {
   const zh = t("zh");
   const en = t("en");
   switch (id) {
@@ -54,7 +54,7 @@ function reportLabel(id: string): string {
     default:
       return id;
   }
-}
+};
 
 const DIGESTS_DIR = "digests";
 const MANIFEST_PATH = "manifest.json";
@@ -105,19 +105,19 @@ interface ReportContent {
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export function toRfc822(date: Date): string {
+export const toRfc822 = (date: Date): string => {
   return (
     `${DAYS[date.getUTCDay()]}, ${String(date.getUTCDate()).padStart(2, "0")} ` +
     `${MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()} ` +
     `${String(date.getUTCHours()).padStart(2, "0")}:${String(date.getUTCMinutes()).padStart(2, "0")}:${String(date.getUTCSeconds()).padStart(2, "0")} +0000`
   );
-}
+};
 
-export function escapeXml(s: string): string {
+export const escapeXml = (s: string): string => {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
+};
 
-async function getReportContent(date: string, report: string): Promise<ReportContent> {
+const getReportContent = async (date: string, report: string): Promise<ReportContent> => {
   const filePath = path.join(DIGESTS_DIR, date, `${report}.md`);
 
   try {
@@ -147,9 +147,9 @@ async function getReportContent(date: string, report: string): Promise<ReportCon
       fullHtml: `<![CDATA[${escapeXml(title)}]]>`,
     };
   }
-}
+};
 
-async function main(): Promise<void> {
+const main = async (): Promise<void> => {
   const entries = fs
     .readdirSync(DIGESTS_DIR)
     .filter((name) => DATE_RE.test(name) && fs.statSync(path.join(DIGESTS_DIR, name)).isDirectory())
@@ -220,7 +220,7 @@ async function main(): Promise<void> {
 
   fs.writeFileSync(FEED_PATH, feedXml);
   console.error(`feed.xml updated: ${feedItems.length} items`);
-}
+};
 
 // Run only when executed directly (not imported for testing)
 const isDirectRun =

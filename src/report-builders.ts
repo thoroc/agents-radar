@@ -10,7 +10,7 @@ import type { RepoDigest } from "./prompts";
 // CLI Report
 // ---------------------------------------------------------------------------
 
-export function buildCliReportContent(
+export const buildCliReportContent = (
   cliDigests: RepoDigest[],
   skillsSummary: string,
   comparison: string,
@@ -19,7 +19,7 @@ export function buildCliReportContent(
   footer: string,
   skillsRepo: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const repoLinks =
     cliDigests.map((d) => `- [${d.config.name}](https://github.com/${d.config.repo})`).join("\n") +
     `\n- [Claude Code Skills](https://github.com/${skillsRepo})`;
@@ -62,13 +62,13 @@ export function buildCliReportContent(
     toolSections +
     footer
   );
-}
+};
 
 // ---------------------------------------------------------------------------
 // OpenClaw Report
 // ---------------------------------------------------------------------------
 
-export function buildOpenclawReportContent(
+export const buildOpenclawReportContent = (
   fetchedOpenclaw: RepoFetch,
   peerDigests: RepoDigest[],
   openclawSummary: string,
@@ -79,7 +79,7 @@ export function buildOpenclawReportContent(
   openclaw: RepoConfig,
   openclawPeers: RepoConfig[],
   lang: Lang = "zh",
-): string {
+): string => {
   const { issues, prs } = fetchedOpenclaw;
 
   const peersRepoLinks =
@@ -121,4 +121,4 @@ export function buildOpenclawReportContent(
     peerDetailSections +
     footer
   );
-}
+};

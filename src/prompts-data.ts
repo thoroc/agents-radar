@@ -14,7 +14,7 @@ import type { LobstersData } from "./lobsters";
 import type { PhData } from "./ph";
 import type { TrendingData } from "./trending";
 import type { WebFetchResult } from "./web";
-export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: Lang = "zh"): string {
+export const buildTrendingPrompt = (data: TrendingData, dateStr: string, lang: Lang = "zh"): string => {
   const trendingSection =
     data.trendingFetchSuccess && data.trendingRepos.length > 0
       ? data.trendingRepos
@@ -145,9 +145,13 @@ ${searchSection}
 
 语言要求：中文，专业简洁，每个项目必须附 GitHub 链接。
 `;
-}
+};
 
-export function buildWebReportPrompt(results: WebFetchResult[], dateStr: string, lang: Lang = "zh"): string {
+export const buildWebReportPrompt = (
+  results: WebFetchResult[],
+  dateStr: string,
+  lang: Lang = "zh",
+): string => {
   const isAnyFirstRun = results.some((r) => r.isFirstRun);
 
   const siteSections = results
@@ -272,13 +276,13 @@ ${siteSections}
 
 ${isAnyFirstRun ? "6. **内容格局总览** — 首次全量独有：汇总两家公司各内容类别的数量分布，并说明各自的内容运营风格（学术导向 vs 产品导向 vs 用户故事等）\n\n" : ""}语言要求：中文，专业深入，内容详实，适合 AI 领域研究者、产品经理和技术决策者阅读。每个条目必须附上 GitHub/官网链接。
 `;
-}
+};
 
-export function buildWeeklyPrompt(
+export const buildWeeklyPrompt = (
   dailyDigests: Record<string, string>,
   weekStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const digestEntries = Object.entries(dailyDigests)
     .map(([date, content]) => `## ${date}\n\n${content}`)
     .join("\n\n---\n\n");
@@ -322,13 +326,13 @@ ${digestEntries}
 
 语言要求：中文，简洁专业，适合技术开发者快速掌握一周动态。
 `;
-}
+};
 
-export function buildMonthlyPrompt(
+export const buildMonthlyPrompt = (
   sourceDigests: Record<string, string>,
   monthStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const digestEntries = Object.entries(sourceDigests)
     .map(([key, content]) => `## ${key}\n\n${content}`)
     .join("\n\n---\n\n");
@@ -372,7 +376,7 @@ ${digestEntries}
 
 语言要求：中文，深度分析，数据驱动，适合月度复盘和战略决策参考。
 `;
-}
+};
 
 // ---------------------------------------------------------------------------
 // Highlights prompt — extracts structured highlights from finished reports
@@ -383,11 +387,11 @@ export interface ReportHighlights {
   [reportId: string]: string[];
 }
 
-export function buildHighlightsPrompt(
+export const buildHighlightsPrompt = (
   reportContents: Record<string, string>,
   lang: Lang = "zh",
   itemsPerReport: number = 6,
-): string {
+): string => {
   const sections = Object.entries(reportContents)
     .map(([id, content]) => `## [${id}]\n\n${content.slice(0, 2000)}`)
     .join("\n\n---\n\n");
@@ -429,9 +433,9 @@ ${sections}
 - 每个报告 ${itemsPerReport} 条亮点，每条不超过 30 个字
 - 重点关注：新版本发布、重要特性、热门项目、关键讨论
 - 要具体：包含项目名、版本号、star 数等关键信息`;
-}
+};
 
-export function buildHnPrompt(data: HnData, dateStr: string, lang: Lang = "zh"): string {
+export const buildHnPrompt = (data: HnData, dateStr: string, lang: Lang = "zh"): string => {
   const storiesText = data.stories
     .map((s, i) =>
       lang === "en"
@@ -513,9 +517,9 @@ ${storiesText}
 
 语言要求：中文，简洁专业，保留所有原文链接。
 `;
-}
+};
 
-export function buildPhPrompt(data: PhData, dateStr: string, lang: Lang = "zh"): string {
+export const buildPhPrompt = (data: PhData, dateStr: string, lang: Lang = "zh"): string => {
   const productsText = data.products
     .map((p, i) =>
       lang === "en"
@@ -599,13 +603,13 @@ ${productsText}
 
 语言要求：中文，简洁专业，保留所有原文链接。
 `;
-}
+};
 
 // ---------------------------------------------------------------------------
 // ArXiv prompt
 // ---------------------------------------------------------------------------
 
-export function buildArxivPrompt(data: ArxivData, dateStr: string, lang: Lang = "zh"): string {
+export const buildArxivPrompt = (data: ArxivData, dateStr: string, lang: Lang = "zh"): string => {
   const papersText = data.papers
     .map((p, i) => {
       const authors =
@@ -686,13 +690,13 @@ ${papersText}
 
 语言要求：中文，简洁专业，保留所有 ArXiv 链接。
 `;
-}
+};
 
 // ---------------------------------------------------------------------------
 // Hugging Face prompt
 // ---------------------------------------------------------------------------
 
-export function buildHfPrompt(data: HfData, dateStr: string, lang: Lang = "zh"): string {
+export const buildHfPrompt = (data: HfData, dateStr: string, lang: Lang = "zh"): string => {
   const modelsText = data.models
     .map((m, i) =>
       lang === "en"
@@ -776,18 +780,18 @@ ${modelsText}
 
 语言要求：中文，简洁专业，保留所有 HuggingFace 链接。
 `;
-}
+};
 
 // ---------------------------------------------------------------------------
 // Community prompt (Dev.to + Lobste.rs combined)
 // ---------------------------------------------------------------------------
 
-export function buildCommunityPrompt(
+export const buildCommunityPrompt = (
   devto: DevtoData,
   lobsters: LobstersData,
   dateStr: string,
   lang: Lang = "zh",
-): string {
+): string => {
   const devtoText =
     devto.articles.length > 0
       ? devto.articles
@@ -905,4 +909,4 @@ ${lobstersText}
 
 语言要求：中文，简洁专业，保留所有原文链接。
 `;
-}
+};

@@ -11,7 +11,7 @@ export const LANGUAGE_NAMES: Record<string, string> = {};
 
 export type Lang = "zh" | "en";
 
-function ensureLocales(): void {
+const ensureLocales = (): void => {
   if (_initialized) return;
   _initialized = true;
 
@@ -38,7 +38,7 @@ function ensureLocales(): void {
   } catch (err) {
     console.warn(`[i18n] Failed to load locales: ${err}`);
   }
-}
+};
 
 const EMPTY_FALLBACK = new Proxy({} as LocaleData, { get: () => "" });
 

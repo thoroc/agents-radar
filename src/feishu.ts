@@ -16,15 +16,15 @@ import { notifyLabel } from "./notify";
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 
-function getWebhookUrls(): string[] {
+const getWebhookUrls = (): string[] => {
   const raw = process.env["FEISHU_WEBHOOK_URLS"] ?? process.env["FEISHU_WEBHOOK_URL"] ?? "";
   return raw
     .split(",")
     .map((u) => u.trim())
     .filter(Boolean);
-}
+};
 
-async function sendToOneWebhook(webhookUrl: string, title: string, content: string): Promise<void> {
+const sendToOneWebhook = async (webhookUrl: string, title: string, content: string): Promise<void> => {
   const res = await fetch(webhookUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -43,9 +43,9 @@ async function sendToOneWebhook(webhookUrl: string, title: string, content: stri
     const body = await res.text();
     throw new Error(`Feishu API ${res.status}: ${body}`);
   }
-}
+};
 
-async function sendFeishu(title: string, content: string): Promise<void> {
+const sendFeishu = async (title: string, content: string): Promise<void> => {
   const urls = getWebhookUrls();
   const results = await Promise.allSettled(urls.map((url) => sendToOneWebhook(url, title, content)));
   const failures = results.filter((r) => r.status === "rejected");
@@ -54,14 +54,14 @@ async function sendFeishu(title: string, content: string): Promise<void> {
     console.error(`[feishu] ${failures.length}/${urls.length} webhook(s) failed:`, msgs);
     if (failures.length === urls.length) throw new Error("All Feishu webhooks failed");
   }
-}
+};
 
-export function buildFeishuMessage(
+export const buildFeishuMessage = (
   date: string,
   reports: string[],
   pagesUrl?: string,
   highlights?: Highlights | null,
-): string {
+): string => {
   const PAGES_URL = (pagesUrl ?? process.env["PAGES_URL"] ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
   const baseReports = reports.filter((r) => !r.endsWith("-en"));
   const isWeekly = baseReports.includes("ai-weekly");
@@ -102,9 +102,9 @@ export function buildFeishuMessage(
 
   lines.push(`\n[🌐 Web UI](${PAGES_URL})  ·  [⊕ RSS](${PAGES_URL}/feed.xml)`);
   return lines.join("\n");
-}
+};
 
-async function main(): Promise<void> {
+const main = async (): Promise<void> => {
   const urls = getWebhookUrls();
   if (!urls.length) {
     console.error("[feishu] FEISHU_WEBHOOK_URLS not set — skipping.");
@@ -148,7 +148,7 @@ async function main(): Promise<void> {
   console.error(`[feishu] Sending to ${urls.length} webhook(s) for ${date} (${reports.length} reports)…`);
   await sendFeishu(title, content);
   console.error("[feishu] Done!");
-}
+};
 
 main().catch((e: unknown) => {
   console.error("[feishu]", e instanceof Error ? e.message : e);
