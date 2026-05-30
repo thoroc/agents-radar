@@ -21,7 +21,7 @@ export interface Highlights {
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 
-function notifyLabel(id: string, lang: Lang = "zh"): string {
+export function notifyLabel(id: string, lang: Lang = "zh"): string {
   const s = t(lang);
   switch (id) {
     case "ai-cli":

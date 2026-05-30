@@ -12,39 +12,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { t, type Lang } from "./i18n.ts";
+import { notifyLabel } from "./notify.ts";
 import type { Highlights } from "./notify.ts";
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
-
-function notifyLabel(id: string, lang: Lang = "zh"): string {
-  const s = t(lang);
-  switch (id) {
-    case "ai-cli":
-      return s.notifyCli;
-    case "ai-agents":
-      return s.notifyAgents;
-    case "ai-web":
-      return s.notifyWeb;
-    case "ai-trending":
-      return s.notifyTrending;
-    case "ai-hn":
-      return s.notifyHn;
-    case "ai-ph":
-      return s.notifyPh;
-    case "ai-arxiv":
-      return s.notifyArxiv;
-    case "ai-hf":
-      return s.notifyHf;
-    case "ai-community":
-      return s.notifyCommunity;
-    case "ai-weekly":
-      return s.notifyWeekly;
-    case "ai-monthly":
-      return s.notifyMonthly;
-    default:
-      return id;
-  }
-}
 
 function getWebhookUrls(): string[] {
   const raw = process.env["FEISHU_WEBHOOK_URLS"] ?? process.env["FEISHU_WEBHOOK_URL"] ?? "";
