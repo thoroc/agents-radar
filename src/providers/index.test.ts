@@ -7,7 +7,7 @@ import {
   createProvider,
   type LlmProvider,
   VALID_PROVIDER_NAMES,
-} from "../providers/index";
+} from "./index";
 
 // ---------------------------------------------------------------------------
 // Mock the SDKs at module level
@@ -35,7 +35,6 @@ vi.mock("openai", () => {
   };
 });
 
-// Access the mock internals
 async function getAnthropicMockCreate() {
   const mod = await import("@anthropic-ai/sdk");
   return (mod as unknown as { __mockCreate: ReturnType<typeof vi.fn> }).__mockCreate;
@@ -376,7 +375,6 @@ describe("createProvider", () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     createProvider("anthropic");
     const logged = spy.mock.calls.flat().join(" ");
-    // Must log provider name, must NOT log any key-like strings
     expect(logged).toContain("anthropic");
     expect(logged).not.toMatch(/sk-|ghp_|key|secret/i);
     spy.mockRestore();

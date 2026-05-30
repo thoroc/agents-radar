@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { GitHubItem, GitHubRelease } from "../github";
-import type { RepoDigest } from "../prompts";
-import { buildCliReportContent, buildOpenclawReportContent } from "../report-builders";
+import type { GitHubItem, GitHubRelease } from "./github";
+import type { RepoDigest } from "./prompts";
+import { buildCliReportContent, buildOpenclawReportContent } from "./report-builders";
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -81,12 +81,10 @@ describe("buildCliReportContent", () => {
       "zh",
     );
 
-    // Skills should appear inside claude-code details
     const claudeIdx = result.indexOf("Claude Code");
     const skillsIdx = result.indexOf("SKILLS_CONTENT");
     expect(skillsIdx).toBeGreaterThan(claudeIdx);
-    // Skills should not appear after codex section
-    expect(result.split("SKILLS_CONTENT")).toHaveLength(2); // appears exactly once
+    expect(result.split("SKILLS_CONTENT")).toHaveLength(2);
   });
 });
 

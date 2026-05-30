@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { escapeXml, toRfc822 } from "../generate-manifest";
+import { escapeXml, toRfc822 } from "./generate-manifest";
 
 // ---------------------------------------------------------------------------
 // toRfc822
@@ -7,7 +7,6 @@ import { escapeXml, toRfc822 } from "../generate-manifest";
 
 describe("toRfc822", () => {
   it("formats a known date correctly", () => {
-    // 2026-03-09 is a Monday
     const date = new Date(Date.UTC(2026, 2, 9, 14, 30, 0));
     const result = toRfc822(date);
     expect(result).toBe("Mon, 09 Mar 2026 14:30:00 +0000");

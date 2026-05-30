@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { buildMessage, type Highlights } from "../notify";
+import { buildMessage, type Highlights } from "./notify";
 
 const BASE_URL = "https://example.com/radar";
 
@@ -19,10 +19,8 @@ describe("buildMessage", () => {
     expect(msg).toContain("agents-radar");
     expect(msg).toContain("2026-03-09");
     expect(msg).toContain("📡");
-    // zh links
     expect(msg).toContain(`${BASE_URL}/#2026-03-09/ai-cli`);
     expect(msg).toContain("AI CLI 工具");
-    // en links
     expect(msg).toContain(`${BASE_URL}/#2026-03-09/ai-cli-en`);
     expect(msg).toContain("AI CLI Tools");
   });
