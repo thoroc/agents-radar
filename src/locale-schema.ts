@@ -144,4 +144,4 @@ const LocaleFileSchema = LocaleDataSchema.extend({
 
 export type LocaleMeta = z.infer<typeof LocaleMetaSchema>;
 export type LocaleData = z.infer<typeof LocaleDataSchema>;
-export { LocaleMetaSchema, LocaleDataSchema, LocaleFileSchema };
+export { LocaleDataSchema, LocaleFileSchema, LocaleMetaSchema };

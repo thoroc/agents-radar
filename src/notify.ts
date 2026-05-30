@@ -11,7 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { t, type Lang } from "./i18n";
+import { type Lang, t } from "./i18n";
 import type { ReportHighlights } from "./prompts-data";
 
 export interface Highlights {

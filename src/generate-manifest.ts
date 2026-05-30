@@ -1,6 +1,6 @@
 import fs from "fs";
-import path from "path";
 import { marked } from "marked";
+import path from "path";
 import { t } from "./i18n";
 
 function reportLabel(id: string): string {

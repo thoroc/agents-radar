@@ -1,22 +1,22 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+import type { GitHubItem, GitHubRelease, RepoConfig } from "../github";
+import type { HnData } from "../hn";
+import type { RepoDigest } from "../prompts";
 import {
   buildCliPrompt,
-  buildPeerPrompt,
   buildComparisonPrompt,
+  buildPeerPrompt,
   buildPeersComparisonPrompt,
   buildSkillsPrompt,
 } from "../prompts";
 import {
+  buildHnPrompt,
+  buildMonthlyPrompt,
   buildTrendingPrompt,
   buildWebReportPrompt,
   buildWeeklyPrompt,
-  buildMonthlyPrompt,
-  buildHnPrompt,
 } from "../prompts-data";
-import type { RepoConfig, GitHubItem, GitHubRelease } from "../github";
-import type { RepoDigest } from "../prompts";
 import type { TrendingData } from "../trending";
-import type { HnData } from "../hn";
 import type { WebFetchResult } from "../web";
 
 // ---------------------------------------------------------------------------

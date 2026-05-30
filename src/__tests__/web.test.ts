@@ -1,12 +1,12 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-  parseSitemapUrls,
-  isSitemapIndex,
-  extractTitle,
-  extractText,
-  urlCategory,
-  titleFromUrl,
   emptyState,
+  extractText,
+  extractTitle,
+  isSitemapIndex,
+  parseSitemapUrls,
+  titleFromUrl,
+  urlCategory,
 } from "../web";
 
 // ---------------------------------------------------------------------------
