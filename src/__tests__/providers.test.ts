@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   AnthropicProvider,
-  OpenAIProvider,
-  GitHubCopilotProvider,
-  OpenRouterProvider,
   createProvider,
-  VALID_PROVIDER_NAMES,
+  GitHubCopilotProvider,
   type LlmProvider,
+  OpenAIProvider,
+  OpenRouterProvider,
+  VALID_PROVIDER_NAMES,
 } from "../providers/index";
 
 // ---------------------------------------------------------------------------

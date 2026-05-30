@@ -11,45 +11,45 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { type ArxivData, fetchArxivData } from "./arxiv";
+import { getEnabledLangs, loadConfig } from "./config";
+import { toCstDateStr, toUtcStr } from "./date";
+import { type DevtoData, fetchDevtoData } from "./devto";
 import {
-  type GitHubItem,
-  type RepoFetch,
+  createGitHubIssue,
   fetchRecentItems,
   fetchRecentReleases,
   fetchSkillsData,
-  createGitHubIssue,
+  type GitHubItem,
+  type RepoFetch,
 } from "./github";
+import { fetchHfData, type HfData } from "./hf";
+import { fetchHnData, type HnData } from "./hn";
+import { type Lang, t } from "./i18n";
+import { fetchLobstersData, type LobstersData } from "./lobsters";
+import { fetchPhData, type PhData } from "./ph";
 import {
-  type RepoDigest,
   buildCliPrompt,
-  buildPeerPrompt,
   buildComparisonPrompt,
+  buildPeerPrompt,
   buildPeersComparisonPrompt,
   buildSkillsPrompt,
+  type RepoDigest,
 } from "./prompts";
-import { buildTrendingPrompt, buildHighlightsPrompt, type ReportHighlights } from "./prompts-data";
-import { callLlm, saveFile, autoGenFooter, LLM_TOKENS_TRENDING } from "./report";
+import { buildHighlightsPrompt, buildTrendingPrompt, type ReportHighlights } from "./prompts-data";
+import { autoGenFooter, callLlm, LLM_TOKENS_TRENDING, saveFile } from "./report";
 import { buildCliReportContent, buildOpenclawReportContent } from "./report-builders";
 import {
-  saveWebReport,
-  saveTrendingReport,
+  saveArxivReport,
+  saveCommunityReport,
+  saveHfReport,
   saveHnReport,
   savePhReport,
-  saveArxivReport,
-  saveHfReport,
-  saveCommunityReport,
+  saveTrendingReport,
+  saveWebReport,
 } from "./report-savers";
-import { loadWebState, fetchSiteContent, type WebFetchResult, type WebState } from "./web";
 import { fetchTrendingData, type TrendingData } from "./trending";
-import { fetchHnData, type HnData } from "./hn";
-import { fetchPhData, type PhData } from "./ph";
-import { fetchArxivData, type ArxivData } from "./arxiv";
-import { fetchHfData, type HfData } from "./hf";
-import { fetchDevtoData, type DevtoData } from "./devto";
-import { fetchLobstersData, type LobstersData } from "./lobsters";
-import { loadConfig, getEnabledLangs } from "./config";
-import { toCstDateStr, toUtcStr } from "./date";
-import { t, type Lang } from "./i18n";
+import { fetchSiteContent, loadWebState, type WebFetchResult, type WebState } from "./web";
 
 // ---------------------------------------------------------------------------
 // Repo config — loaded from config.yml, falls back to built-in defaults

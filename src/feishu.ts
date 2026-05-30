@@ -11,8 +11,8 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { notifyLabel } from "./notify";
 import type { Highlights } from "./notify";
+import { notifyLabel } from "./notify";
 
 const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 

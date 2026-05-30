@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { toRfc822, escapeXml } from "../generate-manifest";
+import { describe, expect, it } from "vitest";
+import { escapeXml, toRfc822 } from "../generate-manifest";
 
 // ---------------------------------------------------------------------------
 // toRfc822

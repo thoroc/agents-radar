@@ -5,16 +5,16 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { callLlm, saveFile, autoGenFooter, LLM_TOKENS_ROLLUP } from "./report";
+import { toCstDateStr, toUtcStr } from "./date";
+import { createGitHubIssue } from "./github";
+import { type Lang, t } from "./i18n";
 import {
-  buildWeeklyPrompt,
-  buildMonthlyPrompt,
   buildHighlightsPrompt,
+  buildMonthlyPrompt,
+  buildWeeklyPrompt,
   type ReportHighlights,
 } from "./prompts-data";
-import { createGitHubIssue } from "./github";
-import { toCstDateStr, toUtcStr } from "./date";
-import { t, type Lang } from "./i18n";
+import { autoGenFooter, callLlm, LLM_TOKENS_ROLLUP, saveFile } from "./report";
 
 const DIGESTS_DIR = "digests";
 const MAX_CHARS_PER_REPORT = 2500;

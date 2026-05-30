@@ -5,18 +5,18 @@
  *   import { createProvider, type LlmProvider } from "./providers/index";
  */
 
-export type { LlmProvider, ProviderFactory } from "./types";
-export { OpenAICompatibleProvider } from "./openai-compatible";
 export { AnthropicProvider } from "./anthropic";
-export { OpenAIProvider } from "./openai";
 export { GitHubCopilotProvider } from "./github-copilot";
+export { OpenAIProvider } from "./openai";
+export { OpenAICompatibleProvider } from "./openai-compatible";
 export { OpenRouterProvider } from "./openrouter";
+export type { LlmProvider, ProviderFactory } from "./types";
 
-import type { LlmProvider, ProviderFactory } from "./types";
 import { AnthropicProvider } from "./anthropic";
-import { OpenAIProvider } from "./openai";
 import { GitHubCopilotProvider } from "./github-copilot";
+import { OpenAIProvider } from "./openai";
 import { OpenRouterProvider } from "./openrouter";
+import type { LlmProvider, ProviderFactory } from "./types";
 
 // ---------------------------------------------------------------------------
 // Single source of truth — add new providers here only.
