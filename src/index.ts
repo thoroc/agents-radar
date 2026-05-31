@@ -11,6 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
 import { type ArxivData, fetchArxivData } from "./fetchers/arxiv";
 import { type DevtoData, fetchDevtoData } from "./fetchers/devto";
@@ -285,6 +286,7 @@ const generateSummaries = async (
 // ---------------------------------------------------------------------------
 
 const main = async (): Promise<void> => {
+  dotenvx.config({ quiet: true });
   requireEnv("GITHUB_TOKEN");
 
   const {
