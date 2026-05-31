@@ -3,26 +3,26 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { type LocaleData, LocaleFileSchema } from "./locale-schema";
 
-let _initialized = false;
-
-export const SUPPORTED_LOCALES: string[] = [];
-export const STRINGS: Record<string, LocaleData> = {};
-export const LANGUAGE_NAMES: Record<string, string> = {};
-
 export type { Locale } from "../types/locale";
 
-const ensureLocales = (): void => {
-  if (_initialized) return;
-  _initialized = true;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const loadLocales = (): {
+  supportedLocales: readonly string[];
+  strings: Readonly<Record<string, LocaleData>>;
+  languageNames: Readonly<Record<string, string>>;
+} => {
+  const supportedLocales: string[] = [];
+  const strings: Record<string, LocaleData> = {};
+  const languageNames: Record<string, string> = {};
 
   try {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
     const localesDir = path.resolve(__dirname, "../../locales");
 
     if (!fs.existsSync(localesDir)) {
       console.warn(`[i18n] locales directory not found: ${localesDir}`);
-      return;
+      return { supportedLocales, strings, languageNames };
     }
 
     const files = fs.readdirSync(localesDir).filter((f) => f.endsWith(".json"));
@@ -31,26 +31,32 @@ const ensureLocales = (): void => {
       const raw = JSON.parse(fs.readFileSync(path.join(localesDir, file), "utf-8"));
       const parsed = LocaleFileSchema.parse(raw);
       const { _meta, ...data } = parsed;
-      STRINGS[code] = data;
-      LANGUAGE_NAMES[code] = _meta.name;
-      SUPPORTED_LOCALES.push(code);
+      strings[code] = data;
+      languageNames[code] = _meta.name;
+      supportedLocales.push(code);
     }
   } catch (err) {
     console.warn(`[i18n] Failed to load locales: ${err}`);
   }
+
+  return { supportedLocales, strings, languageNames };
 };
+
+const locales = loadLocales();
+
+export const SUPPORTED_LOCALES: readonly string[] = locales.supportedLocales;
+export const STRINGS: Readonly<Record<string, LocaleData>> = locales.strings;
+export const LANGUAGE_NAMES: Readonly<Record<string, string>> = locales.languageNames;
 
 const EMPTY_FALLBACK = new Proxy({} as LocaleData, { get: () => "" });
 
 export const validateLocale = (lang: string): string => {
-  ensureLocales();
   if (SUPPORTED_LOCALES.includes(lang)) return lang;
   console.warn(`Unsupported locale "${lang}", falling back to "en"`);
   return "en";
 };
 
 export const t = (lang?: string): LocaleData => {
-  ensureLocales();
   const locale = lang ? validateLocale(lang) : "en";
   return STRINGS[locale] ?? STRINGS.en ?? EMPTY_FALLBACK;
 };
