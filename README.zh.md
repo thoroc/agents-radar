@@ -273,7 +273,7 @@ Provider 抽象层位于 `src/providers/`，每个供应商对应独立文件并
 ## 本地运行
 
 ```bash
-pnpm install
+bun install
 
 export GITHUB_TOKEN=ghp_xxxxx
 
@@ -293,14 +293,14 @@ export ANTHROPIC_API_KEY=sk-ant-xxxxxxxx
 
 export DIGEST_REPO=your-username/agents-radar  # 可选，留空则仅写入本地文件
 
-pnpm start
+bun run start
 ```
 
 ## 运行测试
 
 ```bash
-pnpm test        # 运行所有测试（vitest）
-pnpm test:watch  # 开发模式下监听变更
+bun test        # 运行所有测试
+bun test --watch  # 开发模式下监听变更
 ```
 
 ## 输出格式

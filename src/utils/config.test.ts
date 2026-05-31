@@ -28,32 +28,38 @@ describe("toRepoConfig", () => {
 // ---------------------------------------------------------------------------
 
 describe("getEnabledLangs", () => {
+  const PREV_REPORT_LANGS = process.env.REPORT_LANGS;
+
   afterEach(() => {
-    vi.unstubAllEnvs();
+    if (PREV_REPORT_LANGS === undefined) {
+      delete process.env.REPORT_LANGS;
+    } else {
+      process.env.REPORT_LANGS = PREV_REPORT_LANGS;
+    }
   });
 
   it("returns env var langs when REPORT_LANGS is set", () => {
-    vi.stubEnv("REPORT_LANGS", "fr,de");
+    process.env.REPORT_LANGS = "fr,de";
     expect(getEnabledLangs()).toEqual(["fr", "de"]);
   });
 
   it("returns configured langs when no env var", () => {
-    vi.stubEnv("REPORT_LANGS", "");
+    process.env.REPORT_LANGS = "";
     expect(getEnabledLangs(["ja", "ko"])).toEqual(["ja", "ko"]);
   });
 
   it("returns defaults when nothing configured", () => {
-    vi.stubEnv("REPORT_LANGS", "");
+    process.env.REPORT_LANGS = "";
     expect(getEnabledLangs([])).toEqual(["en", "zh"]);
   });
 
   it("returns defaults when langConfig undefined", () => {
-    vi.stubEnv("REPORT_LANGS", "");
+    process.env.REPORT_LANGS = "";
     expect(getEnabledLangs(undefined)).toEqual(["en", "zh"]);
   });
 
   it("filters empty strings from env var", () => {
-    vi.stubEnv("REPORT_LANGS", "en,,zh,");
+    process.env.REPORT_LANGS = "en,,zh,";
     expect(getEnabledLangs()).toEqual(["en", "zh"]);
   });
 });
