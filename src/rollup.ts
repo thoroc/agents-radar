@@ -23,10 +23,6 @@ const MAX_CHARS_PER_REPORT = 2500;
 // Source report types to read for rollups (in priority order)
 const ROLLUP_SOURCES = ["ai-cli", "ai-agents", "ai-trending", "ai-hn", "ai-web"];
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
 const getDateDirs = (): string[] => {
   if (!fs.existsSync(DIGESTS_DIR)) return [];
   return fs
@@ -62,10 +58,6 @@ const readWeeklyDigest = (date: string): string | null => {
 export const toWeekStr = (dt: DateTime = DateTime.now()): string => {
   return `${dt.weekYear}-W${String(dt.weekNumber).padStart(2, "0")}`;
 };
-
-// ---------------------------------------------------------------------------
-// Highlights generation for rollup reports
-// ---------------------------------------------------------------------------
 
 const generateRollupHighlights = async (
   zhContent: string,
@@ -117,10 +109,6 @@ const generateRollupHighlights = async (
   const p = saveFile(JSON.stringify(highlights, null, 2), dateStr, "highlights.json");
   console.error(`  Saved ${p}`);
 };
-
-// ---------------------------------------------------------------------------
-// Weekly rollup
-// ---------------------------------------------------------------------------
 
 export const runWeeklyRollup = async (): Promise<void> => {
   const now = DateTime.now();
@@ -186,10 +174,6 @@ export const runWeeklyRollup = async (): Promise<void> => {
 
   console.error("[weekly] Done!");
 };
-
-// ---------------------------------------------------------------------------
-// Monthly rollup
-// ---------------------------------------------------------------------------
 
 export const runMonthlyRollup = async (): Promise<void> => {
   const now = DateTime.now();

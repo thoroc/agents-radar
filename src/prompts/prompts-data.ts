@@ -378,11 +378,6 @@ ${digestEntries}
 `;
 };
 
-// ---------------------------------------------------------------------------
-// Highlights prompt — extracts structured highlights from finished reports
-// for use in Telegram notifications.
-// ---------------------------------------------------------------------------
-
 export interface ReportHighlights {
   [reportId: string]: string[];
 }
@@ -605,10 +600,6 @@ ${productsText}
 `;
 };
 
-// ---------------------------------------------------------------------------
-// ArXiv prompt
-// ---------------------------------------------------------------------------
-
 export const buildArxivPrompt = (data: ArxivData, dateStr: string, lang: PromptLang = "zh"): string => {
   const papersText = data.papers
     .map((p, i) => {
@@ -691,10 +682,6 @@ ${papersText}
 语言要求：中文，简洁专业，保留所有 ArXiv 链接。
 `;
 };
-
-// ---------------------------------------------------------------------------
-// Hugging Face prompt
-// ---------------------------------------------------------------------------
 
 export const buildHfPrompt = (data: HfData, dateStr: string, lang: PromptLang = "zh"): string => {
   const modelsText = data.models
@@ -781,10 +768,6 @@ ${modelsText}
 语言要求：中文，简洁专业，保留所有 HuggingFace 链接。
 `;
 };
-
-// ---------------------------------------------------------------------------
-// Community prompt (Dev.to + Lobste.rs combined)
-// ---------------------------------------------------------------------------
 
 export const buildCommunityPrompt = (
   devto: DevtoData,

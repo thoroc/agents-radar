@@ -6,10 +6,6 @@ import type { RepoConfig, RepoFetch } from "./github";
 import type { RepoDigest } from "./prompts";
 import { type Locale, t } from "./utils/i18n";
 
-// ---------------------------------------------------------------------------
-// CLI Report
-// ---------------------------------------------------------------------------
-
 export const buildCliReportContent = (
   cliDigests: RepoDigest[],
   skillsSummary: string,
@@ -63,10 +59,6 @@ export const buildCliReportContent = (
     footer
   );
 };
-
-// ---------------------------------------------------------------------------
-// OpenClaw Report
-// ---------------------------------------------------------------------------
 
 export const buildOpenclawReportContent = (
   fetchedOpenclaw: RepoFetch,

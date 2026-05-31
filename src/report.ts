@@ -7,10 +7,6 @@ import path from "node:path";
 import { sleep } from "./utils/date";
 import { type Locale, t } from "./utils/i18n";
 
-// ---------------------------------------------------------------------------
-// LLM token budget constants
-// ---------------------------------------------------------------------------
-
 export const LLM_TOKENS_DEFAULT = 4096;
 export const LLM_TOKENS_TRENDING = 6144;
 export const LLM_TOKENS_WEB = 8192;
@@ -29,12 +25,6 @@ const getFallbackProvider = (): LlmProvider | null => {
   if (!key) return null;
   return createDeepSeekProvider(key);
 };
-
-// ---------------------------------------------------------------------------
-// Concurrency limiter — prevents rate-limit (429) errors when many LLM calls
-// are fired in parallel. At most LLM_CONCURRENCY requests are in-flight at
-// any given time; the rest queue and run as slots free up.
-// ---------------------------------------------------------------------------
 
 const LLM_CONCURRENCY = 5;
 let llmSlots = LLM_CONCURRENCY;
@@ -56,10 +46,6 @@ const releaseSlot = (): void => {
     llmSlots++;
   }
 };
-
-// ---------------------------------------------------------------------------
-// LLM
-// ---------------------------------------------------------------------------
 
 const MAX_RETRIES = 3;
 const RETRY_BASE_MS = 5_000; // 5 s, 10 s, 20 s
@@ -105,10 +91,6 @@ export const callLlm = async (
     }
   }
 };
-
-// ---------------------------------------------------------------------------
-// File output
-// ---------------------------------------------------------------------------
 
 export const saveFile = (content: string, ...segments: string[]): string => {
   const filepath = path.join("digests", ...segments);

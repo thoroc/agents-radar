@@ -5,10 +5,6 @@
  * HF Hub API, returning a mapped subset of fields.
  */
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface HfModel {
   id: string; // e.g. "meta-llama/Llama-3.1-8B"
   author: string;
@@ -25,16 +21,8 @@ export interface HfData {
   fetchSuccess: boolean;
 }
 
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
 const HF_FETCH_LIMIT = 30;
 const API_URL = "https://huggingface.co/api/models";
-
-// ---------------------------------------------------------------------------
-// Response type
-// ---------------------------------------------------------------------------
 
 interface HfApiModel {
   _id: string;
@@ -46,10 +34,6 @@ interface HfApiModel {
   pipeline_tag?: string;
   lastModified?: string;
 }
-
-// ---------------------------------------------------------------------------
-// Fetch
-// ---------------------------------------------------------------------------
 
 export const fetchHfData = async (): Promise<HfData> => {
   try {

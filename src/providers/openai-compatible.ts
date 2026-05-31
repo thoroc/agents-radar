@@ -1,9 +1,3 @@
-/**
- * Shared logic for OpenAI-compatible providers.
- *
- * Used by OpenAI, GitHub Copilot, OpenRouter, and DeepSeek providers.
- */
-
 import OpenAI from "openai";
 import type { LlmProvider } from "./types";
 

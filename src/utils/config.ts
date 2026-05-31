@@ -8,10 +8,6 @@ import path from "node:path";
 import yaml from "js-yaml";
 import type { RepoConfig } from "../github";
 
-// ---------------------------------------------------------------------------
-// Schema types
-// ---------------------------------------------------------------------------
-
 interface RawRepoEntry {
   id: string;
   repo: string;
@@ -49,10 +45,6 @@ export const getEnabledLangs = (langConfig?: string[]): string[] => {
   return DEFAULT_LANGUAGES;
 };
 
-// ---------------------------------------------------------------------------
-// Defaults (mirrors the original hard-coded values)
-// ---------------------------------------------------------------------------
-
 const DEFAULT_CLI_REPOS: RepoConfig[] = [
   { id: "claude-code", repo: "anthropics/claude-code", name: "Claude Code" },
   { id: "codex", repo: "openai/codex", name: "OpenAI Codex" },
@@ -87,10 +79,6 @@ const DEFAULT_OPENCLAW_PEERS: RepoConfig[] = [
   { id: "easyclaw", repo: "gaoyangz77/easyclaw", name: "EasyClaw" },
   { id: "zeroclaw", repo: "zeroclaw-labs/zeroclaw", name: "ZeroClaw" },
 ];
-
-// ---------------------------------------------------------------------------
-// Loader
-// ---------------------------------------------------------------------------
 
 export const toRepoConfig = (e: RawRepoEntry): RepoConfig => {
   return { id: e.id, repo: e.repo, name: e.name, ...(e.paginated ? { paginated: true } : {}) };

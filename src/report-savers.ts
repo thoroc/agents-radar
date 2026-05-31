@@ -24,10 +24,6 @@ import { callLlm, LLM_TOKENS_WEB, saveFile } from "./report";
 import { toPromptLang } from "./types";
 import { type Locale, t } from "./utils/i18n";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export type SaveReportConfig = {
   data: unknown;
   promptBuilder: (data: unknown, dateStr: string, suffix: string) => string;
@@ -44,19 +40,11 @@ export type SaveReportDeps = {
   createGitHubIssue?: typeof createGitHubIssue;
 };
 
-// ---------------------------------------------------------------------------
-// Default deps — used when callers don't inject mocks
-// ---------------------------------------------------------------------------
-
 const defaultDeps: SaveReportDeps = {
   callLlm,
   saveFile,
   createGitHubIssue,
 };
-
-// ---------------------------------------------------------------------------
-// Generic save function
-// ---------------------------------------------------------------------------
 
 export const saveReport = async (
   config: SaveReportConfig,
@@ -89,10 +77,6 @@ export const saveReport = async (
     if (url) console.error(`  Created issue: ${url}`);
   }
 };
-
-// ---------------------------------------------------------------------------
-// Web report — special case: complex header, state management
-// ---------------------------------------------------------------------------
 
 export const saveWebReport = async (
   webResults: WebFetchResult[],
@@ -174,10 +158,6 @@ export const saveWebReport = async (
   }
 };
 
-// ---------------------------------------------------------------------------
-// Trending report — summary is pre-built in generateSummaries
-// ---------------------------------------------------------------------------
-
 export const saveTrendingReport = async (
   trendingData: TrendingData,
   trendingSummary: string,
@@ -215,10 +195,6 @@ export const saveTrendingReport = async (
     { ...defaultDeps, ...deps },
   );
 };
-
-// ---------------------------------------------------------------------------
-// Hacker News report
-// ---------------------------------------------------------------------------
 
 export const saveHnReport = async (
   hnData: HnData,
@@ -263,10 +239,6 @@ export const saveHnReport = async (
   }
 };
 
-// ---------------------------------------------------------------------------
-// Product Hunt report
-// ---------------------------------------------------------------------------
-
 export const savePhReport = async (
   phData: PhData,
   utcStr: string,
@@ -309,10 +281,6 @@ export const savePhReport = async (
     console.error(`  [ph/${lang}] Report generation failed: ${err}`);
   }
 };
-
-// ---------------------------------------------------------------------------
-// ArXiv report
-// ---------------------------------------------------------------------------
 
 export const saveArxivReport = async (
   arxivData: ArxivData,
@@ -357,10 +325,6 @@ export const saveArxivReport = async (
   }
 };
 
-// ---------------------------------------------------------------------------
-// Hugging Face report
-// ---------------------------------------------------------------------------
-
 export const saveHfReport = async (
   hfData: HfData,
   utcStr: string,
@@ -403,10 +367,6 @@ export const saveHfReport = async (
     console.error(`  [hf/${lang}] Report generation failed: ${err}`);
   }
 };
-
-// ---------------------------------------------------------------------------
-// Community report (Dev.to + Lobste.rs)
-// ---------------------------------------------------------------------------
 
 export const saveCommunityReport = async (
   devtoData: DevtoData,

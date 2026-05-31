@@ -18,10 +18,6 @@ import { createOpenAIProvider } from "./openai";
 import { createOpenRouterProvider } from "./openrouter";
 import type { LlmProvider, ProviderFactory } from "./types";
 
-// ---------------------------------------------------------------------------
-// Single source of truth — add new providers here only.
-// ---------------------------------------------------------------------------
-
 const PROVIDERS = {
   anthropic: () => createAnthropicProvider(),
   openai: () => createOpenAIProvider(),

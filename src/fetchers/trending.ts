@@ -4,10 +4,6 @@
 
 import { DateTime } from "luxon";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface TrendingRepo {
   fullName: string;
   description: string;
@@ -34,10 +30,6 @@ export interface TrendingData {
   trendingFetchSuccess: boolean;
 }
 
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
 const SEARCH_QUERIES = [
   { q: "topic:llm", label: "llm" },
   { q: "topic:ai-agent", label: "ai-agent" },
@@ -46,10 +38,6 @@ const SEARCH_QUERIES = [
   { q: "topic:large-language-model", label: "llm-model" },
   { q: "topic:machine-learning", label: "ml" },
 ];
-
-// ---------------------------------------------------------------------------
-// GitHub Trending HTML fetch
-// ---------------------------------------------------------------------------
 
 const fetchGitHubTrending = async (): Promise<{ repos: TrendingRepo[]; success: boolean }> => {
   try {
@@ -126,10 +114,6 @@ const fetchGitHubTrending = async (): Promise<{ repos: TrendingRepo[]; success: 
   }
 };
 
-// ---------------------------------------------------------------------------
-// GitHub Search API
-// ---------------------------------------------------------------------------
-
 interface SearchApiItem {
   full_name: string;
   description: string | null;
@@ -190,10 +174,6 @@ const searchAiRepos = async (sevenDaysAgo: string): Promise<SearchRepo[]> => {
 
   return all;
 };
-
-// ---------------------------------------------------------------------------
-// Export
-// ---------------------------------------------------------------------------
 
 export const fetchTrendingData = async (): Promise<TrendingData> => {
   const sevenDaysAgo = DateTime.now().minus({ days: 7 }).toFormat("yyyy-MM-dd");

@@ -5,10 +5,6 @@
 import type { GitHubItem, GitHubRelease, RepoConfig } from "../github";
 import type { PromptLang } from "../types";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface RepoDigest {
   config: RepoConfig;
   issues: GitHubItem[];
@@ -16,10 +12,6 @@ export interface RepoDigest {
   releases: GitHubRelease[];
   summary: string;
 }
-
-// ---------------------------------------------------------------------------
-// Formatting
-// ---------------------------------------------------------------------------
 
 export const formatItem = (item: GitHubItem, lang: PromptLang = "zh"): string => {
   const labels = item.labels.map((l) => l.name).join(", ");
@@ -49,10 +41,6 @@ export const formatItem = (item: GitHubItem, lang: PromptLang = "zh"): string =>
   ].join("\n");
 };
 
-// ---------------------------------------------------------------------------
-// Sampling helpers (shared)
-// ---------------------------------------------------------------------------
-
 const CLI_ISSUE_LIMIT = 30;
 const CLI_PR_LIMIT = 20;
 
@@ -69,10 +57,6 @@ export const sampleNote = (total: number, sampled: number, lang: PromptLang = "z
   }
   return total > sampled ? `（共 ${total} 条，以下展示评论数最多的 ${sampled} 条）` : `（共 ${total} 条）`;
 };
-
-// ---------------------------------------------------------------------------
-// Prompts
-// ---------------------------------------------------------------------------
 
 export const buildCliPrompt = (
   cfg: RepoConfig,
