@@ -44,7 +44,7 @@ export const VALID_PROVIDER_NAMES = Object.keys(PROVIDERS) as ProviderName[];
  * Log safety: only the provider *name* is logged — never API keys or
  * endpoint URLs.
  */
-export function createProvider(name?: ProviderName): LlmProvider {
+export const createProvider = (name?: ProviderName): LlmProvider => {
   const providerName = name ?? (process.env.LLM_PROVIDER as ProviderName | undefined) ?? "anthropic";
 
   const factory = (PROVIDERS as Record<string, ProviderFactory | undefined>)[providerName];
@@ -58,4 +58,4 @@ export function createProvider(name?: ProviderName): LlmProvider {
 
   console.error(`[providers] Using LLM provider: ${providerName}`);
   return factory();
-}
+};

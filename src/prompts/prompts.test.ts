@@ -18,22 +18,20 @@ import {
 
 const cfg: RepoConfig = { id: "test", repo: "org/test", name: "TestTool" };
 
-function makeItem(overrides: Partial<GitHubItem> = {}): GitHubItem {
-  return {
-    number: 1,
-    title: "Issue",
-    state: "open",
-    user: { login: "alice" },
-    labels: [],
-    created_at: "2026-03-09T00:00:00Z",
-    updated_at: "2026-03-09T12:00:00Z",
-    comments: 5,
-    reactions: { "+1": 2 },
-    body: "body",
-    html_url: "https://github.com/org/test/issues/1",
-    ...overrides,
-  };
-}
+const makeItem = (overrides: Partial<GitHubItem> = {}): GitHubItem => ({
+  number: 1,
+  title: "Issue",
+  state: "open",
+  user: { login: "alice" },
+  labels: [],
+  created_at: "2026-03-09T00:00:00Z",
+  updated_at: "2026-03-09T12:00:00Z",
+  comments: 5,
+  reactions: { "+1": 2 },
+  body: "body",
+  html_url: "https://github.com/org/test/issues/1",
+  ...overrides,
+});
 
 const release: GitHubRelease = {
   tag_name: "v1.0.0",
@@ -42,9 +40,14 @@ const release: GitHubRelease = {
   published_at: "2026-03-09T00:00:00Z",
 };
 
-function makeDigest(overrides: Partial<RepoDigest> = {}): RepoDigest {
-  return { config: cfg, issues: [], prs: [], releases: [], summary: "Summary", ...overrides };
-}
+const makeDigest = (overrides: Partial<RepoDigest> = {}): RepoDigest => ({
+  config: cfg,
+  issues: [],
+  prs: [],
+  releases: [],
+  summary: "Summary",
+  ...overrides,
+});
 
 // ---------------------------------------------------------------------------
 // buildCliPrompt

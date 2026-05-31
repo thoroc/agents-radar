@@ -7,16 +7,14 @@ import { buildCliReportContent, buildOpenclawReportContent } from "./report-buil
 // Fixtures
 // ---------------------------------------------------------------------------
 
-function makeDigest(overrides: Partial<RepoDigest> = {}): RepoDigest {
-  return {
-    config: { id: "test-tool", repo: "org/test-tool", name: "TestTool" },
-    issues: [],
-    prs: [],
-    releases: [],
-    summary: "Test summary content",
-    ...overrides,
-  };
-}
+const makeDigest = (overrides: Partial<RepoDigest> = {}): RepoDigest => ({
+  config: { id: "test-tool", repo: "org/test-tool", name: "TestTool" },
+  issues: [],
+  prs: [],
+  releases: [],
+  summary: "Test summary content",
+  ...overrides,
+});
 
 // ---------------------------------------------------------------------------
 // buildCliReportContent
