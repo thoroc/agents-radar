@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Command } from "@cliffy/command";
+import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
 import { marked } from "marked";
 import { t } from "./utils/i18n";
@@ -152,6 +153,7 @@ const getReportContent = async (date: string, report: string): Promise<ReportCon
 };
 
 const main = async (opts: { verbose?: boolean[] }): Promise<void> => {
+  dotenvx.config({ quiet: true });
   const verbosity = opts.verbose?.length ?? 0;
   const entries = fs
     .readdirSync(DIGESTS_DIR)
