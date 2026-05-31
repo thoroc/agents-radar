@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import type { GitHubItem, GitHubRelease, RepoConfig } from "./types";
 
 const MAX_PAGES = 5;
@@ -19,7 +20,7 @@ const githubGet = async <T>(url: string, token: string, params: Record<string, s
 const fetchItemPage = async (
   repo: string,
   itemType: "issues" | "pulls",
-  since: Date,
+  since: DateTime,
   page: number,
   token: string,
 ): Promise<GitHubItem[]> => {
@@ -30,20 +31,22 @@ const fetchItemPage = async (
     per_page: "100",
     page: String(page),
   };
-  if (itemType === "issues") params.since = since.toISOString();
+  if (itemType === "issues") params.since = since.toISO() ?? "";
 
   const items = await githubGet<GitHubItem[]>(
     `https://api.github.com/repos/${repo}/${itemType}`,
     token,
     params,
   );
-  return itemType === "pulls" ? items.filter((i) => new Date(i.updated_at) >= since) : items;
+  return itemType === "pulls"
+    ? items.filter((i) => DateTime.fromISO(i.updated_at).toMillis() >= since.toMillis())
+    : items;
 };
 
 export const fetchRecentItems = async (
   cfg: RepoConfig,
   itemType: "issues" | "pulls",
-  since: Date,
+  since: DateTime,
   GITHUB_TOKEN: string = process.env.GITHUB_TOKEN ?? "",
 ): Promise<GitHubItem[]> => {
   if (!cfg.paginated) {
@@ -53,13 +56,15 @@ export const fetchRecentItems = async (
       direction: "desc",
       per_page: "50",
     };
-    if (itemType === "issues") params.since = since.toISOString();
+    if (itemType === "issues") params.since = since.toISO() ?? "";
     const items = await githubGet<GitHubItem[]>(
       `https://api.github.com/repos/${cfg.repo}/${itemType}`,
       GITHUB_TOKEN,
       params,
     );
-    return itemType === "pulls" ? items.filter((i) => new Date(i.updated_at) >= since) : items;
+    return itemType === "pulls"
+      ? items.filter((i) => DateTime.fromISO(i.updated_at).toMillis() >= since.toMillis())
+      : items;
   }
 
   const all: GitHubItem[] = [];
@@ -68,7 +73,7 @@ export const fetchRecentItems = async (
     if (items.length === 0) break;
     all.push(...items);
     const last = items[items.length - 1];
-    if (last && new Date(last.updated_at) < since) break;
+    if (last && DateTime.fromISO(last.updated_at).toMillis() < since.toMillis()) break;
     if (items.length < 100) break;
   }
   return all;
@@ -76,7 +81,7 @@ export const fetchRecentItems = async (
 
 export const fetchRecentReleases = async (
   repo: string,
-  since: Date,
+  since: DateTime,
   GITHUB_TOKEN: string = process.env.GITHUB_TOKEN ?? "",
 ): Promise<GitHubRelease[]> => {
   const releases = await githubGet<GitHubRelease[]>(
@@ -84,7 +89,7 @@ export const fetchRecentReleases = async (
     GITHUB_TOKEN,
     { per_page: "10" },
   );
-  return releases.filter((r) => new Date(r.published_at) >= since);
+  return releases.filter((r) => DateTime.fromISO(r.published_at).toMillis() >= since.toMillis());
 };
 
 export const fetchSkillsData = async (

@@ -5,6 +5,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { DateTime } from "luxon";
 import { createGitHubIssue } from "./github";
 import {
   buildHighlightsPrompt,
@@ -58,13 +59,8 @@ const readWeeklyDigest = (date: string): string | null => {
 };
 
 /** Format a date as ISO week string, e.g. "2026-W10". */
-export const toWeekStr = (date: Date): string => {
-  // ISO week: week containing the first Thursday of the year
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  const week = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
-  return `${d.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+export const toWeekStr = (dt: DateTime = DateTime.now()): string => {
+  return `${dt.weekYear}-W${String(dt.weekNumber).padStart(2, "0")}`;
 };
 
 // ---------------------------------------------------------------------------
@@ -127,10 +123,10 @@ const generateRollupHighlights = async (
 // ---------------------------------------------------------------------------
 
 export const runWeeklyRollup = async (): Promise<void> => {
-  const now = new Date();
+  const now = DateTime.now();
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
-  const weekStr = toWeekStr(new Date(now.getTime() + 8 * 60 * 60 * 1000));
+  const weekStr = toWeekStr(now.plus({ hours: 8 }));
   const digestRepo = process.env.DIGEST_REPO ?? "";
 
   console.error(`[weekly] Generating rollup for ${weekStr} (date: ${dateStr})`);
@@ -196,11 +192,11 @@ export const runWeeklyRollup = async (): Promise<void> => {
 // ---------------------------------------------------------------------------
 
 export const runMonthlyRollup = async (): Promise<void> => {
-  const now = new Date();
-  const cstDate = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+  const now = DateTime.now();
+  const cstDate = now.plus({ hours: 8 });
   // Monthly report covers the PREVIOUS month
-  const prevMonth = new Date(Date.UTC(cstDate.getUTCFullYear(), cstDate.getUTCMonth() - 1, 1));
-  const monthStr = prevMonth.toISOString().slice(0, 7); // "2026-02"
+  const prevMonth = DateTime.utc(cstDate.year, cstDate.month - 1, 1);
+  const monthStr = prevMonth.toFormat("yyyy-MM"); // "2026-02"
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
   const digestRepo = process.env.DIGEST_REPO ?? "";

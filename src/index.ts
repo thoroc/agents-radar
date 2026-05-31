@@ -11,6 +11,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { DateTime } from "luxon";
 import { type ArxivData, fetchArxivData } from "./fetchers/arxiv";
 import { type DevtoData, fetchDevtoData } from "./fetchers/devto";
 import { fetchHfData, type HfData } from "./fetchers/hf";
@@ -67,7 +68,7 @@ const requireEnv = (name: string): string => {
 // ---------------------------------------------------------------------------
 
 const fetchAllData = async (
-  since: Date,
+  since: DateTime,
   webState: WebState,
   allConfigs: RepoConfig[],
   claudeSkillsRepo: string,
@@ -296,14 +297,14 @@ const main = async (): Promise<void> => {
   const ENABLED_LANGS = getEnabledLangs(CONFIG_LANGS);
   const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
 
-  const now = new Date();
-  const since = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const now = DateTime.now();
+  const since = now.minus({ hours: 24 });
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
   const digestRepo = process.env.DIGEST_REPO ?? "";
 
   const providerName = process.env.LLM_PROVIDER ?? "anthropic";
-  console.error(`[${now.toISOString()}] Starting digest | provider: ${providerName}`);
+  console.error(`[${now.toISO()}] Starting digest | provider: ${providerName}`);
 
   // 1. Fetch all data in parallel
   const webState = loadWebState();

@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { LABEL_COLORS } from "./labels";
 
 const GITHUB_ISSUE_BODY_LIMIT = 65536;
@@ -59,7 +60,7 @@ export const closeStaleIssues = async (
   DIGEST_REPO: string = process.env.DIGEST_REPO ?? "",
 ): Promise<number> => {
   if (!DIGEST_REPO) return 0;
-  const cutoff = new Date(Date.now() - days * 86_400_000);
+  const cutoffMs = DateTime.now().minus({ days }).toMillis();
   let closed = 0;
 
   while (true) {
@@ -73,7 +74,7 @@ export const closeStaleIssues = async (
 
     if (issues.length === 0) break;
 
-    const stale = issues.filter((i) => new Date(i.created_at) < cutoff);
+    const stale = issues.filter((i) => DateTime.fromISO(i.created_at).toMillis() < cutoffMs);
     if (stale.length === 0) break;
 
     await Promise.all(
