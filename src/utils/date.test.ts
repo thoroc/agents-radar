@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { describe, expect, it } from "vitest";
-import { sleep, toCstDateStr, toUtcStr } from "./utils/date";
+import { sleep, toCstDateStr, toUtcStr } from "./date";
 
 describe("toCstDateStr", () => {
   it("returns correct CST date string", () => {

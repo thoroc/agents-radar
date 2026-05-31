@@ -7,7 +7,7 @@ import {
   parseSitemapUrls,
   titleFromUrl,
   urlCategory,
-} from "./fetchers/web";
+} from "./web";
 
 // ---------------------------------------------------------------------------
 // parseSitemapUrls
