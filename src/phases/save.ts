@@ -1,7 +1,3 @@
-/**
- * Phase 4: Build and save all reports.
- */
-
 import fs from "node:fs";
 import path from "node:path";
 import type { ArxivData } from "../fetchers/arxiv";

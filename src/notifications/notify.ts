@@ -160,8 +160,8 @@ const main = async (opts: { verbose?: boolean[] }): Promise<void> => {
   if (fs.existsSync(highlightsPath)) {
     try {
       highlights = JSON.parse(fs.readFileSync(highlightsPath, "utf-8")) as Highlights;
-    } catch {
-      console.error("[notify] Failed to parse highlights.json — sending without highlights.");
+    } catch (error) {
+      console.error("[notify] Failed to parse highlights.json — sending without highlights.", error);
     }
   }
 

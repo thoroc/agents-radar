@@ -9,7 +9,7 @@
 import { createOpenAICompatibleProvider } from "./openai-compatible";
 import type { LlmProvider } from "./types";
 
-const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
+const OPENROUTER_BASE_URL = process.env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1";
 
 export const createOpenRouterProvider = (opts?: { apiKey?: string; model?: string }): LlmProvider =>
   createOpenAICompatibleProvider("openrouter", {
