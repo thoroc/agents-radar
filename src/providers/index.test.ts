@@ -35,7 +35,7 @@ vi.mock("openai", () => {
 // Env helpers
 // ---------------------------------------------------------------------------
 
-function withEnv(vars: Record<string, string | undefined>, fn: () => void | Promise<void>) {
+const withEnv = (vars: Record<string, string | undefined>, fn: () => void | Promise<void>) => {
   return async () => {
     const saved: Record<string, string | undefined> = {};
     for (const key of Object.keys(vars)) {
@@ -58,7 +58,7 @@ function withEnv(vars: Record<string, string | undefined>, fn: () => void | Prom
       }
     }
   };
-}
+};
 
 // ---------------------------------------------------------------------------
 // LlmProvider interface contract
