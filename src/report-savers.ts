@@ -196,36 +196,42 @@ export const saveTrendingReport = async (
   );
 };
 
-export const saveHnReport = async (
-  hnData: HnData,
+type DataSourceReportOpts = {
+  hasData: boolean;
+  logPrefix: string;
+  logAction: string;
+  data: unknown;
+  promptBuilder: (data: unknown, dateStr: string, suffix: string) => string;
+  headerBuilder: (suffix: string, dateStr: string, utcStr: string) => string;
+  fileName: string;
+  issueTitle: string;
+  issueLabel: string;
+};
+
+const saveDataSourceReport = async (
+  opts: DataSourceReportOpts,
   utcStr: string,
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh",
+  lang: Locale,
   deps: SaveReportDeps = {},
 ): Promise<void> => {
-  if (!hnData.fetchSuccess) {
-    console.error(`  [hn/${lang}] No data available, skipping report.`);
+  if (!opts.hasData) {
+    console.error(`  [${opts.logPrefix}/${lang}] No data available, skipping report.`);
     return;
   }
 
-  const s = t(lang);
-  const storyCount = hnData.stories.length;
-
-  console.error(`  [hn/${lang}] Calling LLM for HN report...`);
+  console.error(`  [${opts.logPrefix}/${lang}] Calling LLM for ${opts.logAction} report...`);
   try {
     await saveReport(
       {
-        data: hnData,
-        promptBuilder: (d, ds, _suffix) => buildHnPrompt(d as HnData, ds, toPromptLang(lang)),
-        headerBuilder: (ds, us, suffix) =>
-          suffix
-            ? `# ${s.hnTitle} ${ds}\n\n> Source: [Hacker News](https://news.ycombinator.com/) | ${storyCount} stories | Generated: ${us} UTC`
-            : `# ${s.hnTitle} ${ds}\n\n> 数据来源: [Hacker News](https://news.ycombinator.com/) | 共 ${storyCount} 条 | 生成时间: ${us} UTC`,
-        fileName: "ai-hn",
-        issueTitle: s.issueTitleHn,
-        issueLabel: s.issueLabelHn,
+        data: opts.data,
+        promptBuilder: opts.promptBuilder,
+        headerBuilder: (_ds, _us, suffix) => opts.headerBuilder(suffix, _ds, _us),
+        fileName: opts.fileName,
+        issueTitle: opts.issueTitle,
+        issueLabel: opts.issueLabel,
       },
       utcStr,
       dateStr,
@@ -235,8 +241,67 @@ export const saveHnReport = async (
       { ...defaultDeps, ...deps },
     );
   } catch (err) {
-    console.error(`  [hn/${lang}] Report generation failed: ${err}`);
+    console.error(`  [${opts.logPrefix}/${lang}] Report generation failed: ${err}`);
   }
+};
+
+const buildSourceHeader = (
+  suffix: string,
+  dateStr: string,
+  utcStr: string,
+  title: string,
+  sourceLabel: string,
+  sourceUrl: string,
+  countEn: string,
+  countZh: string,
+  extraMeta?: string,
+): string => {
+  const count = suffix ? countEn : countZh;
+  const meta = extraMeta ? ` | ${extraMeta}` : "";
+  return suffix
+    ? `# ${title} ${dateStr}\n\n> Source: [${sourceLabel}](${sourceUrl}) | ${count} | Generated: ${utcStr} UTC${meta}`
+    : `# ${title} ${dateStr}\n\n> 数据来源: [${sourceLabel}](${sourceUrl}) | ${count} | 生成时间: ${utcStr} UTC${meta}`;
+};
+
+export const saveHnReport = async (
+  hnData: HnData,
+  utcStr: string,
+  dateStr: string,
+  digestRepo: string,
+  footer: string,
+  lang: Locale = "zh",
+  deps: SaveReportDeps = {},
+): Promise<void> => {
+  const s = t(lang);
+  await saveDataSourceReport(
+    {
+      hasData: hnData.fetchSuccess,
+      logPrefix: "hn",
+      logAction: "HN",
+      data: hnData,
+      promptBuilder: (d, ds, _suffix) => buildHnPrompt(d as HnData, ds, toPromptLang(lang)),
+      headerBuilder: (suffix, ds, us) =>
+        buildSourceHeader(
+          suffix,
+          ds,
+          us,
+          s.hnTitle,
+          "Hacker News",
+          "https://news.ycombinator.com/",
+          `${hnData.stories.length} stories`,
+          `共 ${hnData.stories.length} 条`,
+        ),
+      fileName: "ai-hn",
+      issueTitle: s.issueTitleHn,
+      issueLabel: s.issueLabelHn,
+    },
+    utcStr,
+    dateStr,
+    digestRepo,
+    footer,
+    lang,
+    deps,
+  );
 };
 
 export const savePhReport = async (
@@ -248,38 +313,36 @@ export const savePhReport = async (
   lang: Locale = "zh",
   deps: SaveReportDeps = {},
 ): Promise<void> => {
-  if (!phData.fetchSuccess) {
-    console.error(`  [ph/${lang}] No data available, skipping report.`);
-    return;
-  }
-
   const s = t(lang);
-  const productCount = phData.products.length;
-
-  console.error(`  [ph/${lang}] Calling LLM for Product Hunt report...`);
-  try {
-    await saveReport(
-      {
-        data: phData,
-        promptBuilder: (d, ds, _suffix) => buildPhPrompt(d as PhData, ds, toPromptLang(lang)),
-        headerBuilder: (ds, us, suffix) =>
-          suffix
-            ? `# ${s.phTitle} ${ds}\n\n> Source: [Product Hunt](https://www.producthunt.com/) | ${productCount} products | Generated: ${us} UTC`
-            : `# ${s.phTitle} ${ds}\n\n> 数据来源: [Product Hunt](https://www.producthunt.com/) | 共 ${productCount} 个产品 | 生成时间: ${us} UTC`,
-        fileName: "ai-ph",
-        issueTitle: s.issueTitlePh,
-        issueLabel: s.issueLabelPh,
-      },
-      utcStr,
-      dateStr,
-      digestRepo,
-      footer,
-      lang,
-      { ...defaultDeps, ...deps },
-    );
-  } catch (err) {
-    console.error(`  [ph/${lang}] Report generation failed: ${err}`);
-  }
+  await saveDataSourceReport(
+    {
+      hasData: phData.fetchSuccess,
+      logPrefix: "ph",
+      logAction: "Product Hunt",
+      data: phData,
+      promptBuilder: (d, ds, _suffix) => buildPhPrompt(d as PhData, ds, toPromptLang(lang)),
+      headerBuilder: (suffix, ds, us) =>
+        buildSourceHeader(
+          suffix,
+          ds,
+          us,
+          s.phTitle,
+          "Product Hunt",
+          "https://www.producthunt.com/",
+          `${phData.products.length} products`,
+          `共 ${phData.products.length} 个产品`,
+        ),
+      fileName: "ai-ph",
+      issueTitle: s.issueTitlePh,
+      issueLabel: s.issueLabelPh,
+    },
+    utcStr,
+    dateStr,
+    digestRepo,
+    footer,
+    lang,
+    deps,
+  );
 };
 
 export const saveArxivReport = async (
@@ -291,38 +354,37 @@ export const saveArxivReport = async (
   lang: Locale = "zh",
   deps: SaveReportDeps = {},
 ): Promise<void> => {
-  if (!arxivData.fetchSuccess) {
-    console.error(`  [arxiv/${lang}] No data available, skipping report.`);
-    return;
-  }
-
   const s = t(lang);
-  const paperCount = arxivData.papers.length;
-
-  console.error(`  [arxiv/${lang}] Calling LLM for ArXiv report...`);
-  try {
-    await saveReport(
-      {
-        data: arxivData,
-        promptBuilder: (d, ds, _suffix) => buildArxivPrompt(d as ArxivData, ds, toPromptLang(lang)),
-        headerBuilder: (ds, us, suffix) =>
-          suffix
-            ? `# ${s.arxivTitle} ${ds}\n\n> Source: [ArXiv](https://arxiv.org/) (cs.AI, cs.CL, cs.LG) | ${paperCount} papers | Generated: ${us} UTC`
-            : `# ${s.arxivTitle} ${ds}\n\n> 数据来源: [ArXiv](https://arxiv.org/) (cs.AI, cs.CL, cs.LG) | 共 ${paperCount} 篇论文 | 生成时间: ${us} UTC`,
-        fileName: "ai-arxiv",
-        issueTitle: s.issueTitleArxiv,
-        issueLabel: s.issueLabelArxiv,
-      },
-      utcStr,
-      dateStr,
-      digestRepo,
-      footer,
-      lang,
-      { ...defaultDeps, ...deps },
-    );
-  } catch (err) {
-    console.error(`  [arxiv/${lang}] Report generation failed: ${err}`);
-  }
+  await saveDataSourceReport(
+    {
+      hasData: arxivData.fetchSuccess,
+      logPrefix: "arxiv",
+      logAction: "ArXiv",
+      data: arxivData,
+      promptBuilder: (d, ds, _suffix) => buildArxivPrompt(d as ArxivData, ds, toPromptLang(lang)),
+      headerBuilder: (suffix, ds, us) =>
+        buildSourceHeader(
+          suffix,
+          ds,
+          us,
+          s.arxivTitle,
+          "ArXiv",
+          "https://arxiv.org/",
+          `${arxivData.papers.length} papers`,
+          `共 ${arxivData.papers.length} 篇论文`,
+          "cs.AI, cs.CL, cs.LG",
+        ),
+      fileName: "ai-arxiv",
+      issueTitle: s.issueTitleArxiv,
+      issueLabel: s.issueLabelArxiv,
+    },
+    utcStr,
+    dateStr,
+    digestRepo,
+    footer,
+    lang,
+    deps,
+  );
 };
 
 export const saveHfReport = async (
@@ -334,38 +396,36 @@ export const saveHfReport = async (
   lang: Locale = "zh",
   deps: SaveReportDeps = {},
 ): Promise<void> => {
-  if (!hfData.fetchSuccess) {
-    console.error(`  [hf/${lang}] No data available, skipping report.`);
-    return;
-  }
-
   const s = t(lang);
-  const modelCount = hfData.models.length;
-
-  console.error(`  [hf/${lang}] Calling LLM for Hugging Face report...`);
-  try {
-    await saveReport(
-      {
-        data: hfData,
-        promptBuilder: (d, ds, _suffix) => buildHfPrompt(d as HfData, ds, toPromptLang(lang)),
-        headerBuilder: (ds, us, suffix) =>
-          suffix
-            ? `# ${s.hfTitle} ${ds}\n\n> Source: [Hugging Face Hub](https://huggingface.co/) | ${modelCount} models | Generated: ${us} UTC`
-            : `# ${s.hfTitle} ${ds}\n\n> 数据来源: [Hugging Face Hub](https://huggingface.co/) | 共 ${modelCount} 个模型 | 生成时间: ${us} UTC`,
-        fileName: "ai-hf",
-        issueTitle: s.issueTitleHf,
-        issueLabel: s.issueLabelHf,
-      },
-      utcStr,
-      dateStr,
-      digestRepo,
-      footer,
-      lang,
-      { ...defaultDeps, ...deps },
-    );
-  } catch (err) {
-    console.error(`  [hf/${lang}] Report generation failed: ${err}`);
-  }
+  await saveDataSourceReport(
+    {
+      hasData: hfData.fetchSuccess,
+      logPrefix: "hf",
+      logAction: "Hugging Face",
+      data: hfData,
+      promptBuilder: (d, ds, _suffix) => buildHfPrompt(d as HfData, ds, toPromptLang(lang)),
+      headerBuilder: (suffix, ds, us) =>
+        buildSourceHeader(
+          suffix,
+          ds,
+          us,
+          s.hfTitle,
+          "Hugging Face Hub",
+          "https://huggingface.co/",
+          `${hfData.models.length} models`,
+          `共 ${hfData.models.length} 个模型`,
+        ),
+      fileName: "ai-hf",
+      issueTitle: s.issueTitleHf,
+      issueLabel: s.issueLabelHf,
+    },
+    utcStr,
+    dateStr,
+    digestRepo,
+    footer,
+    lang,
+    deps,
+  );
 };
 
 export const saveCommunityReport = async (
@@ -378,41 +438,32 @@ export const saveCommunityReport = async (
   lang: Locale = "zh",
   deps: SaveReportDeps = {},
 ): Promise<void> => {
-  const hasData = devtoData.fetchSuccess || lobstersData.fetchSuccess;
-  if (!hasData) {
-    console.error(`  [community/${lang}] No data available, skipping report.`);
-    return;
-  }
-
   const s = t(lang);
   const devtoCount = devtoData.articles.length;
   const lobstersCount = lobstersData.stories.length;
-
-  console.error(`  [community/${lang}] Calling LLM for community report...`);
-  try {
-    await saveReport(
-      {
-        data: { devto: devtoData, lobsters: lobstersData },
-        promptBuilder: (d, ds, _suffix) => {
-          const { devto, lobsters } = d as { devto: DevtoData; lobsters: LobstersData };
-          return buildCommunityPrompt(devto, lobsters, ds, toPromptLang(lang));
-        },
-        headerBuilder: (ds, us, suffix) =>
-          suffix
-            ? `# ${s.communityTitle} ${ds}\n\n> Sources: [Dev.to](https://dev.to/) (${devtoCount} articles) + [Lobste.rs](https://lobste.rs/) (${lobstersCount} stories) | Generated: ${us} UTC`
-            : `# ${s.communityTitle} ${ds}\n\n> 数据来源: [Dev.to](https://dev.to/) (${devtoCount} 篇) + [Lobste.rs](https://lobste.rs/) (${lobstersCount} 条) | 生成时间: ${us} UTC`,
-        fileName: "ai-community",
-        issueTitle: s.issueTitleCommunity,
-        issueLabel: s.issueLabelCommunity,
+  await saveDataSourceReport(
+    {
+      hasData: devtoData.fetchSuccess || lobstersData.fetchSuccess,
+      logPrefix: "community",
+      logAction: "community",
+      data: { devto: devtoData, lobsters: lobstersData },
+      promptBuilder: (d, ds, _suffix) => {
+        const { devto, lobsters } = d as { devto: DevtoData; lobsters: LobstersData };
+        return buildCommunityPrompt(devto, lobsters, ds, toPromptLang(lang));
       },
-      utcStr,
-      dateStr,
-      digestRepo,
-      footer,
-      lang,
-      { ...defaultDeps, ...deps },
-    );
-  } catch (err) {
-    console.error(`  [community/${lang}] Report generation failed: ${err}`);
-  }
+      headerBuilder: (suffix, ds, us) =>
+        suffix
+          ? `# ${s.communityTitle} ${ds}\n\n> Sources: [Dev.to](https://dev.to/) (${devtoCount} articles) + [Lobste.rs](https://lobste.rs/) (${lobstersCount} stories) | Generated: ${us} UTC`
+          : `# ${s.communityTitle} ${ds}\n\n> 数据来源: [Dev.to](https://dev.to/) (${devtoCount} 篇) + [Lobste.rs](https://lobste.rs/) (${lobstersCount} 条) | 生成时间: ${us} UTC`,
+      fileName: "ai-community",
+      issueTitle: s.issueTitleCommunity,
+      issueLabel: s.issueLabelCommunity,
+    },
+    utcStr,
+    dateStr,
+    digestRepo,
+    footer,
+    lang,
+    deps,
+  );
 };

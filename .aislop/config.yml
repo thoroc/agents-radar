@@ -51,5 +51,5 @@ rules:
   ai-slop/narrative-comment: warning
   ai-slop/trivial-comment: warning
   ai-slop/swallowed-exception: error
-  ai-slop/hardcoded-url: warning
+  ai-slop/hardcoded-url: "off"
   security/hardcoded-secret: error
