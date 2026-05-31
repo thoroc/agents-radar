@@ -5,6 +5,8 @@
  * then filter locally for AI-related topics.
  */
 
+import { DateTime } from "luxon";
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -112,9 +114,9 @@ export const fetchPhData = async (): Promise<PhData> => {
   }
 
   // Fetch yesterday's products (they've had a full day to accumulate votes)
-  const now = new Date();
-  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-  const twoDaysAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000);
+  const now = DateTime.now();
+  const yesterday = now.minus({ days: 1 });
+  const twoDaysAgo = now.minus({ days: 2 });
 
   try {
     const resp = await fetch(API_URL, {
@@ -128,8 +130,8 @@ export const fetchPhData = async (): Promise<PhData> => {
         query: POSTS_QUERY,
         variables: {
           first: PH_FETCH_COUNT,
-          postedAfter: twoDaysAgo.toISOString(),
-          postedBefore: yesterday.toISOString(),
+          postedAfter: twoDaysAgo.toISO()!,
+          postedBefore: yesterday.toISO()!,
         },
       }),
     });

@@ -26,6 +26,9 @@ importers:
       js-yaml:
         specifier: ^4.1.1
         version: 4.1.1
+      luxon:
+        specifier: ^3.7.2
+        version: 3.7.2
       marked:
         specifier: ^17.0.4
         version: 17.0.4
@@ -42,6 +45,9 @@ importers:
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
+      '@types/luxon':
+        specifier: ^3.7.1
+        version: 3.7.1
       '@types/marked':
         specifier: ^6.0.0
         version: 6.0.0
@@ -531,6 +537,9 @@ packages:
   '@types/js-yaml@4.0.9':
     resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
 
+  '@types/luxon@3.7.1':
+    resolution: {integrity: sha512-H3iskjFIAn5SlJU7OuxUmTEpebK6TKB8rxZShDslBMZJ5u9S//KM1sbdAisiSrqwLQncVjnpi2OK2J51h+4lsg==}
+
   '@types/marked@6.0.0':
     resolution: {integrity: sha512-jmjpa4BwUsmhxcfsgUit/7A9KbrC48Q0q8KvnY107ogcjGgTFDlIL3RpihNpx2Mu1hM4mdFQjoVc4O6JoGKHsA==}
     deprecated: This is a stub types definition. marked provides its own type definitions, so you do not need this installed.
@@ -777,6 +786,10 @@ packages:
   lefthook@2.1.9:
     resolution: {integrity: sha512-bwDaIOViTktE8kJLf9jP0p+H2/RDTlFFlc43Am2YgUsX22hI6Sq4RbzsrecwzY5y+MHTipOH7WsmWSEniePHWQ==}
     hasBin: true
+
+  luxon@3.7.2:
+    resolution: {integrity: sha512-vtEhXh/gNjI9Yg1u4jX/0YVPMvxzHuGgCm6tC5kZyb08yjGWGnqAjGJvcXbqQR2P3MyMEFnRbpcdFS6PBcLqew==}
+    engines: {node: '>=12'}
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -1337,6 +1350,8 @@ snapshots:
 
   '@types/js-yaml@4.0.9': {}
 
+  '@types/luxon@3.7.1': {}
+
   '@types/marked@6.0.0':
     dependencies:
       marked: 17.0.4
@@ -1599,6 +1614,8 @@ snapshots:
       lefthook-openbsd-x64: 2.1.9
       lefthook-windows-arm64: 2.1.9
       lefthook-windows-x64: 2.1.9
+
+  luxon@3.7.2: {}
 
   magic-string@0.30.21:
     dependencies:

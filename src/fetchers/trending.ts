@@ -2,6 +2,8 @@
  * GitHub trending and AI topic search data fetching.
  */
 
+import { DateTime } from "luxon";
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -194,7 +196,7 @@ const searchAiRepos = async (sevenDaysAgo: string): Promise<SearchRepo[]> => {
 // ---------------------------------------------------------------------------
 
 export const fetchTrendingData = async (): Promise<TrendingData> => {
-  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const sevenDaysAgo = DateTime.now().minus({ days: 7 }).toFormat("yyyy-MM-dd");
 
   const [{ repos: trendingRepos, success }, searchRepos] = await Promise.all([
     fetchGitHubTrending(),

@@ -2,6 +2,8 @@
  * Hacker News AI stories fetched via the Algolia HN Search API.
  */
 
+import { DateTime } from "luxon";
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -54,7 +56,7 @@ interface AlgoliaResponse {
 // ---------------------------------------------------------------------------
 
 export const fetchHnData = async (): Promise<HnData> => {
-  const since = Math.floor((Date.now() - 24 * 60 * 60 * 1000) / 1000);
+  const since = Math.floor(DateTime.now().minus({ days: 1 }).toMillis() / 1000);
   const seen = new Map<string, HnStory>();
 
   try {

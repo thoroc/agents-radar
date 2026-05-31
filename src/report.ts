@@ -23,11 +23,11 @@ type CallLlmDeps = {
   provider?: LlmProvider;
 };
 
-function getFallbackProvider(): LlmProvider | null {
+const getFallbackProvider = (): LlmProvider | null => {
   const key = process.env.DEEPSEEK_API_KEY;
   if (!key) return null;
   return createDeepSeekProvider(key);
-}
+};
 
 // ---------------------------------------------------------------------------
 // Concurrency limiter — prevents rate-limit (429) errors when many LLM calls

@@ -2,6 +2,8 @@
  * Lobste.rs AI stories fetched via tag-based JSON endpoints (e.g., /t/ai.json).
  */
 
+import { DateTime } from "luxon";
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -89,9 +91,9 @@ export const fetchLobstersData = async (): Promise<LobstersData> => {
     );
 
     // Filter to last 7 days (Lobste.rs AI/ML tag volume is low)
-    const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const sevenDaysAgo = DateTime.now().minus({ days: 7 }).toMillis();
     const stories = [...seen.values()]
-      .filter((s) => new Date(s.publishedAt).getTime() > sevenDaysAgo)
+      .filter((s) => DateTime.fromISO(s.publishedAt).toMillis() > sevenDaysAgo)
       .sort((a, b) => b.score - a.score)
       .slice(0, LOBSTERS_TOP);
 

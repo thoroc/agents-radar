@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Command } from "@cliffy/command";
+import { DateTime } from "luxon";
 import { marked } from "marked";
 import { t } from "./utils/i18n";
 
@@ -164,7 +165,7 @@ const main = async (opts: { verbose?: boolean[] }): Promise<void> => {
     .filter((e) => e.reports.length > 0);
 
   const manifest: Manifest = {
-    generated: new Date().toISOString(),
+    generated: DateTime.now().toISO()!,
     dates: entries,
   };
 
@@ -181,7 +182,7 @@ const main = async (opts: { verbose?: boolean[] }): Promise<void> => {
     }
   }
 
-  const buildDate = toRfc822(new Date());
+  const buildDate = toRfc822(DateTime.now().toJSDate());
 
   const itemXmlChunks: string[] = [];
   for (const { date, report } of feedItems) {
@@ -189,7 +190,7 @@ const main = async (opts: { verbose?: boolean[] }): Promise<void> => {
     const title = `${label} ${date}`;
     const link = `${SITE_URL}/#${date}/${report}`;
     const parts = date.split("-").map(Number);
-    const pubDate = toRfc822(new Date(Date.UTC(parts[0]!, parts[1]! - 1, parts[2]!)));
+    const pubDate = toRfc822(DateTime.utc(parts[0]!, parts[1]!, parts[2]!).toJSDate());
     const content = await getReportContent(date, report);
     itemXmlChunks.push(
       [

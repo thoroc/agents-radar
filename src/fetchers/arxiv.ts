@@ -5,6 +5,8 @@
  * sorted by submission date, filtered to last 48h.
  */
 
+import { DateTime } from "luxon";
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -146,10 +148,10 @@ export const fetchArxivData = async (): Promise<ArxivData> => {
   }
 
   // Filter to last 48h (ArXiv has a ~1-day publishing delay, so 24h would miss today's batch)
-  const cutoff = Date.now() - 48 * 60 * 60 * 1000;
+  const cutoff = DateTime.now().minus({ hours: 48 }).toMillis();
   const papers = [...seen.values()]
-    .filter((p) => new Date(p.published).getTime() > cutoff)
-    .sort((a, b) => new Date(b.published).getTime() - new Date(a.published).getTime())
+    .filter((p) => DateTime.fromISO(p.published).toMillis() > cutoff)
+    .sort((a, b) => DateTime.fromISO(b.published).toMillis() - DateTime.fromISO(a.published).toMillis())
     .slice(0, ARXIV_MAX_RESULTS);
 
   console.error(`  [arxiv] ${papers.length} papers (from ${seen.size} unique)`);

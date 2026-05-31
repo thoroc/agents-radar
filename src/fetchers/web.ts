@@ -12,6 +12,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { DateTime } from "luxon";
 import { sleep } from "../utils/date";
 
 // ---------------------------------------------------------------------------
@@ -350,7 +351,7 @@ export const fetchSiteContent = async (
   for (const { loc, lastmod } of allDiscovered) {
     siteState.seenUrls[loc] = lastmod ?? "seen";
   }
-  siteState.lastChecked = new Date().toISOString();
+  siteState.lastChecked = DateTime.now().toISO()!;
 
   return {
     site,
