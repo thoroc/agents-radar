@@ -50,6 +50,7 @@ import {
   saveTrendingReport,
   saveWebReport,
 } from "./report-savers";
+import { toPromptLang } from "./types";
 import { getEnabledLangs, loadConfig } from "./utils/config";
 import { toCstDateStr, toUtcStr } from "./utils/date";
 import { type Locale, t } from "./utils/i18n";
@@ -231,7 +232,12 @@ const generateSummaries = async (
   const [cliDigests, openclawSummary, skillsSummary, peerDigests, trendingSummary] = await Promise.all([
     Promise.all(
       fetchedCli.map((f) =>
-        summarizeRepo(f, buildCliPrompt(f.cfg, f.issues, f.prs, f.releases, dateStr, lang), noActivity, fail),
+        summarizeRepo(
+          f,
+          buildCliPrompt(f.cfg, f.issues, f.prs, f.releases, dateStr, toPromptLang(lang)),
+          noActivity,
+          fail,
+        ),
       ),
     ),
     summarizeRepo(
@@ -244,21 +250,30 @@ const generateSummaries = async (
         dateStr,
         50,
         30,
-        lang,
+        toPromptLang(lang),
       ),
       noActivity,
       fail,
     ).then((d) => d.summary),
     summarize(
       "claude-code-skills",
-      buildSkillsPrompt(skillsData.prs, skillsData.issues, dateStr, lang),
+      buildSkillsPrompt(skillsData.prs, skillsData.issues, dateStr, toPromptLang(lang)),
       t(lang).skillsFailed,
     ),
     Promise.all(
       fetchedPeers.map((f) =>
         summarizeRepo(
           f,
-          buildPeerPrompt(f.cfg, f.issues, f.prs, f.releases, dateStr, undefined, undefined, lang),
+          buildPeerPrompt(
+            f.cfg,
+            f.issues,
+            f.prs,
+            f.releases,
+            dateStr,
+            undefined,
+            undefined,
+            toPromptLang(lang),
+          ),
           noActivity,
           fail,
         ),
@@ -271,7 +286,7 @@ const generateSummaries = async (
       }
       return summarize(
         "trending",
-        buildTrendingPrompt(trendingData, dateStr, lang),
+        buildTrendingPrompt(trendingData, dateStr, toPromptLang(lang)),
         t(lang).trendingFailed,
         LLM_TOKENS_TRENDING,
       );

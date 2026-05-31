@@ -21,6 +21,7 @@ import {
   buildWebReportPrompt,
 } from "./prompts-data";
 import { callLlm, LLM_TOKENS_WEB, saveFile } from "./report";
+import { toPromptLang } from "./types";
 import { type Locale, t } from "./utils/i18n";
 
 // ---------------------------------------------------------------------------
@@ -135,7 +136,8 @@ export const saveWebReport = async (
     await saveReport(
       {
         data: webResults,
-        promptBuilder: (d, ds, _suffix) => buildWebReportPrompt(d as WebFetchResult[], ds, lang),
+        promptBuilder: (d, ds, _suffix) =>
+          buildWebReportPrompt(d as WebFetchResult[], ds, toPromptLang(lang)),
         headerBuilder: (ds, us, suffix) => {
           const mode = suffix
             ? isFirstRun
@@ -240,7 +242,7 @@ export const saveHnReport = async (
     await saveReport(
       {
         data: hnData,
-        promptBuilder: (d, ds, _suffix) => buildHnPrompt(d as HnData, ds, lang),
+        promptBuilder: (d, ds, _suffix) => buildHnPrompt(d as HnData, ds, toPromptLang(lang)),
         headerBuilder: (ds, us, suffix) =>
           suffix
             ? `# ${s.hnTitle} ${ds}\n\n> Source: [Hacker News](https://news.ycombinator.com/) | ${storyCount} stories | Generated: ${us} UTC`
@@ -287,7 +289,7 @@ export const savePhReport = async (
     await saveReport(
       {
         data: phData,
-        promptBuilder: (d, ds, _suffix) => buildPhPrompt(d as PhData, ds, lang),
+        promptBuilder: (d, ds, _suffix) => buildPhPrompt(d as PhData, ds, toPromptLang(lang)),
         headerBuilder: (ds, us, suffix) =>
           suffix
             ? `# ${s.phTitle} ${ds}\n\n> Source: [Product Hunt](https://www.producthunt.com/) | ${productCount} products | Generated: ${us} UTC`
@@ -334,7 +336,7 @@ export const saveArxivReport = async (
     await saveReport(
       {
         data: arxivData,
-        promptBuilder: (d, ds, _suffix) => buildArxivPrompt(d as ArxivData, ds, lang),
+        promptBuilder: (d, ds, _suffix) => buildArxivPrompt(d as ArxivData, ds, toPromptLang(lang)),
         headerBuilder: (ds, us, suffix) =>
           suffix
             ? `# ${s.arxivTitle} ${ds}\n\n> Source: [ArXiv](https://arxiv.org/) (cs.AI, cs.CL, cs.LG) | ${paperCount} papers | Generated: ${us} UTC`
@@ -381,7 +383,7 @@ export const saveHfReport = async (
     await saveReport(
       {
         data: hfData,
-        promptBuilder: (d, ds, _suffix) => buildHfPrompt(d as HfData, ds, lang),
+        promptBuilder: (d, ds, _suffix) => buildHfPrompt(d as HfData, ds, toPromptLang(lang)),
         headerBuilder: (ds, us, suffix) =>
           suffix
             ? `# ${s.hfTitle} ${ds}\n\n> Source: [Hugging Face Hub](https://huggingface.co/) | ${modelCount} models | Generated: ${us} UTC`
@@ -433,7 +435,7 @@ export const saveCommunityReport = async (
         data: { devto: devtoData, lobsters: lobstersData },
         promptBuilder: (d, ds, _suffix) => {
           const { devto, lobsters } = d as { devto: DevtoData; lobsters: LobstersData };
-          return buildCommunityPrompt(devto, lobsters, ds, lang);
+          return buildCommunityPrompt(devto, lobsters, ds, toPromptLang(lang));
         },
         headerBuilder: (ds, us, suffix) =>
           suffix

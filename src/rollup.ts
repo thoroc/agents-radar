@@ -15,7 +15,7 @@ import {
 } from "./prompts-data";
 import { autoGenFooter, callLlm, LLM_TOKENS_ROLLUP, saveFile } from "./report";
 import { toCstDateStr, toUtcStr } from "./utils/date";
-import { type Locale, t } from "./utils/i18n";
+import { t } from "./utils/i18n";
 
 const DIGESTS_DIR = "digests";
 const MAX_CHARS_PER_REPORT = 2500;
@@ -78,7 +78,7 @@ const generateRollupHighlights = async (
 
   // Read existing highlights (e.g. from daily digest) so we merge instead of overwrite
   const existingPath = path.join(DIGESTS_DIR, dateStr, "highlights.json");
-  let existing: Record<Locale, ReportHighlights> = { zh: {}, en: {} };
+  let existing: Record<string, ReportHighlights> = { zh: {}, en: {} };
   if (fs.existsSync(existingPath)) {
     try {
       existing = JSON.parse(fs.readFileSync(existingPath, "utf-8"));
@@ -87,7 +87,7 @@ const generateRollupHighlights = async (
     }
   }
 
-  const highlights: Record<Locale, ReportHighlights> = {
+  const highlights: Record<string, ReportHighlights> = {
     zh: { ...existing.zh },
     en: { ...existing.en },
   };
@@ -109,8 +109,8 @@ const generateRollupHighlights = async (
         .replace(/```/g, "")
         .trim(),
     ) as ReportHighlights;
-    Object.assign(highlights.zh, zhNew);
-    Object.assign(highlights.en, enNew);
+    Object.assign(highlights.zh ?? {}, zhNew);
+    Object.assign(highlights.en ?? {}, enNew);
   } catch (err) {
     console.error(`  [${reportId}] Highlights generation failed: ${err}`);
   }
