@@ -18,6 +18,10 @@
     "xiaohongshu": "bun run src/social.ts xiaohongshu",
     "wechat": "bun run src/social.ts wechat",
     "wechat:monthly": "bun run src/social.ts wechat:monthly",
+    "aislop": "aislop scan src",
+    "aislop:ci": "aislop ci src",
+    "aislop:fix": "aislop fix src",
+    "aislop:score": "aislop scan src --json",
     "test": "bun test",
     "test:watch": "bun test --watch",
     "test:coverage": "bun test --coverage"
@@ -41,6 +45,7 @@
     "@types/marked": "^6.0.0",
     "@types/node": "^25.3.5",
     "@vitest/coverage-v8": "^4.0.18",
+    "aislop": "^0.10.1",
     "lefthook": "^2.1.9",
     "typescript": "^5.7.0",
     "vitest": "^4.0.18"

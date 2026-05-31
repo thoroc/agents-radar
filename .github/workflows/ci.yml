@@ -30,3 +30,6 @@ jobs:
 
       - name: Test
         run: bun test
+
+      - name: AISlop quality gate
+        run: bun run aislop:ci
