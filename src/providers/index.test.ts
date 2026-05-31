@@ -13,37 +13,23 @@ import {
 // Mock the SDKs at module level
 // ---------------------------------------------------------------------------
 
+const anthropicCreate = vi.fn();
+
 vi.mock("@anthropic-ai/sdk", () => {
-  const create = vi.fn();
   class MockAnthropic {
-    messages = { create };
+    messages = { create: anthropicCreate };
   }
-  return {
-    default: MockAnthropic,
-    __mockCreate: create,
-  };
+  return { default: MockAnthropic };
 });
+
+const openaiCreate = vi.fn();
 
 vi.mock("openai", () => {
-  const create = vi.fn();
   class MockOpenAI {
-    chat = { completions: { create } };
+    chat = { completions: { create: openaiCreate } };
   }
-  return {
-    default: MockOpenAI,
-    __mockCreate: create,
-  };
+  return { default: MockOpenAI };
 });
-
-async function getAnthropicMockCreate() {
-  const mod = await import("@anthropic-ai/sdk");
-  return (mod as unknown as { __mockCreate: ReturnType<typeof vi.fn> }).__mockCreate;
-}
-
-async function getOpenAIMockCreate() {
-  const mod = await import("openai");
-  return (mod as unknown as { __mockCreate: ReturnType<typeof vi.fn> }).__mockCreate;
-}
 
 // ---------------------------------------------------------------------------
 // Env helpers
@@ -152,7 +138,7 @@ describe("createAnthropicProvider", () => {
   });
 
   it("call returns text from Anthropic SDK", async () => {
-    const mockCreate = await getAnthropicMockCreate();
+    const mockCreate = anthropicCreate;
     mockCreate.mockResolvedValueOnce({
       content: [{ type: "text", text: "Hello from Anthropic" }],
     });
@@ -168,7 +154,7 @@ describe("createAnthropicProvider", () => {
   });
 
   it("throws on non-text response", async () => {
-    const mockCreate = await getAnthropicMockCreate();
+    const mockCreate = anthropicCreate;
     mockCreate.mockResolvedValueOnce({
       content: [{ type: "image", source: {} }],
     });
@@ -202,7 +188,7 @@ describe("createOpenAIProvider", () => {
   });
 
   it("call returns text from OpenAI SDK", async () => {
-    const mockCreate = await getOpenAIMockCreate();
+    const mockCreate = openaiCreate;
     mockCreate.mockResolvedValueOnce({
       choices: [{ message: { content: "Hello from OpenAI" } }],
     });
@@ -218,7 +204,7 @@ describe("createOpenAIProvider", () => {
   });
 
   it("throws on empty response", async () => {
-    const mockCreate = await getOpenAIMockCreate();
+    const mockCreate = openaiCreate;
     mockCreate.mockResolvedValueOnce({
       choices: [{ message: { content: null } }],
     });
@@ -228,7 +214,7 @@ describe("createOpenAIProvider", () => {
   });
 
   it("throws when choices is empty", async () => {
-    const mockCreate = await getOpenAIMockCreate();
+    const mockCreate = openaiCreate;
     mockCreate.mockResolvedValueOnce({ choices: [] });
 
     const p = createOpenAIProvider({ apiKey: "k" });
@@ -246,7 +232,7 @@ describe("createGitHubCopilotProvider", () => {
   });
 
   it("call returns text", async () => {
-    const mockCreate = await getOpenAIMockCreate();
+    const mockCreate = openaiCreate;
     mockCreate.mockResolvedValueOnce({
       choices: [{ message: { content: "Hello from Copilot" } }],
     });
@@ -265,7 +251,7 @@ describe("createGitHubCopilotProvider", () => {
   );
 
   it("throws on empty response", async () => {
-    const mockCreate = await getOpenAIMockCreate();
+    const mockCreate = openaiCreate;
     mockCreate.mockResolvedValueOnce({ choices: [] });
 
     const p = createGitHubCopilotProvider({ apiKey: "k" });
@@ -283,7 +269,7 @@ describe("createOpenRouterProvider", () => {
   });
 
   it("call returns text", async () => {
-    const mockCreate = await getOpenAIMockCreate();
+    const mockCreate = openaiCreate;
     mockCreate.mockResolvedValueOnce({
       choices: [{ message: { content: "Hello from OpenRouter" } }],
     });
@@ -302,7 +288,7 @@ describe("createOpenRouterProvider", () => {
   );
 
   it("throws on empty response", async () => {
-    const mockCreate = await getOpenAIMockCreate();
+    const mockCreate = openaiCreate;
     mockCreate.mockResolvedValueOnce({
       choices: [{ message: { content: "" } }],
     });

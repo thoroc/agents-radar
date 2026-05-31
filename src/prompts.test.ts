@@ -1,7 +1,4 @@
 import { describe, expect, it } from "vitest";
-import type { HnData } from "./fetchers/hn";
-import type { TrendingData } from "./fetchers/trending";
-import type { WebFetchResult } from "./fetchers/web";
 import type { GitHubItem, GitHubRelease, RepoConfig } from "./github";
 import type { RepoDigest } from "./prompts";
 import {
@@ -10,14 +7,10 @@ import {
   buildPeerPrompt,
   buildPeersComparisonPrompt,
   buildSkillsPrompt,
+  formatItem,
+  sampleNote,
+  topN,
 } from "./prompts";
-import {
-  buildHnPrompt,
-  buildMonthlyPrompt,
-  buildTrendingPrompt,
-  buildWebReportPrompt,
-  buildWeeklyPrompt,
-} from "./prompts-data";
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -170,188 +163,131 @@ describe("buildSkillsPrompt", () => {
 });
 
 // ---------------------------------------------------------------------------
-// buildTrendingPrompt
+// formatItem
 // ---------------------------------------------------------------------------
 
-describe("buildTrendingPrompt", () => {
-  it("includes trending repos", () => {
-    const data: TrendingData = {
-      trendingRepos: [
-        {
-          fullName: "org/repo",
-          description: "desc",
-          language: "Python",
-          todayStars: 100,
-          totalStars: 5000,
-          forks: 200,
-          url: "https://github.com/org/repo",
-        },
-      ],
-      searchRepos: [],
-      trendingFetchSuccess: true,
-    };
-    const result = buildTrendingPrompt(data, "2026-03-09");
-    expect(result).toContain("org/repo");
-    expect(result).toContain("Python");
-    expect(result).toContain("5,000");
-    expect(result).toContain("+100 today");
+describe("formatItem", () => {
+  it("formats a basic item in Chinese (default)", () => {
+    const result = formatItem(makeItem());
+    expect(result).toContain("#1 [OPEN]");
+    expect(result).toContain("Issue");
+    expect(result).toContain("作者: alice");
+    expect(result).toContain("评论: 5");
+    expect(result).toContain("👍: 2");
+    expect(result).toContain("链接: org/test Issue #1");
+    expect(result).toContain("摘要: body");
   });
 
-  it("shows fetch failure message when trending fails", () => {
-    const data: TrendingData = { trendingRepos: [], searchRepos: [], trendingFetchSuccess: false };
-    const result = buildTrendingPrompt(data, "2026-03-09");
-    expect(result).toContain("未能抓取");
+  it("formats an item in English", () => {
+    const result = formatItem(makeItem(), "en");
+    expect(result).toContain("Author: alice");
+    expect(result).toContain("Comments: 5");
+    expect(result).toContain("URL:");
+    expect(result).toContain("Summary: body");
   });
 
-  it("includes search repos with topic tag", () => {
-    const data: TrendingData = {
-      trendingRepos: [],
-      searchRepos: [
-        {
-          fullName: "ai/agent",
-          description: "An AI agent",
-          language: "TypeScript",
-          stargazersCount: 1000,
-          pushedAt: "2026-03-08",
-          url: "https://github.com/ai/agent",
-          searchQuery: "ai-agent",
-        },
-      ],
-      trendingFetchSuccess: false,
-    };
-    const result = buildTrendingPrompt(data, "2026-03-09");
-    expect(result).toContain("[topic:ai-agent]");
-    expect(result).toContain("1,000");
+  it("includes labels when present", () => {
+    const item = makeItem({ labels: [{ name: "bug" }, { name: "critical" }] });
+    const result = formatItem(item);
+    expect(result).toContain("[bug, critical]");
+  });
+
+  it("shows no label bracket when labels empty", () => {
+    const result = formatItem(makeItem({ labels: [] }));
+    expect(result).toContain("#1 [OPEN] Issue");
+    expect(result).not.toContain("[]");
+  });
+
+  it("truncates body at 300 chars with ellipsis", () => {
+    const longBody = "A".repeat(400);
+    const result = formatItem(makeItem({ body: longBody }));
+    expect(result).toContain(`${"A".repeat(300)}...`);
+  });
+
+  it("does not add ellipsis for body <= 300 chars", () => {
+    const result = formatItem(makeItem({ body: "Short body" }));
+    expect(result).toContain("Short body");
+    expect(result).not.toContain("...");
+  });
+
+  it("handles null body gracefully", () => {
+    const result = formatItem(makeItem({ body: null }));
+    expect(result).toContain("摘要: ");
+  });
+
+  it("handles missing reactions gracefully", () => {
+    const result = formatItem(makeItem({ reactions: undefined }));
+    expect(result).toContain("👍: 0");
+  });
+
+  it("replaces newlines in body with spaces", () => {
+    const result = formatItem(makeItem({ body: "line1\nline2\nline3" }));
+    expect(result).toContain("line1 line2 line3");
+  });
+
+  it("shows closed state uppercase", () => {
+    const result = formatItem(makeItem({ state: "closed" }));
+    expect(result).toContain("[CLOSED]");
   });
 });
 
 // ---------------------------------------------------------------------------
-// buildWebReportPrompt
+// topN
 // ---------------------------------------------------------------------------
 
-describe("buildWebReportPrompt", () => {
-  it("includes site sections for first run", () => {
-    const results: WebFetchResult[] = [
-      {
-        site: "anthropic",
-        siteName: "Anthropic",
-        isFirstRun: true,
-        newItems: [
-          {
-            url: "https://anthropic.com/news/test",
-            title: "Test",
-            lastmod: "2026-03-09",
-            content: "Content",
-            site: "anthropic",
-            category: "news",
-          },
-        ],
-        totalDiscovered: 50,
-      },
+describe("topN", () => {
+  it("returns top N items sorted by comment count desc", () => {
+    const items = [
+      makeItem({ number: 1, comments: 2 }),
+      makeItem({ number: 2, comments: 10 }),
+      makeItem({ number: 3, comments: 5 }),
+      makeItem({ number: 4, comments: 8 }),
     ];
-    const result = buildWebReportPrompt(results, "2026-03-09");
-    expect(result).toContain("首次全量抓取");
-    expect(result).toContain("Anthropic");
-    expect(result).toContain("内容格局总览");
+    const result = topN(items, 2);
+    expect(result).toHaveLength(2);
+    expect(result[0]!.number).toBe(2);
+    expect(result[1]!.number).toBe(4);
   });
 
-  it("shows incremental mode for non-first-run", () => {
-    const results: WebFetchResult[] = [
-      { site: "openai", siteName: "OpenAI", isFirstRun: false, newItems: [], totalDiscovered: 100 },
-    ];
-    const result = buildWebReportPrompt(results, "2026-03-09");
-    expect(result).toContain("增量更新");
-    expect(result).not.toContain("内容格局总览");
-  });
-});
-
-// ---------------------------------------------------------------------------
-// buildWeeklyPrompt
-// ---------------------------------------------------------------------------
-
-describe("buildWeeklyPrompt", () => {
-  it("includes daily digest entries", () => {
-    const digests = { "2026-03-03": "Day 1 content", "2026-03-04": "Day 2 content" };
-    const result = buildWeeklyPrompt(digests, "2026-W10");
-    expect(result).toContain("2026-03-03");
-    expect(result).toContain("Day 1 content");
-    expect(result).toContain("2026-W10");
-    expect(result).toContain("周报");
+  it("returns all items if n >= items.length", () => {
+    const items = [makeItem({ comments: 1 }), makeItem({ comments: 2 })];
+    expect(topN(items, 5)).toHaveLength(2);
   });
 
-  it("generates English variant", () => {
-    const result = buildWeeklyPrompt({ "2026-03-03": "content" }, "2026-W10", "en");
-    expect(result).toContain("weekly recap");
+  it("does not mutate the original array", () => {
+    const items = [makeItem({ comments: 1 }), makeItem({ comments: 5 })];
+    const original = [...items];
+    topN(items, 1);
+    expect(items[0]!.comments).toBe(original[0]!.comments);
+    expect(items[1]!.comments).toBe(original[1]!.comments);
+  });
+
+  it("returns empty array for empty input", () => {
+    expect(topN([], 3)).toEqual([]);
   });
 });
 
 // ---------------------------------------------------------------------------
-// buildMonthlyPrompt
+// sampleNote
 // ---------------------------------------------------------------------------
 
-describe("buildMonthlyPrompt", () => {
-  it("includes source digests and month", () => {
-    const digests = { "2026-02-01": "Week 1", "2026-02-08": "Week 2" };
-    const result = buildMonthlyPrompt(digests, "2026-02");
-    expect(result).toContain("2026-02");
-    expect(result).toContain("2 份报告");
-    expect(result).toContain("月报");
+describe("sampleNote", () => {
+  it("shows sampled note in Chinese when total > sampled", () => {
+    const result = sampleNote(100, 30);
+    expect(result).toBe("（共 100 条，以下展示评论数最多的 30 条）");
   });
 
-  it("generates English variant", () => {
-    const result = buildMonthlyPrompt({ "2026-02-01": "w1" }, "2026-02", "en");
-    expect(result).toContain("monthly review");
-  });
-});
-
-// ---------------------------------------------------------------------------
-// buildHnPrompt
-// ---------------------------------------------------------------------------
-
-describe("buildHnPrompt", () => {
-  it("includes stories with metadata", () => {
-    const data: HnData = {
-      stories: [
-        {
-          id: "123",
-          title: "AI News",
-          url: "https://example.com/ai",
-          hnUrl: "https://news.ycombinator.com/item?id=123",
-          points: 200,
-          comments: 50,
-          author: "bob",
-          createdAt: "2026-03-09T10:00:00Z",
-        },
-      ],
-      fetchSuccess: true,
-    };
-    const result = buildHnPrompt(data, "2026-03-09");
-    expect(result).toContain("AI News");
-    expect(result).toContain("分数: 200");
-    expect(result).toContain("评论: 50");
-    expect(result).toContain("作者: bob");
-    expect(result).toContain("共 1 条");
+  it("shows total-only note in Chinese when total <= sampled", () => {
+    expect(sampleNote(10, 10)).toBe("（共 10 条）");
+    expect(sampleNote(5, 10)).toBe("（共 5 条）");
   });
 
-  it("generates English variant", () => {
-    const data: HnData = {
-      stories: [
-        {
-          id: "1",
-          title: "Test",
-          url: "https://test.com",
-          hnUrl: "https://news.ycombinator.com/item?id=1",
-          points: 10,
-          comments: 2,
-          author: "a",
-          createdAt: "2026-03-09T10:00:00Z",
-        },
-      ],
-      fetchSuccess: true,
-    };
-    const result = buildHnPrompt(data, "2026-03-09", "en");
-    expect(result).toContain("Score: 10");
-    expect(result).toContain("Comments: 2");
-    expect(result).toContain("Hacker News");
+  it("shows sampled note in English when total > sampled", () => {
+    const result = sampleNote(50, 20, "en");
+    expect(result).toBe("(Total: 50 items; showing top 20 by comment count)");
+  });
+
+  it("shows total-only note in English when total <= sampled", () => {
+    expect(sampleNote(8, 8, "en")).toBe("(Total: 8 items)");
   });
 });

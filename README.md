@@ -274,7 +274,7 @@ The provider abstraction lives in `src/providers/` — each provider is a separa
 ## Running locally
 
 ```bash
-pnpm install
+bun install
 
 export GITHUB_TOKEN=ghp_xxxxx
 
@@ -294,14 +294,14 @@ export ANTHROPIC_API_KEY=sk-ant-xxxxxxxx
 
 export DIGEST_REPO=your-username/agents-radar  # optional; omit to only write files
 
-pnpm start
+bun run start
 ```
 
 ## Running tests
 
 ```bash
-pnpm test        # run all tests (vitest)
-pnpm test:watch  # run in watch mode during development
+bun test        # run all tests
+bun test --watch  # run in watch mode during development
 ```
 
 ## Output format

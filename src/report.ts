@@ -21,6 +21,7 @@ import { createProvider, type LlmProvider } from "./providers/index";
 
 type CallLlmDeps = {
   provider?: LlmProvider;
+  sleep?: (ms: number) => Promise<void>;
 };
 
 const getFallbackProvider = (): LlmProvider | null => {
@@ -88,7 +89,7 @@ export const callLlm = async (
         released = true;
         const wait = RETRY_BASE_MS * 2 ** attempt;
         console.error(`[llm] 429 — retry ${attempt + 1}/${MAX_RETRIES} in ${wait / 1000}s...`);
-        await sleep(wait);
+        await (deps.sleep ?? sleep)(wait);
         continue;
       }
       if (is403(err)) {

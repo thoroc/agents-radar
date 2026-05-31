@@ -1,19 +1,10 @@
 import fs from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-const { mockCall } = vi.hoisted(() => ({
-  mockCall: vi.fn<(prompt: string, maxTokens: number) => Promise<string>>(),
-}));
-
-vi.mock("./providers/index.ts", async (importOriginal) => {
-  const orig = await importOriginal<typeof import("./providers/index.ts")>();
-  return {
-    ...orig,
-    createProvider: () => ({ name: "mock", call: mockCall }),
-  };
-});
-
+import type { LlmProvider } from "./providers/index";
 import { autoGenFooter, callLlm, is429, saveFile } from "./report";
+
+const mockCall = vi.fn<(prompt: string, maxTokens: number) => Promise<string>>();
+const mockProvider: LlmProvider = { name: "mock", call: mockCall };
 
 // ---------------------------------------------------------------------------
 // is429
@@ -135,20 +126,17 @@ describe("autoGenFooter", () => {
 // callLlm
 // ---------------------------------------------------------------------------
 
+const noopSleep = async () => {};
+
 describe("callLlm", () => {
   beforeEach(() => {
-    vi.useFakeTimers();
     mockCall.mockReset();
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
   });
 
   it("passes prompt and maxTokens to provider.call()", async () => {
     mockCall.mockResolvedValueOnce("response text");
 
-    const result = await callLlm("hello", 2048);
+    const result = await callLlm("hello", 2048, { provider: mockProvider });
 
     expect(result).toBe("response text");
     expect(mockCall).toHaveBeenCalledOnce();
@@ -158,7 +146,7 @@ describe("callLlm", () => {
   it("uses default maxTokens of 4096", async () => {
     mockCall.mockResolvedValueOnce("ok");
 
-    await callLlm("prompt");
+    await callLlm("prompt", 4096, { provider: mockProvider });
 
     expect(mockCall).toHaveBeenCalledWith("prompt", 4096);
   });
@@ -168,11 +156,8 @@ describe("callLlm", () => {
     mockCall.mockRejectedValueOnce(err429);
     mockCall.mockResolvedValueOnce("success after retry");
 
-    const promise = callLlm("prompt", 1024);
+    const result = await callLlm("prompt", 1024, { provider: mockProvider, sleep: noopSleep });
 
-    await vi.advanceTimersByTimeAsync(5_000);
-
-    const result = await promise;
     expect(result).toBe("success after retry");
     expect(mockCall).toHaveBeenCalledTimes(2);
   });
@@ -185,21 +170,16 @@ describe("callLlm", () => {
       .mockRejectedValueOnce(err429)
       .mockRejectedValueOnce(err429);
 
-    const promise = callLlm("prompt", 1024);
-    promise.catch(() => {});
-
-    await vi.advanceTimersByTimeAsync(5_000);
-    await vi.advanceTimersByTimeAsync(10_000);
-    await vi.advanceTimersByTimeAsync(20_000);
-
-    await expect(promise).rejects.toThrow("rate limited");
+    await expect(callLlm("prompt", 1024, { provider: mockProvider, sleep: noopSleep })).rejects.toThrow(
+      "rate limited",
+    );
     expect(mockCall).toHaveBeenCalledTimes(4);
   });
 
   it("throws immediately on non-429 errors", async () => {
     mockCall.mockRejectedValueOnce(new Error("server error"));
 
-    await expect(callLlm("prompt")).rejects.toThrow("server error");
+    await expect(callLlm("prompt", 4096, { provider: mockProvider })).rejects.toThrow("server error");
     expect(mockCall).toHaveBeenCalledOnce();
   });
 
@@ -208,12 +188,10 @@ describe("callLlm", () => {
     mockCall.mockRejectedValueOnce(err429);
     mockCall.mockResolvedValueOnce("ok");
 
-    const promise = callLlm("prompt");
-    await vi.advanceTimersByTimeAsync(5_000);
-    await promise;
+    await callLlm("prompt", 4096, { provider: mockProvider, sleep: noopSleep });
 
     mockCall.mockResolvedValue("ok");
-    const batch = Array.from({ length: 5 }, (_, i) => callLlm(`p${i}`));
+    const batch = Array.from({ length: 5 }, (_, i) => callLlm(`p${i}`, 4096, { provider: mockProvider }));
     const results = await Promise.all(batch);
     expect(results).toEqual(["ok", "ok", "ok", "ok", "ok"]);
   });
