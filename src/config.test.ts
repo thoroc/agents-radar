@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getEnabledLangs, loadConfig, toRepoConfig } from "./config";
+import { getEnabledLangs, loadConfig, toRepoConfig } from "./utils/config";
 
 // ---------------------------------------------------------------------------
 // toRepoConfig

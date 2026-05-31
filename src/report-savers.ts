@@ -3,14 +3,15 @@
  * All savers delegate to the generic saveReport function.
  */
 
-import type { ArxivData } from "./arxiv";
-import type { DevtoData } from "./devto";
+import type { ArxivData } from "./fetchers/arxiv";
+import type { DevtoData } from "./fetchers/devto";
+import type { HfData } from "./fetchers/hf";
+import type { HnData } from "./fetchers/hn";
+import type { LobstersData } from "./fetchers/lobsters";
+import type { PhData } from "./fetchers/ph";
+import type { TrendingData } from "./fetchers/trending";
+import { saveWebState, type WebFetchResult, type WebState } from "./fetchers/web";
 import { createGitHubIssue } from "./github";
-import type { HfData } from "./hf";
-import type { HnData } from "./hn";
-import { type Locale, t } from "./i18n";
-import type { LobstersData } from "./lobsters";
-import type { PhData } from "./ph";
 import {
   buildArxivPrompt,
   buildCommunityPrompt,
@@ -20,8 +21,7 @@ import {
   buildWebReportPrompt,
 } from "./prompts-data";
 import { callLlm, LLM_TOKENS_WEB, saveFile } from "./report";
-import type { TrendingData } from "./trending";
-import { saveWebState, type WebFetchResult, type WebState } from "./web";
+import { type Locale, t } from "./utils/i18n";
 
 // ---------------------------------------------------------------------------
 // Types

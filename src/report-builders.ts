@@ -3,8 +3,8 @@
  */
 
 import type { RepoConfig, RepoFetch } from "./github";
-import { type Locale, t } from "./i18n";
 import type { RepoDigest } from "./prompts";
+import { type Locale, t } from "./utils/i18n";
 
 // ---------------------------------------------------------------------------
 // CLI Report

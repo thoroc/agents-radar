@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { buildMessage, type Highlights } from "./notify";
+import { buildMessage, type Highlights } from "./notifications/notify";
 
 const BASE_URL = "https://example.com/radar";
 

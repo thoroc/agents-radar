@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { sleep, toCstDateStr, toUtcStr } from "./date";
+import { sleep, toCstDateStr, toUtcStr } from "./utils/date";
 
 describe("toCstDateStr", () => {
   it("returns correct CST date string from a Date", () => {

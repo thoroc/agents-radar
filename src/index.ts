@@ -11,10 +11,14 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { type ArxivData, fetchArxivData } from "./arxiv";
-import { getEnabledLangs, loadConfig } from "./config";
-import { toCstDateStr, toUtcStr } from "./date";
-import { type DevtoData, fetchDevtoData } from "./devto";
+import { type ArxivData, fetchArxivData } from "./fetchers/arxiv";
+import { type DevtoData, fetchDevtoData } from "./fetchers/devto";
+import { fetchHfData, type HfData } from "./fetchers/hf";
+import { fetchHnData, type HnData } from "./fetchers/hn";
+import { fetchLobstersData, type LobstersData } from "./fetchers/lobsters";
+import { fetchPhData, type PhData } from "./fetchers/ph";
+import { fetchTrendingData, type TrendingData } from "./fetchers/trending";
+import { fetchSiteContent, loadWebState, type WebFetchResult, type WebState } from "./fetchers/web";
 import {
   createGitHubIssue,
   fetchRecentItems,
@@ -24,11 +28,6 @@ import {
   type RepoConfig,
   type RepoFetch,
 } from "./github";
-import { fetchHfData, type HfData } from "./hf";
-import { fetchHnData, type HnData } from "./hn";
-import { type Locale, t } from "./i18n";
-import { fetchLobstersData, type LobstersData } from "./lobsters";
-import { fetchPhData, type PhData } from "./ph";
 import {
   buildCliPrompt,
   buildComparisonPrompt,
@@ -49,8 +48,9 @@ import {
   saveTrendingReport,
   saveWebReport,
 } from "./report-savers";
-import { fetchTrendingData, type TrendingData } from "./trending";
-import { fetchSiteContent, loadWebState, type WebFetchResult, type WebState } from "./web";
+import { getEnabledLangs, loadConfig } from "./utils/config";
+import { toCstDateStr, toUtcStr } from "./utils/date";
+import { type Locale, t } from "./utils/i18n";
 
 // ---------------------------------------------------------------------------
 // Helpers

@@ -5,9 +5,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { toCstDateStr, toUtcStr } from "./date";
 import { createGitHubIssue } from "./github";
-import { type Locale, t } from "./i18n";
 import {
   buildHighlightsPrompt,
   buildMonthlyPrompt,
@@ -15,6 +13,8 @@ import {
   type ReportHighlights,
 } from "./prompts-data";
 import { autoGenFooter, callLlm, LLM_TOKENS_ROLLUP, saveFile } from "./report";
+import { toCstDateStr, toUtcStr } from "./utils/date";
+import { type Locale, t } from "./utils/i18n";
 
 const DIGESTS_DIR = "digests";
 const MAX_CHARS_PER_REPORT = 2500;

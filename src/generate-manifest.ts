@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { Command } from "@cliffy/command";
 import { marked } from "marked";
-import { t } from "./i18n";
+import { t } from "./utils/i18n";
 
 const reportLabel = (id: string): string => {
   const zh = t("zh");

@@ -10,7 +10,7 @@
  * Reads API keys from .env (local only).
  */
 
-import { socialCommand } from "./social/command";
+import { socialCommand } from "./notifications/social/command";
 
 if (import.meta.main) {
   await socialCommand.parse(process.argv.slice(2));

@@ -18,7 +18,7 @@ const ensureLocales = (): void => {
   try {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    const localesDir = path.resolve(__dirname, "../locales");
+    const localesDir = path.resolve(__dirname, "../../locales");
 
     if (!fs.existsSync(localesDir)) {
       console.warn(`[i18n] locales directory not found: ${localesDir}`);

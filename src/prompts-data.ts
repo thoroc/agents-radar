@@ -5,15 +5,15 @@
  * Separated from prompts.ts to keep each module focused.
  */
 
-import type { ArxivData } from "./arxiv";
-import type { DevtoData } from "./devto";
-import type { HfData } from "./hf";
-import type { HnData } from "./hn";
-import type { LobstersData } from "./lobsters";
-import type { PhData } from "./ph";
-import type { TrendingData } from "./trending";
+import type { ArxivData } from "./fetchers/arxiv";
+import type { DevtoData } from "./fetchers/devto";
+import type { HfData } from "./fetchers/hf";
+import type { HnData } from "./fetchers/hn";
+import type { LobstersData } from "./fetchers/lobsters";
+import type { PhData } from "./fetchers/ph";
+import type { TrendingData } from "./fetchers/trending";
+import type { WebFetchResult } from "./fetchers/web";
 import type { PromptLang } from "./types";
-import type { WebFetchResult } from "./web";
 export const buildTrendingPrompt = (data: TrendingData, dateStr: string, lang: PromptLang = "zh"): string => {
   const trendingSection =
     data.trendingFetchSuccess && data.trendingRepos.length > 0
