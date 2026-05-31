@@ -12,7 +12,7 @@ import {
   buildMonthlyPrompt,
   buildWeeklyPrompt,
   type ReportHighlights,
-} from "./prompts-data";
+} from "./prompts/prompts-data";
 import { autoGenFooter, callLlm, LLM_TOKENS_ROLLUP, saveFile } from "./report";
 import { toCstDateStr, toUtcStr } from "./utils/date";
 import { t } from "./utils/i18n";

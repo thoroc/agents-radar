@@ -14,7 +14,7 @@ import type { TrendingData } from "../fetchers/trending";
 import type { WebFetchResult, WebState } from "../fetchers/web";
 import { createGitHubIssue, type RepoConfig, type RepoFetch } from "../github";
 import type { RepoDigest } from "../prompts";
-import { buildHighlightsPrompt, type ReportHighlights } from "../prompts-data";
+import { buildHighlightsPrompt, type ReportHighlights } from "../prompts/prompts-data";
 import { autoGenFooter, callLlm, saveFile } from "../report";
 import { buildCliReportContent, buildOpenclawReportContent } from "../report-builders";
 import {

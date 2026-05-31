@@ -12,7 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Command } from "@cliffy/command";
-import type { ReportHighlights } from "../prompts-data";
+import type { ReportHighlights } from "../prompts/prompts-data";
 import { type Locale, t } from "../utils/i18n";
 
 export interface Highlights {

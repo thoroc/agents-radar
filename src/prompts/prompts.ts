@@ -2,8 +2,8 @@
  * LLM prompt builders and item formatting.
  */
 
-import type { GitHubItem, GitHubRelease, RepoConfig } from "./github";
-import type { PromptLang } from "./types";
+import type { GitHubItem, GitHubRelease, RepoConfig } from "../github";
+import type { PromptLang } from "../types";
 
 // ---------------------------------------------------------------------------
 // Types
