@@ -19,7 +19,7 @@ import {
   buildHnPrompt,
   buildPhPrompt,
   buildWebReportPrompt,
-} from "./prompts-data";
+} from "./prompts/prompts-data";
 import { callLlm, LLM_TOKENS_WEB, saveFile } from "./report";
 import { toPromptLang } from "./types";
 import { type Locale, t } from "./utils/i18n";

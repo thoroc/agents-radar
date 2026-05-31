@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { GitHubItem, GitHubRelease, RepoConfig } from "./github";
+import type { GitHubItem, GitHubRelease, RepoConfig } from "../github";
 import type { RepoDigest } from "./prompts";
 import {
   buildCliPrompt,

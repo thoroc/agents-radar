@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { HnData } from "./fetchers/hn";
-import type { TrendingData } from "./fetchers/trending";
-import type { WebFetchResult } from "./fetchers/web";
+import type { HnData } from "../fetchers/hn";
+import type { TrendingData } from "../fetchers/trending";
+import type { WebFetchResult } from "../fetchers/web";
 import {
   buildHnPrompt,
   buildMonthlyPrompt,

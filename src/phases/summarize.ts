@@ -5,7 +5,7 @@
 import type { TrendingData } from "../fetchers/trending";
 import type { RepoFetch } from "../github";
 import { buildCliPrompt, buildPeerPrompt, buildSkillsPrompt, type RepoDigest } from "../prompts";
-import { buildTrendingPrompt } from "../prompts-data";
+import { buildTrendingPrompt } from "../prompts/prompts-data";
 import { callLlm, LLM_TOKENS_TRENDING } from "../report";
 import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils/i18n";

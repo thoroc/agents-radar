@@ -15,7 +15,7 @@ vi.mock("../prompts", () => ({
   buildSkillsPrompt: vi.fn(() => "skills-prompt"),
 }));
 
-vi.mock("../prompts-data", () => ({
+vi.mock("../prompts/prompts-data", () => ({
   buildTrendingPrompt: vi.fn(() => "trending-prompt"),
 }));
 
