@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { loadConfig } from "./utils/load-config";
+import { loadConfig } from "../utils/load-config";
 
 describe("scheduler config", () => {
   it("loads default schedule config", () => {

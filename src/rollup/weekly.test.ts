@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 const mockRunWeeklyRollup = vi.fn<() => Promise<void>>();
-vi.mock("./rollup/run-weekly-rollup", () => ({ runWeeklyRollup: mockRunWeeklyRollup }));
+vi.mock("./run-weekly-rollup", () => ({ runWeeklyRollup: mockRunWeeklyRollup }));
 
 const mockDotenvxConfig = vi.fn();
 vi.mock("@dotenvx/dotenvx", () => ({ default: { config: mockDotenvxConfig } }));

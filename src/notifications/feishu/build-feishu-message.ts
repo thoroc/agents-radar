@@ -1,4 +1,4 @@
-import { PAGES_URL_DEFAULT } from "../../constants";
+import { PAGES_URL_DEFAULT } from "../../utils/constants";
 import type { Highlights } from "../notify/build-message";
 import { notifyLabel } from "../notify/notify-label";
 

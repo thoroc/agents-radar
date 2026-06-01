@@ -1,5 +1,5 @@
-import { PAGES_URL_DEFAULT } from "../../constants";
 import type { ReportHighlights } from "../../prompts/prompts-data-types";
+import { PAGES_URL_DEFAULT } from "../../utils/constants";
 import { notifyLabel } from "./notify-label";
 
 export interface Highlights {

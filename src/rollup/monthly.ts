@@ -1,8 +1,8 @@
 import dotenvx from "@dotenvx/dotenvx";
-import { runWeeklyRollup } from "./rollup/run-weekly-rollup";
+import { runMonthlyRollup } from "./run-monthly-rollup";
 
 dotenvx.config({ quiet: true });
-runWeeklyRollup().catch((err) => {
+runMonthlyRollup().catch((err) => {
   console.error(err);
   process.exit(1);
 });

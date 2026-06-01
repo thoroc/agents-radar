@@ -1,7 +1,7 @@
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
-import { loadConfig } from "./utils";
-import { cronMatch } from "./utils/cron";
+import { loadConfig } from "../utils";
+import { cronMatch } from "../utils/cron";
 
 dotenvx.config({ quiet: true });
 
@@ -11,19 +11,19 @@ const main = async (): Promise<void> => {
 
   if (schedules.daily.enabled && cronMatch(schedules.daily.cron, now)) {
     console.error(`[scheduler] Daily digest due at ${now.toISO()}`);
-    const { main: runDaily } = await import("./index");
+    const { main: runDaily } = await import("../index");
     await runDaily();
   }
 
   if (schedules.weekly.enabled && cronMatch(schedules.weekly.cron, now)) {
     console.error(`[scheduler] Weekly rollup due at ${now.toISO()}`);
-    const { runWeeklyRollup } = await import("./rollup/run-weekly-rollup");
+    const { runWeeklyRollup } = await import("../rollup/run-weekly-rollup");
     await runWeeklyRollup();
   }
 
   if (schedules.monthly.enabled && cronMatch(schedules.monthly.cron, now)) {
     console.error(`[scheduler] Monthly rollup due at ${now.toISO()}`);
-    const { runMonthlyRollup } = await import("./rollup/run-monthly-rollup");
+    const { runMonthlyRollup } = await import("../rollup/run-monthly-rollup");
     await runMonthlyRollup();
   }
 

@@ -3,8 +3,8 @@ import path from "node:path";
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
 import { marked } from "marked";
-import { PAGES_URL_DEFAULT } from "../constants";
 import { t } from "../utils";
+import { PAGES_URL_DEFAULT } from "../utils/constants";
 import { escapeXml } from "./escape-xml";
 import { toRfc822 } from "./to-rfc822";
 
