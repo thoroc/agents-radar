@@ -12,6 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Command } from "@cliffy/command";
+import { PAGES_URL_DEFAULT } from "../constants";
 import type { ReportHighlights } from "../prompts/prompts-data";
 import { type Locale, t } from "../utils/i18n";
 
@@ -19,8 +20,6 @@ export interface Highlights {
   zh: ReportHighlights;
   en: ReportHighlights;
 }
-
-const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 
 export const notifyLabel = (id: string, lang: Locale = "zh"): string => {
   const s = t(lang);

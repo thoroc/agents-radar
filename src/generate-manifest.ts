@@ -4,6 +4,7 @@ import { Command } from "@cliffy/command";
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
 import { marked } from "marked";
+import { PAGES_URL_DEFAULT } from "./constants";
 import { t } from "./utils/i18n";
 
 const reportLabel = (id: string): string => {
@@ -62,7 +63,6 @@ const reportLabel = (id: string): string => {
 const DIGESTS_DIR = "digests";
 const MANIFEST_PATH = "manifest.json";
 const FEED_PATH = "feed.xml";
-const SITE_URL = "https://duanyytop.github.io/agents-radar";
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const REPORT_FILES = [
   "ai-cli",
@@ -155,6 +155,7 @@ const getReportContent = async (date: string, report: string): Promise<ReportCon
 const main = async (opts: { verbose?: boolean[] }): Promise<void> => {
   dotenvx.config({ quiet: true });
   const verbosity = opts.verbose?.length ?? 0;
+  const siteUrl = process.env.PAGES_URL ?? PAGES_URL_DEFAULT;
   const entries = fs
     .readdirSync(DIGESTS_DIR)
     .filter((name) => DATE_RE.test(name) && fs.statSync(path.join(DIGESTS_DIR, name)).isDirectory())
@@ -190,7 +191,7 @@ const main = async (opts: { verbose?: boolean[] }): Promise<void> => {
   for (const { date, report } of feedItems) {
     const label = reportLabel(report);
     const title = `${label} ${date}`;
-    const link = `${SITE_URL}/#${date}/${report}`;
+    const link = `${siteUrl}/#${date}/${report}`;
     const parts = date.split("-").map(Number);
     const pubDate = toRfc822(DateTime.utc(parts[0]!, parts[1]!, parts[2]!).toJSDate());
     const content = await getReportContent(date, report);
@@ -214,10 +215,10 @@ const main = async (opts: { verbose?: boolean[] }): Promise<void> => {
     `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">\n` +
     `  <channel>\n` +
     `    <title>agents-radar</title>\n` +
-    `    <link>${SITE_URL}</link>\n` +
+    `    <link>${siteUrl}</link>\n` +
     `    <description>AI 开源生态每日简报 · Daily AI ecosystem digest</description>\n` +
     `    <language>zh-CN</language>\n` +
-    `    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>\n` +
+    `    <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>\n` +
     `    <lastBuildDate>${buildDate}</lastBuildDate>\n` +
     itemsXml +
     `\n  </channel>\n` +
