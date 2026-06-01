@@ -16,7 +16,11 @@ import {
   readWeeklyDigest,
 } from "./rollup-utils";
 
-export const runMonthlyRollup = async (digestRepo: string = process.env.DIGEST_REPO ?? ""): Promise<void> => {
+export const runMonthlyRollup = async (
+  digestRepo?: string,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<void> => {
+  const resolvedDigestRepo = digestRepo ?? env.DIGEST_REPO ?? "";
   const now = DateTime.now();
   const cstDate = now.plus({ hours: 8 });
   const prevMonth = DateTime.utc(cstDate.year, cstDate.month - 1, 1);
@@ -92,7 +96,7 @@ export const runMonthlyRollup = async (digestRepo: string = process.env.DIGEST_R
 
   await generateRollupHighlights(zhContent, enContent, "ai-monthly", dateStr, 6);
 
-  if (digestRepo) {
+  if (resolvedDigestRepo) {
     const url = await createGitHubIssue(`${t("zh").monthlyTitle} ${monthStr}`, zhContent, "monthly");
     console.error(`  Created monthly issue: ${url}`);
   }

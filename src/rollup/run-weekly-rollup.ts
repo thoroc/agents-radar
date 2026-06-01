@@ -9,7 +9,11 @@ import { t, toCstDateStr, toUtcStr } from "../utils";
 import { generateRollupHighlights, getDateDirs, readDailyDigest } from "./rollup-utils";
 import { toWeekStr } from "./week-str";
 
-export const runWeeklyRollup = async (digestRepo: string = process.env.DIGEST_REPO ?? ""): Promise<void> => {
+export const runWeeklyRollup = async (
+  digestRepo?: string,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<void> => {
+  const resolvedDigestRepo = digestRepo ?? env.DIGEST_REPO ?? "";
   const now = DateTime.now();
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
@@ -63,7 +67,7 @@ export const runWeeklyRollup = async (digestRepo: string = process.env.DIGEST_RE
 
   await generateRollupHighlights(zhContent, enContent, "ai-weekly", dateStr, 6);
 
-  if (digestRepo) {
+  if (resolvedDigestRepo) {
     const url = await createGitHubIssue(`${t("zh").weeklyTitle} ${weekStr}`, zhContent, "weekly");
     console.error(`  Created weekly issue: ${url}`);
   }

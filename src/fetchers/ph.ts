@@ -86,8 +86,9 @@ interface PhResponse {
   errors?: Array<{ message: string }>;
 }
 
-export const fetchPhData = async (token: string = process.env.PRODUCTHUNT_TOKEN ?? ""): Promise<PhData> => {
-  if (!token) {
+export const fetchPhData = async (token?: string, env: NodeJS.ProcessEnv = process.env): Promise<PhData> => {
+  const resolvedToken = token ?? env.PRODUCTHUNT_TOKEN ?? "";
+  if (!resolvedToken) {
     console.error("  [ph] PRODUCTHUNT_TOKEN not set — skipping.");
     return { products: [], fetchSuccess: false };
   }
@@ -102,7 +103,7 @@ export const fetchPhData = async (token: string = process.env.PRODUCTHUNT_TOKEN 
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${resolvedToken}`,
         "User-Agent": "agents-radar/1.0",
       },
       body: JSON.stringify({
