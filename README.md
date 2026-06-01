@@ -226,7 +226,7 @@ openclaw_peers:
 
 Go to **Settings → Secrets and variables → Actions** and add:
 
-| Secret | Required | Description |
+| Secret / Variable | Required | Description |
 |--------|----------|-------------|
 | `LLM_PROVIDER` | optional | `anthropic` (default), `openai`, `github-copilot`, or `openrouter` |
 | `ANTHROPIC_API_KEY` | if Anthropic | API key — works with both Anthropic and Kimi Code |
@@ -237,6 +237,7 @@ Go to **Settings → Secrets and variables → Actions** and add:
 | `TELEGRAM_BOT_TOKEN` | optional | Telegram bot token from [@BotFather](https://t.me/BotFather). If set, a message is sent after each digest run |
 | `TELEGRAM_CHAT_ID` | optional | Telegram chat/channel/group ID to send notifications to |
 | `FEISHU_WEBHOOK_URLS` | optional | Comma-separated Feishu custom bot webhook URLs. If set, a card message is sent to each group after each digest run |
+| `PAGES_URL` | **Actions variable** | GitHub Pages base URL for notifications, RSS, and manifest links. Set as a [repository variable](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#creating-configuration-variables-for-a-repository) (e.g. `https://your-username.github.io/agents-radar`). Falls back to the centralized default in `src/constants.ts` if unset. |
 
 > `GITHUB_TOKEN` is provided automatically by GitHub Actions. When using `github-copilot` as the provider, the same `GITHUB_TOKEN` is used for LLM calls.
 
