@@ -1,4 +1,4 @@
-export const PAGES_URL = "https://duanyytop.github.io/agents-radar";
+export const PAGES_URL = process?.env?.PAGES_URL ?? "https://duanyytop.github.io/agents-radar";
 
 export interface DateEntry {
   date: string;

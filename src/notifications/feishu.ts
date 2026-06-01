@@ -12,10 +12,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Command } from "@cliffy/command";
+import { PAGES_URL_DEFAULT } from "../constants";
 import type { Highlights } from "./notify";
 import { notifyLabel } from "./notify";
-
-const PAGES_URL_DEFAULT = "https://duanyytop.github.io/agents-radar";
 
 const getWebhookUrls = (): string[] => {
   const raw = process.env.FEISHU_WEBHOOK_URLS ?? process.env.FEISHU_WEBHOOK_URL ?? "";
