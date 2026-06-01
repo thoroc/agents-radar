@@ -4,10 +4,6 @@
 
 import { DateTime } from "luxon";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface LobstersStory {
   title: string;
   url: string;
@@ -24,18 +20,10 @@ export interface LobstersData {
   fetchSuccess: boolean;
 }
 
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
 const LOBSTERS_TOP = 20;
 
 /** Tag-based JSON endpoints — Lobste.rs provides these natively. */
 const TAG_URLS = ["https://lobste.rs/t/ai.json", "https://lobste.rs/t/ml.json"];
-
-// ---------------------------------------------------------------------------
-// Response type
-// ---------------------------------------------------------------------------
 
 interface LobstersApiStory {
   short_id: string;
@@ -48,10 +36,6 @@ interface LobstersApiStory {
   created_at: string;
   tags: string[];
 }
-
-// ---------------------------------------------------------------------------
-// Fetch
-// ---------------------------------------------------------------------------
 
 export const fetchLobstersData = async (): Promise<LobstersData> => {
   const seen = new Map<string, LobstersStory>();

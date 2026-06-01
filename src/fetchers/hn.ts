@@ -4,10 +4,6 @@
 
 import { DateTime } from "luxon";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface HnStory {
   id: string;
   title: string;
@@ -24,18 +20,10 @@ export interface HnData {
   fetchSuccess: boolean;
 }
 
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
 const HN_TOP_STORIES = 30;
 
 /** Queries run in parallel; results are deduped by story ID. */
 const QUERIES = ["AI", "LLM", "Claude", "OpenAI", "Anthropic", "machine learning"];
-
-// ---------------------------------------------------------------------------
-// Algolia API types
-// ---------------------------------------------------------------------------
 
 interface AlgoliaHit {
   objectID: string;
@@ -50,10 +38,6 @@ interface AlgoliaHit {
 interface AlgoliaResponse {
   hits: AlgoliaHit[];
 }
-
-// ---------------------------------------------------------------------------
-// Fetch
-// ---------------------------------------------------------------------------
 
 export const fetchHnData = async (): Promise<HnData> => {
   const since = Math.floor(DateTime.now().minus({ days: 1 }).toMillis() / 1000);

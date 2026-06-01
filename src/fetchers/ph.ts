@@ -7,10 +7,6 @@
 
 import { DateTime } from "luxon";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface PhProduct {
   id: string;
   name: string;
@@ -27,10 +23,6 @@ export interface PhData {
   products: PhProduct[];
   fetchSuccess: boolean;
 }
-
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
 
 const PH_TOP_PRODUCTS = 30;
 const PH_FETCH_COUNT = 20; // PH API complexity limit caps this at ~20
@@ -49,10 +41,6 @@ const AI_TOPIC_SLUGS = new Set([
   "chatbots",
   "generative-ai",
 ]);
-
-// ---------------------------------------------------------------------------
-// GraphQL
-// ---------------------------------------------------------------------------
 
 const POSTS_QUERY = `
   query GetPosts($first: Int!, $postedAfter: DateTime, $postedBefore: DateTime) {
@@ -81,10 +69,6 @@ const POSTS_QUERY = `
   }
 `;
 
-// ---------------------------------------------------------------------------
-// Response type
-// ---------------------------------------------------------------------------
-
 interface PhNode {
   id: string;
   name: string;
@@ -101,10 +85,6 @@ interface PhResponse {
   data?: { posts?: { edges?: Array<{ node: PhNode }> } };
   errors?: Array<{ message: string }>;
 }
-
-// ---------------------------------------------------------------------------
-// Fetch
-// ---------------------------------------------------------------------------
 
 export const fetchPhData = async (): Promise<PhData> => {
   const token = process.env.PRODUCTHUNT_TOKEN ?? "";

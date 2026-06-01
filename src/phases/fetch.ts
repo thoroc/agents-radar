@@ -1,7 +1,3 @@
-/**
- * Phase 1: Fetch all data from external sources.
- */
-
 import type { DateTime } from "luxon";
 import { type ArxivData, fetchArxivData } from "../fetchers/arxiv";
 import { type DevtoData, fetchDevtoData } from "../fetchers/devto";

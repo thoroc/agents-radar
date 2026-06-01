@@ -7,3 +7,13 @@ pre-commit:
       run: bun biome format src
     typecheck:
       run: bun tsc --noEmit
+    aislop:
+      run: >
+        bun x aislop scan --staged --json | bun -e
+        "const d=JSON.parse(await Bun.stdin.text());
+        const e=d.diagnostics.filter(x=>x.severity==='error');
+        if(e.length){
+          console.error('aislop: '+e.length+' critical error(s) - commit blocked');
+          e.forEach(x=>console.error('  - '+x.rule+' at '+x.filePath+':'+x.line+': '+x.message));
+          process.exit(1)
+        }"

@@ -7,10 +7,6 @@
 
 import { DateTime } from "luxon";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface ArxivPaper {
   id: string;
   title: string;
@@ -28,10 +24,6 @@ export interface ArxivData {
   fetchSuccess: boolean;
 }
 
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
 const ARXIV_MAX_RESULTS = 50;
 const API_URL = "https://export.arxiv.org/api/query";
 
@@ -40,10 +32,6 @@ const CATEGORIES = ["cs.AI", "cs.CL", "cs.LG"];
 
 /** Delay between requests (ArXiv asks for 3s). */
 const REQUEST_DELAY_MS = 3000;
-
-// ---------------------------------------------------------------------------
-// XML helpers (lightweight, no dependency)
-// ---------------------------------------------------------------------------
 
 const extractTag = (xml: string, tag: string): string => {
   const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`);
@@ -77,10 +65,6 @@ const extractLinkHref = (xml: string, rel: string): string => {
   return m ? m[1]! : "";
 };
 
-// ---------------------------------------------------------------------------
-// Parse
-// ---------------------------------------------------------------------------
-
 const parseEntry = (entryXml: string): ArxivPaper | null => {
   const id = extractTag(entryXml, "id");
   if (!id) return null;
@@ -97,10 +81,6 @@ const parseEntry = (entryXml: string): ArxivPaper | null => {
 
   return { id, title, summary, authors, published, updated, categories, url, pdfUrl };
 };
-
-// ---------------------------------------------------------------------------
-// Fetch
-// ---------------------------------------------------------------------------
 
 const sleep = async (ms: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, ms));

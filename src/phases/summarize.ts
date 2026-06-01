@@ -1,7 +1,3 @@
-/**
- * Phase 2: Generate LLM summaries for repos and data sources.
- */
-
 import type { TrendingData } from "../fetchers/trending";
 import type { RepoFetch } from "../github";
 import { buildCliPrompt, buildPeerPrompt, buildSkillsPrompt, type RepoDigest } from "../prompts";

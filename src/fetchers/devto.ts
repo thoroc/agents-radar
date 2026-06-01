@@ -2,10 +2,6 @@
  * Dev.to AI articles fetched via the Forem API.
  */
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface DevtoArticle {
   id: number;
   title: string;
@@ -24,19 +20,11 @@ export interface DevtoData {
   fetchSuccess: boolean;
 }
 
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
 const DEVTO_PER_PAGE = 30;
 const API_URL = "https://dev.to/api/articles";
 
 /** Tags to query — run in parallel, dedup by id. */
 const TAGS = ["ai", "llm", "machinelearning", "openai", "langchain"];
-
-// ---------------------------------------------------------------------------
-// Response type
-// ---------------------------------------------------------------------------
 
 interface DevtoApiArticle {
   id: number;
@@ -50,10 +38,6 @@ interface DevtoApiArticle {
   tag_list: string[];
   user: { name: string };
 }
-
-// ---------------------------------------------------------------------------
-// Fetch
-// ---------------------------------------------------------------------------
 
 export const fetchDevtoData = async (): Promise<DevtoData> => {
   const seen = new Map<number, DevtoArticle>();

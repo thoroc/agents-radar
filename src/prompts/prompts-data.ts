@@ -14,6 +14,14 @@ import type { PhData } from "../fetchers/ph";
 import type { TrendingData } from "../fetchers/trending";
 import type { WebFetchResult } from "../fetchers/web";
 import type { PromptLang } from "../types";
+
+const formatItemList = <T>(
+  items: T[],
+  lang: PromptLang,
+  enFormat: (item: T, i: number) => string,
+  zhFormat: (item: T, i: number) => string,
+): string => items.map((item, i) => (lang === "en" ? enFormat(item, i) : zhFormat(item, i))).join("\n\n");
+
 export const buildTrendingPrompt = (data: TrendingData, dateStr: string, lang: PromptLang = "zh"): string => {
   const trendingSection =
     data.trendingFetchSuccess && data.trendingRepos.length > 0
@@ -378,11 +386,6 @@ ${digestEntries}
 `;
 };
 
-// ---------------------------------------------------------------------------
-// Highlights prompt — extracts structured highlights from finished reports
-// for use in Telegram notifications.
-// ---------------------------------------------------------------------------
-
 export interface ReportHighlights {
   [reportId: string]: string[];
 }
@@ -436,19 +439,14 @@ ${sections}
 };
 
 export const buildHnPrompt = (data: HnData, dateStr: string, lang: PromptLang = "zh"): string => {
-  const storiesText = data.stories
-    .map((s, i) =>
-      lang === "en"
-        ? `${i + 1}. **${s.title}**\n` +
-          `   Link: ${s.url}\n` +
-          `   Discussion: ${s.hnUrl}\n` +
-          `   Score: ${s.points} | Comments: ${s.comments} | Author: ${s.author} | Time: ${s.createdAt.slice(0, 16)}`
-        : `${i + 1}. **${s.title}**\n` +
-          `   链接: ${s.url}\n` +
-          `   讨论: ${s.hnUrl}\n` +
-          `   分数: ${s.points} | 评论: ${s.comments} | 作者: ${s.author} | 时间: ${s.createdAt.slice(0, 16)}`,
-    )
-    .join("\n\n");
+  const storiesText = formatItemList(
+    data.stories,
+    lang,
+    (s, i) =>
+      `${i + 1}. **${s.title}**\n   Link: ${s.url}\n   Discussion: ${s.hnUrl}\n   Score: ${s.points} | Comments: ${s.comments} | Author: ${s.author} | Time: ${s.createdAt.slice(0, 16)}`,
+    (s, i) =>
+      `${i + 1}. **${s.title}**\n   链接: ${s.url}\n   讨论: ${s.hnUrl}\n   分数: ${s.points} | 评论: ${s.comments} | 作者: ${s.author} | 时间: ${s.createdAt.slice(0, 16)}`,
+  );
 
   if (lang === "en") {
     return `You are an AI industry news analyst. The following are AI-related top posts from Hacker News in the past 24 hours as of ${dateStr} (sorted by score, ${data.stories.length} total):
@@ -520,19 +518,14 @@ ${storiesText}
 };
 
 export const buildPhPrompt = (data: PhData, dateStr: string, lang: PromptLang = "zh"): string => {
-  const productsText = data.products
-    .map((p, i) =>
-      lang === "en"
-        ? `${i + 1}. **${p.name}** — ${p.tagline}\n` +
-          `   Product Hunt: ${p.url}\n` +
-          `   Website: ${p.website}\n` +
-          `   Votes: ${p.votesCount} | Comments: ${p.commentsCount} | Topics: ${p.topics.join(", ")}`
-        : `${i + 1}. **${p.name}** — ${p.tagline}\n` +
-          `   Product Hunt: ${p.url}\n` +
-          `   官网: ${p.website}\n` +
-          `   投票: ${p.votesCount} | 评论: ${p.commentsCount} | 话题: ${p.topics.join(", ")}`,
-    )
-    .join("\n\n");
+  const productsText = formatItemList(
+    data.products,
+    lang,
+    (p, i) =>
+      `${i + 1}. **${p.name}** — ${p.tagline}\n   Product Hunt: ${p.url}\n   Website: ${p.website}\n   Votes: ${p.votesCount} | Comments: ${p.commentsCount} | Topics: ${p.topics.join(", ")}`,
+    (p, i) =>
+      `${i + 1}. **${p.name}** — ${p.tagline}\n   Product Hunt: ${p.url}\n   官网: ${p.website}\n   投票: ${p.votesCount} | 评论: ${p.commentsCount} | 话题: ${p.topics.join(", ")}`,
+  );
 
   if (lang === "en") {
     return `You are an AI product analyst. The following are AI-related products launched on Product Hunt in the past 24 hours as of ${dateStr} (sorted by votes, ${data.products.length} total):
@@ -604,10 +597,6 @@ ${productsText}
 语言要求：中文，简洁专业，保留所有原文链接。
 `;
 };
-
-// ---------------------------------------------------------------------------
-// ArXiv prompt
-// ---------------------------------------------------------------------------
 
 export const buildArxivPrompt = (data: ArxivData, dateStr: string, lang: PromptLang = "zh"): string => {
   const papersText = data.papers
@@ -691,10 +680,6 @@ ${papersText}
 语言要求：中文，简洁专业，保留所有 ArXiv 链接。
 `;
 };
-
-// ---------------------------------------------------------------------------
-// Hugging Face prompt
-// ---------------------------------------------------------------------------
 
 export const buildHfPrompt = (data: HfData, dateStr: string, lang: PromptLang = "zh"): string => {
   const modelsText = data.models
@@ -782,10 +767,6 @@ ${modelsText}
 `;
 };
 
-// ---------------------------------------------------------------------------
-// Community prompt (Dev.to + Lobste.rs combined)
-// ---------------------------------------------------------------------------
-
 export const buildCommunityPrompt = (
   devto: DevtoData,
   lobsters: LobstersData,
@@ -815,19 +796,14 @@ export const buildCommunityPrompt = (
 
   const lobstersText =
     lobsters.stories.length > 0
-      ? lobsters.stories
-          .map((s, i) =>
-            lang === "en"
-              ? `${i + 1}. **${s.title}**\n` +
-                `   Link: ${s.url}\n` +
-                `   Discussion: ${s.commentsUrl}\n` +
-                `   Score: ${s.score} | Comments: ${s.commentCount} | Author: ${s.author} | Tags: ${s.tags.join(", ")}`
-              : `${i + 1}. **${s.title}**\n` +
-                `   链接: ${s.url}\n` +
-                `   讨论: ${s.commentsUrl}\n` +
-                `   分数: ${s.score} | 评论: ${s.commentCount} | 作者: ${s.author} | 标签: ${s.tags.join(", ")}`,
-          )
-          .join("\n\n")
+      ? formatItemList(
+          lobsters.stories,
+          lang,
+          (s, i) =>
+            `${i + 1}. **${s.title}**\n   Link: ${s.url}\n   Discussion: ${s.commentsUrl}\n   Score: ${s.score} | Comments: ${s.commentCount} | Author: ${s.author} | Tags: ${s.tags.join(", ")}`,
+          (s, i) =>
+            `${i + 1}. **${s.title}**\n   链接: ${s.url}\n   讨论: ${s.commentsUrl}\n   分数: ${s.score} | 评论: ${s.commentCount} | 作者: ${s.author} | 标签: ${s.tags.join(", ")}`,
+        )
       : lang === "en"
         ? "(No Lobste.rs stories available)"
         : "（无 Lobste.rs 内容）";

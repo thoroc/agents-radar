@@ -15,10 +15,6 @@ import path from "node:path";
 import { DateTime } from "luxon";
 import { sleep } from "../utils/date";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface WebPageItem {
   url: string;
   title: string;
@@ -47,10 +43,6 @@ export interface WebFetchResult {
   /** Total URLs discovered in sitemap (for context in the report) */
   totalDiscovered: number;
 }
-
-// ---------------------------------------------------------------------------
-// Site config
-// ---------------------------------------------------------------------------
 
 interface SiteConfig {
   name: string;
@@ -104,10 +96,6 @@ const FETCH_DELAY_MS = 300;
 /** Per-request timeout (ms). */
 const FETCH_TIMEOUT_MS = 10_000;
 
-// ---------------------------------------------------------------------------
-// HTTP helpers
-// ---------------------------------------------------------------------------
-
 const WEB_HEADERS = {
   "User-Agent": "Mozilla/5.0 (compatible; agents-radar/1.0; +https://github.com/search?q=agents-radar)",
   Accept: "text/html,application/xml,text/xml,*/*",
@@ -126,10 +114,6 @@ const httpGet = async (url: string): Promise<string> => {
   }
 };
 
-// ---------------------------------------------------------------------------
-// Sitemap parsing (plain-text XML; no DOM needed)
-// ---------------------------------------------------------------------------
-
 export const parseSitemapUrls = (xml: string): Array<{ loc: string; lastmod?: string }> => {
   const results: Array<{ loc: string; lastmod?: string }> = [];
   for (const block of xml.match(/<url>[\s\S]*?<\/url>/g) ?? []) {
@@ -143,10 +127,6 @@ export const parseSitemapUrls = (xml: string): Array<{ loc: string; lastmod?: st
 export const isSitemapIndex = (xml: string): boolean => {
   return /<sitemapindex[\s>]/.test(xml);
 };
-
-// ---------------------------------------------------------------------------
-// HTML content extraction
-// ---------------------------------------------------------------------------
 
 export const extractTitle = (html: string): string => {
   return (
@@ -200,10 +180,6 @@ export const titleFromUrl = (url: string): string => {
   }
 };
 
-// ---------------------------------------------------------------------------
-// URL discovery
-// ---------------------------------------------------------------------------
-
 const discoverUrls = async (
   site: "anthropic" | "openai",
 ): Promise<Array<{ loc: string; lastmod?: string }>> => {
@@ -244,10 +220,6 @@ const discoverUrls = async (
   return results;
 };
 
-// ---------------------------------------------------------------------------
-// State persistence
-// ---------------------------------------------------------------------------
-
 const STATE_FILE = path.join("digests", "web-state.json");
 
 export const emptyState = (): WebState => {
@@ -269,10 +241,6 @@ export const saveWebState = (state: WebState): void => {
   fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2), "utf-8");
 };
-
-// ---------------------------------------------------------------------------
-// Main export
-// ---------------------------------------------------------------------------
 
 export const fetchSiteContent = async (
   site: "anthropic" | "openai",
@@ -327,7 +295,6 @@ export const fetchSiteContent = async (
       });
     }
   } else {
-    // Fetch page content sequentially with a polite delay
     for (const { loc, lastmod } of toFetch) {
       try {
         const html = await httpGet(loc);
