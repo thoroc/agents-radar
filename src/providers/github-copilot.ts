@@ -11,9 +11,12 @@ import type { LlmProvider } from "./types";
 
 const GITHUB_COPILOT_BASE_URL = "https://models.github.ai/inference";
 
-export const createGitHubCopilotProvider = (opts?: { apiKey?: string; model?: string }): LlmProvider =>
+export const createGitHubCopilotProvider = (
+  opts?: { apiKey?: string; model?: string },
+  env: NodeJS.ProcessEnv = process.env,
+): LlmProvider =>
   createOpenAICompatibleProvider("github-copilot", {
-    apiKey: opts?.apiKey ?? process.env.GITHUB_TOKEN,
+    apiKey: opts?.apiKey ?? env.GITHUB_TOKEN,
     baseURL: GITHUB_COPILOT_BASE_URL,
-    model: opts?.model ?? process.env.GITHUB_COPILOT_MODEL ?? "gpt-4o",
+    model: opts?.model ?? env.GITHUB_COPILOT_MODEL ?? "gpt-4o",
   });

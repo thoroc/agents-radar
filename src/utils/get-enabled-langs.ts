@@ -1,7 +1,7 @@
 import { DEFAULT_LANGUAGES } from "./locale-data";
 
-export const getEnabledLangs = (langConfig?: string[]): string[] => {
-  const envLangs = process.env.REPORT_LANGS;
+export const getEnabledLangs = (langConfig?: string[], env: NodeJS.ProcessEnv = process.env): string[] => {
+  const envLangs = env.REPORT_LANGS;
   if (envLangs) {
     return envLangs
       .split(",")

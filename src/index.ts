@@ -18,15 +18,15 @@ import { savePhase } from "./phases/save";
 import { generateSummaries } from "./phases/summarize";
 import { getEnabledLangs, loadConfig, toCstDateStr, toUtcStr } from "./utils";
 
-const requireEnv = (name: string): string => {
-  const value = process.env[name];
+const requireEnv = (name: string, env: NodeJS.ProcessEnv = process.env): string => {
+  const value = env[name];
   if (!value) throw new Error(`Missing required environment variable: ${name}`);
   return value;
 };
 
-export const main = async (): Promise<void> => {
+export const main = async (env: NodeJS.ProcessEnv = process.env): Promise<void> => {
   dotenvx.config({ quiet: true });
-  requireEnv("GITHUB_TOKEN");
+  requireEnv("GITHUB_TOKEN", env);
 
   const {
     cliRepos: CLI_REPOS,
@@ -35,16 +35,16 @@ export const main = async (): Promise<void> => {
     openclawPeers: OPENCLAW_PEERS,
     languages: CONFIG_LANGS,
   } = loadConfig();
-  const ENABLED_LANGS = getEnabledLangs(CONFIG_LANGS);
+  const ENABLED_LANGS = getEnabledLangs(CONFIG_LANGS, env);
   const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
 
   const now = DateTime.now();
   const since = now.minus({ hours: 24 });
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
-  const digestRepo = process.env.DIGEST_REPO ?? "";
+  const digestRepo = env.DIGEST_REPO ?? "";
 
-  const providerName = process.env.LLM_PROVIDER ?? "anthropic";
+  const providerName = env.LLM_PROVIDER ?? "anthropic";
   console.error(`[${now.toISO()}] Starting digest | provider: ${providerName}`);
 
   const webState = loadWebState();

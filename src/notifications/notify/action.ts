@@ -10,9 +10,9 @@ export type NotifyDeps = {
   write?: (s: string) => void;
 };
 
-const sendTelegram = async (text: string): Promise<void> => {
-  const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN ?? "";
-  const CHAT_ID = process.env.TELEGRAM_CHAT_ID || "@agents_radar";
+const sendTelegram = async (text: string, env: NodeJS.ProcessEnv = process.env): Promise<void> => {
+  const BOT_TOKEN = env.TELEGRAM_BOT_TOKEN ?? "";
+  const CHAT_ID = env.TELEGRAM_CHAT_ID || "@agents_radar";
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
   const res = await fetch(url, {
     method: "POST",
@@ -75,6 +75,6 @@ export const notifyAction = async (
   const text = buildMessage(date, reports, undefined, highlights, env);
 
   console.error(`[notify] Sending Telegram message for ${date} (${reports.length} reports)…`);
-  await sendTelegram(text);
+  await sendTelegram(text, env);
   console.error("[notify] Done!");
 };

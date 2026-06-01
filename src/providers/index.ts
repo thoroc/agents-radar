@@ -16,14 +16,14 @@ import { createAnthropicProvider } from "./anthropic";
 import { createGitHubCopilotProvider } from "./github-copilot";
 import { createOpenAIProvider } from "./openai";
 import { createOpenRouterProvider } from "./openrouter";
-import type { LlmProvider, ProviderFactory } from "./types";
+import type { LlmProvider } from "./types";
 
 const PROVIDERS = {
-  anthropic: () => createAnthropicProvider(),
-  openai: () => createOpenAIProvider(),
-  "github-copilot": () => createGitHubCopilotProvider(),
-  openrouter: () => createOpenRouterProvider(),
-} satisfies Record<string, ProviderFactory>;
+  anthropic: (env?: NodeJS.ProcessEnv) => createAnthropicProvider(undefined, env),
+  openai: (env?: NodeJS.ProcessEnv) => createOpenAIProvider(undefined, env),
+  "github-copilot": (env?: NodeJS.ProcessEnv) => createGitHubCopilotProvider(undefined, env),
+  openrouter: (env?: NodeJS.ProcessEnv) => createOpenRouterProvider(undefined, env),
+} satisfies Record<string, (env?: NodeJS.ProcessEnv) => LlmProvider>;
 
 /** Supported provider name — derived from the PROVIDERS registry. */
 export type ProviderName = keyof typeof PROVIDERS;
@@ -40,10 +40,11 @@ export const VALID_PROVIDER_NAMES = Object.keys(PROVIDERS) as ProviderName[];
  * Log safety: only the provider *name* is logged — never API keys or
  * endpoint URLs.
  */
-export const createProvider = (name?: ProviderName): LlmProvider => {
-  const providerName = name ?? (process.env.LLM_PROVIDER as ProviderName | undefined) ?? "anthropic";
+export const createProvider = (name?: ProviderName, env: NodeJS.ProcessEnv = process.env): LlmProvider => {
+  const providerName = name ?? (env.LLM_PROVIDER as ProviderName | undefined) ?? "anthropic";
 
-  const factory = (PROVIDERS as Record<string, ProviderFactory | undefined>)[providerName];
+  const factories = PROVIDERS as Record<string, ((env?: NodeJS.ProcessEnv) => LlmProvider) | undefined>;
+  const factory = factories[providerName];
   if (!factory) {
     throw new Error(
       `Invalid LLM provider: "${providerName}". ` +
@@ -53,5 +54,5 @@ export const createProvider = (name?: ProviderName): LlmProvider => {
   }
 
   console.error(`[providers] Using LLM provider: ${providerName}`);
-  return factory();
+  return factory(env);
 };
