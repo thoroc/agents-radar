@@ -25,7 +25,7 @@ A GitHub Actions workflow that runs every morning at 08:00 CST. It aggregates AI
 
 ## Web UI
 
-**[https://duanyytop.github.io/agents-radar](https://duanyytop.github.io/agents-radar)**
+**`PAGES_URL`** — Set this as a repository variable to configure the Web UI base URL for your fork.
 
 Browse all historical digests in a clean, dark-themed interface — no login required. Reports are rendered from the Markdown files in this repo via GitHub Pages.
 
@@ -48,9 +48,7 @@ Subscribe to get daily digest notifications pushed directly to your preferred pl
 
 ## RSS Feed
 
-**[https://duanyytop.github.io/agents-radar/feed.xml](https://duanyytop.github.io/agents-radar/feed.xml)**
-
-Subscribe in any RSS reader (Feedly, Reeder, NewsBlur, etc.) to receive new digests automatically. The feed includes the latest 30 reports across all report types, updated daily alongside `manifest.json`.
+**`PAGES_URL`/feed.xml** — Subscribe in any RSS reader (Feedly, Reeder, NewsBlur, etc.) to receive new digests automatically. The feed URL is derived from your `PAGES_URL` setting. The feed includes the latest 30 reports across all report types, updated daily alongside `manifest.json`.
 
 ## MCP Server
 
