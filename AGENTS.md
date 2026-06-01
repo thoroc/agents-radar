@@ -2,12 +2,13 @@
 
 ## Project overview
 
-agents-radar is a daily digest generator for the AI open-source ecosystem. A GitHub Actions cron job runs at 00:00 UTC (08:00 CST) and produces reports in configured languages (default: English + Chinese, 21 supported) published as GitHub Issues and committed Markdown files.
+agents-radar is a daily digest generator for the AI open-source ecosystem. A GitHub Actions scheduler workflow (`.github/workflows/scheduler.yml`) ticks hourly, reads `config.yml` for schedule configuration, and runs the daily digest, weekly rollup, or monthly rollup when their cron expressions match the current UTC time. Reports are produced in configured languages (default: English + Chinese, 21 supported) and published as GitHub Issues and committed Markdown files.
 
 ## Commands
 
 ```bash
 bun run start       # run the full digest locally
+bun run scheduler   # run the scheduled digest (checks config.yml, cron-matched)
 bun test            # bun test (unit tests)
 bun run typecheck   # tsc --noEmit
 bun run lint        # Biome

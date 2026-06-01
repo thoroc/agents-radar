@@ -15,15 +15,39 @@ interface RawRepoEntry {
   paginated?: boolean;
 }
 
+interface ScheduleEntry {
+  enabled: boolean;
+  cron: string;
+}
+
+interface RawSchedules {
+  daily?: ScheduleEntry;
+  weekly?: ScheduleEntry;
+  monthly?: ScheduleEntry;
+}
+
 interface RawConfig {
   languages?: string[];
   cli_repos?: RawRepoEntry[];
   skills_repo?: string;
   openclaw?: RawRepoEntry;
   openclaw_peers?: RawRepoEntry[];
+  schedules?: RawSchedules;
 }
 
 export const DEFAULT_LANGUAGES: string[] = ["en", "zh"];
+
+export interface ScheduleConfig {
+  daily: ScheduleEntry;
+  weekly: ScheduleEntry;
+  monthly: ScheduleEntry;
+}
+
+const DEFAULT_SCHEDULES: ScheduleConfig = {
+  daily: { enabled: true, cron: "0 0 * * *" },
+  weekly: { enabled: true, cron: "0 1 * * 1" },
+  monthly: { enabled: true, cron: "0 2 1 * *" },
+};
 
 export interface RadarConfig {
   cliRepos: RepoConfig[];
@@ -31,6 +55,7 @@ export interface RadarConfig {
   openclaw: RepoConfig;
   openclawPeers: RepoConfig[];
   languages: string[];
+  schedules: ScheduleConfig;
 }
 
 export const getEnabledLangs = (langConfig?: string[]): string[] => {
@@ -95,6 +120,7 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       openclaw: DEFAULT_OPENCLAW,
       openclawPeers: DEFAULT_OPENCLAW_PEERS,
       languages: DEFAULT_LANGUAGES,
+      schedules: DEFAULT_SCHEDULES,
     };
   }
 
@@ -120,11 +146,23 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
   const languages =
     Array.isArray(raw?.languages) && raw.languages.length > 0 ? raw.languages.map(String) : DEFAULT_LANGUAGES;
 
+  const schedules: ScheduleConfig = {
+    daily: raw?.schedules?.daily?.cron
+      ? { enabled: raw.schedules.daily.enabled ?? true, cron: raw.schedules.daily.cron }
+      : DEFAULT_SCHEDULES.daily,
+    weekly: raw?.schedules?.weekly?.cron
+      ? { enabled: raw.schedules.weekly.enabled ?? true, cron: raw.schedules.weekly.cron }
+      : DEFAULT_SCHEDULES.weekly,
+    monthly: raw?.schedules?.monthly?.cron
+      ? { enabled: raw.schedules.monthly.enabled ?? true, cron: raw.schedules.monthly.cron }
+      : DEFAULT_SCHEDULES.monthly,
+  };
+
   console.error(
     `[config] Loaded from ${configPath}: ` +
       `${cliRepos.length} CLI repos, ${openclawPeers.length} OpenClaw peers, ` +
       `${languages.length} languages`,
   );
 
-  return { cliRepos, skillsRepo, openclaw, openclawPeers, languages };
+  return { cliRepos, skillsRepo, openclaw, openclawPeers, languages, schedules };
 };
