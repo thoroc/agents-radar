@@ -1,4 +1,4 @@
-import type { HnData } from "../fetchers/hn";
+import type { HackerNewsData } from "../fetchers/hacker-news";
 import type { PromptLang } from "../types";
 
 const formatItemList = <T>(
@@ -8,7 +8,11 @@ const formatItemList = <T>(
   zhFormat: (item: T, i: number) => string,
 ): string => items.map((item, i) => (lang === "en" ? enFormat(item, i) : zhFormat(item, i))).join("\n\n");
 
-export const buildHnPrompt = (data: HnData, dateStr: string, lang: PromptLang = "zh"): string => {
+export const buildHackerNewsPrompt = (
+  data: HackerNewsData,
+  dateStr: string,
+  lang: PromptLang = "zh",
+): string => {
   const storiesText = formatItemList(
     data.stories,
     lang,

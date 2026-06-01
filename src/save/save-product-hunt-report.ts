@@ -1,12 +1,12 @@
-import type { PhData } from "../fetchers/ph";
-import { buildPhPrompt } from "../prompts";
+import type { ProductHuntData } from "../fetchers/product-hunt";
+import { buildProductHuntPrompt } from "../prompts";
 import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 import { buildSourceHeader, saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
 
-export const savePhReport = async (
-  phData: PhData,
+export const saveProductHuntReport = async (
+  phData: ProductHuntData,
   utcStr: string,
   dateStr: string,
   digestRepo: string,
@@ -21,7 +21,7 @@ export const savePhReport = async (
       logPrefix: "ph",
       logAction: "Product Hunt",
       data: phData,
-      promptBuilder: (d, ds, _suffix) => buildPhPrompt(d as PhData, ds, toPromptLang(lang)),
+      promptBuilder: (d, ds, _suffix) => buildProductHuntPrompt(d as ProductHuntData, ds, toPromptLang(lang)),
       headerBuilder: (suffix, ds, us) =>
         buildSourceHeader(
           suffix,

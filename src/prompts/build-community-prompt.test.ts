@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type { DevtoArticle, DevtoData } from "../fetchers/devto";
-import type { LobstersData, LobstersStory } from "../fetchers/lobsters";
+import type { DevToArticle, DevToData } from "../fetchers/dev-to";
+import type { LobstersData, LobstersStory } from "../fetchers/lobste-rs";
 import { buildCommunityPrompt } from "./build-community-prompt";
 
-const makeDevtoArticle = (overrides: Partial<DevtoArticle> = {}): DevtoArticle => ({
+const makeDevtoArticle = (overrides: Partial<DevToArticle> = {}): DevToArticle => ({
   id: 1,
   title: "Building AI Agents with TypeScript",
   description: "A comprehensive guide to building AI agents",
@@ -29,7 +29,7 @@ const makeLobstersStory = (overrides: Partial<LobstersStory> = {}): LobstersStor
   ...overrides,
 });
 
-const makeDevtoData = (overrides: Partial<DevtoData> = {}): DevtoData => ({
+const makeDevtoData = (overrides: Partial<DevToData> = {}): DevToData => ({
   articles: [makeDevtoArticle()],
   fetchSuccess: true,
   ...overrides,
@@ -62,7 +62,7 @@ describe("buildCommunityPrompt", () => {
   });
 
   it("shows empty placeholders when no articles", () => {
-    const emptyDevto: DevtoData = { articles: [], fetchSuccess: false };
+    const emptyDevto: DevToData = { articles: [], fetchSuccess: false };
     const emptyLobsters: LobstersData = { stories: [], fetchSuccess: false };
     const result = buildCommunityPrompt(emptyDevto, emptyLobsters, "2026-03-09");
     expect(result).toContain("无 Dev.to 文章");
@@ -70,7 +70,7 @@ describe("buildCommunityPrompt", () => {
   });
 
   it("shows English empty placeholders", () => {
-    const emptyDevto: DevtoData = { articles: [], fetchSuccess: false };
+    const emptyDevto: DevToData = { articles: [], fetchSuccess: false };
     const emptyLobsters: LobstersData = { stories: [], fetchSuccess: false };
     const result = buildCommunityPrompt(emptyDevto, emptyLobsters, "2026-03-09", "en");
     expect(result).toContain("No Dev.to articles");

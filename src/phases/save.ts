@@ -2,11 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import type { WebFetchResult, WebState } from "../fetchers";
 import type { ArxivData } from "../fetchers/arxiv";
-import type { DevtoData } from "../fetchers/devto";
-import type { HfData } from "../fetchers/hf";
-import type { HnData } from "../fetchers/hn";
-import type { LobstersData } from "../fetchers/lobsters";
-import type { PhData } from "../fetchers/ph";
+import type { DevToData } from "../fetchers/dev-to";
+import type { HackerNewsData } from "../fetchers/hacker-news";
+import type { HuggingFaceData } from "../fetchers/hugging-face";
+import type { LobstersData } from "../fetchers/lobste-rs";
+import type { ProductHuntData } from "../fetchers/product-hunt";
 import type { TrendingData } from "../fetchers/trending";
 import { createGitHubIssue, type RepoConfig, type RepoFetch } from "../github";
 import type { RepoDigest } from "../prompts";
@@ -18,9 +18,9 @@ import { callLlm } from "../report/call-llm";
 import { saveFile } from "../report/save-file";
 import { saveArxivReport } from "../save/save-arxiv-report";
 import { saveCommunityReport } from "../save/save-community-report";
-import { saveHfReport } from "../save/save-hf-report";
-import { saveHnReport } from "../save/save-hn-report";
-import { savePhReport } from "../save/save-ph-report";
+import { saveHackerNewsReport } from "../save/save-hacker-news-report";
+import { saveHuggingFaceReport } from "../save/save-hugging-face-report";
+import { saveProductHuntReport } from "../save/save-product-hunt-report";
 import { saveTrendingReport } from "../save/save-trending-report";
 import { saveWebReport } from "../save/save-web-report";
 import { type Locale, t } from "../utils";
@@ -53,11 +53,11 @@ export type SavePhaseArgs = {
   webResults: WebFetchResult[];
   webState: WebState;
   trendingData: TrendingData;
-  hnData: HnData;
-  phData: PhData;
+  hnData: HackerNewsData;
+  phData: ProductHuntData;
   arxivData: ArxivData;
-  hfData: HfData;
-  devtoData: DevtoData;
+  hfData: HuggingFaceData;
+  devtoData: DevToData;
   lobstersData: LobstersData;
 };
 
@@ -151,14 +151,14 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
       autoGenFooter("en"),
       "en",
     ),
-    saveHnReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    saveHnReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
-    savePhReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    savePhReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
+    saveHackerNewsReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
+    saveHackerNewsReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
+    saveProductHuntReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
+    saveProductHuntReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
     saveArxivReport(arxivData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
     saveArxivReport(arxivData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
-    saveHfReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    saveHfReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
+    saveHuggingFaceReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
+    saveHuggingFaceReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
     saveCommunityReport(devtoData, lobstersData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
     saveCommunityReport(devtoData, lobstersData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
   ]);

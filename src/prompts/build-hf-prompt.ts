@@ -1,7 +1,11 @@
-import type { HfData } from "../fetchers/hf";
+import type { HuggingFaceData } from "../fetchers/hugging-face";
 import type { PromptLang } from "../types";
 
-export const buildHfPrompt = (data: HfData, dateStr: string, lang: PromptLang = "zh"): string => {
+export const buildHuggingFacePrompt = (
+  data: HuggingFaceData,
+  dateStr: string,
+  lang: PromptLang = "zh",
+): string => {
   const modelsText = data.models
     .map((m, i) =>
       lang === "en"

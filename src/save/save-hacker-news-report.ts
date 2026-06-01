@@ -1,12 +1,12 @@
-import type { HnData } from "../fetchers/hn";
-import { buildHnPrompt } from "../prompts";
+import type { HackerNewsData } from "../fetchers/hacker-news";
+import { buildHackerNewsPrompt } from "../prompts";
 import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 import { buildSourceHeader, saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
 
-export const saveHnReport = async (
-  hnData: HnData,
+export const saveHackerNewsReport = async (
+  hnData: HackerNewsData,
   utcStr: string,
   dateStr: string,
   digestRepo: string,
@@ -21,7 +21,7 @@ export const saveHnReport = async (
       logPrefix: "hn",
       logAction: "HN",
       data: hnData,
-      promptBuilder: (d, ds, _suffix) => buildHnPrompt(d as HnData, ds, toPromptLang(lang)),
+      promptBuilder: (d, ds, _suffix) => buildHackerNewsPrompt(d as HackerNewsData, ds, toPromptLang(lang)),
       headerBuilder: (suffix, ds, us) =>
         buildSourceHeader(
           suffix,

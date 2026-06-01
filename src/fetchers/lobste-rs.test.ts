@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchLobstersData } from "./lobsters";
+import { fetchLobstersData } from "./lobste-rs";
 
 const hoursAgo = (h: number): string => new Date(Date.now() - h * 3600 * 1000).toISOString();
 

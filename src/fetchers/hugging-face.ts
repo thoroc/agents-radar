@@ -5,7 +5,7 @@
  * HF Hub API, returning a mapped subset of fields.
  */
 
-export interface HfModel {
+export interface HuggingFaceModel {
   id: string; // e.g. "meta-llama/Llama-3.1-8B"
   author: string;
   likes: number;
@@ -16,8 +16,8 @@ export interface HfModel {
   url: string;
 }
 
-export interface HfData {
-  models: HfModel[];
+export interface HuggingFaceData {
+  models: HuggingFaceModel[];
   fetchSuccess: boolean;
 }
 
@@ -35,7 +35,7 @@ interface HfApiModel {
   lastModified?: string;
 }
 
-export const fetchHfData = async (): Promise<HfData> => {
+export const fetchHuggingFaceData = async (): Promise<HuggingFaceData> => {
   try {
     // Fetch trending models (sorted by likes, recently modified)
     const params = new URLSearchParams({
@@ -56,7 +56,7 @@ export const fetchHfData = async (): Promise<HfData> => {
 
     const raw = (await resp.json()) as HfApiModel[];
 
-    const models: HfModel[] = raw.map((m) => ({
+    const models: HuggingFaceModel[] = raw.map((m) => ({
       id: m.id,
       author: m.author ?? m.id.split("/")[0] ?? "unknown",
       likes: m.likes,

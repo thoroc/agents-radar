@@ -1,4 +1,4 @@
-import type { PhData } from "../fetchers/ph";
+import type { ProductHuntData } from "../fetchers/product-hunt";
 import type { PromptLang } from "../types";
 
 const formatItemList = <T>(
@@ -8,7 +8,11 @@ const formatItemList = <T>(
   zhFormat: (item: T, i: number) => string,
 ): string => items.map((item, i) => (lang === "en" ? enFormat(item, i) : zhFormat(item, i))).join("\n\n");
 
-export const buildPhPrompt = (data: PhData, dateStr: string, lang: PromptLang = "zh"): string => {
+export const buildProductHuntPrompt = (
+  data: ProductHuntData,
+  dateStr: string,
+  lang: PromptLang = "zh",
+): string => {
   const productsText = formatItemList(
     data.products,
     lang,

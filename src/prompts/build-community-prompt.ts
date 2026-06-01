@@ -1,5 +1,5 @@
-import type { DevtoData } from "../fetchers/devto";
-import type { LobstersData } from "../fetchers/lobsters";
+import type { DevToData } from "../fetchers/dev-to";
+import type { LobstersData } from "../fetchers/lobste-rs";
 import type { PromptLang } from "../types";
 
 const formatItemList = <T>(
@@ -10,7 +10,7 @@ const formatItemList = <T>(
 ): string => items.map((item, i) => (lang === "en" ? enFormat(item, i) : zhFormat(item, i))).join("\n\n");
 
 export const buildCommunityPrompt = (
-  devto: DevtoData,
+  devto: DevToData,
   lobsters: LobstersData,
   dateStr: string,
   lang: PromptLang = "zh",

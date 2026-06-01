@@ -16,11 +16,11 @@ const mockFetchDevtoData = vi.fn();
 const mockFetchLobstersData = vi.fn();
 
 vi.mock("../fetchers/arxiv", () => ({ fetchArxivData: mockFetchArxivData }));
-vi.mock("../fetchers/devto", () => ({ fetchDevtoData: mockFetchDevtoData }));
-vi.mock("../fetchers/hf", () => ({ fetchHfData: mockFetchHfData }));
-vi.mock("../fetchers/hn", () => ({ fetchHnData: mockFetchHnData }));
-vi.mock("../fetchers/lobsters", () => ({ fetchLobstersData: mockFetchLobstersData }));
-vi.mock("../fetchers/ph", () => ({ fetchPhData: mockFetchPhData }));
+vi.mock("../fetchers/dev-to", () => ({ fetchDevToData: mockFetchDevtoData }));
+vi.mock("../fetchers/hugging-face", () => ({ fetchHuggingFaceData: mockFetchHfData }));
+vi.mock("../fetchers/hacker-news", () => ({ fetchHackerNewsData: mockFetchHnData }));
+vi.mock("../fetchers/lobste-rs", () => ({ fetchLobstersData: mockFetchLobstersData }));
+vi.mock("../fetchers/product-hunt", () => ({ fetchProductHuntData: mockFetchPhData }));
 vi.mock("../fetchers/trending", () => ({ fetchTrendingData: mockFetchTrendingData }));
 vi.mock("../fetchers", () => ({ fetchSiteContent: mockFetchSiteContent }));
 vi.mock("../github", () => ({
@@ -81,10 +81,14 @@ describe("fetchAllData", () => {
     expect(mockFetchSiteContent).toHaveBeenCalledTimes(2);
     expect(mockFetchTrendingData).toHaveBeenCalledOnce();
     expect(mockFetchHnData).toHaveBeenCalledOnce();
+
     expect(mockFetchPhData).toHaveBeenCalledOnce();
+
     expect(mockFetchArxivData).toHaveBeenCalledOnce();
     expect(mockFetchHfData).toHaveBeenCalledOnce();
+
     expect(mockFetchDevtoData).toHaveBeenCalledOnce();
+
     expect(mockFetchLobstersData).toHaveBeenCalledOnce();
   });
 

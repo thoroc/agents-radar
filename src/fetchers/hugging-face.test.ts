@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchHfData } from "./hf";
+import { fetchHuggingFaceData } from "./hugging-face";
 
 const sampleModel = {
   _id: "664d8f8a1a2b3c4d5e6f7a8b",
@@ -20,9 +20,9 @@ beforeEach(() => {
   });
 });
 
-describe("fetchHfData", () => {
+describe("fetchHuggingFaceData", () => {
   it("returns parsed models on success", async () => {
-    const result = await fetchHfData();
+    const result = await fetchHuggingFaceData();
     expect(result.fetchSuccess).toBe(true);
     expect(result.models).toHaveLength(1);
     expect(result.models[0]!.id).toBe("meta-llama/Llama-3.1-8B");
@@ -36,7 +36,7 @@ describe("fetchHfData", () => {
 
   it("returns empty models on fetch failure", async () => {
     globalThis.fetch = vi.fn().mockRejectedValue(new Error("Network error"));
-    const result = await fetchHfData();
+    const result = await fetchHuggingFaceData();
     expect(result.fetchSuccess).toBe(false);
     expect(result.models).toHaveLength(0);
   });
@@ -47,7 +47,7 @@ describe("fetchHfData", () => {
       status: 429,
       json: async () => ({}),
     });
-    const result = await fetchHfData();
+    const result = await fetchHuggingFaceData();
     expect(result.fetchSuccess).toBe(false);
     expect(result.models).toHaveLength(0);
   });
@@ -63,7 +63,7 @@ describe("fetchHfData", () => {
       ok: true,
       json: async () => [minimalModel],
     });
-    const result = await fetchHfData();
+    const result = await fetchHuggingFaceData();
     expect(result.models).toHaveLength(1);
     expect(result.models[0]!.author).toBe("org");
     expect(result.models[0]!.tags).toEqual([]);
@@ -83,7 +83,7 @@ describe("fetchHfData", () => {
       ok: true,
       json: async () => [modelWithoutAuthor],
     });
-    const result = await fetchHfData();
+    const result = await fetchHuggingFaceData();
     expect(result.models[0]!.author).toBe("some-user");
   });
 
@@ -92,7 +92,7 @@ describe("fetchHfData", () => {
       ok: true,
       json: async () => [],
     });
-    const result = await fetchHfData();
+    const result = await fetchHuggingFaceData();
     expect(result.fetchSuccess).toBe(false);
     expect(result.models).toHaveLength(0);
   });
@@ -102,7 +102,7 @@ describe("fetchHfData", () => {
       ok: true,
       json: async () => ({ error: "not an array" }),
     });
-    const result = await fetchHfData();
+    const result = await fetchHuggingFaceData();
     expect(result.fetchSuccess).toBe(false);
     expect(result.models).toHaveLength(0);
   });

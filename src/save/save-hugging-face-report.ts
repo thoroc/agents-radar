@@ -1,12 +1,12 @@
-import type { HfData } from "../fetchers/hf";
-import { buildHfPrompt } from "../prompts";
+import type { HuggingFaceData } from "../fetchers/hugging-face";
+import { buildHuggingFacePrompt } from "../prompts";
 import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 import { buildSourceHeader, saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
 
-export const saveHfReport = async (
-  hfData: HfData,
+export const saveHuggingFaceReport = async (
+  hfData: HuggingFaceData,
   utcStr: string,
   dateStr: string,
   digestRepo: string,
@@ -21,7 +21,7 @@ export const saveHfReport = async (
       logPrefix: "hf",
       logAction: "Hugging Face",
       data: hfData,
-      promptBuilder: (d, ds, _suffix) => buildHfPrompt(d as HfData, ds, toPromptLang(lang)),
+      promptBuilder: (d, ds, _suffix) => buildHuggingFacePrompt(d as HuggingFaceData, ds, toPromptLang(lang)),
       headerBuilder: (suffix, ds, us) =>
         buildSourceHeader(
           suffix,

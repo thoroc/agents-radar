@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchDevtoData } from "./devto";
+import { fetchDevToData } from "./dev-to";
 
 const sampleArticle = {
   id: 12345,
@@ -22,9 +22,9 @@ beforeEach(() => {
   });
 });
 
-describe("fetchDevtoData", () => {
+describe("fetchDevToData", () => {
   it("returns parsed articles on success", async () => {
-    const result = await fetchDevtoData();
+    const result = await fetchDevToData();
     expect(result.fetchSuccess).toBe(true);
     expect(result.articles).toHaveLength(1);
     expect(result.articles[0]!.id).toBe(12345);
@@ -36,7 +36,7 @@ describe("fetchDevtoData", () => {
 
   it("returns empty articles on fetch failure", async () => {
     globalThis.fetch = vi.fn().mockRejectedValue(new Error("Network error"));
-    const result = await fetchDevtoData();
+    const result = await fetchDevToData();
     expect(result.fetchSuccess).toBe(false);
     expect(result.articles).toHaveLength(0);
   });
@@ -47,7 +47,7 @@ describe("fetchDevtoData", () => {
       status: 503,
       json: async () => ({}),
     });
-    const result = await fetchDevtoData();
+    const result = await fetchDevToData();
     expect(result.fetchSuccess).toBe(false);
     expect(result.articles).toHaveLength(0);
   });
@@ -57,7 +57,7 @@ describe("fetchDevtoData", () => {
       ok: true,
       json: async () => [sampleArticle, { ...sampleArticle, id: 67890, title: "Another Article" }],
     });
-    const result = await fetchDevtoData();
+    const result = await fetchDevToData();
     // Run twice to confirm dedup — fetch always returns 2, but dedup should yield only unique IDs
     expect(result.articles.length).toBeLessThanOrEqual(2);
   });
@@ -70,7 +70,7 @@ describe("fetchDevtoData", () => {
       ok: true,
       json: async () => [articleA, articleB, articleC],
     });
-    const result = await fetchDevtoData();
+    const result = await fetchDevToData();
     expect(result.articles.map((a) => a.positiveReactionsCount)).toEqual([200, 50, 10]);
   });
 
@@ -82,7 +82,7 @@ describe("fetchDevtoData", () => {
       .mockResolvedValueOnce({ ok: true, json: async () => [] })
       .mockResolvedValueOnce({ ok: true, json: async () => [] })
       .mockResolvedValueOnce({ ok: true, json: async () => [] });
-    const result = await fetchDevtoData();
+    const result = await fetchDevToData();
     expect(result.fetchSuccess).toBe(true);
     expect(result.articles).toHaveLength(1);
   });

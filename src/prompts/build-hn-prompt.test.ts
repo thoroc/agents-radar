@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { HnData } from "../fetchers/hn";
-import { buildHnPrompt } from "./build-hn-prompt";
+import type { HackerNewsData } from "../fetchers/hacker-news";
+import { buildHackerNewsPrompt } from "./build-hn-prompt";
 
-const mockData: HnData = {
+const mockData: HackerNewsData = {
   stories: [
     {
       id: "123",
@@ -28,9 +28,9 @@ const mockData: HnData = {
   fetchSuccess: true,
 };
 
-describe("buildHnPrompt", () => {
+describe("buildHackerNewsPrompt", () => {
   it("includes story titles and metadata in Chinese (default)", () => {
-    const result = buildHnPrompt(mockData, "2026-03-09");
+    const result = buildHackerNewsPrompt(mockData, "2026-03-09");
     expect(result).toContain("AI News");
     expect(result).toContain("LLM Research");
     expect(result).toContain("分数: 200");
@@ -39,7 +39,7 @@ describe("buildHnPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildHnPrompt(mockData, "2026-03-09", "en");
+    const result = buildHackerNewsPrompt(mockData, "2026-03-09", "en");
     expect(result).toContain("AI News");
     expect(result).toContain("Score: 200");
     expect(result).toContain("Comments: 50");
@@ -48,7 +48,7 @@ describe("buildHnPrompt", () => {
   });
 
   it("includes date string in output", () => {
-    const result = buildHnPrompt(mockData, "2026-03-09");
+    const result = buildHackerNewsPrompt(mockData, "2026-03-09");
     expect(result).toContain("2026-03-09");
   });
 });

@@ -2,7 +2,7 @@
  * Dev.to AI articles fetched via the Forem API.
  */
 
-export interface DevtoArticle {
+export interface DevToArticle {
   id: number;
   title: string;
   description: string;
@@ -15,8 +15,8 @@ export interface DevtoArticle {
   user: string;
 }
 
-export interface DevtoData {
-  articles: DevtoArticle[];
+export interface DevToData {
+  articles: DevToArticle[];
   fetchSuccess: boolean;
 }
 
@@ -39,8 +39,8 @@ interface DevtoApiArticle {
   user: { name: string };
 }
 
-export const fetchDevtoData = async (): Promise<DevtoData> => {
-  const seen = new Map<number, DevtoArticle>();
+export const fetchDevToData = async (): Promise<DevToData> => {
+  const seen = new Map<number, DevToArticle>();
 
   try {
     await Promise.all(

@@ -1,11 +1,11 @@
 import type { DateTime } from "luxon";
 import { fetchSiteContent, type WebFetchResult, type WebState } from "../fetchers";
 import { type ArxivData, fetchArxivData } from "../fetchers/arxiv";
-import { type DevtoData, fetchDevtoData } from "../fetchers/devto";
-import { fetchHfData, type HfData } from "../fetchers/hf";
-import { fetchHnData, type HnData } from "../fetchers/hn";
-import { fetchLobstersData, type LobstersData } from "../fetchers/lobsters";
-import { fetchPhData, type PhData } from "../fetchers/ph";
+import { type DevToData, fetchDevToData } from "../fetchers/dev-to";
+import { fetchHackerNewsData, type HackerNewsData } from "../fetchers/hacker-news";
+import { fetchHuggingFaceData, type HuggingFaceData } from "../fetchers/hugging-face";
+import { fetchLobstersData, type LobstersData } from "../fetchers/lobste-rs";
+import { fetchProductHuntData, type ProductHuntData } from "../fetchers/product-hunt";
 import { fetchTrendingData, type TrendingData } from "../fetchers/trending";
 import {
   fetchRecentItems,
@@ -21,11 +21,11 @@ export type FetchAllDataResult = {
   skillsData: { prs: GitHubItem[]; issues: GitHubItem[] };
   webResults: WebFetchResult[];
   trendingData: TrendingData;
-  hnData: HnData;
-  phData: PhData;
+  hnData: HackerNewsData;
+  phData: ProductHuntData;
   arxivData: ArxivData;
-  hfData: HfData;
-  devtoData: DevtoData;
+  hfData: HuggingFaceData;
+  devtoData: DevToData;
   lobstersData: LobstersData;
 };
 
@@ -102,11 +102,11 @@ export const fetchAllData = async (
         trendingFetchSuccess: false,
       }),
     ),
-    fetchHnData().catch((): HnData => ({ stories: [], fetchSuccess: false })),
-    fetchPhData().catch((): PhData => ({ products: [], fetchSuccess: false })),
+    fetchHackerNewsData().catch((): HackerNewsData => ({ stories: [], fetchSuccess: false })),
+    fetchProductHuntData().catch((): ProductHuntData => ({ products: [], fetchSuccess: false })),
     fetchArxivData().catch((): ArxivData => ({ papers: [], fetchSuccess: false })),
-    fetchHfData().catch((): HfData => ({ models: [], fetchSuccess: false })),
-    fetchDevtoData().catch((): DevtoData => ({ articles: [], fetchSuccess: false })),
+    fetchHuggingFaceData().catch((): HuggingFaceData => ({ models: [], fetchSuccess: false })),
+    fetchDevToData().catch((): DevToData => ({ articles: [], fetchSuccess: false })),
     fetchLobstersData().catch((): LobstersData => ({ stories: [], fetchSuccess: false })),
   ]);
 

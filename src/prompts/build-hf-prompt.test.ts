@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { HfData, HfModel } from "../fetchers/hf";
-import { buildHfPrompt } from "./build-hf-prompt";
+import type { HuggingFaceData, HuggingFaceModel } from "../fetchers/hugging-face";
+import { buildHuggingFacePrompt } from "./build-hf-prompt";
 
-const makeModel = (overrides: Partial<HfModel> = {}): HfModel => ({
+const makeModel = (overrides: Partial<HuggingFaceModel> = {}): HuggingFaceModel => ({
   id: "meta-llama/Llama-3.1-8B",
   author: "meta",
   likes: 15000,
@@ -14,15 +14,15 @@ const makeModel = (overrides: Partial<HfModel> = {}): HfModel => ({
   ...overrides,
 });
 
-const makeData = (overrides: Partial<HfData> = {}): HfData => ({
+const makeData = (overrides: Partial<HuggingFaceData> = {}): HuggingFaceData => ({
   models: [makeModel()],
   fetchSuccess: true,
   ...overrides,
 });
 
-describe("buildHfPrompt", () => {
+describe("buildHuggingFacePrompt", () => {
   it("includes model details in Chinese (default)", () => {
-    const result = buildHfPrompt(makeData(), "2026-03-09");
+    const result = buildHuggingFacePrompt(makeData(), "2026-03-09");
     expect(result).toContain("Hugging Face 热门模型日报");
     expect(result).toContain("meta-llama/Llama-3.1-8B");
     expect(result).toContain("meta");
@@ -32,7 +32,7 @@ describe("buildHfPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildHfPrompt(makeData(), "2026-03-09", "en");
+    const result = buildHuggingFacePrompt(makeData(), "2026-03-09", "en");
     expect(result).toContain("Hugging Face Trending Models Digest");
     expect(result).toContain("Likes:");
     expect(result).toContain("Downloads:");
@@ -41,7 +41,7 @@ describe("buildHfPrompt", () => {
 
   it("handles pipelineTag being undefined", () => {
     const data = makeData({ models: [makeModel({ pipelineTag: "" })] });
-    const result = buildHfPrompt(data, "2026-03-09");
+    const result = buildHuggingFacePrompt(data, "2026-03-09");
     expect(result).toContain("N/A");
   });
 
@@ -49,7 +49,7 @@ describe("buildHfPrompt", () => {
     const data = makeData({
       models: [makeModel({ id: "model-one", likes: 100 }), makeModel({ id: "model-two", likes: 50 })],
     });
-    const result = buildHfPrompt(data, "2026-03-09");
+    const result = buildHuggingFacePrompt(data, "2026-03-09");
     expect(result).toContain("model-one");
     expect(result).toContain("model-two");
     expect(result).toContain("2 个");

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchHnData } from "./hn";
+import { fetchHackerNewsData } from "./hacker-news";
 
 const hoursAgo = (h: number): string => new Date(Date.now() - h * 3600 * 1000).toISOString();
 
@@ -21,9 +21,9 @@ beforeEach(() => {
   });
 });
 
-describe("fetchHnData", () => {
+describe("fetchHackerNewsData", () => {
   it("returns parsed stories on success", async () => {
-    const result = await fetchHnData();
+    const result = await fetchHackerNewsData();
     expect(result.fetchSuccess).toBe(true);
     expect(result.stories).toHaveLength(1);
     expect(result.stories[0]!.id).toBe("12345");
@@ -35,7 +35,7 @@ describe("fetchHnData", () => {
 
   it("returns empty stories on fetch failure", async () => {
     globalThis.fetch = vi.fn().mockRejectedValue(new Error("Network error"));
-    const result = await fetchHnData();
+    const result = await fetchHackerNewsData();
     expect(result.fetchSuccess).toBe(false);
     expect(result.stories).toHaveLength(0);
   });
@@ -46,7 +46,7 @@ describe("fetchHnData", () => {
       status: 503,
       json: async () => ({}),
     });
-    const result = await fetchHnData();
+    const result = await fetchHackerNewsData();
     expect(result.fetchSuccess).toBe(false);
     expect(result.stories).toHaveLength(0);
   });
@@ -57,7 +57,7 @@ describe("fetchHnData", () => {
       ok: true,
       json: async () => ({ hits: [hitWithoutUrl] }),
     });
-    const result = await fetchHnData();
+    const result = await fetchHackerNewsData();
     expect(result.stories[0]!.url).toBe("https://news.ycombinator.com/item?id=67890");
     expect(result.stories[0]!.hnUrl).toBe("https://news.ycombinator.com/item?id=67890");
   });
@@ -72,7 +72,7 @@ describe("fetchHnData", () => {
         ],
       }),
     });
-    const result = await fetchHnData();
+    const result = await fetchHackerNewsData();
     expect(result.stories).toHaveLength(2);
   });
 
@@ -84,7 +84,7 @@ describe("fetchHnData", () => {
       ok: true,
       json: async () => ({ hits: [hitA, hitB, hitC] }),
     });
-    const result = await fetchHnData();
+    const result = await fetchHackerNewsData();
     expect(result.stories.map((s) => s.points)).toEqual([500, 100, 10]);
   });
 
@@ -97,7 +97,7 @@ describe("fetchHnData", () => {
       .mockResolvedValueOnce({ ok: true, json: async () => ({ hits: [] }) })
       .mockResolvedValueOnce({ ok: true, json: async () => ({ hits: [] }) })
       .mockResolvedValueOnce({ ok: true, json: async () => ({ hits: [] }) });
-    const result = await fetchHnData();
+    const result = await fetchHackerNewsData();
     expect(result.fetchSuccess).toBe(true);
     expect(result.stories).toHaveLength(1);
   });
@@ -107,7 +107,7 @@ describe("fetchHnData", () => {
       ok: true,
       json: async () => ({ hits: [] }),
     });
-    const result = await fetchHnData();
+    const result = await fetchHackerNewsData();
     expect(result.fetchSuccess).toBe(false);
     expect(result.stories).toHaveLength(0);
   });
@@ -126,7 +126,7 @@ describe("fetchHnData", () => {
       ok: true,
       json: async () => ({ hits: [partialHit] }),
     });
-    const result = await fetchHnData();
+    const result = await fetchHackerNewsData();
     expect(result.stories).toHaveLength(1);
     expect(result.stories[0]!.points).toBe(0);
     expect(result.stories[0]!.comments).toBe(0);

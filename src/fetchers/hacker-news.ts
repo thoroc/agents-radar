@@ -4,7 +4,7 @@
 
 import { DateTime } from "luxon";
 
-export interface HnStory {
+export interface HackerNewsStory {
   id: string;
   title: string;
   url: string; // external URL, or HN discussion link if no external URL
@@ -15,8 +15,8 @@ export interface HnStory {
   createdAt: string;
 }
 
-export interface HnData {
-  stories: HnStory[];
+export interface HackerNewsData {
+  stories: HackerNewsStory[];
   fetchSuccess: boolean;
 }
 
@@ -39,9 +39,9 @@ interface AlgoliaResponse {
   hits: AlgoliaHit[];
 }
 
-export const fetchHnData = async (): Promise<HnData> => {
+export const fetchHackerNewsData = async (): Promise<HackerNewsData> => {
   const since = Math.floor(DateTime.now().minus({ days: 1 }).toMillis() / 1000);
-  const seen = new Map<string, HnStory>();
+  const seen = new Map<string, HackerNewsStory>();
 
   try {
     await Promise.all(

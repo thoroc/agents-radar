@@ -6,7 +6,7 @@ vi.mock("./save-data-source-report", () => ({
   buildSourceHeader: vi.fn(),
 }));
 
-import { saveHnReport } from "./save-hn-report";
+import { saveHackerNewsReport } from "./save-hacker-news-report";
 
 describe("saveHnReport", () => {
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe("saveHnReport", () => {
   };
 
   it("calls saveDataSourceReport with hn config", async () => {
-    await saveHnReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en");
+    await saveHackerNewsReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en");
 
     expect(mockSaveDataSourceReport).toHaveBeenCalledOnce();
     const opts = mockSaveDataSourceReport.mock.calls[0]![0] as Record<string, unknown>;
@@ -46,7 +46,7 @@ describe("saveHnReport", () => {
   it("skips when fetchSuccess is false", async () => {
     const noData = { stories: [], fetchSuccess: false };
 
-    await saveHnReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh");
+    await saveHackerNewsReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh");
 
     expect(mockSaveDataSourceReport).toHaveBeenCalledOnce();
     const opts = mockSaveDataSourceReport.mock.calls[0]![0] as Record<string, unknown>;

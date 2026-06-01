@@ -7,7 +7,7 @@
 
 import { DateTime } from "luxon";
 
-export interface PhProduct {
+export interface ProductHuntProduct {
   id: string;
   name: string;
   tagline: string;
@@ -19,8 +19,8 @@ export interface PhProduct {
   topics: string[];
 }
 
-export interface PhData {
-  products: PhProduct[];
+export interface ProductHuntData {
+  products: ProductHuntProduct[];
   fetchSuccess: boolean;
 }
 
@@ -86,7 +86,10 @@ interface PhResponse {
   errors?: Array<{ message: string }>;
 }
 
-export const fetchPhData = async (token?: string, env: NodeJS.ProcessEnv = process.env): Promise<PhData> => {
+export const fetchProductHuntData = async (
+  token?: string,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<ProductHuntData> => {
   const resolvedToken = token ?? env.PRODUCTHUNT_TOKEN ?? "";
   if (!resolvedToken) {
     console.error("  [ph] PRODUCTHUNT_TOKEN not set — skipping.");
@@ -128,7 +131,7 @@ export const fetchPhData = async (token?: string, env: NodeJS.ProcessEnv = proce
       return { products: [], fetchSuccess: false };
     }
 
-    const allProducts: PhProduct[] = [];
+    const allProducts: ProductHuntProduct[] = [];
     for (const edge of json.data?.posts?.edges ?? []) {
       const node = edge.node;
       const topicSlugs = node.topics?.edges?.map((e) => e.node.slug) ?? [];

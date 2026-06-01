@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { PhData, PhProduct } from "../fetchers/ph";
-import { buildPhPrompt } from "./build-ph-prompt";
+import type { ProductHuntData, ProductHuntProduct } from "../fetchers/product-hunt";
+import { buildProductHuntPrompt } from "./build-ph-prompt";
 
-const makeProduct = (overrides: Partial<PhProduct> = {}): PhProduct => ({
+const makeProduct = (overrides: Partial<ProductHuntProduct> = {}): ProductHuntProduct => ({
   id: "12345",
   name: "AI Code Assistant",
   tagline: "Your AI pair programmer",
@@ -15,15 +15,15 @@ const makeProduct = (overrides: Partial<PhProduct> = {}): PhProduct => ({
   ...overrides,
 });
 
-const makeData = (overrides: Partial<PhData> = {}): PhData => ({
+const makeData = (overrides: Partial<ProductHuntData> = {}): ProductHuntData => ({
   products: [makeProduct()],
   fetchSuccess: true,
   ...overrides,
 });
 
-describe("buildPhPrompt", () => {
+describe("buildProductHuntPrompt", () => {
   it("includes product details in Chinese (default)", () => {
-    const result = buildPhPrompt(makeData(), "2026-03-09");
+    const result = buildProductHuntPrompt(makeData(), "2026-03-09");
     expect(result).toContain("Product Hunt AI 产品日报");
     expect(result).toContain("AI Code Assistant");
     expect(result).toContain("Your AI pair programmer");
@@ -33,7 +33,7 @@ describe("buildPhPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildPhPrompt(makeData(), "2026-03-09", "en");
+    const result = buildProductHuntPrompt(makeData(), "2026-03-09", "en");
     expect(result).toContain("Product Hunt AI Products Digest");
     expect(result).toContain("Votes:");
     expect(result).toContain("Comments:");
@@ -42,7 +42,7 @@ describe("buildPhPrompt", () => {
 
   it("handles empty products gracefully", () => {
     const data = makeData({ products: [] });
-    const result = buildPhPrompt(data, "2026-03-09");
+    const result = buildProductHuntPrompt(data, "2026-03-09");
     expect(result).toContain("0 个");
   });
 
@@ -53,7 +53,7 @@ describe("buildPhPrompt", () => {
         makeProduct({ name: "Product B", votesCount: 50 }),
       ],
     });
-    const result = buildPhPrompt(data, "2026-03-09");
+    const result = buildProductHuntPrompt(data, "2026-03-09");
     expect(result).toContain("Product A");
     expect(result).toContain("Product B");
     expect(result).toContain("2 个");

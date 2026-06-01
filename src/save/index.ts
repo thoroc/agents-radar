@@ -1,9 +1,9 @@
 export { saveArxivReport } from "./save-arxiv-report";
 export { saveCommunityReport } from "./save-community-report";
 export { buildSourceHeader, saveDataSourceReport } from "./save-data-source-report";
-export { saveHfReport } from "./save-hf-report";
-export { saveHnReport } from "./save-hn-report";
-export { savePhReport } from "./save-ph-report";
+export { saveHackerNewsReport } from "./save-hacker-news-report";
+export { saveHuggingFaceReport } from "./save-hugging-face-report";
+export { saveProductHuntReport } from "./save-product-hunt-report";
 export { defaultDeps, saveReport } from "./save-report";
 export { saveTrendingReport } from "./save-trending-report";
 export { saveWebReport } from "./save-web-report";
