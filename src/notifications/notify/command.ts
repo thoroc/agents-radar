@@ -1,6 +1,6 @@
 import { Command } from "@cliffy/command";
-import type { NotifyActionArgs } from "./notify-action";
-import { notifyAction } from "./notify-action";
+import type { NotifyActionArgs } from "./action";
+import { notifyAction } from "./action";
 
 export const notifyCommand = new Command()
   .name("notify")

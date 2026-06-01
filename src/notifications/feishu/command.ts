@@ -1,6 +1,6 @@
 import { Command } from "@cliffy/command";
-import type { FeishuActionArgs } from "./feishu-action";
-import { feishuAction } from "./feishu-action";
+import type { FeishuActionArgs } from "./action";
+import { feishuAction } from "./action";
 
 export const feishuCommand = new Command()
   .name("feishu")

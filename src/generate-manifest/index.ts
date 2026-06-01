@@ -1,8 +1,8 @@
-export { generateManifestCommand } from "./command";
-export { escapeXml } from "./escape-xml";
 export {
   type GenerateManifestActionArgs,
   type GenerateManifestDeps,
   generateManifestAction,
-} from "./generate-manifest-action";
+} from "./action";
+export { generateManifestCommand } from "./command";
+export { escapeXml } from "./escape-xml";
 export { toRfc822 } from "./to-rfc822";

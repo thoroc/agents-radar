@@ -1,6 +1,6 @@
 import { Command } from "@cliffy/command";
-import type { GenerateManifestActionArgs } from "./generate-manifest-action";
-import { generateManifestAction } from "./generate-manifest-action";
+import type { GenerateManifestActionArgs } from "./action";
+import { generateManifestAction } from "./action";
 
 export const generateManifestCommand = new Command()
   .name("generate-manifest")
