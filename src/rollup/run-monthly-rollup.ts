@@ -1,11 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { DateTime } from "luxon";
-import { autoGenFooter } from "./auto-gen-footer";
-import { callLlm } from "./call-llm";
-import { createGitHubIssue } from "./github";
-import { buildMonthlyPrompt } from "./prompts";
-import { LLM_TOKENS_ROLLUP } from "./report-constants";
+import { createGitHubIssue } from "../github";
+import { buildMonthlyPrompt } from "../prompts";
+import { autoGenFooter } from "../report/auto-gen-footer";
+import { callLlm } from "../report/call-llm";
+import { LLM_TOKENS_ROLLUP } from "../report/report-constants";
+import { saveFile } from "../report/save-file";
+import { t, toCstDateStr, toUtcStr } from "../utils";
 import {
   DIGESTS_DIR,
   generateRollupHighlights,
@@ -13,17 +15,14 @@ import {
   readDailyDigest,
   readWeeklyDigest,
 } from "./rollup-utils";
-import { saveFile } from "./save-file";
-import { t, toCstDateStr, toUtcStr } from "./utils";
 
-export const runMonthlyRollup = async (): Promise<void> => {
+export const runMonthlyRollup = async (digestRepo: string = process.env.DIGEST_REPO ?? ""): Promise<void> => {
   const now = DateTime.now();
   const cstDate = now.plus({ hours: 8 });
   const prevMonth = DateTime.utc(cstDate.year, cstDate.month - 1, 1);
   const monthStr = prevMonth.toFormat("yyyy-MM");
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
-  const digestRepo = process.env.DIGEST_REPO ?? "";
 
   console.error(`[monthly] Generating rollup for ${monthStr} (date: ${dateStr})`);
 

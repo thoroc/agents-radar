@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import dotenvx from "@dotenvx/dotenvx";
-import { callLlm } from "../../call-llm";
+import { callLlm } from "../../report/call-llm";
 import { buildXiaohongshuPrompt } from "./build-xiaohongshu-prompt";
 import { buildWechatPrompt } from "./build-wechat-prompt";
 import { buildWechatMonthlyPrompt } from "./build-wechat-monthly-prompt";

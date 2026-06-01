@@ -1,4 +1,3 @@
-import { callLlm } from "../call-llm";
 import type { TrendingData } from "../fetchers/trending";
 import type { RepoFetch } from "../github";
 import {
@@ -8,7 +7,8 @@ import {
   buildTrendingPrompt,
   type RepoDigest,
 } from "../prompts";
-import { LLM_TOKENS_TRENDING } from "../report-constants";
+import { callLlm } from "../report/call-llm";
+import { LLM_TOKENS_TRENDING } from "../report/report-constants";
 import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 

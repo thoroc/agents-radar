@@ -1,5 +1,5 @@
-import type { RepoDigest } from "./prompts";
-import { type Locale, t } from "./utils";
+import type { RepoDigest } from "../prompts";
+import { type Locale, t } from "../utils";
 
 export const buildCliReportContent = (
   cliDigests: RepoDigest[],

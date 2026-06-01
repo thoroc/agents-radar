@@ -1,6 +1,6 @@
-import type { RepoConfig, RepoFetch } from "./github";
-import type { RepoDigest } from "./prompts";
-import { type Locale, t } from "./utils";
+import type { RepoConfig, RepoFetch } from "../github";
+import type { RepoDigest } from "../prompts";
+import { type Locale, t } from "../utils";
 
 export const buildOpenclawReportContent = (
   fetchedOpenclaw: RepoFetch,

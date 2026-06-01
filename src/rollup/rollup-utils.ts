@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
-import { callLlm } from "./call-llm";
-import { buildHighlightsPrompt, type ReportHighlights } from "./prompts";
-import { saveFile } from "./save-file";
+import { buildHighlightsPrompt, type ReportHighlights } from "../prompts";
+import { callLlm } from "../report/call-llm";
+import { saveFile } from "../report/save-file";
 
 export const DIGESTS_DIR = "digests";
 export const ROLLUP_SOURCES = ["ai-cli", "ai-agents", "ai-trending", "ai-hn", "ai-web"];

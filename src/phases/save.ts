@@ -1,9 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import { autoGenFooter } from "../auto-gen-footer";
-import { buildCliReportContent } from "../build-cli-report-content";
-import { buildOpenclawReportContent } from "../build-openclaw-report-content";
-import { callLlm } from "../call-llm";
 import type { WebFetchResult, WebState } from "../fetchers";
 import type { ArxivData } from "../fetchers/arxiv";
 import type { DevtoData } from "../fetchers/devto";
@@ -15,14 +11,18 @@ import type { TrendingData } from "../fetchers/trending";
 import { createGitHubIssue, type RepoConfig, type RepoFetch } from "../github";
 import type { RepoDigest } from "../prompts";
 import { buildHighlightsPrompt, type ReportHighlights } from "../prompts";
-import { saveArxivReport } from "../save-arxiv-report";
-import { saveCommunityReport } from "../save-community-report";
-import { saveFile } from "../save-file";
-import { saveHfReport } from "../save-hf-report";
-import { saveHnReport } from "../save-hn-report";
-import { savePhReport } from "../save-ph-report";
-import { saveTrendingReport } from "../save-trending-report";
-import { saveWebReport } from "../save-web-report";
+import { autoGenFooter } from "../report/auto-gen-footer";
+import { buildCliReportContent } from "../report/build-cli-report-content";
+import { buildOpenclawReportContent } from "../report/build-openclaw-report-content";
+import { callLlm } from "../report/call-llm";
+import { saveFile } from "../report/save-file";
+import { saveArxivReport } from "../save/save-arxiv-report";
+import { saveCommunityReport } from "../save/save-community-report";
+import { saveHfReport } from "../save/save-hf-report";
+import { saveHnReport } from "../save/save-hn-report";
+import { savePhReport } from "../save/save-ph-report";
+import { saveTrendingReport } from "../save/save-trending-report";
+import { saveWebReport } from "../save/save-web-report";
 import { type Locale, t } from "../utils";
 
 const readReport = (dateStr: string, name: string): string | undefined => {

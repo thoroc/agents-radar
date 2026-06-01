@@ -1,6 +1,6 @@
+import type { Locale } from "../types";
 import { defaultDeps, saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
-import type { Locale } from "./types";
 
 type DataSourceReportOpts = {
   hasData: boolean;

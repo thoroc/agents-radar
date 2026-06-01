@@ -1,7 +1,7 @@
-import type { TrendingData } from "./fetchers/trending";
+import type { TrendingData } from "../fetchers/trending";
+import { type Locale, t } from "../utils";
 import { defaultDeps, saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
-import { type Locale, t } from "./utils";
 
 export const saveTrendingReport = async (
   trendingData: TrendingData,

@@ -1,9 +1,9 @@
-import type { HfData } from "./fetchers/hf";
-import { buildHfPrompt } from "./prompts";
+import type { HfData } from "../fetchers/hf";
+import { buildHfPrompt } from "../prompts";
+import { toPromptLang } from "../types";
+import { type Locale, t } from "../utils";
 import { buildSourceHeader, saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
-import { toPromptLang } from "./types";
-import { type Locale, t } from "./utils";
 
 export const saveHfReport = async (
   hfData: HfData,

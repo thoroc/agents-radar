@@ -1,9 +1,9 @@
-import type { PhData } from "./fetchers/ph";
-import { buildPhPrompt } from "./prompts";
+import type { PhData } from "../fetchers/ph";
+import { buildPhPrompt } from "../prompts";
+import { toPromptLang } from "../types";
+import { type Locale, t } from "../utils";
 import { buildSourceHeader, saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
-import { toPromptLang } from "./types";
-import { type Locale, t } from "./utils";
 
 export const savePhReport = async (
   phData: PhData,

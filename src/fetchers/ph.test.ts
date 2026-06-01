@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchPhData } from "./ph";
 
 const makeGraphQLResponse = (products: Array<Record<string, unknown>>) => ({
@@ -51,20 +51,15 @@ const nonAiProduct = {
 
 beforeEach(() => {
   vi.restoreAllMocks();
-  process.env.PRODUCTHUNT_TOKEN = "test-token";
   globalThis.fetch = vi.fn().mockResolvedValue({
     ok: true,
     json: async () => makeGraphQLResponse([aiProduct]),
   });
 });
 
-afterEach(() => {
-  delete process.env.PRODUCTHUNT_TOKEN;
-});
-
 describe("fetchPhData", () => {
   it("returns parsed products on success", async () => {
-    const result = await fetchPhData();
+    const result = await fetchPhData("test-token");
     expect(result.fetchSuccess).toBe(true);
     expect(result.products).toHaveLength(1);
     expect(result.products[0]!.name).toBe("AI Tool");
@@ -72,9 +67,8 @@ describe("fetchPhData", () => {
     expect(result.products[0]!.topics).toContain("Artificial Intelligence");
   });
 
-  it("returns fetchSuccess false when PRODUCTHUNT_TOKEN is missing", async () => {
-    delete process.env.PRODUCTHUNT_TOKEN;
-    const result = await fetchPhData();
+  it("returns fetchSuccess false when token is missing", async () => {
+    const result = await fetchPhData("");
     expect(result.fetchSuccess).toBe(false);
     expect(result.products).toHaveLength(0);
     expect(globalThis.fetch).not.toHaveBeenCalled();
@@ -86,7 +80,7 @@ describe("fetchPhData", () => {
       status: 429,
       json: async () => ({}),
     });
-    const result = await fetchPhData();
+    const result = await fetchPhData("test-token");
     expect(result.fetchSuccess).toBe(false);
     expect(result.products).toHaveLength(0);
   });
@@ -99,7 +93,7 @@ describe("fetchPhData", () => {
         errors: [{ message: "Rate limit exceeded" }],
       }),
     });
-    const result = await fetchPhData();
+    const result = await fetchPhData("test-token");
     expect(result.fetchSuccess).toBe(false);
     expect(result.products).toHaveLength(0);
   });
@@ -109,14 +103,14 @@ describe("fetchPhData", () => {
       ok: true,
       json: async () => makeGraphQLResponse([aiProduct, nonAiProduct]),
     });
-    const result = await fetchPhData();
+    const result = await fetchPhData("test-token");
     expect(result.products).toHaveLength(1);
     expect(result.products[0]!.name).toBe("AI Tool");
   });
 
   it("returns empty on network error", async () => {
     globalThis.fetch = vi.fn().mockRejectedValue(new Error("Network error"));
-    const result = await fetchPhData();
+    const result = await fetchPhData("test-token");
     expect(result.fetchSuccess).toBe(false);
     expect(result.products).toHaveLength(0);
   });
@@ -137,7 +131,7 @@ describe("fetchPhData", () => {
       ok: true,
       json: async () => makeGraphQLResponse([minimalProduct]),
     });
-    const result = await fetchPhData();
+    const result = await fetchPhData("test-token");
     expect(result.products).toHaveLength(1);
     expect(result.products[0]!.website).toBe(result.products[0]!.url);
   });
@@ -150,7 +144,7 @@ describe("fetchPhData", () => {
       ok: true,
       json: async () => makeGraphQLResponse([productA, productB, productC]),
     });
-    const result = await fetchPhData();
+    const result = await fetchPhData("test-token");
     expect(result.products.map((p) => p.name)).toEqual(["B", "C", "A"]);
   });
 });

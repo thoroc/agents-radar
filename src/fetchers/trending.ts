@@ -127,8 +127,10 @@ interface SearchApiResponse {
   items: SearchApiItem[];
 }
 
-const searchAiRepos = async (sevenDaysAgo: string): Promise<SearchRepo[]> => {
-  const token = process.env.GITHUB_TOKEN ?? "";
+const searchAiRepos = async (
+  sevenDaysAgo: string,
+  token: string = process.env.GITHUB_TOKEN ?? "",
+): Promise<SearchRepo[]> => {
   const headers: Record<string, string> = {
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
@@ -175,12 +177,14 @@ const searchAiRepos = async (sevenDaysAgo: string): Promise<SearchRepo[]> => {
   return all;
 };
 
-export const fetchTrendingData = async (): Promise<TrendingData> => {
+export const fetchTrendingData = async (
+  githubToken: string = process.env.GITHUB_TOKEN ?? "",
+): Promise<TrendingData> => {
   const sevenDaysAgo = DateTime.now().minus({ days: 7 }).toFormat("yyyy-MM-dd");
 
   const [{ repos: trendingRepos, success }, searchRepos] = await Promise.all([
     fetchGitHubTrending(),
-    searchAiRepos(sevenDaysAgo),
+    searchAiRepos(sevenDaysAgo, githubToken),
   ]);
 
   return { trendingRepos, searchRepos, trendingFetchSuccess: success };

@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchTrendingData } from "./trending";
 
 const sampleTrendingHtml = `
@@ -60,17 +60,12 @@ const buildMockFetch = (htmlResponse?: string, jsonResponse?: unknown) => {
 
 beforeEach(() => {
   vi.restoreAllMocks();
-  process.env.GITHUB_TOKEN = "test-token";
-});
-
-afterEach(() => {
-  delete process.env.GITHUB_TOKEN;
 });
 
 describe("fetchTrendingData", () => {
   it("returns trendingRepos and searchRepos on success", async () => {
     globalThis.fetch = buildMockFetch(sampleTrendingHtml, sampleSearchResponse);
-    const result = await fetchTrendingData();
+    const result = await fetchTrendingData("test-token");
     expect(result.trendingRepos).toHaveLength(2);
     expect(result.trendingRepos[0]!.fullName).toBe("owner/repo-one");
     expect(result.trendingRepos[0]!.todayStars).toBe(1234);
@@ -91,7 +86,7 @@ describe("fetchTrendingData", () => {
       }
       return Promise.resolve({ ok: true, json: async () => sampleSearchResponse, text: async () => "" });
     });
-    const result = await fetchTrendingData();
+    const result = await fetchTrendingData("test-token");
     expect(result.trendingFetchSuccess).toBe(false);
     expect(result.trendingRepos).toHaveLength(0);
     expect(result.searchRepos).toHaveLength(2);
@@ -104,7 +99,7 @@ describe("fetchTrendingData", () => {
       }
       return Promise.resolve({ ok: false, status: 403, json: async () => ({}), text: async () => "" });
     });
-    const result = await fetchTrendingData();
+    const result = await fetchTrendingData("test-token");
     expect(result.trendingFetchSuccess).toBe(true);
     expect(result.trendingRepos).toHaveLength(2);
     expect(result.searchRepos).toHaveLength(0);
@@ -112,7 +107,7 @@ describe("fetchTrendingData", () => {
 
   it("handles malformed HTML gracefully", async () => {
     globalThis.fetch = buildMockFetch("<html><body>Not a trending page</body></html>", sampleSearchResponse);
-    const result = await fetchTrendingData();
+    const result = await fetchTrendingData("test-token");
     expect(result.trendingFetchSuccess).toBe(false);
     expect(result.trendingRepos).toHaveLength(0);
     expect(result.searchRepos).toHaveLength(2);
@@ -125,7 +120,7 @@ describe("fetchTrendingData", () => {
       }
       return Promise.resolve({ ok: true, json: async () => sampleSearchResponse, text: async () => "" });
     });
-    const result = await fetchTrendingData();
+    const result = await fetchTrendingData("test-token");
     expect(result.trendingFetchSuccess).toBe(false);
     expect(result.trendingRepos).toHaveLength(0);
   });
@@ -149,7 +144,7 @@ describe("fetchTrendingData", () => {
       }
       return Promise.resolve({ ok: true, json: async () => responseWithDup, text: async () => "" });
     });
-    const result = await fetchTrendingData();
+    const result = await fetchTrendingData("test-token");
     expect(result.searchRepos).toHaveLength(1);
   });
 
@@ -160,7 +155,7 @@ describe("fetchTrendingData", () => {
       </article>
     `;
     globalThis.fetch = buildMockFetch(minimalHtml, { items: [] });
-    const result = await fetchTrendingData();
+    const result = await fetchTrendingData("test-token");
     expect(result.trendingRepos).toHaveLength(1);
     expect(result.trendingRepos[0]!.fullName).toBe("owner/minimal");
     expect(result.trendingRepos[0]!.description).toBe("");

@@ -1,6 +1,6 @@
-import { callLlm } from "./call-llm";
-import { createGitHubIssue } from "./github";
-import { saveFile } from "./save-file";
+import { createGitHubIssue } from "../github";
+import { callLlm } from "../report/call-llm";
+import { saveFile } from "../report/save-file";
 import type { SaveReportConfig, SaveReportDeps } from "./saver-types";
 
 export const defaultDeps: SaveReportDeps = {

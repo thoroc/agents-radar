@@ -1,20 +1,19 @@
 import { DateTime } from "luxon";
-import { autoGenFooter } from "./auto-gen-footer";
-import { callLlm } from "./call-llm";
-import { createGitHubIssue } from "./github";
-import { buildWeeklyPrompt } from "./prompts";
-import { LLM_TOKENS_ROLLUP } from "./report-constants";
+import { createGitHubIssue } from "../github";
+import { buildWeeklyPrompt } from "../prompts";
+import { autoGenFooter } from "../report/auto-gen-footer";
+import { callLlm } from "../report/call-llm";
+import { LLM_TOKENS_ROLLUP } from "../report/report-constants";
+import { saveFile } from "../report/save-file";
+import { t, toCstDateStr, toUtcStr } from "../utils";
 import { generateRollupHighlights, getDateDirs, readDailyDigest } from "./rollup-utils";
-import { saveFile } from "./save-file";
-import { t, toCstDateStr, toUtcStr } from "./utils";
 import { toWeekStr } from "./week-str";
 
-export const runWeeklyRollup = async (): Promise<void> => {
+export const runWeeklyRollup = async (digestRepo: string = process.env.DIGEST_REPO ?? ""): Promise<void> => {
   const now = DateTime.now();
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
   const weekStr = toWeekStr(now.plus({ hours: 8 }));
-  const digestRepo = process.env.DIGEST_REPO ?? "";
 
   console.error(`[weekly] Generating rollup for ${weekStr} (date: ${dateStr})`);
 

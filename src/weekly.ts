@@ -1,5 +1,5 @@
 import dotenvx from "@dotenvx/dotenvx";
-import { runWeeklyRollup } from "./run-weekly-rollup";
+import { runWeeklyRollup } from "./rollup/run-weekly-rollup";
 
 dotenvx.config({ quiet: true });
 runWeeklyRollup().catch((err) => {

@@ -17,13 +17,13 @@ const main = async (): Promise<void> => {
 
   if (schedules.weekly.enabled && cronMatch(schedules.weekly.cron, now)) {
     console.error(`[scheduler] Weekly rollup due at ${now.toISO()}`);
-    const { runWeeklyRollup } = await import("./run-weekly-rollup");
+    const { runWeeklyRollup } = await import("./rollup/run-weekly-rollup");
     await runWeeklyRollup();
   }
 
   if (schedules.monthly.enabled && cronMatch(schedules.monthly.cron, now)) {
     console.error(`[scheduler] Monthly rollup due at ${now.toISO()}`);
-    const { runMonthlyRollup } = await import("./run-monthly-rollup");
+    const { runMonthlyRollup } = await import("./rollup/run-monthly-rollup");
     await runMonthlyRollup();
   }
 

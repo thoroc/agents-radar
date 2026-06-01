@@ -1,10 +1,10 @@
-import type { DevtoData } from "./fetchers/devto";
-import type { LobstersData } from "./fetchers/lobsters";
-import { buildCommunityPrompt } from "./prompts";
+import type { DevtoData } from "../fetchers/devto";
+import type { LobstersData } from "../fetchers/lobsters";
+import { buildCommunityPrompt } from "../prompts";
+import { toPromptLang } from "../types";
+import { type Locale, t } from "../utils";
 import { saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
-import { toPromptLang } from "./types";
-import { type Locale, t } from "./utils";
 
 export const saveCommunityReport = async (
   devtoData: DevtoData,

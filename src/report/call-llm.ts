@@ -1,8 +1,8 @@
+import { createDeepSeekProvider } from "../providers/deepseek";
+import { createProvider, type LlmProvider } from "../providers/index";
+import { sleep } from "../utils";
 import { is429 } from "./is-429";
-import { createDeepSeekProvider } from "./providers/deepseek";
-import { createProvider, type LlmProvider } from "./providers/index";
 import { LLM_TOKENS_DEFAULT } from "./report-constants";
-import { sleep } from "./utils";
 
 type CallLlmDeps = {
   provider?: LlmProvider;

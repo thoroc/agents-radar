@@ -1,4 +1,4 @@
-import { type Locale, t } from "./utils";
+import { type Locale, t } from "../utils";
 
 export const autoGenFooter = (lang: Locale = "zh", env: NodeJS.ProcessEnv = process.env): string => {
   const digestRepo = env.DIGEST_REPO ?? "";

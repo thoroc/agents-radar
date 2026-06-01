@@ -86,8 +86,7 @@ interface PhResponse {
   errors?: Array<{ message: string }>;
 }
 
-export const fetchPhData = async (): Promise<PhData> => {
-  const token = process.env.PRODUCTHUNT_TOKEN ?? "";
+export const fetchPhData = async (token: string = process.env.PRODUCTHUNT_TOKEN ?? ""): Promise<PhData> => {
   if (!token) {
     console.error("  [ph] PRODUCTHUNT_TOKEN not set — skipping.");
     return { products: [], fetchSuccess: false };
