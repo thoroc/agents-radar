@@ -225,7 +225,7 @@ openclaw_peers:
 
 进入 **Settings → Secrets and variables → Actions**，添加以下密钥：
 
-| Secret | 必填 | 说明 |
+| Secret / Variable | 必填 | 说明 |
 |--------|------|------|
 | `LLM_PROVIDER` | 可选 | `anthropic`（默认）、`openai`、`github-copilot` 或 `openrouter` |
 | `ANTHROPIC_API_KEY` | Anthropic 时 | API 密钥，兼容 Anthropic 和 Kimi Code |
@@ -236,6 +236,7 @@ openclaw_peers:
 | `TELEGRAM_BOT_TOKEN` | 可选 | Telegram bot token，从 [@BotFather](https://t.me/BotFather) 获取。设置后每次 digest 完成自动推送通知 |
 | `TELEGRAM_CHAT_ID` | 可选 | 接收通知的 Telegram 频道 / 群组 / 用户 ID |
 | `FEISHU_WEBHOOK_URLS` | 可选 | 飞书自定义机器人 Webhook URL，多个用英文逗号分隔。设置后每次 digest 完成自动推送卡片通知到所有群 |
+| `PAGES_URL` | **Actions 变量** | GitHub Pages 基础 URL，用于通知、RSS 和 Manifest 链接。在 [repository variable](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#creating-configuration-variables-for-a-repository) 中设置（如 `https://你的用户名.github.io/agents-radar`）。未设置时使用 `src/constants.ts` 中的集中默认值。 |
 
 > `GITHUB_TOKEN` 由 GitHub Actions 自动提供，无需手动添加。使用 `github-copilot` 作为 Provider 时，同一 `GITHUB_TOKEN` 也用于 LLM 调用。
 
