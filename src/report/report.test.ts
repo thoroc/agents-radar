@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { LlmProvider } from "./providers";
-import { autoGenFooter } from "./report/auto-gen-footer";
-import { callLlm } from "./report/call-llm";
-import { is429 } from "./report/is-429";
-import { saveFile } from "./report/save-file";
+import type { LlmProvider } from "../providers";
+import { autoGenFooter } from "./auto-gen-footer";
+import { callLlm } from "./call-llm";
+import { is429 } from "./is-429";
+import { saveFile } from "./save-file";
 
 const mockCall = vi.fn<(prompt: string, maxTokens: number) => Promise<string>>();
 const mockProvider: LlmProvider = { name: "mock", call: mockCall };

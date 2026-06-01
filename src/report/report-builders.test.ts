@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { GitHubItem, GitHubRelease } from "./github";
-import type { RepoDigest } from "./prompts";
-import { buildCliReportContent } from "./report/build-cli-report-content";
-import { buildOpenclawReportContent } from "./report/build-openclaw-report-content";
+import type { GitHubItem, GitHubRelease } from "../github";
+import type { RepoDigest } from "../prompts";
+import { buildCliReportContent } from "./build-cli-report-content";
+import { buildOpenclawReportContent } from "./build-openclaw-report-content";
 
 // ---------------------------------------------------------------------------
 // Fixtures
