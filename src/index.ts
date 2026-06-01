@@ -25,7 +25,7 @@ const requireEnv = (name: string): string => {
   return value;
 };
 
-const main = async (): Promise<void> => {
+export const main = async (): Promise<void> => {
   dotenvx.config({ quiet: true });
   requireEnv("GITHUB_TOKEN");
 

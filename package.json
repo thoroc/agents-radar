@@ -14,6 +14,7 @@
     "monthly": "bun run src/monthly.ts",
     "notify": "bun run src/notifications/notify.ts",
     "notify:feishu": "bun run src/notifications/feishu.ts",
+    "scheduler": "bun run src/scheduler.ts",
     "close-stale": "bun run src/close-stale-issues.ts",
     "xiaohongshu": "bun run src/social.ts xiaohongshu",
     "wechat": "bun run src/social.ts wechat",

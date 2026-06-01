@@ -4,6 +4,30 @@
 
 languages: ["en", "zh"]
 
+# ── Schedule configuration ─────────────────────────────────────────────────────
+# Each digest type can be enabled/disabled and given a custom cron expression.
+# The scheduler workflow (.github/workflows/scheduler.yml) checks these every
+# hour and runs any digest whose cron matches the current time.
+# NOTE: The scheduler ticks on the hour (:00), so cron minutes other than 0
+#       (e.g. "30 0 * * *") will never fire. Use minute = 0 in all patterns.
+# Cron format: minute hour day-of-month month day-of-week
+# Examples:
+#   "0 0 * * *"   = daily at 00:00 UTC
+#   "0 1 * * 1"   = every Monday at 01:00 UTC
+#   "0 2 1 * *"   = 1st of each month at 02:00 UTC
+# Set enabled: false to disable a digest entirely.
+
+schedules:
+  daily:
+    enabled: true
+    cron: "0 0 * * *"
+  weekly:
+    enabled: true
+    cron: "0 1 * * 1"
+  monthly:
+    enabled: true
+    cron: "0 2 1 * *"
+
 # ── AI CLI tools ──────────────────────────────────────────────────────────────
 # Tracked for per-tool digests and cross-tool comparison.
 # Each entry requires: id (filename slug), repo (owner/repo), name (display name).
