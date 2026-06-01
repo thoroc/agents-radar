@@ -1,72 +1,6 @@
 import fs from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getEnabledLangs, loadConfig, toRepoConfig } from ".";
-
-// ---------------------------------------------------------------------------
-// toRepoConfig
-// ---------------------------------------------------------------------------
-
-describe("toRepoConfig", () => {
-  it("converts a basic entry", () => {
-    const result = toRepoConfig({ id: "test", repo: "org/test", name: "Test" });
-    expect(result).toEqual({ id: "test", repo: "org/test", name: "Test" });
-  });
-
-  it("includes paginated when true", () => {
-    const result = toRepoConfig({ id: "test", repo: "org/test", name: "Test", paginated: true });
-    expect(result).toEqual({ id: "test", repo: "org/test", name: "Test", paginated: true });
-  });
-
-  it("omits paginated when false", () => {
-    const result = toRepoConfig({ id: "test", repo: "org/test", name: "Test", paginated: false });
-    expect(result).not.toHaveProperty("paginated");
-  });
-});
-
-// ---------------------------------------------------------------------------
-// getEnabledLangs
-// ---------------------------------------------------------------------------
-
-describe("getEnabledLangs", () => {
-  const PREV_REPORT_LANGS = process.env.REPORT_LANGS;
-
-  afterEach(() => {
-    if (PREV_REPORT_LANGS === undefined) {
-      delete process.env.REPORT_LANGS;
-    } else {
-      process.env.REPORT_LANGS = PREV_REPORT_LANGS;
-    }
-  });
-
-  it("returns env var langs when REPORT_LANGS is set", () => {
-    process.env.REPORT_LANGS = "fr,de";
-    expect(getEnabledLangs()).toEqual(["fr", "de"]);
-  });
-
-  it("returns configured langs when no env var", () => {
-    process.env.REPORT_LANGS = "";
-    expect(getEnabledLangs(["ja", "ko"])).toEqual(["ja", "ko"]);
-  });
-
-  it("returns defaults when nothing configured", () => {
-    process.env.REPORT_LANGS = "";
-    expect(getEnabledLangs([])).toEqual(["en", "zh"]);
-  });
-
-  it("returns defaults when langConfig undefined", () => {
-    process.env.REPORT_LANGS = "";
-    expect(getEnabledLangs(undefined)).toEqual(["en", "zh"]);
-  });
-
-  it("filters empty strings from env var", () => {
-    process.env.REPORT_LANGS = "en,,zh,";
-    expect(getEnabledLangs()).toEqual(["en", "zh"]);
-  });
-});
-
-// ---------------------------------------------------------------------------
-// loadConfig
-// ---------------------------------------------------------------------------
+import { loadConfig } from "./load-config";
 
 describe("loadConfig", () => {
   afterEach(() => {
@@ -130,5 +64,52 @@ openclaw:
     vi.spyOn(fs, "readFileSync").mockReturnValue("openclaw:\n  id: partial\n");
     const config = loadConfig("test.yml");
     expect(config.openclaw.id).toBe("openclaw");
+  });
+
+  it("parses openclaw_peers from YAML", () => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    vi.spyOn(fs, "readFileSync").mockReturnValue(`
+openclaw_peers:
+  - id: peer1
+    repo: org/peer1
+    name: Peer 1
+    paginated: true
+`);
+    const config = loadConfig("test.yml");
+    expect(config.openclawPeers).toHaveLength(1);
+    expect(config.openclawPeers[0]!.id).toBe("peer1");
+  });
+
+  it("parses languages from YAML", () => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    vi.spyOn(fs, "readFileSync").mockReturnValue("languages:\n  - fr\n  - de\n");
+    const config = loadConfig("test.yml");
+    expect(config.languages).toEqual(["fr", "de"]);
+  });
+
+  it("parses schedules from YAML", () => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    vi.spyOn(fs, "readFileSync").mockReturnValue(`
+schedules:
+  daily:
+    enabled: true
+    cron: 0 8 * * *
+  weekly:
+    enabled: false
+    cron: 0 9 * * 2
+`);
+    const config = loadConfig("test.yml");
+    expect(config.schedules.daily.cron).toBe("0 8 * * *");
+    expect(config.schedules.weekly.enabled).toBe(false);
+    expect(config.schedules.monthly.enabled).toBe(true);
+  });
+
+  it("uses default schedules when not in YAML", () => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    vi.spyOn(fs, "readFileSync").mockReturnValue("skills_repo: custom/skills\n");
+    const config = loadConfig("test.yml");
+    expect(config.schedules.daily.cron).toBe("0 0 * * *");
+    expect(config.schedules.weekly.cron).toBe("0 1 * * 1");
+    expect(config.schedules.monthly.cron).toBe("0 2 1 * *");
   });
 });
