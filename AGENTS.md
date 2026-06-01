@@ -4,6 +4,16 @@
 
 agents-radar is a daily digest generator for the AI open-source ecosystem. A GitHub Actions scheduler workflow (`.github/workflows/scheduler.yml`) ticks hourly, reads `config.yml` for schedule configuration, and runs the daily digest, weekly rollup, or monthly rollup when their cron expressions match the current UTC time. Reports are produced in configured languages (default: English + Chinese, 21 supported) and published as GitHub Issues and committed Markdown files.
 
+## Branch
+
+Default branch is **`main`** (not `master`). All PRs target `main`.
+
+## Release
+
+[release-please](https://github.com/googleapis/release-please) automates changelog generation and versioning. On each merge to `main`, it creates/updates a Release PR with an aggregated changelog. Merging that Release PR tags a new version, bumps `package.json`, and creates a GitHub Release.
+
+Configuration: `release-please-config.json` | Workflow: `.github/workflows/release-please.yml`
+
 ## Commands
 
 ```bash
