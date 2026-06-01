@@ -6,7 +6,7 @@ agents-radar is a daily digest generator for the AI open-source ecosystem. A Git
 
 ## Branch
 
-Default branch is **`main`** (not `master`). All PRs target `main`.
+Default branch is **`main`** (not `master`). All PRs target `main`. **Never commit directly to `main`** — always work from a feature branch and merge via PR.
 
 ## Release
 
