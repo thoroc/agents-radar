@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { WebState } from "../fetchers/web";
+import type { WebState } from "../fetchers";
 
 const mockAutoGenFooter = vi.fn(() => "\n\n---\nfooter");
 const mockCallLlm = vi.fn<(prompt: string) => Promise<string>>();
@@ -7,14 +7,23 @@ const mockSaveFile = vi.fn<(content: string, ...segments: string[]) => string>()
 const mockBuildCliReportContent = vi.fn(() => "# CLI Report");
 const mockBuildOpenclawReportContent = vi.fn(() => "# OpenClaw Report");
 
-vi.mock("../report", () => ({
+vi.mock("../auto-gen-footer", () => ({
   autoGenFooter: mockAutoGenFooter,
+}));
+
+vi.mock("../call-llm", () => ({
   callLlm: mockCallLlm,
+}));
+
+vi.mock("../save-file", () => ({
   saveFile: mockSaveFile,
 }));
 
-vi.mock("../report-builders", () => ({
+vi.mock("../build-cli-report-content", () => ({
   buildCliReportContent: mockBuildCliReportContent,
+}));
+
+vi.mock("../build-openclaw-report-content", () => ({
   buildOpenclawReportContent: mockBuildOpenclawReportContent,
 }));
 
@@ -26,15 +35,13 @@ const mockSaveArxivReport = vi.fn();
 const mockSaveHfReport = vi.fn();
 const mockSaveCommunityReport = vi.fn();
 
-vi.mock("../report-savers", () => ({
-  saveWebReport: mockSaveWebReport,
-  saveTrendingReport: mockSaveTrendingReport,
-  saveHnReport: mockSaveHnReport,
-  savePhReport: mockSavePhReport,
-  saveArxivReport: mockSaveArxivReport,
-  saveHfReport: mockSaveHfReport,
-  saveCommunityReport: mockSaveCommunityReport,
-}));
+vi.mock("../save-web-report", () => ({ saveWebReport: mockSaveWebReport }));
+vi.mock("../save-trending-report", () => ({ saveTrendingReport: mockSaveTrendingReport }));
+vi.mock("../save-hn-report", () => ({ saveHnReport: mockSaveHnReport }));
+vi.mock("../save-ph-report", () => ({ savePhReport: mockSavePhReport }));
+vi.mock("../save-arxiv-report", () => ({ saveArxivReport: mockSaveArxivReport }));
+vi.mock("../save-hf-report", () => ({ saveHfReport: mockSaveHfReport }));
+vi.mock("../save-community-report", () => ({ saveCommunityReport: mockSaveCommunityReport }));
 
 const mockCreateGitHubIssue = vi.fn(() => Promise.resolve("https://github.com/owner/repo/issues/1"));
 

@@ -1,5 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
+import { autoGenFooter } from "../auto-gen-footer";
+import { buildCliReportContent } from "../build-cli-report-content";
+import { buildOpenclawReportContent } from "../build-openclaw-report-content";
+import { callLlm } from "../call-llm";
+import type { WebFetchResult, WebState } from "../fetchers";
 import type { ArxivData } from "../fetchers/arxiv";
 import type { DevtoData } from "../fetchers/devto";
 import type { HfData } from "../fetchers/hf";
@@ -7,26 +12,30 @@ import type { HnData } from "../fetchers/hn";
 import type { LobstersData } from "../fetchers/lobsters";
 import type { PhData } from "../fetchers/ph";
 import type { TrendingData } from "../fetchers/trending";
-import type { WebFetchResult, WebState } from "../fetchers/web";
 import { createGitHubIssue, type RepoConfig, type RepoFetch } from "../github";
 import type { RepoDigest } from "../prompts";
-import { buildHighlightsPrompt, type ReportHighlights } from "../prompts/prompts-data";
-import { autoGenFooter, callLlm, saveFile } from "../report";
-import { buildCliReportContent, buildOpenclawReportContent } from "../report-builders";
-import {
-  saveArxivReport,
-  saveCommunityReport,
-  saveHfReport,
-  saveHnReport,
-  savePhReport,
-  saveTrendingReport,
-  saveWebReport,
-} from "../report-savers";
-import { type Locale, t } from "../utils/i18n";
+import { buildHighlightsPrompt, type ReportHighlights } from "../prompts";
+import { saveArxivReport } from "../save-arxiv-report";
+import { saveCommunityReport } from "../save-community-report";
+import { saveFile } from "../save-file";
+import { saveHfReport } from "../save-hf-report";
+import { saveHnReport } from "../save-hn-report";
+import { savePhReport } from "../save-ph-report";
+import { saveTrendingReport } from "../save-trending-report";
+import { saveWebReport } from "../save-web-report";
+import { type Locale, t } from "../utils";
 
 const readReport = (dateStr: string, name: string): string | undefined => {
   const p = path.join("digests", dateStr, name);
   return fs.existsSync(p) ? fs.readFileSync(p, "utf-8") : undefined;
+};
+
+type Summaries = {
+  cliDigests: RepoDigest[];
+  openclawSummary: string;
+  skillsSummary: string;
+  peerDigests: RepoDigest[];
+  trendingSummary: string;
 };
 
 export type SavePhaseArgs = {
@@ -50,14 +59,6 @@ export type SavePhaseArgs = {
   hfData: HfData;
   devtoData: DevtoData;
   lobstersData: LobstersData;
-};
-
-type Summaries = {
-  cliDigests: RepoDigest[];
-  openclawSummary: string;
-  skillsSummary: string;
-  peerDigests: RepoDigest[];
-  trendingSummary: string;
 };
 
 export const savePhase = async (args: SavePhaseArgs): Promise<void> => {

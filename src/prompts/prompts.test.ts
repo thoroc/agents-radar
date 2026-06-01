@@ -1,16 +1,14 @@
 import { describe, expect, it } from "vitest";
 import type { GitHubItem, GitHubRelease, RepoConfig } from "../github";
-import type { RepoDigest } from "./prompts";
-import {
-  buildCliPrompt,
-  buildComparisonPrompt,
-  buildPeerPrompt,
-  buildPeersComparisonPrompt,
-  buildSkillsPrompt,
-  formatItem,
-  sampleNote,
-  topN,
-} from "./prompts";
+import { buildCliPrompt } from "./build-cli-prompt";
+import { buildComparisonPrompt } from "./build-comparison-prompt";
+import { buildPeerPrompt } from "./build-peer-prompt";
+import { buildPeersComparisonPrompt } from "./build-peers-comparison-prompt";
+import { buildSkillsPrompt } from "./build-skills-prompt";
+import { formatItem } from "./format-item";
+import type { RepoDigest } from "./repo-digest";
+import { sampleNote } from "./sample-note";
+import { topN } from "./top-n";
 
 // ---------------------------------------------------------------------------
 // Fixtures

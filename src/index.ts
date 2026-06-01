@@ -11,13 +11,12 @@
 
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
-import { loadWebState } from "./fetchers/web";
+import { loadWebState } from "./fetchers";
 import { generateComparisons } from "./phases/compare";
 import { fetchAllData } from "./phases/fetch";
 import { savePhase } from "./phases/save";
 import { generateSummaries } from "./phases/summarize";
-import { getEnabledLangs, loadConfig } from "./utils/config";
-import { toCstDateStr, toUtcStr } from "./utils/date";
+import { getEnabledLangs, loadConfig, toCstDateStr, toUtcStr } from "./utils";
 
 const requireEnv = (name: string): string => {
   const value = process.env[name];

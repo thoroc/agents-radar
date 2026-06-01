@@ -1,6 +1,6 @@
 import type { DateTime } from "luxon";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { WebState } from "../fetchers/web";
+import type { WebState } from "../fetchers";
 import type { RepoConfig } from "../github";
 
 const mockFetchRecentItems = vi.fn();
@@ -22,7 +22,7 @@ vi.mock("../fetchers/hn", () => ({ fetchHnData: mockFetchHnData }));
 vi.mock("../fetchers/lobsters", () => ({ fetchLobstersData: mockFetchLobstersData }));
 vi.mock("../fetchers/ph", () => ({ fetchPhData: mockFetchPhData }));
 vi.mock("../fetchers/trending", () => ({ fetchTrendingData: mockFetchTrendingData }));
-vi.mock("../fetchers/web", () => ({ fetchSiteContent: mockFetchSiteContent }));
+vi.mock("../fetchers", () => ({ fetchSiteContent: mockFetchSiteContent }));
 vi.mock("../github", () => ({
   fetchRecentItems: mockFetchRecentItems,
   fetchRecentReleases: mockFetchRecentReleases,

@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { describe, expect, it } from "vitest";
-import { toWeekStr } from "./rollup";
+import { toWeekStr } from "./week-str";
 
 describe("toWeekStr", () => {
   it("returns correct ISO week for a known date", () => {

@@ -1,6 +1,6 @@
+import { callLlm } from "../call-llm";
 import type { RepoConfig, RepoFetch } from "../github";
 import { buildComparisonPrompt, buildPeersComparisonPrompt, type RepoDigest } from "../prompts";
-import { callLlm } from "../report";
 
 export type ComparisonsByLang = Record<string, string>;
 export type PeersComparisonsByLang = Record<string, string>;

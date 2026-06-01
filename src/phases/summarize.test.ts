@@ -4,18 +4,14 @@ import type { GitHubItem, RepoFetch } from "../github";
 
 const mockCallLlm = vi.fn<(prompt: string, maxTokens?: number) => Promise<string>>();
 
-vi.mock("../report", () => ({
+vi.mock("../call-llm", () => ({
   callLlm: mockCallLlm,
-  LLM_TOKENS_TRENDING: 6144,
 }));
 
 vi.mock("../prompts", () => ({
   buildCliPrompt: vi.fn(() => "cli-prompt"),
   buildPeerPrompt: vi.fn(() => "peer-prompt"),
   buildSkillsPrompt: vi.fn(() => "skills-prompt"),
-}));
-
-vi.mock("../prompts/prompts-data", () => ({
   buildTrendingPrompt: vi.fn(() => "trending-prompt"),
 }));
 

@@ -1,5 +1,5 @@
 import dotenvx from "@dotenvx/dotenvx";
-import { runMonthlyRollup } from "./rollup";
+import { runMonthlyRollup } from "./run-monthly-rollup";
 
 dotenvx.config({ quiet: true });
 runMonthlyRollup().catch((err) => {

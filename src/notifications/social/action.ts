@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import dotenvx from "@dotenvx/dotenvx";
-import { callLlm } from "../../report";
+import { callLlm } from "../../call-llm";
 
 dotenvx.config({ quiet: true });
 

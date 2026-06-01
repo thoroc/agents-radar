@@ -1,4 +1,5 @@
 import type { DateTime } from "luxon";
+import { fetchSiteContent, type WebFetchResult, type WebState } from "../fetchers";
 import { type ArxivData, fetchArxivData } from "../fetchers/arxiv";
 import { type DevtoData, fetchDevtoData } from "../fetchers/devto";
 import { fetchHfData, type HfData } from "../fetchers/hf";
@@ -6,7 +7,6 @@ import { fetchHnData, type HnData } from "../fetchers/hn";
 import { fetchLobstersData, type LobstersData } from "../fetchers/lobsters";
 import { fetchPhData, type PhData } from "../fetchers/ph";
 import { fetchTrendingData, type TrendingData } from "../fetchers/trending";
-import { fetchSiteContent, type WebFetchResult, type WebState } from "../fetchers/web";
 import {
   fetchRecentItems,
   fetchRecentReleases,

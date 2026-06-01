@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { type SaveReportConfig, type SaveReportDeps, saveReport } from "./report-savers";
+import { saveReport } from "./save-report";
+import type { SaveReportConfig, SaveReportDeps } from "./saver-types";
 
 describe("saveReport", () => {
   const mockCallLlm = vi.fn<(prompt: string, maxTokens?: number) => Promise<string>>();

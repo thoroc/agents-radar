@@ -4,7 +4,7 @@ import type { RepoDigest } from "../prompts";
 
 const mockCallLlm = vi.fn<(prompt: string) => Promise<string>>();
 
-vi.mock("../report", () => ({
+vi.mock("../call-llm", () => ({
   callLlm: mockCallLlm,
 }));
 
