@@ -6,6 +6,7 @@ social/
 !src/social/
 !src/notifications/social/
 coverage/
+.aislopt/
 .claude/skills/
 .codex/
 .cursor/
