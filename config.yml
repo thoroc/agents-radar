@@ -2,7 +2,24 @@
 # Edit this file to customize which repositories are tracked.
 # Changes take effect on the next workflow run.
 
-languages: ["en", "zh"]
+# ── General settings ───────────────────────────────────────────────────────────
+# Default languages for content parsing and fallback. Set to "en" for English-only.
+# The system will attempt to parse content in the primary language first, then
+# fallback to the secondary language if parsing fails or content is unavailable.
+# If the fallback language is the same as the primary, it will be ignored and only the
+# primary language will be used.
+# If the fallback language is ommitted or set to null, only the primary language will be used.
+
+default_primary_language: "en-US"
+default_fallback_language: "en-US"
+
+# Supported languages for parsing and analysis. Repositories with content in these languages
+# will be included in the digest. Set to an empty list to include all languages.
+# Examples: ["en"], ["en", "zh"].
+# To add support for a new language, add it to this list and ensure the related local is available
+# under ./locales for content parsing and analysis.
+
+languages: ["en-US", "zh-CN"]
 
 # ── Schedule configuration ─────────────────────────────────────────────────────
 # Each digest type can be enabled/disabled and given a custom cron expression.

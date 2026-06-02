@@ -1,12 +1,13 @@
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
-import { loadConfig } from "../utils";
+import { getEnabledLangs, loadConfig } from "../utils";
 import { cronMatch } from "../utils/cron";
 
 dotenvx.config({ quiet: true });
 
 const main = async (): Promise<void> => {
-  const { schedules } = loadConfig();
+  const { languages: configLangs, schedules } = loadConfig();
+  const enabledLangs = getEnabledLangs(configLangs);
   const now = DateTime.now().toUTC();
 
   if (schedules.daily.enabled && cronMatch(schedules.daily.cron, now)) {
@@ -18,13 +19,13 @@ const main = async (): Promise<void> => {
   if (schedules.weekly.enabled && cronMatch(schedules.weekly.cron, now)) {
     console.error(`[scheduler] Weekly rollup due at ${now.toISO()}`);
     const { runWeeklyRollup } = await import("../rollup/run-weekly-rollup");
-    await runWeeklyRollup();
+    await runWeeklyRollup(undefined, undefined, enabledLangs);
   }
 
   if (schedules.monthly.enabled && cronMatch(schedules.monthly.cron, now)) {
     console.error(`[scheduler] Monthly rollup due at ${now.toISO()}`);
     const { runMonthlyRollup } = await import("../rollup/run-monthly-rollup");
-    await runMonthlyRollup();
+    await runMonthlyRollup(undefined, undefined, enabledLangs);
   }
 
   console.error("[scheduler] Done!");

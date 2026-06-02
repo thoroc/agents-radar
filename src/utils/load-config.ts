@@ -2,7 +2,12 @@ import fs from "node:fs";
 import path from "node:path";
 import yaml from "js-yaml";
 import type { RepoConfig } from "../github";
-import { DEFAULT_LANGUAGES } from "./locale-data";
+import {
+  DEFAULT_FALLBACK_LANGUAGE,
+  DEFAULT_LANGUAGES,
+  DEFAULT_PRIMARY_LANGUAGE,
+  toBcp47,
+} from "./locale-data";
 import { toRepoConfig } from "./to-repo-config";
 
 interface RawRepoEntry {
@@ -24,6 +29,8 @@ interface RawSchedules {
 }
 
 interface RawConfig {
+  default_primary_language?: string;
+  default_fallback_language?: string;
   languages?: string[];
   cli_repos?: RawRepoEntry[];
   skills_repo?: string;
@@ -50,6 +57,8 @@ export interface RadarConfig {
   openclaw: RepoConfig;
   openclawPeers: RepoConfig[];
   languages: string[];
+  defaultPrimaryLanguage: string;
+  defaultFallbackLanguage: string;
   schedules: ScheduleConfig;
 }
 
@@ -99,6 +108,8 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       openclaw: DEFAULT_OPENCLAW,
       openclawPeers: DEFAULT_OPENCLAW_PEERS,
       languages: DEFAULT_LANGUAGES,
+      defaultPrimaryLanguage: DEFAULT_PRIMARY_LANGUAGE,
+      defaultFallbackLanguage: DEFAULT_FALLBACK_LANGUAGE,
       schedules: DEFAULT_SCHEDULES,
     };
   }
@@ -143,5 +154,22 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       `${languages.length} languages`,
   );
 
-  return { cliRepos, skillsRepo, openclaw, openclawPeers, languages, schedules };
+  const defaultPrimaryLanguage = raw?.default_primary_language
+    ? toBcp47(raw.default_primary_language)
+    : DEFAULT_PRIMARY_LANGUAGE;
+
+  const defaultFallbackLanguage = raw?.default_fallback_language
+    ? toBcp47(raw.default_fallback_language)
+    : DEFAULT_FALLBACK_LANGUAGE;
+
+  return {
+    cliRepos,
+    skillsRepo,
+    openclaw,
+    openclawPeers,
+    languages,
+    defaultPrimaryLanguage,
+    defaultFallbackLanguage,
+    schedules,
+  };
 };

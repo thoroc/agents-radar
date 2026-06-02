@@ -56,3 +56,29 @@ export const DEFAULT_LANGUAGES: string[] = ["en-US", "zh-CN"];
 export const DEFAULT_PRIMARY_LANGUAGE = "zh-CN";
 
 export const DEFAULT_FALLBACK_LANGUAGE = "en-US";
+
+const TWO_TO_BCP47: Record<string, string> = {
+  ar: "ar-SA",
+  bn: "bn-BD",
+  de: "de-DE",
+  en: "en-US",
+  es: "es-ES",
+  fr: "fr-FR",
+  hi: "hi-IN",
+  id: "id-ID",
+  it: "it-IT",
+  ja: "ja-JP",
+  ko: "ko-KR",
+  nl: "nl-NL",
+  pl: "pl-PL",
+  pt: "pt-BR",
+  ro: "ro-RO",
+  ru: "ru-RU",
+  th: "th-TH",
+  tr: "tr-TR",
+  uk: "uk-UA",
+  vi: "vi-VN",
+  zh: "zh-CN",
+};
+
+export const toBcp47 = (code: string): string => TWO_TO_BCP47[code] ?? code;

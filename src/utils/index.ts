@@ -1,7 +1,15 @@
 export type { Locale } from "../types/locale";
 export { getEnabledLangs } from "./get-enabled-langs";
 export { loadConfig, type RadarConfig, type ScheduleConfig } from "./load-config";
-export { DEFAULT_LANGUAGES, LANGUAGE_NAMES, STRINGS, SUPPORTED_LOCALES } from "./locale-data";
+export {
+  DEFAULT_FALLBACK_LANGUAGE,
+  DEFAULT_LANGUAGES,
+  DEFAULT_PRIMARY_LANGUAGE,
+  LANGUAGE_NAMES,
+  STRINGS,
+  SUPPORTED_LOCALES,
+  toBcp47,
+} from "./locale-data";
 export {
   type LocaleData,
   LocaleDataSchema,

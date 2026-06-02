@@ -89,18 +89,18 @@ describe("runMonthlyRollup", () => {
     vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([`${monthStr}-01`, `${monthStr}-08`]);
     await runMonthlyRollup("", {});
     expect(generateRollupHighlightsModule.generateRollupHighlights).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.any(String),
+      expect.any(Object),
       "ai-monthly",
       "2026-04-01",
       6,
+      expect.any(Array),
     );
   });
 
   it("creates GitHub issue when digestRepo is provided", async () => {
     vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([`${monthStr}-01`]);
     await runMonthlyRollup("owner/repo", {});
-    expect(githubModule.createGitHubIssue).toHaveBeenCalledOnce();
+    expect(githubModule.createGitHubIssue).toHaveBeenCalledTimes(2);
   });
 
   it("skips GitHub issue when digestRepo is empty", async () => {

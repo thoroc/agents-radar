@@ -1,6 +1,7 @@
 import type { RepoConfig, RepoFetch } from "../github";
 import { buildComparisonPrompt, buildPeersComparisonPrompt, type RepoDigest } from "../prompts";
 import { callLlm } from "../report/call-llm";
+import type { Locale } from "../utils";
 
 export type ComparisonsByLang = Record<string, string>;
 export type PeersComparisonsByLang = Record<string, string>;
@@ -33,33 +34,31 @@ const makeOpenclawDigest = (openclaw: RepoConfig, fetched: RepoFetch, summary: s
 
 export const generateComparisons = async (input: ComparisonsInput): Promise<ComparisonsResult> => {
   const { summariesByLang, fetchedOpenclaw, openclaw, dateStr } = input;
+  const langKeys = Object.keys(summariesByLang);
 
   const makeDigest = (lang: string): RepoDigest =>
     makeOpenclawDigest(openclaw, fetchedOpenclaw, summariesByLang[lang]!.openclawSummary);
 
-  const [zhComparison, zhPeersComparison, enComparison, enPeersComparison] = await Promise.all([
-    callLlm(buildComparisonPrompt(summariesByLang["zh-CN"]!.cliDigests, dateStr, "zh-CN")),
-    callLlm(
-      buildPeersComparisonPrompt(
-        makeDigest("zh-CN"),
-        summariesByLang["zh-CN"]!.peerDigests,
-        dateStr,
-        "zh-CN",
+  const results = await Promise.all(
+    langKeys.flatMap((lang) => [
+      callLlm(buildComparisonPrompt(summariesByLang[lang]!.cliDigests, dateStr, lang as Locale)),
+      callLlm(
+        buildPeersComparisonPrompt(
+          makeDigest(lang),
+          summariesByLang[lang]!.peerDigests,
+          dateStr,
+          lang as Locale,
+        ),
       ),
-    ),
-    callLlm(buildComparisonPrompt(summariesByLang["en-US"]!.cliDigests, dateStr, "en-US")),
-    callLlm(
-      buildPeersComparisonPrompt(
-        makeDigest("en-US"),
-        summariesByLang["en-US"]!.peerDigests,
-        dateStr,
-        "en-US",
-      ),
-    ),
-  ]);
+    ]),
+  );
 
-  return {
-    comparisonByLang: { "zh-CN": zhComparison, "en-US": enComparison },
-    peersComparisonByLang: { "zh-CN": zhPeersComparison, "en-US": enPeersComparison },
-  };
+  const comparisonByLang: ComparisonsByLang = {};
+  const peersComparisonByLang: PeersComparisonsByLang = {};
+  for (let i = 0; i < langKeys.length; i++) {
+    comparisonByLang[langKeys[i]!] = results[i * 2]!;
+    peersComparisonByLang[langKeys[i]!] = results[i * 2 + 1]!;
+  }
+
+  return { comparisonByLang, peersComparisonByLang };
 };
