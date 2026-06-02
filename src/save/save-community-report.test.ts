@@ -1,16 +1,17 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-const mockSaveDataSourceReport = vi.fn();
-vi.mock("./save-data-source-report", () => ({
-  saveDataSourceReport: mockSaveDataSourceReport,
-}));
-
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { saveCommunityReport } from "./save-community-report";
+import * as saveDataSourceReportModule from "./save-data-source-report";
 
 describe("saveCommunityReport", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(saveDataSourceReportModule, "saveDataSourceReport").mockResolvedValue(undefined);
   });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   const devtoData = {
     articles: [
       {
@@ -55,8 +56,9 @@ describe("saveCommunityReport", () => {
       "en",
     );
 
-    expect(mockSaveDataSourceReport).toHaveBeenCalledOnce();
-    const opts = mockSaveDataSourceReport.mock.calls[0]![0] as Record<string, unknown>;
+    expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
+    const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
+      .calls[0]![0] as Record<string, unknown>;
 
     expect(opts.fileName).toBe("ai-community");
     expect(opts.hasData).toBe(true);
@@ -94,8 +96,9 @@ describe("saveCommunityReport", () => {
       "zh",
     );
 
-    expect(mockSaveDataSourceReport).toHaveBeenCalledOnce();
-    const opts = mockSaveDataSourceReport.mock.calls[0]![0] as Record<string, unknown>;
+    expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
+    const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
+      .calls[0]![0] as Record<string, unknown>;
     expect(opts.hasData).toBe(true);
   });
 
@@ -113,8 +116,9 @@ describe("saveCommunityReport", () => {
       "zh",
     );
 
-    expect(mockSaveDataSourceReport).toHaveBeenCalledOnce();
-    const opts = mockSaveDataSourceReport.mock.calls[0]![0] as Record<string, unknown>;
+    expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
+    const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
+      .calls[0]![0] as Record<string, unknown>;
     expect(opts.hasData).toBe(false);
   });
 });

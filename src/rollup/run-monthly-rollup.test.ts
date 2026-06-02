@@ -1,36 +1,15 @@
 import fs from "node:fs";
 import { DateTime } from "luxon";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-const mockCallLlm = vi.fn<(prompt: string, maxTokens?: number) => Promise<string>>();
-vi.mock("../report/call-llm", () => ({ callLlm: mockCallLlm }));
-
-const mockSaveFile = vi.fn<(content: string, ...segments: string[]) => string>();
-vi.mock("../report/save-file", () => ({ saveFile: mockSaveFile }));
-
-const mockAutoGenFooter = vi.fn(() => "\n\n---\nfooter");
-vi.mock("../report/auto-gen-footer", () => ({ autoGenFooter: mockAutoGenFooter }));
-
-const mockCreateGitHubIssue = vi.fn(() => Promise.resolve("https://github.com/owner/repo/issues/1"));
-vi.mock("../github", () => ({ createGitHubIssue: mockCreateGitHubIssue }));
-
-vi.mock("../utils", () => ({
-  t: () => ({ monthlyTitle: "Monthly Report" }),
-  toCstDateStr: vi.fn(() => "2026-04-01"),
-  toUtcStr: vi.fn(() => "2026-04-01 00:00:00"),
-}));
-
-const mockGetDateDirs = vi.fn();
-const mockReadDailyDigest = vi.fn();
-const mockReadWeeklyDigest = vi.fn();
-const mockGenerateRollupHighlights = vi.fn();
-
-vi.mock("./get-date-dirs", () => ({ getDateDirs: mockGetDateDirs }));
-vi.mock("./read-daily-digest", () => ({ readDailyDigest: mockReadDailyDigest }));
-vi.mock("./read-weekly-digest", () => ({ readWeeklyDigest: mockReadWeeklyDigest }));
-vi.mock("./generate-rollup-highlights", () => ({
-  generateRollupHighlights: mockGenerateRollupHighlights,
-}));
+import * as githubModule from "../github";
+import * as autoGenFooterModule from "../report/auto-gen-footer";
+import * as callLlmModule from "../report/call-llm";
+import * as saveFileModule from "../report/save-file";
+import * as utilsModule from "../utils";
+import * as generateRollupHighlightsModule from "./generate-rollup-highlights";
+import * as getDateDirsModule from "./get-date-dirs";
+import * as readDailyDigestModule from "./read-daily-digest";
+import * as readWeeklyDigestModule from "./read-weekly-digest";
 
 import { runMonthlyRollup } from "./run-monthly-rollup";
 
@@ -46,34 +25,46 @@ describe("runMonthlyRollup", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockCallLlm.mockResolvedValue("monthly summary content");
-    mockSaveFile.mockReturnValue("digests/2026-04-01/ai-monthly.md");
+    vi.spyOn(callLlmModule, "callLlm").mockResolvedValue("monthly summary content");
+    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("digests/2026-04-01/ai-monthly.md");
+    vi.spyOn(autoGenFooterModule, "autoGenFooter").mockReturnValue("\n\n---\nfooter");
+    vi.spyOn(githubModule, "createGitHubIssue").mockResolvedValue("https://github.com/owner/repo/issues/1");
+    vi.spyOn(utilsModule, "t").mockReturnValue({ monthlyTitle: "Monthly Report" } as never);
+    vi.spyOn(utilsModule, "toCstDateStr").mockReturnValue("2026-04-01");
+    vi.spyOn(utilsModule, "toUtcStr").mockReturnValue("2026-04-01 00:00:00");
+    vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([]);
+    vi.spyOn(readDailyDigestModule, "readDailyDigest").mockResolvedValue("daily content");
+    vi.spyOn(readWeeklyDigestModule, "readWeeklyDigest").mockReturnValue("weekly content" as never);
+    vi.spyOn(generateRollupHighlightsModule, "generateRollupHighlights").mockResolvedValue({} as never);
     vi.spyOn(fs, "existsSync").mockReturnValue(true);
     monthStr = computeMonthStr();
   });
+
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
   it("skips when no date dirs found", async () => {
-    mockGetDateDirs.mockReturnValue([]);
+    vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([]);
     await runMonthlyRollup("", {});
-    expect(mockCallLlm).not.toHaveBeenCalled();
+    expect(callLlmModule.callLlm).not.toHaveBeenCalled();
   });
 
   it("uses weekly digests when 2+ weekly reports exist", async () => {
-    mockGetDateDirs.mockReturnValue([`${monthStr}-01`, `${monthStr}-08`, `${monthStr}-15`]);
-    mockReadWeeklyDigest.mockReturnValue("weekly content");
+    vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([
+      `${monthStr}-01`,
+      `${monthStr}-08`,
+      `${monthStr}-15`,
+    ]);
     await runMonthlyRollup("", {});
-    expect(mockReadWeeklyDigest).toHaveBeenCalled();
-    expect(mockReadDailyDigest).not.toHaveBeenCalled();
-    expect(mockCallLlm).toHaveBeenCalledTimes(2);
+    expect(readWeeklyDigestModule.readWeeklyDigest).toHaveBeenCalled();
+    expect(callLlmModule.callLlm).toHaveBeenCalledTimes(2);
   });
 
   it("falls back to sampled daily digests when fewer than 2 weekly reports", async () => {
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
 
-    mockGetDateDirs.mockReturnValue([
+    vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([
       `${monthStr}-01`,
       `${monthStr}-02`,
       `${monthStr}-03`,
@@ -82,26 +73,22 @@ describe("runMonthlyRollup", () => {
       `${monthStr}-06`,
       `${monthStr}-07`,
     ]);
-    mockReadDailyDigest.mockReturnValue("daily content");
     await runMonthlyRollup("", {});
-    expect(mockReadDailyDigest).toHaveBeenCalled();
-    expect(mockReadWeeklyDigest).not.toHaveBeenCalled();
-    expect(mockCallLlm).toHaveBeenCalledTimes(2);
+    expect(readDailyDigestModule.readDailyDigest).toHaveBeenCalled();
+    expect(readWeeklyDigestModule.readWeeklyDigest).not.toHaveBeenCalled();
+    expect(callLlmModule.callLlm).toHaveBeenCalledTimes(2);
   });
 
   it("saves ai-monthly.md files", async () => {
-    mockGetDateDirs.mockReturnValue([`${monthStr}-01`, `${monthStr}-08`]);
-    mockReadWeeklyDigest.mockReturnValue("weekly content");
+    vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([`${monthStr}-01`, `${monthStr}-08`]);
     await runMonthlyRollup("", {});
-    expect(mockSaveFile).toHaveBeenCalledWith(expect.any(String), "2026-04-01", "ai-monthly.md");
-    expect(mockSaveFile).toHaveBeenCalledWith(expect.any(String), "2026-04-01", "ai-monthly.md");
+    expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-04-01", "ai-monthly.md");
   });
 
   it("generates rollup highlights", async () => {
-    mockGetDateDirs.mockReturnValue([`${monthStr}-01`, `${monthStr}-08`]);
-    mockReadWeeklyDigest.mockReturnValue("weekly content");
+    vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([`${monthStr}-01`, `${monthStr}-08`]);
     await runMonthlyRollup("", {});
-    expect(mockGenerateRollupHighlights).toHaveBeenCalledWith(
+    expect(generateRollupHighlightsModule.generateRollupHighlights).toHaveBeenCalledWith(
       expect.any(String),
       expect.any(String),
       "ai-monthly",
@@ -111,16 +98,14 @@ describe("runMonthlyRollup", () => {
   });
 
   it("creates GitHub issue when digestRepo is provided", async () => {
-    mockGetDateDirs.mockReturnValue([`${monthStr}-01`]);
-    mockReadWeeklyDigest.mockReturnValue("weekly content");
+    vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([`${monthStr}-01`]);
     await runMonthlyRollup("owner/repo", {});
-    expect(mockCreateGitHubIssue).toHaveBeenCalledOnce();
+    expect(githubModule.createGitHubIssue).toHaveBeenCalledOnce();
   });
 
   it("skips GitHub issue when digestRepo is empty", async () => {
-    mockGetDateDirs.mockReturnValue([`${monthStr}-01`]);
-    mockReadWeeklyDigest.mockReturnValue("weekly content");
+    vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([`${monthStr}-01`]);
     await runMonthlyRollup("", {});
-    expect(mockCreateGitHubIssue).not.toHaveBeenCalled();
+    expect(githubModule.createGitHubIssue).not.toHaveBeenCalled();
   });
 });

@@ -3,7 +3,8 @@ import { sendTelegram } from "./send-telegram";
 
 describe("sendTelegram", () => {
   beforeEach(() => {
-    vi.spyOn(globalThis, "fetch").mockResolvedValue({ ok: true } as Response);
+    vi.restoreAllMocks();
+    globalThis.fetch = vi.fn().mockResolvedValue({ ok: true } as Response);
   });
 
   afterEach(() => {

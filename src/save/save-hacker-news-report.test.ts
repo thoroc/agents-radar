@@ -1,17 +1,18 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const mockSaveDataSourceReport = vi.fn();
-vi.mock("./save-data-source-report", () => ({
-  saveDataSourceReport: mockSaveDataSourceReport,
-  buildSourceHeader: vi.fn(),
-}));
-
+import * as saveDataSourceReportModule from "./save-data-source-report";
 import { saveHackerNewsReport } from "./save-hacker-news-report";
 
 describe("saveHnReport", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(saveDataSourceReportModule, "saveDataSourceReport").mockResolvedValue(undefined);
   });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   const data = {
     stories: [
       {
@@ -31,8 +32,9 @@ describe("saveHnReport", () => {
   it("calls saveDataSourceReport with hn config", async () => {
     await saveHackerNewsReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en");
 
-    expect(mockSaveDataSourceReport).toHaveBeenCalledOnce();
-    const opts = mockSaveDataSourceReport.mock.calls[0]![0] as Record<string, unknown>;
+    expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
+    const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
+      .calls[0]![0] as Record<string, unknown>;
 
     expect(opts.fileName).toBe("ai-hn");
     expect(opts.hasData).toBe(true);
@@ -48,8 +50,9 @@ describe("saveHnReport", () => {
 
     await saveHackerNewsReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh");
 
-    expect(mockSaveDataSourceReport).toHaveBeenCalledOnce();
-    const opts = mockSaveDataSourceReport.mock.calls[0]![0] as Record<string, unknown>;
+    expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
+    const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
+      .calls[0]![0] as Record<string, unknown>;
     expect(opts.hasData).toBe(false);
   });
 });

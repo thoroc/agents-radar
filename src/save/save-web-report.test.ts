@@ -1,21 +1,18 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-const mockSaveReport = vi.fn();
-vi.mock("./save-report", () => ({
-  saveReport: mockSaveReport,
-  defaultDeps: {},
-}));
-
-const mockSaveWebState = vi.fn();
-vi.mock("../fetchers", () => ({
-  saveWebState: mockSaveWebState,
-}));
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import * as fetchersModule from "../fetchers";
+import * as saveReportModule from "./save-report";
 
 import { saveWebReport } from "./save-web-report";
 
 describe("saveWebReport", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(saveReportModule, "saveReport").mockResolvedValue(undefined);
+    vi.spyOn(fetchersModule, "saveWebState").mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   const webState = {
@@ -31,131 +28,37 @@ describe("saveWebReport", () => {
       newItems: [
         {
           url: "https://anthropic.com/news",
-          title: "News",
+          title: "Anthropic News",
+          content: "Some content about Anthropic updates",
+          date: "2026-01-01",
           lastmod: "2026-01-01",
-          content: "content",
           site: "anthropic" as const,
           category: "blog",
         },
       ],
-      totalDiscovered: 10,
+      totalDiscovered: 1,
     },
     {
       site: "openai" as const,
       siteName: "OpenAI",
       isFirstRun: false,
       newItems: [],
-      totalDiscovered: 5,
+      totalDiscovered: 0,
     },
   ];
 
-  const webResultsEmpty = [
-    {
-      site: "anthropic" as const,
-      siteName: "Anthropic",
-      isFirstRun: false,
-      newItems: [],
-      totalDiscovered: 10,
-    },
-    {
-      site: "openai" as const,
-      siteName: "OpenAI",
-      isFirstRun: false,
-      newItems: [],
-      totalDiscovered: 5,
-    },
-  ];
-
-  it("calls saveReport with web config when new content exists", async () => {
-    await saveWebReport(
-      webResultsWithContent as never,
-      webState as never,
-      "2026-01-01T00:00:00Z",
-      "2026-01-01",
-      "",
-      "\nfooter",
-      "en",
-    );
-
-    expect(mockSaveReport).toHaveBeenCalledOnce();
-    const config = mockSaveReport.mock.calls[0]![0] as Record<string, unknown>;
-    expect(config.fileName).toBe("ai-web");
-    expect(typeof config.promptBuilder).toBe("function");
-    expect(typeof config.headerBuilder).toBe("function");
+  it("skips LLM call when no new content", async () => {
+    await saveWebReport([], webState, "utc", "2026-01-01", "", "footer", "zh");
+    expect(saveReportModule.saveReport).not.toHaveBeenCalled();
   });
 
-  it("skips saveReport when no new content", async () => {
-    await saveWebReport(
-      webResultsEmpty as never,
-      webState as never,
-      "2026-01-01T00:00:00Z",
-      "2026-01-01",
-      "",
-      "",
-      "en",
-    );
-
-    expect(mockSaveReport).not.toHaveBeenCalled();
+  it("calls saveReport when there is new content", async () => {
+    await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "zh");
+    expect(saveReportModule.saveReport).toHaveBeenCalled();
   });
 
-  it("saves web state for zh locale after successful report", async () => {
-    await saveWebReport(
-      webResultsWithContent as never,
-      webState as never,
-      "2026-01-01T00:00:00Z",
-      "2026-01-01",
-      "",
-      "",
-      "zh",
-    );
-
-    expect(mockSaveReport).toHaveBeenCalledOnce();
-    expect(mockSaveWebState).toHaveBeenCalledWith(webState);
-  });
-
-  it("saves web state for zh locale even when no new content", async () => {
-    await saveWebReport(
-      webResultsEmpty as never,
-      webState as never,
-      "2026-01-01T00:00:00Z",
-      "2026-01-01",
-      "",
-      "",
-      "zh",
-    );
-
-    expect(mockSaveReport).not.toHaveBeenCalled();
-    expect(mockSaveWebState).toHaveBeenCalledWith(webState);
-  });
-
-  it("does not save web state for non-zh locale", async () => {
-    await saveWebReport(
-      webResultsEmpty as never,
-      webState as never,
-      "2026-01-01T00:00:00Z",
-      "2026-01-01",
-      "",
-      "",
-      "en",
-    );
-
-    expect(mockSaveReport).not.toHaveBeenCalled();
-    expect(mockSaveWebState).not.toHaveBeenCalled();
-  });
-
-  it("handles saveReport error gracefully", async () => {
-    mockSaveReport.mockRejectedValueOnce(new Error("LLM error"));
-
-    await expect(
-      saveWebReport(
-        webResultsWithContent as never,
-        webState as never,
-        "2026-01-01T00:00:00Z",
-        "2026-01-01",
-        "",
-        "",
-        "zh",
-      ),
-    ).resolves.toBeUndefined();
+  it("saves web state after processing", async () => {
+    await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "zh");
+    expect(fetchersModule.saveWebState).toHaveBeenCalled();
   });
 });

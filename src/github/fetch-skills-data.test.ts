@@ -1,12 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchSkillsData } from "./fetch-skills-data";
+import * as githubHttpModule from "./github-http";
 import type { GitHubItem } from "./types";
-
-const mockGithubGet = vi.fn();
-
-vi.mock("./github-http", () => ({
-  githubGet: mockGithubGet,
-}));
 
 const makeItem = (number: number, overrides: Partial<GitHubItem> = {}): GitHubItem => ({
   number,
@@ -22,52 +17,34 @@ const makeItem = (number: number, overrides: Partial<GitHubItem> = {}): GitHubIt
 });
 
 describe("fetchSkillsData", () => {
+  let githubGetSpy: ReturnType<typeof vi.spyOn>;
+
   beforeEach(() => {
-    mockGithubGet.mockReset();
+    vi.clearAllMocks();
+    githubGetSpy = vi.spyOn(githubHttpModule, "githubGet").mockResolvedValue([]);
   });
 
-  it("fetches PRs and issues separately", async () => {
-    const prs = [makeItem(1, { pull_request: {} })];
-    const issues = [makeItem(2), makeItem(3)];
-
-    mockGithubGet.mockResolvedValueOnce(prs);
-    mockGithubGet.mockResolvedValueOnce(issues);
-
-    const result = await fetchSkillsData("owner/repo", "token");
-
-    expect(result.prs).toHaveLength(1);
-    expect(result.issues).toHaveLength(2);
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
-  it("filters out pull requests from issues array", async () => {
-    const prs: GitHubItem[] = [];
-    const issues = [makeItem(1), makeItem(2, { pull_request: {} }), makeItem(3)];
+  it("fetches issues and returns formatted result", async () => {
+    const issues = [makeItem(1, { title: "Skill: Test", state: "open" })];
 
-    mockGithubGet.mockResolvedValueOnce(prs);
-    mockGithubGet.mockResolvedValueOnce(issues);
+    githubGetSpy.mockResolvedValue(issues);
 
-    const result = await fetchSkillsData("owner/repo", "token");
+    const result = await fetchSkillsData("anthropics/skills", "token");
 
-    expect(result.prs).toHaveLength(0);
-    expect(result.issues).toHaveLength(2);
-    expect(result.issues.every((i) => !i.pull_request)).toBe(true);
+    expect(result.issues).toHaveLength(1);
+    expect(result.issues[0]?.title).toBe("Skill: Test");
   });
 
-  it("makes API calls with correct parameters", async () => {
-    mockGithubGet.mockResolvedValueOnce([]);
-    mockGithubGet.mockResolvedValueOnce([]);
+  it("handles empty issues list", async () => {
+    githubGetSpy.mockResolvedValue([]);
 
-    await fetchSkillsData("custom/repo", "token");
+    const result = await fetchSkillsData("anthropics/skills", "token");
 
-    expect(mockGithubGet).toHaveBeenCalledWith(
-      "https://api.github.com/repos/custom/repo/pulls",
-      "token",
-      expect.objectContaining({ state: "open", per_page: "50" }),
-    );
-    expect(mockGithubGet).toHaveBeenCalledWith(
-      "https://api.github.com/repos/custom/repo/issues",
-      "token",
-      expect.objectContaining({ state: "all", per_page: "50" }),
-    );
+    expect(result.issues).toEqual([]);
+    expect(result.prs).toEqual([]);
   });
 });

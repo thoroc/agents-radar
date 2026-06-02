@@ -1,25 +1,26 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-vi.mock("../utils", () => ({
-  t: (lang: string) =>
-    lang === "en"
-      ? {
-          reportLabelAiCliEn: "AI CLI (EN)",
-          reportLabelAiAgentsEn: "AI Agents (EN)",
-          reportLabelAiHnEn: "HN (EN)",
-        }
-      : {
-          reportLabelAiCli: "AI CLI",
-          reportLabelAiAgents: "AI Agents",
-          reportLabelAiHn: "HN",
-        },
-}));
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import * as utilsModule from "../utils";
 
 import { reportLabel } from "./report-label";
 
 describe("reportLabel", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(utilsModule, "t").mockImplementation(
+      (_lang) =>
+        ({
+          reportLabelAiCliEn: "AI CLI (EN)",
+          reportLabelAiAgentsEn: "AI Agents (EN)",
+          reportLabelAiHnEn: "HN (EN)",
+          reportLabelAiCli: "AI CLI",
+          reportLabelAiAgents: "AI Agents",
+          reportLabelAiHn: "HN",
+        }) as ReturnType<typeof utilsModule.t>,
+    );
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("returns zh label for ai-cli", () => {

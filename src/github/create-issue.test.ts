@@ -1,19 +1,17 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-const mockEnsureLabel = vi.fn().mockResolvedValue(undefined);
-
-vi.mock("./ensure-label", () => ({
-  ensureLabel: mockEnsureLabel,
-}));
-
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createGitHubIssue } from "./create-issue";
+import * as ensureLabelModule from "./ensure-label";
 
 const mockFetch = vi.fn();
 
 beforeEach(() => {
   mockFetch.mockReset();
-  mockEnsureLabel.mockClear();
   globalThis.fetch = mockFetch;
+  vi.spyOn(ensureLabelModule, "ensureLabel").mockResolvedValue(undefined);
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
 });
 
 describe("createGitHubIssue", () => {
@@ -32,7 +30,7 @@ describe("createGitHubIssue", () => {
     );
 
     expect(result).toBe("https://github.com/owner/repo/issues/42");
-    expect(mockEnsureLabel).toHaveBeenCalledWith("digest-en", "1d76db", "token", "owner/repo");
+    expect(ensureLabelModule.ensureLabel).toHaveBeenCalledWith("digest-en", "1d76db", "token", "owner/repo");
   });
 
   it("ensures the label before creating the issue", async () => {
@@ -43,7 +41,7 @@ describe("createGitHubIssue", () => {
 
     await createGitHubIssue("Title", "Body", "openclaw", "token", "owner/repo");
 
-    expect(mockEnsureLabel).toHaveBeenCalledWith("openclaw", "e11d48", "token", "owner/repo");
+    expect(ensureLabelModule.ensureLabel).toHaveBeenCalledWith("openclaw", "e11d48", "token", "owner/repo");
     expect(mockFetch).toHaveBeenCalledTimes(1);
   });
 

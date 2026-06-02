@@ -1,10 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-const mockCloseStaleIssues = vi.fn<(days: number) => Promise<number>>();
-
-vi.mock("../github", () => ({
-  closeStaleIssues: mockCloseStaleIssues,
-}));
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import * as githubModule from "../github";
 
 vi.mock("@dotenvx/dotenvx", () => ({
   default: { config: vi.fn() },
@@ -15,12 +10,16 @@ import { closeStaleIssuesAction } from "./action";
 describe("closeStaleIssuesAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockCloseStaleIssues.mockResolvedValue(5);
+    vi.spyOn(githubModule, "closeStaleIssues").mockResolvedValue(5);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("calls closeStaleIssues with 7 days", async () => {
     await closeStaleIssuesAction({ verbosity: 0 });
-    expect(mockCloseStaleIssues).toHaveBeenCalledWith(7);
+    expect(githubModule.closeStaleIssues).toHaveBeenCalledWith(7);
   });
 
   it("logs the number of closed issues", async () => {

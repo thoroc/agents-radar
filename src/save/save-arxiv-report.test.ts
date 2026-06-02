@@ -1,17 +1,17 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-const mockSaveDataSourceReport = vi.fn();
-vi.mock("./save-data-source-report", () => ({
-  saveDataSourceReport: mockSaveDataSourceReport,
-  buildSourceHeader: vi.fn(),
-}));
-
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { saveArxivReport } from "./save-arxiv-report";
+import * as saveDataSourceReportModule from "./save-data-source-report";
 
 describe("saveArxivReport", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(saveDataSourceReportModule, "saveDataSourceReport").mockResolvedValue(undefined);
   });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   const data = {
     papers: [
       {
@@ -32,8 +32,9 @@ describe("saveArxivReport", () => {
   it("calls saveDataSourceReport with arxiv config", async () => {
     await saveArxivReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en");
 
-    expect(mockSaveDataSourceReport).toHaveBeenCalledOnce();
-    const opts = mockSaveDataSourceReport.mock.calls[0]![0] as Record<string, unknown>;
+    expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
+    const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
+      .calls[0]![0] as Record<string, unknown>;
 
     expect(opts.fileName).toBe("ai-arxiv");
     expect(opts.hasData).toBe(true);
@@ -49,8 +50,9 @@ describe("saveArxivReport", () => {
 
     await saveArxivReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh");
 
-    expect(mockSaveDataSourceReport).toHaveBeenCalledOnce();
-    const opts = mockSaveDataSourceReport.mock.calls[0]![0] as Record<string, unknown>;
+    expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
+    const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
+      .calls[0]![0] as Record<string, unknown>;
     expect(opts.hasData).toBe(false);
   });
 });

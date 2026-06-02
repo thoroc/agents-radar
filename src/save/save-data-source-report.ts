@@ -1,5 +1,4 @@
 import type { Locale } from "../types";
-import { buildSourceHeader } from "./build-source-header";
 import { defaultDeps, saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
 

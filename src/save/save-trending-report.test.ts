@@ -1,16 +1,16 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const mockSaveReport = vi.fn();
-vi.mock("./save-report", () => ({
-  saveReport: mockSaveReport,
-  defaultDeps: {},
-}));
-
+import * as saveReportModule from "./save-report";
 import { saveTrendingReport } from "./save-trending-report";
 
 describe("saveTrendingReport", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(saveReportModule, "saveReport").mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   const data = {
@@ -40,8 +40,11 @@ describe("saveTrendingReport", () => {
       "en",
     );
 
-    expect(mockSaveReport).toHaveBeenCalledOnce();
-    const config = mockSaveReport.mock.calls[0]![0] as Record<string, unknown>;
+    expect(saveReportModule.saveReport).toHaveBeenCalledOnce();
+    const config = (saveReportModule.saveReport as ReturnType<typeof vi.fn>).mock.calls[0]![0] as Record<
+      string,
+      unknown
+    >;
     expect(config.fileName).toBe("ai-trending");
     expect(typeof config.promptBuilder).toBe("function");
     expect(typeof config.headerBuilder).toBe("function");
@@ -52,6 +55,6 @@ describe("saveTrendingReport", () => {
 
     await saveTrendingReport(emptyData as never, "", "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh");
 
-    expect(mockSaveReport).not.toHaveBeenCalled();
+    expect(saveReportModule.saveReport).not.toHaveBeenCalled();
   });
 });

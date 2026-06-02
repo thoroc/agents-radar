@@ -1,11 +1,8 @@
 import fs from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const mockCallLlm = vi.fn<(prompt: string, maxTokens?: number) => Promise<string>>();
-vi.mock("../report/call-llm", () => ({ callLlm: mockCallLlm }));
-
-const mockSaveFile = vi.fn<(content: string, ...segments: string[]) => string>();
-vi.mock("../report/save-file", () => ({ saveFile: mockSaveFile }));
+import * as callLlmModule from "../report/call-llm";
+import * as saveFileModule from "../report/save-file";
 
 import { generateRollupHighlights } from "./generate-rollup-highlights";
 import { getDateDirs } from "./get-date-dirs";
@@ -93,8 +90,8 @@ describe("readWeeklyDigest", () => {
 describe("generateRollupHighlights", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockCallLlm.mockResolvedValue('{"ai-cli":["test highlight"]}');
-    mockSaveFile.mockReturnValue("digests/2026-03-09/highlights.json");
+    vi.spyOn(callLlmModule, "callLlm").mockResolvedValue('{"ai-cli":["test highlight"]}');
+    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("digests/2026-03-09/highlights.json");
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
   });
   afterEach(() => {
@@ -103,16 +100,16 @@ describe("generateRollupHighlights", () => {
 
   it("calls callLlm for zh and en", async () => {
     await generateRollupHighlights("ZH CONTENT", "EN CONTENT", "ai-cli", "2026-03-09", 6);
-    expect(mockCallLlm).toHaveBeenCalledTimes(2);
+    expect(callLlmModule.callLlm).toHaveBeenCalledTimes(2);
   });
 
   it("saves highlights.json", async () => {
     await generateRollupHighlights("ZH CONTENT", "EN CONTENT", "ai-cli", "2026-03-09", 6);
-    expect(mockSaveFile).toHaveBeenCalledWith(expect.any(String), "2026-03-09", "highlights.json");
+    expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-03-09", "highlights.json");
   });
 
   it("handles LLM parse error gracefully", async () => {
-    mockCallLlm.mockResolvedValue("not valid json");
+    vi.spyOn(callLlmModule, "callLlm").mockResolvedValue("not valid json");
     await expect(
       generateRollupHighlights("ZH CONTENT", "EN CONTENT", "ai-cli", "2026-03-09", 6),
     ).resolves.toBeUndefined();

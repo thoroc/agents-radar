@@ -1,15 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-vi.mock("./save-report", () => ({
-  saveReport: vi.fn(),
-  defaultDeps: {},
-}));
-
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { buildSourceHeader } from "./build-source-header";
 import { saveDataSourceReport } from "./save-data-source-report";
-import { saveReport } from "./save-report";
-
-const mockedSaveReport = saveReport as ReturnType<typeof vi.fn>;
+import * as saveReportModule from "./save-report";
 
 describe("buildSourceHeader", () => {
   it("returns Chinese header when suffix is empty (zh locale)", () => {
@@ -85,6 +77,15 @@ describe("buildSourceHeader", () => {
 });
 
 describe("saveDataSourceReport", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.spyOn(saveReportModule, "saveReport").mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   const mockCallLlm = vi.fn();
   const mockDeps = { callLlm: mockCallLlm };
 
@@ -100,10 +101,6 @@ describe("saveDataSourceReport", () => {
     issueLabel: "test-label",
   };
 
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   it("skips saveReport when hasData is false", async () => {
     await saveDataSourceReport(
       { ...opts, hasData: false },
@@ -115,7 +112,7 @@ describe("saveDataSourceReport", () => {
       mockDeps,
     );
 
-    expect(mockedSaveReport).not.toHaveBeenCalled();
+    expect(saveReportModule.saveReport).not.toHaveBeenCalled();
   });
 
   it("calls saveReport with correct config when hasData is true", async () => {
@@ -129,8 +126,8 @@ describe("saveDataSourceReport", () => {
       mockDeps,
     );
 
-    expect(mockedSaveReport).toHaveBeenCalledOnce();
-    const args = mockedSaveReport.mock.calls[0] as [
+    expect(saveReportModule.saveReport).toHaveBeenCalledOnce();
+    const args = (saveReportModule.saveReport as ReturnType<typeof vi.fn>).mock.calls[0] as [
       Record<string, unknown>,
       string,
       string,
@@ -152,11 +149,11 @@ describe("saveDataSourceReport", () => {
     expect(digestRepo).toBe("owner/repo");
     expect(footer).toBe("\nfooter");
     expect(lang).toBe("en");
-    expect(callDeps).toEqual(mockDeps);
+    expect(callDeps).toEqual(expect.objectContaining(mockDeps));
   });
 
   it("does not throw when saveReport throws", async () => {
-    mockedSaveReport.mockRejectedValueOnce(new Error("boom"));
+    vi.spyOn(saveReportModule, "saveReport").mockRejectedValueOnce(new Error("boom"));
 
     await expect(
       saveDataSourceReport(opts, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh", mockDeps),

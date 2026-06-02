@@ -1,10 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-const mockReadFileSync = vi.fn();
-vi.mock("node:fs", () => ({
-  default: { readFileSync: mockReadFileSync },
-  readFileSync: mockReadFileSync,
-}));
+import fs from "node:fs";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockMarkedParse = vi.fn();
 vi.mock("marked", () => ({
@@ -15,16 +10,22 @@ vi.mock("./report-label", () => ({
   reportLabel: vi.fn((id: string) => `Label[${id}]`),
 }));
 
-import fs from "node:fs";
 import { getReportContent } from "./get-report-content";
 
 describe("getReportContent", () => {
+  let readFileSpy: ReturnType<typeof vi.spyOn>;
+
   beforeEach(() => {
     vi.clearAllMocks();
+    readFileSpy = vi.spyOn(fs, "readFileSync").mockReturnValue("");
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("returns parsed content when file exists", async () => {
-    mockReadFileSync.mockReturnValue("# Hello\n\nWorld");
+    readFileSpy.mockReturnValue("# Hello\n\nWorld");
     mockMarkedParse.mockResolvedValue("<h1>Hello</h1>\n<p>World</p>");
 
     const result = await getReportContent("2026-01-01", "ai-cli");
@@ -36,7 +37,7 @@ describe("getReportContent", () => {
 
   it("truncates summary when content exceeds 500 chars", async () => {
     const longText = "a".repeat(600);
-    mockReadFileSync.mockReturnValue(longText);
+    readFileSpy.mockReturnValue(longText);
     mockMarkedParse.mockResolvedValue(longText);
 
     const result = await getReportContent("2026-01-01", "ai-cli");
@@ -46,7 +47,7 @@ describe("getReportContent", () => {
   });
 
   it("returns fallback when file does not exist", async () => {
-    mockReadFileSync.mockImplementation(() => {
+    readFileSpy.mockImplementation(() => {
       throw new Error("ENOENT");
     });
 
