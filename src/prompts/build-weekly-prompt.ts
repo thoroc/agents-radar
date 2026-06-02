@@ -4,7 +4,7 @@ import { LANGUAGE_NAMES } from "../utils";
 export const buildWeeklyPrompt = (
   dailyDigests: Record<string, string>,
   weekStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const digestEntries = Object.entries(dailyDigests)
     .map(([date, content]) => `## ${date}\n\n${content}`)

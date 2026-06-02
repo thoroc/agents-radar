@@ -61,7 +61,7 @@ export const feishuAction = async (
   const suffix = isMonthly ? " 月报" : isWeekly ? " 周报" : "";
   const title = `${icon} agents-radar${suffix} · ${date}`;
 
-  const content = buildFeishuMessage(date, reports, undefined, highlights, ["zh", "en"], env);
+  const content = buildFeishuMessage(date, reports, undefined, highlights, ["zh-CN", "en-US"], env);
 
   console.error(`[feishu] Sending to ${urls.length} webhook(s) for ${date} (${reports.length} reports)…`);
   await sendFeishu(title, content);

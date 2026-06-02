@@ -4,7 +4,7 @@ import type { RepoDigest } from "./repo-digest";
 export const buildComparisonPrompt = (
   digests: RepoDigest[],
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const noActivityStr = "No activity in the last 24 hours.";
 

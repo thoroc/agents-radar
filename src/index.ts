@@ -64,10 +64,10 @@ export const main = async (env: NodeJS.ProcessEnv = process.env): Promise<void> 
 
   console.error("  Generating summaries in ZH and EN in parallel...");
   const [zhSummaries, enSummaries] = await Promise.all([
-    generateSummaries(fetchedCli, fetchedOpenclaw, skillsData, fetchedPeers, trendingData, dateStr, "zh"),
-    generateSummaries(fetchedCli, fetchedOpenclaw, skillsData, fetchedPeers, trendingData, dateStr, "en"),
+    generateSummaries(fetchedCli, fetchedOpenclaw, skillsData, fetchedPeers, trendingData, dateStr, "zh-CN"),
+    generateSummaries(fetchedCli, fetchedOpenclaw, skillsData, fetchedPeers, trendingData, dateStr, "en-US"),
   ]);
-  const summariesByLang = { zh: zhSummaries, en: enSummaries };
+  const summariesByLang = { "zh-CN": zhSummaries, "en-US": enSummaries };
 
   console.error("  Calling LLM for comparative analyses (ZH + EN)...");
   const { comparisonByLang, peersComparisonByLang } = await generateComparisons({

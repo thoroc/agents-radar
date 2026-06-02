@@ -30,7 +30,7 @@ describe("formatItem", () => {
   });
 
   it("formats an item in English", () => {
-    const result = formatItem(makeItem(), "en");
+    const result = formatItem(makeItem(), "en-US");
     expect(result).toContain(": alice");
     expect(result).toContain(": 5");
     expect(result).toContain("org/test Issue #1");

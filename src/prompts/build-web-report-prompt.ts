@@ -5,7 +5,7 @@ import { LANGUAGE_NAMES, t } from "../utils";
 export const buildWebReportPrompt = (
   results: WebFetchResult[],
   dateStr: string,
-  lang: Locale = "en",
+  lang: Locale = "en-US",
 ): string => {
   const isAnyFirstRun = results.some((r) => r.isFirstRun);
 

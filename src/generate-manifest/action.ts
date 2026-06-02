@@ -16,27 +16,27 @@ const FEED_PATH = "feed.xml";
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const REPORT_FILES = [
   "ai-cli",
-  "ai-cli-en",
+  "ai-cli.en-US",
   "ai-agents",
-  "ai-agents-en",
+  "ai-agents.en-US",
   "ai-web",
-  "ai-web-en",
+  "ai-web.en-US",
   "ai-trending",
-  "ai-trending-en",
+  "ai-trending.en-US",
   "ai-hn",
-  "ai-hn-en",
+  "ai-hn.en-US",
   "ai-ph",
-  "ai-ph-en",
+  "ai-ph.en-US",
   "ai-arxiv",
-  "ai-arxiv-en",
+  "ai-arxiv.en-US",
   "ai-hf",
-  "ai-hf-en",
+  "ai-hf.en-US",
   "ai-community",
-  "ai-community-en",
+  "ai-community.en-US",
   "ai-weekly",
-  "ai-weekly-en",
+  "ai-weekly.en-US",
   "ai-monthly",
-  "ai-monthly-en",
+  "ai-monthly.en-US",
 ] as const;
 const MAX_FEED_ITEMS = 30;
 
@@ -78,14 +78,14 @@ export const generateManifestAction = async (
     })
     .filter((e) => e.reports.length > 0);
 
-  const REPORT_BASES = [...new Set(REPORT_FILES.map((r) => r.replace(/-en$/, "")))];
+  const REPORT_BASES = [...new Set(REPORT_FILES.map((r) => r.replace(/\.en-US$/, "")))];
 
-  t("en");
+  t("en-US");
   const labels: Record<string, Record<string, string>> = {};
   for (const base of REPORT_BASES) {
     const langLabels: Record<string, string> = {};
     for (const lang of SUPPORTED_LOCALES) {
-      langLabels[lang] = reportLabel(`${base}${lang === "zh" ? "" : "-en"}`);
+      langLabels[lang] = reportLabel(`${base}${lang === "zh-CN" ? "" : ".en-US"}`);
     }
     labels[base] = langLabels;
   }

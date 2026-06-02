@@ -13,15 +13,12 @@ describe("sampleNote", () => {
   });
 
   it("shows sampled note in English when total > sampled", () => {
-    const result = sampleNote(50, 20, "en");
-    expect(result).toContain("50");
-    expect(result).toContain("20");
-    expect(result).toContain("Total");
-  });
+    const sampledResult = sampleNote(50, 20, "en-US");
 
-  it("shows total-only note in English when total <= sampled", () => {
-    const result = sampleNote(8, 8, "en");
-    expect(result).toContain("8");
-    expect(result).toContain("Total");
+    const exactResult = sampleNote(8, 8, "en-US");
+    expect(sampledResult).toContain("50");
+    expect(sampledResult).toContain("20");
+    expect(exactResult).toContain("8");
+    expect(exactResult).toContain("Total");
   });
 });

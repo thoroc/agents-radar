@@ -124,5 +124,6 @@
   "searchNoResults": "(No search results)",
   "sampleNoteAll": "(Total: {total} items)",
   "webFirstCrawlNote": "This is the first full crawl. Please focus on the overall content landscape, historical context, and core themes of each site, rather than individual articles.",
-  "webIncrementalNote": "This is an incremental update. Please focus on today's new content and assess its strategic significance in context."
+  "webIncrementalNote": "This is an incremental update. Please focus on today's new content and assess its strategic significance in context.",
+  "$schema": "../locale-schema.json"
 }

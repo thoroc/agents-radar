@@ -108,7 +108,7 @@ describe("saveDataSourceReport", () => {
       "2026-01-01",
       "",
       "",
-      "zh",
+      "zh-CN",
       mockDeps,
     );
 
@@ -122,7 +122,7 @@ describe("saveDataSourceReport", () => {
       "2026-01-01",
       "owner/repo",
       "\nfooter",
-      "en",
+      "en-US",
       mockDeps,
     );
 
@@ -148,7 +148,7 @@ describe("saveDataSourceReport", () => {
     expect(dateStr).toBe("2026-01-01");
     expect(digestRepo).toBe("owner/repo");
     expect(footer).toBe("\nfooter");
-    expect(lang).toBe("en");
+    expect(lang).toBe("en-US");
     expect(callDeps).toEqual(expect.objectContaining(mockDeps));
   });
 
@@ -156,7 +156,7 @@ describe("saveDataSourceReport", () => {
     vi.spyOn(saveReportModule, "saveReport").mockRejectedValueOnce(new Error("boom"));
 
     await expect(
-      saveDataSourceReport(opts, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh", mockDeps),
+      saveDataSourceReport(opts, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh-CN", mockDeps),
     ).resolves.toBeUndefined();
   });
 });

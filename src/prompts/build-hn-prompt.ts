@@ -2,7 +2,11 @@ import type { HackerNewsData } from "../fetchers/hacker-news";
 import type { Locale } from "../utils";
 import { LANGUAGE_NAMES } from "../utils";
 
-export const buildHackerNewsPrompt = (data: HackerNewsData, dateStr: string, lang: Locale = "zh"): string => {
+export const buildHackerNewsPrompt = (
+  data: HackerNewsData,
+  dateStr: string,
+  lang: Locale = "zh-CN",
+): string => {
   const storiesText = data.stories
     .map(
       (s, i) =>

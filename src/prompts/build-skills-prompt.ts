@@ -7,7 +7,7 @@ export const buildSkillsPrompt = (
   prs: GitHubItem[],
   issues: GitHubItem[],
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const topPrs = topN(prs, 20);
   const topIssues = topN(issues, 15);

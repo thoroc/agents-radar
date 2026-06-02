@@ -54,7 +54,7 @@ describe("buildCommunityPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildCommunityPrompt(makeDevtoData(), makeLobstersData(), "2026-03-09", "en");
+    const result = buildCommunityPrompt(makeDevtoData(), makeLobstersData(), "2026-03-09", "en-US");
     expect(result).toContain("Tech Community AI Digest");
     expect(result).toContain("Dev.to Highlights");
     expect(result).toContain("Lobste.rs Highlights");

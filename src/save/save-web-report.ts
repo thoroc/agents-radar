@@ -12,14 +12,14 @@ export const saveWebReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const hasNewContent = webResults.some((r) => r.newItems.length > 0);
 
   if (!hasNewContent) {
     console.error(`  [web/${lang}] No new content detected, skipping report.`);
-    if (lang === "zh") {
+    if (lang === "zh-CN") {
       saveWebState(webState);
       console.error("  [web] State saved.");
     }
@@ -35,10 +35,10 @@ export const saveWebReport = async (
   const openaiTotal = webResults.find((r) => r.site === "openai")?.totalDiscovered ?? 0;
 
   const issueTitle = isFirstRun
-    ? lang === "en"
+    ? lang === "en-US"
       ? `🌐 Official AI Content Report ${dateStr} (First Crawl)`
       : `🌐 AI 官方内容追踪报告 ${dateStr}（首次全量）`
-    : lang === "en"
+    : lang === "en-US"
       ? `🌐 Official AI Content Report ${dateStr}`
       : `🌐 AI 官方内容追踪报告 ${dateStr}`;
 
@@ -78,7 +78,7 @@ export const saveWebReport = async (
     console.error(`  [web/${lang}] Report generation failed: ${err}`);
   }
 
-  if (lang === "zh") {
+  if (lang === "zh-CN") {
     saveWebState(webState);
     console.error("  [web] State saved.");
   }

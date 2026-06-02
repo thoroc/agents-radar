@@ -35,10 +35,10 @@ describe("buildComparisonPrompt", () => {
 
   it("appends language suffix", () => {
     const digests = [makeDigest({ summary: "Summary", issues: [{} as never] })];
-    const enResult = buildComparisonPrompt(digests, "2026-03-09", "en");
+    const enResult = buildComparisonPrompt(digests, "2026-03-09", "en-US");
     expect(enResult).toContain("Write the response in English.");
 
-    const zhResult = buildComparisonPrompt(digests, "2026-03-09", "zh");
+    const zhResult = buildComparisonPrompt(digests, "2026-03-09", "zh-CN");
     expect(zhResult).toContain("Write the response in Chinese.");
   });
 });

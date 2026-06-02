@@ -51,4 +51,8 @@ export const SUPPORTED_LOCALES: readonly string[] = locales.supportedLocales;
 export const STRINGS: Readonly<Record<string, LocaleData>> = locales.strings;
 export const LANGUAGE_NAMES: Readonly<Record<string, string>> = locales.languageNames;
 
-export const DEFAULT_LANGUAGES: string[] = ["en", "zh"];
+export const DEFAULT_LANGUAGES: string[] = ["en-US", "zh-CN"];
+
+export const DEFAULT_PRIMARY_LANGUAGE = "zh-CN";
+
+export const DEFAULT_FALLBACK_LANGUAGE = "en-US";

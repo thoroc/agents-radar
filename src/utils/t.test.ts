@@ -2,12 +2,12 @@ import { describe, expect, it } from "vitest";
 import { t } from "./t";
 
 describe("t()", () => {
-  it("returns Chinese strings for zh", () => {
-    expect(t("zh").cliTitle).toBeTruthy();
+  it("returns Chinese strings for zh-CN", () => {
+    expect(t("zh-CN").cliTitle).toBeTruthy();
   });
 
-  it("returns English strings for en", () => {
-    expect(t("en").cliTitle).toBeTruthy();
+  it("returns English strings for en-US", () => {
+    expect(t("en-US").cliTitle).toBeTruthy();
   });
 
   it("returns English for unknown locale", () => {
@@ -25,7 +25,7 @@ describe("t()", () => {
     expect(result.cliTitle).toBeTruthy();
   });
 
-  it("returns different strings for zh and en", () => {
-    expect(t("zh").cliTitle).not.toBe(t("en").cliTitle);
+  it("returns different strings for zh-CN and en-US", () => {
+    expect(t("zh-CN").cliTitle).not.toBe(t("en-US").cliTitle);
   });
 });

@@ -124,5 +124,6 @@
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
   "trendingFetchFailed": "(تعذر جلب قائمة الاتجاهات اليومية على GitHub)",
-  "searchNoResults": "(لا توجد نتائج بحث)"
+  "searchNoResults": "(لا توجد نتائج بحث)",
+  "$schema": "../locale-schema.json"
 }

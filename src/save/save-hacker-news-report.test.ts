@@ -30,7 +30,7 @@ describe("saveHnReport", () => {
   };
 
   it("calls saveDataSourceReport with hn config", async () => {
-    await saveHackerNewsReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en");
+    await saveHackerNewsReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en-US");
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
     const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
@@ -48,7 +48,7 @@ describe("saveHnReport", () => {
   it("skips when fetchSuccess is false", async () => {
     const noData = { stories: [], fetchSuccess: false };
 
-    await saveHackerNewsReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh");
+    await saveHackerNewsReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh-CN");
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
     const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock

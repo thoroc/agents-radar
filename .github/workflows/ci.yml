@@ -31,5 +31,8 @@ jobs:
       - name: Test
         run: bun test
 
+      - name: Validate locale files
+        run: bun run validate-locales
+
       - name: AISlop quality gate
         run: bun run aislop:ci

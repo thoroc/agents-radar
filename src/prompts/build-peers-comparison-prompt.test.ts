@@ -37,10 +37,10 @@ describe("buildPeersComparisonPrompt", () => {
     const peerDigests = [
       makeDigest({ config: { ...cfg, name: "Peer" }, summary: "Peer summary", issues: [{} as never] }),
     ];
-    const enResult = buildPeersComparisonPrompt(openclawDigest, peerDigests, "2026-03-09", "en");
+    const enResult = buildPeersComparisonPrompt(openclawDigest, peerDigests, "2026-03-09", "en-US");
     expect(enResult).toContain("Write the response in English.");
 
-    const zhResult = buildPeersComparisonPrompt(openclawDigest, peerDigests, "2026-03-09", "zh");
+    const zhResult = buildPeersComparisonPrompt(openclawDigest, peerDigests, "2026-03-09", "zh-CN");
     expect(zhResult).toContain("Write the response in Chinese.");
   });
 });

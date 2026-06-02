@@ -15,11 +15,11 @@ const REPORT_LABEL_KEY: Record<string, keyof ReturnType<typeof t>> = {
 };
 
 export const reportLabel = (id: string): string => {
-  let lang: Locale = "zh";
+  let lang: Locale = "zh-CN";
   let base = id;
-  if (id.endsWith("-en")) {
-    lang = "en";
-    base = id.slice(0, -3);
+  if (id.endsWith(".en-US")) {
+    lang = "en-US";
+    base = id.slice(0, -6);
   }
   const key = REPORT_LABEL_KEY[base];
   return key ? t(lang)[key] : id;

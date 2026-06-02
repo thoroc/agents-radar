@@ -15,7 +15,7 @@ export const generateRollupHighlights = async (
   console.error(`  [${reportId}] Generating highlights for Telegram...`);
 
   const existingPath = path.join(DIGESTS_DIR, dateStr, "highlights.json");
-  let existing: Record<string, ReportHighlights> = { zh: {}, en: {} };
+  let existing: Record<string, ReportHighlights> = { "zh-CN": {}, "en-US": {} };
   if (fs.existsSync(existingPath)) {
     try {
       existing = JSON.parse(fs.readFileSync(existingPath, "utf-8"));
@@ -25,14 +25,14 @@ export const generateRollupHighlights = async (
   }
 
   const highlights: Record<string, ReportHighlights> = {
-    zh: { ...existing.zh },
-    en: { ...existing.en },
+    "zh-CN": { ...existing["zh-CN"] },
+    "en-US": { ...existing["en-US"] },
   };
 
   try {
     const [zhRaw, enRaw] = await Promise.all([
-      callLlm(buildHighlightsPrompt({ [reportId]: zhContent }, "zh", itemsPerReport), 1024),
-      callLlm(buildHighlightsPrompt({ [reportId]: enContent }, "en", itemsPerReport), 1024),
+      callLlm(buildHighlightsPrompt({ [reportId]: zhContent }, "zh-CN", itemsPerReport), 1024),
+      callLlm(buildHighlightsPrompt({ [reportId]: enContent }, "en-US", itemsPerReport), 1024),
     ]);
     const zhNew = JSON.parse(
       zhRaw
@@ -46,8 +46,8 @@ export const generateRollupHighlights = async (
         .replace(/```/g, "")
         .trim(),
     ) as ReportHighlights;
-    Object.assign(highlights.zh ?? {}, zhNew);
-    Object.assign(highlights.en ?? {}, enNew);
+    Object.assign(highlights["zh-CN"] ?? {}, zhNew);
+    Object.assign(highlights["en-US"] ?? {}, enNew);
   } catch (err) {
     console.error(`  [${reportId}] Highlights generation failed: ${err}`);
   }

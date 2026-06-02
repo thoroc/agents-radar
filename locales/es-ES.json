@@ -124,5 +124,6 @@
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
   "trendingFetchFailed": "(No se pudo obtener la lista de tendencias de GitHub de hoy)",
-  "searchNoResults": "(Sin resultados de búsqueda)"
+  "searchNoResults": "(Sin resultados de búsqueda)",
+  "$schema": "../locale-schema.json"
 }

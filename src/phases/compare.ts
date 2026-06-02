@@ -38,14 +38,28 @@ export const generateComparisons = async (input: ComparisonsInput): Promise<Comp
     makeOpenclawDigest(openclaw, fetchedOpenclaw, summariesByLang[lang]!.openclawSummary);
 
   const [zhComparison, zhPeersComparison, enComparison, enPeersComparison] = await Promise.all([
-    callLlm(buildComparisonPrompt(summariesByLang.zh!.cliDigests, dateStr, "zh")),
-    callLlm(buildPeersComparisonPrompt(makeDigest("zh"), summariesByLang.zh!.peerDigests, dateStr, "zh")),
-    callLlm(buildComparisonPrompt(summariesByLang.en!.cliDigests, dateStr, "en")),
-    callLlm(buildPeersComparisonPrompt(makeDigest("en"), summariesByLang.en!.peerDigests, dateStr, "en")),
+    callLlm(buildComparisonPrompt(summariesByLang["zh-CN"]!.cliDigests, dateStr, "zh-CN")),
+    callLlm(
+      buildPeersComparisonPrompt(
+        makeDigest("zh-CN"),
+        summariesByLang["zh-CN"]!.peerDigests,
+        dateStr,
+        "zh-CN",
+      ),
+    ),
+    callLlm(buildComparisonPrompt(summariesByLang["en-US"]!.cliDigests, dateStr, "en-US")),
+    callLlm(
+      buildPeersComparisonPrompt(
+        makeDigest("en-US"),
+        summariesByLang["en-US"]!.peerDigests,
+        dateStr,
+        "en-US",
+      ),
+    ),
   ]);
 
   return {
-    comparisonByLang: { zh: zhComparison, en: enComparison },
-    peersComparisonByLang: { zh: zhPeersComparison, en: enPeersComparison },
+    comparisonByLang: { "zh-CN": zhComparison, "en-US": enComparison },
+    peersComparisonByLang: { "zh-CN": zhPeersComparison, "en-US": enPeersComparison },
   };
 };

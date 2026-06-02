@@ -17,7 +17,7 @@ describe("buildHighlightsPrompt", () => {
   });
 
   it("respects custom itemsPerReport", () => {
-    const result = buildHighlightsPrompt(sampleContents, "zh", 3);
+    const result = buildHighlightsPrompt(sampleContents, "zh-CN", 3);
     expect(result).toContain("extract 3 of the most noteworthy highlights");
   });
 
@@ -30,16 +30,16 @@ describe("buildHighlightsPrompt", () => {
   });
 
   it("requires JSON output format", () => {
-    const result = buildHighlightsPrompt(sampleContents, "en");
+    const result = buildHighlightsPrompt(sampleContents, "en-US");
     expect(result).toContain("Return ONLY valid JSON");
     expect(result).toContain("no markdown fences");
   });
 
   it("appends language suffix", () => {
-    const enResult = buildHighlightsPrompt(sampleContents, "en");
+    const enResult = buildHighlightsPrompt(sampleContents, "en-US");
     expect(enResult).toContain("Write the response in English.");
 
-    const zhResult = buildHighlightsPrompt(sampleContents, "zh");
+    const zhResult = buildHighlightsPrompt(sampleContents, "zh-CN");
     expect(zhResult).toContain("Write the response in Chinese.");
   });
 });

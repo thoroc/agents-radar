@@ -37,7 +37,7 @@ describe("buildCliPrompt", () => {
   });
 
   it("generates English prompt", () => {
-    const result = buildCliPrompt(cfg, [makeItem()], [], [], "2026-03-09", "en");
+    const result = buildCliPrompt(cfg, [makeItem()], [], [], "2026-03-09", "en-US");
     expect(result).toContain("technical analyst");
     expect(result).toContain("TestTool");
     expect(result).toContain("Hot Issues");
@@ -56,10 +56,10 @@ describe("buildCliPrompt", () => {
   });
 
   it("appends language suffix", () => {
-    const result = buildCliPrompt(cfg, [], [], [], "2026-03-09", "en");
+    const result = buildCliPrompt(cfg, [], [], [], "2026-03-09", "en-US");
     expect(result).toContain("Write the response in English.");
 
-    const zhResult = buildCliPrompt(cfg, [], [], [], "2026-03-09", "zh");
+    const zhResult = buildCliPrompt(cfg, [], [], [], "2026-03-09", "zh-CN");
     expect(zhResult).toContain("Write the response in Chinese.");
   });
 });

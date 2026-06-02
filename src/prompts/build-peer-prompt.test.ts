@@ -37,7 +37,7 @@ describe("buildPeerPrompt", () => {
   });
 
   it("generates English prompt", () => {
-    const result = buildPeerPrompt(cfg, [], [], [], "2026-03-09", 30, 20, "en");
+    const result = buildPeerPrompt(cfg, [], [], [], "2026-03-09", 30, 20, "en-US");
     expect(result).toContain("Data Overview");
     expect(result).toContain("None");
     expect(result).toContain("Write the response in English.");

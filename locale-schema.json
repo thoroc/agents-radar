@@ -1,0 +1,513 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "agents-radar locale file",
+  "description": "Schema for locale JSON files in locales/*.json",
+  "type": "object",
+  "properties": {
+    "noActivity": {
+      "type": "string"
+    },
+    "summaryFailed": {
+      "type": "string"
+    },
+    "skillsFailed": {
+      "type": "string"
+    },
+    "trendingNoData": {
+      "type": "string"
+    },
+    "trendingFailed": {
+      "type": "string"
+    },
+    "webNoNewContent": {
+      "type": "string"
+    },
+    "webFetchFailed": {
+      "type": "string"
+    },
+    "hnFetchFailed": {
+      "type": "string"
+    },
+    "cliTitle": {
+      "type": "string"
+    },
+    "cliMeta": {
+      "type": "string"
+    },
+    "cliSkillsHeading": {
+      "type": "string"
+    },
+    "cliSkillsSource": {
+      "type": "string"
+    },
+    "cliComparison": {
+      "type": "string"
+    },
+    "cliDetail": {
+      "type": "string"
+    },
+    "openclawTitle": {
+      "type": "string"
+    },
+    "openclawMeta": {
+      "type": "string"
+    },
+    "openclawDeepDive": {
+      "type": "string"
+    },
+    "openclawComparison": {
+      "type": "string"
+    },
+    "openclawPeers": {
+      "type": "string"
+    },
+    "webTitle": {
+      "type": "string"
+    },
+    "webMeta": {
+      "type": "string"
+    },
+    "webFirstCrawl": {
+      "type": "string"
+    },
+    "webTodayUpdate": {
+      "type": "string"
+    },
+    "webNewContent": {
+      "type": "string"
+    },
+    "webGenerated": {
+      "type": "string"
+    },
+    "webSourcesHeader": {
+      "type": "string"
+    },
+    "webFirstCrawlNote": {
+      "type": "string"
+    },
+    "webIncrementalNote": {
+      "type": "string"
+    },
+    "trendingTitle": {
+      "type": "string"
+    },
+    "trendingSources": {
+      "type": "string"
+    },
+    "hnTitle": {
+      "type": "string"
+    },
+    "phTitle": {
+      "type": "string"
+    },
+    "arxivTitle": {
+      "type": "string"
+    },
+    "hfTitle": {
+      "type": "string"
+    },
+    "communityTitle": {
+      "type": "string"
+    },
+    "weeklyTitle": {
+      "type": "string"
+    },
+    "weeklyCoverage": {
+      "type": "string"
+    },
+    "monthlyTitle": {
+      "type": "string"
+    },
+    "issueLabelCli": {
+      "type": "string"
+    },
+    "issueLabelOpenclaw": {
+      "type": "string"
+    },
+    "issueLabelWeb": {
+      "type": "string"
+    },
+    "issueLabelTrending": {
+      "type": "string"
+    },
+    "issueLabelHn": {
+      "type": "string"
+    },
+    "issueLabelPh": {
+      "type": "string"
+    },
+    "issueLabelArxiv": {
+      "type": "string"
+    },
+    "issueLabelHf": {
+      "type": "string"
+    },
+    "issueLabelCommunity": {
+      "type": "string"
+    },
+    "issueTitleCli": {
+      "type": "string"
+    },
+    "issueTitleOpenclaw": {
+      "type": "string"
+    },
+    "issueTitleWeb": {
+      "type": "string"
+    },
+    "issueTitleTrending": {
+      "type": "string"
+    },
+    "issueTitleHn": {
+      "type": "string"
+    },
+    "issueTitlePh": {
+      "type": "string"
+    },
+    "issueTitleArxiv": {
+      "type": "string"
+    },
+    "issueTitleHf": {
+      "type": "string"
+    },
+    "issueTitleCommunity": {
+      "type": "string"
+    },
+    "autoGen": {
+      "type": "string"
+    },
+    "reportLabelAiCli": {
+      "type": "string"
+    },
+    "reportLabelAiAgents": {
+      "type": "string"
+    },
+    "reportLabelAiWeb": {
+      "type": "string"
+    },
+    "reportLabelAiTrending": {
+      "type": "string"
+    },
+    "reportLabelAiHn": {
+      "type": "string"
+    },
+    "reportLabelAiPh": {
+      "type": "string"
+    },
+    "reportLabelAiArxiv": {
+      "type": "string"
+    },
+    "reportLabelAiHf": {
+      "type": "string"
+    },
+    "reportLabelAiCommunity": {
+      "type": "string"
+    },
+    "reportLabelAiWeekly": {
+      "type": "string"
+    },
+    "reportLabelAiMonthly": {
+      "type": "string"
+    },
+    "notifyCli": {
+      "type": "string"
+    },
+    "notifyAgents": {
+      "type": "string"
+    },
+    "notifyWeb": {
+      "type": "string"
+    },
+    "notifyTrending": {
+      "type": "string"
+    },
+    "notifyHn": {
+      "type": "string"
+    },
+    "notifyPh": {
+      "type": "string"
+    },
+    "notifyArxiv": {
+      "type": "string"
+    },
+    "notifyHf": {
+      "type": "string"
+    },
+    "notifyCommunity": {
+      "type": "string"
+    },
+    "notifyWeekly": {
+      "type": "string"
+    },
+    "notifyMonthly": {
+      "type": "string"
+    },
+    "notifyFooter": {
+      "type": "string"
+    },
+    "formatItemAuthor": {
+      "type": "string"
+    },
+    "formatItemCreated": {
+      "type": "string"
+    },
+    "formatItemUpdated": {
+      "type": "string"
+    },
+    "formatItemComments": {
+      "type": "string"
+    },
+    "formatItemUrl": {
+      "type": "string"
+    },
+    "formatItemSummary": {
+      "type": "string"
+    },
+    "sampleNote": {
+      "type": "string"
+    },
+    "sampleNoteAll": {
+      "type": "string"
+    },
+    "noneStr": {
+      "type": "string"
+    },
+    "unableToExtract": {
+      "type": "string"
+    },
+    "issueTruncation": {
+      "type": "string"
+    },
+    "digestTruncation": {
+      "type": "string"
+    },
+    "weeklyTruncation": {
+      "type": "string"
+    },
+    "weeklyMeta": {
+      "type": "string"
+    },
+    "monthlyMeta": {
+      "type": "string"
+    },
+    "sourceLabelWeekly": {
+      "type": "string"
+    },
+    "sourceLabelDailySampled": {
+      "type": "string"
+    },
+    "manifestCli": {
+      "type": "string"
+    },
+    "manifestAgents": {
+      "type": "string"
+    },
+    "manifestWeb": {
+      "type": "string"
+    },
+    "manifestTrending": {
+      "type": "string"
+    },
+    "manifestHn": {
+      "type": "string"
+    },
+    "manifestWeekly": {
+      "type": "string"
+    },
+    "manifestMonthly": {
+      "type": "string"
+    },
+    "autoGenFooter": {
+      "type": "string"
+    },
+    "hnMeta": {
+      "type": "string"
+    },
+    "phMeta": {
+      "type": "string"
+    },
+    "arxivMeta": {
+      "type": "string"
+    },
+    "hfMeta": {
+      "type": "string"
+    },
+    "communityMeta": {
+      "type": "string"
+    },
+    "trendingMeta": {
+      "type": "string"
+    },
+    "trendingFetchFailed": {
+      "type": "string"
+    },
+    "searchNoResults": {
+      "type": "string"
+    },
+    "webSourcesAnthropic": {
+      "type": "string"
+    },
+    "webSourcesOpenai": {
+      "type": "string"
+    },
+    "webIssueTitle": {
+      "type": "string"
+    },
+    "webIssueTitleFirstCrawl": {
+      "type": "string"
+    },
+    "notifySuffixMonthly": {
+      "type": "string"
+    },
+    "notifySuffixWeekly": {
+      "type": "string"
+    },
+    "notifyFooterLinks": {
+      "type": "string"
+    },
+    "feishuFooterLinks": {
+      "type": "string"
+    },
+    "_meta": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "nativeName": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "nativeName"
+      ]
+    }
+  },
+  "required": [
+    "noActivity",
+    "summaryFailed",
+    "skillsFailed",
+    "trendingNoData",
+    "trendingFailed",
+    "webNoNewContent",
+    "webFetchFailed",
+    "hnFetchFailed",
+    "cliTitle",
+    "cliMeta",
+    "cliSkillsHeading",
+    "cliSkillsSource",
+    "cliComparison",
+    "cliDetail",
+    "openclawTitle",
+    "openclawMeta",
+    "openclawDeepDive",
+    "openclawComparison",
+    "openclawPeers",
+    "webTitle",
+    "webMeta",
+    "webFirstCrawl",
+    "webTodayUpdate",
+    "webNewContent",
+    "webGenerated",
+    "webSourcesHeader",
+    "webFirstCrawlNote",
+    "webIncrementalNote",
+    "trendingTitle",
+    "trendingSources",
+    "hnTitle",
+    "phTitle",
+    "arxivTitle",
+    "hfTitle",
+    "communityTitle",
+    "weeklyTitle",
+    "weeklyCoverage",
+    "monthlyTitle",
+    "issueLabelCli",
+    "issueLabelOpenclaw",
+    "issueLabelWeb",
+    "issueLabelTrending",
+    "issueLabelHn",
+    "issueLabelPh",
+    "issueLabelArxiv",
+    "issueLabelHf",
+    "issueLabelCommunity",
+    "issueTitleCli",
+    "issueTitleOpenclaw",
+    "issueTitleWeb",
+    "issueTitleTrending",
+    "issueTitleHn",
+    "issueTitlePh",
+    "issueTitleArxiv",
+    "issueTitleHf",
+    "issueTitleCommunity",
+    "autoGen",
+    "reportLabelAiCli",
+    "reportLabelAiAgents",
+    "reportLabelAiWeb",
+    "reportLabelAiTrending",
+    "reportLabelAiHn",
+    "reportLabelAiPh",
+    "reportLabelAiArxiv",
+    "reportLabelAiHf",
+    "reportLabelAiCommunity",
+    "reportLabelAiWeekly",
+    "reportLabelAiMonthly",
+    "notifyCli",
+    "notifyAgents",
+    "notifyWeb",
+    "notifyTrending",
+    "notifyHn",
+    "notifyPh",
+    "notifyArxiv",
+    "notifyHf",
+    "notifyCommunity",
+    "notifyWeekly",
+    "notifyMonthly",
+    "notifyFooter",
+    "formatItemAuthor",
+    "formatItemCreated",
+    "formatItemUpdated",
+    "formatItemComments",
+    "formatItemUrl",
+    "formatItemSummary",
+    "sampleNote",
+    "sampleNoteAll",
+    "noneStr",
+    "unableToExtract",
+    "issueTruncation",
+    "digestTruncation",
+    "weeklyTruncation",
+    "weeklyMeta",
+    "monthlyMeta",
+    "sourceLabelWeekly",
+    "sourceLabelDailySampled",
+    "manifestCli",
+    "manifestAgents",
+    "manifestWeb",
+    "manifestTrending",
+    "manifestHn",
+    "manifestWeekly",
+    "manifestMonthly",
+    "autoGenFooter",
+    "hnMeta",
+    "phMeta",
+    "arxivMeta",
+    "hfMeta",
+    "communityMeta",
+    "trendingMeta",
+    "trendingFetchFailed",
+    "searchNoResults",
+    "webSourcesAnthropic",
+    "webSourcesOpenai",
+    "webIssueTitle",
+    "webIssueTitleFirstCrawl",
+    "notifySuffixMonthly",
+    "notifySuffixWeekly",
+    "notifyFooterLinks",
+    "feishuFooterLinks",
+    "_meta"
+  ]
+}

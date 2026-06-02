@@ -18,7 +18,7 @@ describe("buildWeeklyPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildWeeklyPrompt(mockDigests, "2026-03-09 ~ 2026-03-15", "en");
+    const result = buildWeeklyPrompt(mockDigests, "2026-03-09 ~ 2026-03-15", "en-US");
     expect(result).toContain("Claude Code released");
     expect(result).toContain("OpenAI introduced");
     expect(result).toContain("Weekly Report");

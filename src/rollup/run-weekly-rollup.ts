@@ -43,34 +43,34 @@ export const runWeeklyRollup = async (
 
   console.error("[weekly] Calling LLM for ZH and EN weekly reports in parallel...");
   const [zhSummary, enSummary] = await Promise.all([
-    callLlm(buildWeeklyPrompt(dailyDigests, weekStr, "zh"), LLM_TOKENS_ROLLUP),
-    callLlm(buildWeeklyPrompt(dailyDigests, weekStr, "en"), LLM_TOKENS_ROLLUP),
+    callLlm(buildWeeklyPrompt(dailyDigests, weekStr, "zh-CN"), LLM_TOKENS_ROLLUP),
+    callLlm(buildWeeklyPrompt(dailyDigests, weekStr, "en-US"), LLM_TOKENS_ROLLUP),
   ]);
 
-  const footer = autoGenFooter("zh");
-  const enFooter = autoGenFooter("en");
+  const footer = autoGenFooter("zh-CN");
+  const enFooter = autoGenFooter("en-US");
 
   const zhContent =
-    `# ${t("zh").weeklyTitle} ${weekStr}\n\n` +
-    `> ${t("zh").weeklyCoverage}: ${last7[last7.length - 1]} ~ ${last7[0]} | 生成时间: ${utcStr} UTC\n\n` +
+    `# ${t("zh-CN").weeklyTitle} ${weekStr}\n\n` +
+    `> ${t("zh-CN").weeklyCoverage}: ${last7[last7.length - 1]} ~ ${last7[0]} | 生成时间: ${utcStr} UTC\n\n` +
     `---\n\n` +
     zhSummary +
     footer;
 
   const enContent =
-    `# ${t("en").weeklyTitle} ${weekStr}\n\n` +
-    `> ${t("en").weeklyCoverage}: ${last7[last7.length - 1]} ~ ${last7[0]} | Generated: ${utcStr} UTC\n\n` +
+    `# ${t("en-US").weeklyTitle} ${weekStr}\n\n` +
+    `> ${t("en-US").weeklyCoverage}: ${last7[last7.length - 1]} ~ ${last7[0]} | Generated: ${utcStr} UTC\n\n` +
     `---\n\n` +
     enSummary +
     enFooter;
 
   console.error(`  Saved ${saveFile(zhContent, dateStr, "ai-weekly.md")}`);
-  console.error(`  Saved ${saveFile(enContent, dateStr, "ai-weekly.md")}`);
+  console.error(`  Saved ${saveFile(enContent, dateStr, "ai-weekly.en-US.md")}`);
 
   await generateRollupHighlights(zhContent, enContent, "ai-weekly", dateStr, 6);
 
   if (resolvedDigestRepo) {
-    const url = await createGitHubIssue(`${t("zh").weeklyTitle} ${weekStr}`, zhContent, "weekly");
+    const url = await createGitHubIssue(`${t("zh-CN").weeklyTitle} ${weekStr}`, zhContent, "weekly");
     console.error(`  Created weekly issue: ${url}`);
   }
 

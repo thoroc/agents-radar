@@ -20,7 +20,7 @@ describe("buildMonthlyPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildMonthlyPrompt(mockDigests, "2026-03", "en");
+    const result = buildMonthlyPrompt(mockDigests, "2026-03", "en-US");
     expect(result).toContain("Week 1");
     expect(result).toContain("Week 2");
     expect(result).toContain("Claude Code added");
@@ -29,8 +29,8 @@ describe("buildMonthlyPrompt", () => {
     expect(result).toContain("Write the response in English.");
   });
 
-  it("generates English variant", () => {
-    const result = buildMonthlyPrompt(mockDigests, "2026-03", "en");
+  it("generates English variant 2", () => {
+    const result = buildMonthlyPrompt(mockDigests, "2026-03", "en-US");
     expect(result).toContain("Week 1");
     expect(result).toContain("Week 2");
     expect(result).toContain("Claude Code added");

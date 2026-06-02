@@ -124,5 +124,6 @@
   "searchNoResults": "(No search results)",
   "sampleNoteAll": "（共 {total} 条）",
   "webFirstCrawlNote": "这是首次全量抓取。请重点关注各站点的整体内容格局、历史背景和核心主题，而非单篇文章。",
-  "webIncrementalNote": "这是增量更新。请重点关注今日新增内容，并结合上下文评估其战略意义。"
+  "webIncrementalNote": "这是增量更新。请重点关注今日新增内容，并结合上下文评估其战略意义。",
+  "$schema": "../locale-schema.json"
 }

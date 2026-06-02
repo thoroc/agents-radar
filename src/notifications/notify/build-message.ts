@@ -17,15 +17,15 @@ export const buildMessage = (
   reports: string[],
   pagesUrl?: string,
   highlights?: Highlights | null,
-  enabledLangs: string[] = ["zh", "en"],
+  enabledLangs: string[] = ["zh-CN", "en-US"],
   env: NodeJS.ProcessEnv = process.env,
 ): string => {
   const PAGES_URL = (pagesUrl ?? env.PAGES_URL ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
-  const baseReports = reports.filter((r) => !r.endsWith("-en"));
+  const baseReports = reports.filter((r) => !r.endsWith(".en-US"));
   const isWeekly = baseReports.includes("ai-weekly");
   const isMonthly = baseReports.includes("ai-monthly");
 
-  const primaryLang = enabledLangs[0] ?? "zh";
+  const primaryLang = enabledLangs[0] ?? "zh-CN";
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
   const suffix = isMonthly
     ? t(primaryLang).notifySuffixMonthly
@@ -42,7 +42,7 @@ export const buildMessage = (
   for (const r of ordered) {
     lines.push("");
     for (const lang of enabledLangs) {
-      const langSuffix = lang === "zh" ? "" : "-en";
+      const langSuffix = lang === "zh-CN" ? "" : ".en-US";
       const fileKey = `${r}${langSuffix}`;
       if (!reports.includes(fileKey)) continue;
       const label = notifyLabel(r, lang as Locale);

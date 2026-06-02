@@ -48,7 +48,7 @@ describe("generateSummaries", () => {
       [],
       mockTrendingData,
       mockDateStr,
-      "en",
+      "en-US",
     );
     expect(result.cliDigests).toHaveLength(1);
     expect(result.cliDigests[0]!.summary).toBeTruthy();
@@ -64,7 +64,7 @@ describe("generateSummaries", () => {
       [],
       mockTrendingData,
       mockDateStr,
-      "en",
+      "en-US",
     );
     expect(result.cliDigests[0]!.summary).toBe("mock summary");
     expect(callLlmModule.callLlm).toHaveBeenCalled();
@@ -78,7 +78,7 @@ describe("generateSummaries", () => {
       [],
       mockTrendingData,
       mockDateStr,
-      "zh",
+      "zh-CN",
     );
     expect(result.trendingSummary).toBeTruthy();
   });
@@ -91,7 +91,7 @@ describe("generateSummaries", () => {
       [],
       mockTrendingData,
       mockDateStr,
-      "en",
+      "en-US",
     );
     expect(result).toHaveProperty("cliDigests");
     expect(result).toHaveProperty("openclawSummary");

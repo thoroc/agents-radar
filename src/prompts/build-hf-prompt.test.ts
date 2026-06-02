@@ -33,7 +33,7 @@ describe("buildHuggingFacePrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildHuggingFacePrompt(makeData(), "2026-03-09", "en");
+    const result = buildHuggingFacePrompt(makeData(), "2026-03-09", "en-US");
     expect(result).toContain("Hugging Face Trending Models Digest");
     expect(result).toContain("Likes:");
     expect(result).toContain("Downloads:");

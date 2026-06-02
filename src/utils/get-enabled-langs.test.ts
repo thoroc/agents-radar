@@ -24,17 +24,17 @@ describe("getEnabledLangs", () => {
 
   it("returns defaults when nothing configured", () => {
     process.env.REPORT_LANGS = "";
-    expect(getEnabledLangs([])).toEqual(["en", "zh"]);
+    expect(getEnabledLangs([])).toEqual(["en-US", "zh-CN"]);
   });
 
   it("returns defaults when langConfig undefined", () => {
     process.env.REPORT_LANGS = "";
-    expect(getEnabledLangs(undefined)).toEqual(["en", "zh"]);
+    expect(getEnabledLangs(undefined)).toEqual(["en-US", "zh-CN"]);
   });
 
   it("filters empty strings from env var", () => {
-    process.env.REPORT_LANGS = "en,,zh,";
-    expect(getEnabledLangs()).toEqual(["en", "zh"]);
+    process.env.REPORT_LANGS = "en-US,,zh-CN,";
+    expect(getEnabledLangs()).toEqual(["en-US", "zh-CN"]);
   });
 
   it("uses injectable env", () => {

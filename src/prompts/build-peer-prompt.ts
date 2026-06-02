@@ -16,7 +16,7 @@ export const buildPeerPrompt = (
   dateStr: string,
   issueLimit = PEER_ISSUE_LIMIT,
   prLimit = PEER_PR_LIMIT,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const totalIssues = issues.length;
   const totalPrs = prs.length;

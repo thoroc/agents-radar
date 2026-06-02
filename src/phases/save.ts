@@ -91,7 +91,7 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
   for (const lang of enabledLangs) {
     const s = summariesByLang[lang]!;
     const ft = autoGenFooter(lang as Locale);
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === "zh-CN" ? "" : `.${lang}`;
 
     cliContent[lang] = buildCliReportContent(
       s.cliDigests,
@@ -135,44 +135,66 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
   await Promise.all([
     saveTrendingReport(
       trendingData,
-      summariesByLang.zh!.trendingSummary,
+      summariesByLang["zh-CN"]!.trendingSummary,
       utcStr,
       dateStr,
       digestRepo,
-      autoGenFooter("zh"),
-      "zh",
+      autoGenFooter("zh-CN"),
+      "zh-CN",
     ),
     saveTrendingReport(
       trendingData,
-      summariesByLang.en!.trendingSummary,
+      summariesByLang["en-US"]!.trendingSummary,
       utcStr,
       dateStr,
       digestRepo,
-      autoGenFooter("en"),
-      "en",
+      autoGenFooter("en-US"),
+      "en-US",
     ),
-    saveHackerNewsReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    saveHackerNewsReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
-    saveProductHuntReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    saveProductHuntReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
-    saveArxivReport(arxivData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    saveArxivReport(arxivData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
-    saveHuggingFaceReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    saveHuggingFaceReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
-    saveCommunityReport(devtoData, lobstersData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    saveCommunityReport(devtoData, lobstersData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
+    saveHackerNewsReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("zh-CN"), "zh-CN"),
+    saveHackerNewsReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("en-US"), "en-US"),
+    saveProductHuntReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("zh-CN"), "zh-CN"),
+    saveProductHuntReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("en-US"), "en-US"),
+    saveArxivReport(arxivData, utcStr, dateStr, digestRepo, autoGenFooter("zh-CN"), "zh-CN"),
+    saveArxivReport(arxivData, utcStr, dateStr, digestRepo, autoGenFooter("en-US"), "en-US"),
+    saveHuggingFaceReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("zh-CN"), "zh-CN"),
+    saveHuggingFaceReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("en-US"), "en-US"),
+    saveCommunityReport(
+      devtoData,
+      lobstersData,
+      utcStr,
+      dateStr,
+      digestRepo,
+      autoGenFooter("zh-CN"),
+      "zh-CN",
+    ),
+    saveCommunityReport(
+      devtoData,
+      lobstersData,
+      utcStr,
+      dateStr,
+      digestRepo,
+      autoGenFooter("en-US"),
+      "en-US",
+    ),
   ]);
 
-  const zhReports: Record<string, string> = { "ai-cli": cliContent.zh!, "ai-agents": openclawContent.zh! };
-  const enReports: Record<string, string> = { "ai-cli": cliContent.en!, "ai-agents": openclawContent.en! };
+  const zhReports: Record<string, string> = {
+    "ai-cli": cliContent["zh-CN"]!,
+    "ai-agents": openclawContent["zh-CN"]!,
+  };
+  const enReports: Record<string, string> = {
+    "ai-cli": cliContent["en-US"]!,
+    "ai-agents": openclawContent["en-US"]!,
+  };
   for (const [id, zhFile, enFile] of [
-    ["ai-trending", "ai-trending.md", "ai-trending.en.md"],
-    ["ai-web", "ai-web.md", "ai-web.en.md"],
-    ["ai-hn", "ai-hn.md", "ai-hn.en.md"],
-    ["ai-ph", "ai-ph.md", "ai-ph.en.md"],
-    ["ai-arxiv", "ai-arxiv.md", "ai-arxiv.en.md"],
-    ["ai-hf", "ai-hf.md", "ai-hf.en.md"],
-    ["ai-community", "ai-community.md", "ai-community.en.md"],
+    ["ai-trending", "ai-trending.md", "ai-trending.en-US.md"],
+    ["ai-web", "ai-web.md", "ai-web.en-US.md"],
+    ["ai-hn", "ai-hn.md", "ai-hn.en-US.md"],
+    ["ai-ph", "ai-ph.md", "ai-ph.en-US.md"],
+    ["ai-arxiv", "ai-arxiv.md", "ai-arxiv.en-US.md"],
+    ["ai-hf", "ai-hf.md", "ai-hf.en-US.md"],
+    ["ai-community", "ai-community.md", "ai-community.en-US.md"],
   ] as const) {
     const zh = readReport(dateStr, zhFile);
     const en = readReport(dateStr, enFile);
@@ -181,19 +203,19 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
   }
 
   console.error("  Generating highlights for Telegram...");
-  const highlights: Record<string, ReportHighlights> = { zh: {}, en: {} };
+  const highlights: Record<string, ReportHighlights> = { "zh-CN": {}, "en-US": {} };
   try {
     const [zhRaw, enRaw] = await Promise.all([
-      callLlm(buildHighlightsPrompt(zhReports, "zh"), 2048),
-      callLlm(buildHighlightsPrompt(enReports, "en"), 2048),
+      callLlm(buildHighlightsPrompt(zhReports, "zh-CN"), 2048),
+      callLlm(buildHighlightsPrompt(enReports, "en-US"), 2048),
     ]);
-    highlights.zh = JSON.parse(
+    highlights["zh-CN"] = JSON.parse(
       zhRaw
         .replace(/```json?\n?/g, "")
         .replace(/```/g, "")
         .trim(),
     );
-    highlights.en = JSON.parse(
+    highlights["en-US"] = JSON.parse(
       enRaw
         .replace(/```json?\n?/g, "")
         .replace(/```/g, "")

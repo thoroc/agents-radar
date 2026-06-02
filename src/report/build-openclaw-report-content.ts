@@ -12,7 +12,7 @@ export const buildOpenclawReportContent = (
   footer: string,
   openclaw: RepoConfig,
   openclawPeers: RepoConfig[],
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const { issues, prs } = fetchedOpenclaw;
 
@@ -36,7 +36,7 @@ export const buildOpenclawReportContent = (
   const s = t(lang);
   const title = `# ${s.openclawTitle} ${dateStr}\n\n`;
   const meta =
-    lang === "en"
+    lang === "en-US"
       ? `> Issues: ${issues.length} | PRs: ${prs.length} | Projects covered: ${1 + openclawPeers.length} | Generated: ${utcStr} UTC\n\n`
       : `> Issues: ${issues.length} | PRs: ${prs.length} | 覆盖项目: ${1 + openclawPeers.length} 个 | 生成时间: ${utcStr} UTC\n\n`;
 

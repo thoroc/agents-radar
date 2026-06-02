@@ -3,10 +3,10 @@ import { toPromptLang } from "./prompt-lang";
 
 describe("toPromptLang", () => {
   it("returns the locale as-is", () => {
-    expect(toPromptLang("en")).toBe("en");
-    expect(toPromptLang("zh")).toBe("zh");
-    expect(toPromptLang("ja")).toBe("ja");
-    expect(toPromptLang("ar")).toBe("ar");
-    expect(toPromptLang("de")).toBe("de");
+    expect(toPromptLang("en-US")).toBe("en-US");
+    expect(toPromptLang("zh-CN")).toBe("zh-CN");
+    expect(toPromptLang("ja-JP")).toBe("ja-JP");
+    expect(toPromptLang("ar-SA")).toBe("ar-SA");
+    expect(toPromptLang("de-DE")).toBe("de-DE");
   });
 });

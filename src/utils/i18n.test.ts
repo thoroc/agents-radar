@@ -29,30 +29,30 @@ describe("t()", () => {
       "monthlyTitle",
     ] as const;
     for (const key of keys) {
-      expect(t("zh")[key]).toBeTruthy();
-      expect(t("en")[key]).toBeTruthy();
-      expect(t("zh")[key]).not.toBe(t("en")[key]);
+      expect(t("zh-CN")[key]).toBeTruthy();
+      expect(t("en-US")[key]).toBeTruthy();
+      expect(t("zh-CN")[key]).not.toBe(t("en-US")[key]);
     }
   });
 
   it("returns footer strings", () => {
-    expect(t("zh").autoGen).toContain("本日报由");
-    expect(t("en").autoGen).toContain("auto-generated");
+    expect(t("zh-CN").autoGen).toContain("本日报由");
+    expect(t("en-US").autoGen).toContain("auto-generated");
   });
 
   it("returns issue label keys", () => {
-    expect(t("zh").issueLabelCli).toBe("digest");
-    expect(t("en").issueLabelCli).toBe("digest-en");
-    expect(t("zh").issueLabelOpenclaw).toBe("openclaw");
-    expect(t("en").issueLabelTrending).toBe("trending-en");
-    expect(t("en").issueLabelHn).toBe("hn-en");
+    expect(t("zh-CN").issueLabelCli).toBe("digest");
+    expect(t("en-US").issueLabelCli).toBe("digest-en");
+    expect(t("zh-CN").issueLabelOpenclaw).toBe("openclaw");
+    expect(t("en-US").issueLabelTrending).toBe("trending-en");
+    expect(t("en-US").issueLabelHn).toBe("hn-en");
   });
 
   it("returns issue title strings without date", () => {
-    expect(t("zh").issueTitleCli).toContain("AI CLI");
-    expect(t("en").issueTitleCli).toContain("AI CLI Tools Digest");
-    expect(t("zh").issueTitleWeb).toContain("官方");
-    expect(t("en").issueTitleWeb).toContain("Official");
+    expect(t("zh-CN").issueTitleCli).toContain("AI CLI");
+    expect(t("en-US").issueTitleCli).toContain("AI CLI Tools Digest");
+    expect(t("zh-CN").issueTitleWeb).toContain("官方");
+    expect(t("en-US").issueTitleWeb).toContain("Official");
   });
 });
 
@@ -75,20 +75,18 @@ describe("t() fallback", () => {
 
 describe("validateLocale", () => {
   it("returns the locale if supported", () => {
-    expect(validateLocale("en")).toBe("en");
-    expect(validateLocale("zh")).toBe("zh");
-  });
+    expect(validateLocale("en-US")).toBe("en-US");
+    expect(validateLocale("zh-CN")).toBe("zh-CN");
 
-  it("falls back to en for unsupported locale", () => {
-    expect(validateLocale("xx")).toBe("en");
-    expect(validateLocale("")).toBe("en");
+    expect(validateLocale("xx")).toBe("en-US");
+    expect(validateLocale("")).toBe("en-US");
   });
 });
 
 describe("SUPPORTED_LOCALES", () => {
   it("includes zh and en", () => {
-    expect(SUPPORTED_LOCALES).toContain("en");
-    expect(SUPPORTED_LOCALES).toContain("zh");
+    expect(SUPPORTED_LOCALES).toContain("en-US");
+    expect(SUPPORTED_LOCALES).toContain("zh-CN");
   });
 
   it("includes all 21 locales", () => {
@@ -98,8 +96,8 @@ describe("SUPPORTED_LOCALES", () => {
 
 describe("LANGUAGE_NAMES", () => {
   it("maps locale codes to names", () => {
-    expect(LANGUAGE_NAMES.en).toBe("English");
-    expect(LANGUAGE_NAMES.zh).toBe("Chinese");
+    expect(LANGUAGE_NAMES["en-US"]).toBe("English");
+    expect(LANGUAGE_NAMES["zh-CN"]).toBe("Chinese");
   });
 });
 
@@ -133,8 +131,8 @@ describe("notify label strings", () => {
 
   for (const key of NOTIFY_KEYS) {
     it(`${key} has zh and en values`, () => {
-      expect(t("zh")[key]).toBeTruthy();
-      expect(t("en")[key]).toBeTruthy();
+      expect(t("zh-CN")[key]).toBeTruthy();
+      expect(t("en-US")[key]).toBeTruthy();
     });
   }
 });
@@ -151,43 +149,41 @@ describe("report label strings", () => {
 
   for (const key of REPORT_LABEL_KEYS) {
     it(`${key} in zh`, () => {
-      expect(t("zh")[key]).toBeTruthy();
+      expect(t("zh-CN")[key]).toBeTruthy();
     });
     it(`${key} in en`, () => {
-      expect(t("en")[key]).toBeTruthy();
+      expect(t("en-US")[key]).toBeTruthy();
     });
   }
 });
 
 describe("format items", () => {
   it("provide labels for GitHub item formatting", () => {
-    expect(t("zh").formatItemAuthor).toBeTruthy();
-    expect(t("en").formatItemAuthor).toBe("Author");
-    expect(t("en").formatItemCreated).toBe("Created");
-    expect(t("en").formatItemSummary).toBe("Summary");
-    expect(t("en").sampleNote).toContain("total");
+    expect(t("zh-CN").formatItemAuthor).toBeTruthy();
+    expect(t("en-US").formatItemAuthor).toBe("Author");
+    expect(t("en-US").formatItemCreated).toBe("Created");
+    expect(t("en-US").formatItemSummary).toBe("Summary");
+    expect(t("en-US").sampleNote).toContain("total");
   });
 });
 
 describe("rollup strings", () => {
   it("provide weekly and monthly report labels", () => {
-    expect(t("en").weeklyTitle).toContain("Weekly");
-    expect(t("zh").weeklyTitle).toContain("周报");
-    expect(t("en").monthlyTitle).toContain("Monthly");
-    expect(t("zh").monthlyTitle).toContain("月报");
-    expect(t("en").weeklyCoverage).toBe("Coverage");
-    expect(t("zh").weeklyCoverage).toBe("覆盖日期");
+    expect(t("en-US").weeklyTitle).toContain("Weekly");
+    expect(t("zh-CN").weeklyTitle).toContain("周报");
+    expect(t("en-US").monthlyTitle).toContain("Monthly");
+    expect(t("zh-CN").monthlyTitle).toContain("月报");
+    expect(t("en-US").weeklyCoverage).toBe("Coverage");
+    expect(t("zh-CN").weeklyCoverage).toBe("覆盖日期");
   });
 });
 
 describe("truncation and error strings", () => {
   it("provide issue truncation message", () => {
-    expect(t("en").issueTruncation).toContain("GitHub Issue");
-    expect(t("zh").issueTruncation).toContain("GitHub Issue");
-  });
+    expect(t("en-US").issueTruncation).toContain("GitHub Issue");
+    expect(t("zh-CN").issueTruncation).toContain("GitHub Issue");
 
-  it("provide daily/weekly truncation markers", () => {
-    expect(t("en").digestTruncation).toContain("truncated");
-    expect(t("en").weeklyTruncation).toContain("truncated");
+    expect(t("en-US").digestTruncation).toContain("truncated");
+    expect(t("en-US").weeklyTruncation).toContain("truncated");
   });
 });

@@ -31,7 +31,7 @@ describe("saveProductHuntReport", () => {
   };
 
   it("calls saveDataSourceReport with product hunt config", async () => {
-    await saveProductHuntReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en");
+    await saveProductHuntReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en-US");
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
     const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
@@ -49,7 +49,7 @@ describe("saveProductHuntReport", () => {
   it("skips when fetchSuccess is false", async () => {
     const noData = { products: [], fetchSuccess: false };
 
-    await saveProductHuntReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh");
+    await saveProductHuntReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh-CN");
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
     const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock

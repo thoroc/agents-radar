@@ -124,5 +124,6 @@
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
   "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
   "trendingFetchFailed": "(Không thể lấy danh sách xu hướng GitHub hôm nay)",
-  "searchNoResults": "(Không có kết quả tìm kiếm)"
+  "searchNoResults": "(Không có kết quả tìm kiếm)",
+  "$schema": "../locale-schema.json"
 }

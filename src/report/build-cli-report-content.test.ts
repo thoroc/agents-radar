@@ -25,7 +25,7 @@ describe("buildCliReportContent", () => {
       "2026-03-09",
       "\n---\nfooter",
       "anthropics/skills",
-      "zh",
+      "zh-CN",
     );
     expect(result).toContain("# AI CLI 工具社区动态日报 2026-03-09");
     expect(result).toContain("覆盖工具: 2 个");
@@ -46,7 +46,7 @@ describe("buildCliReportContent", () => {
       "2026-03-09",
       "",
       "anthropics/skills",
-      "en",
+      "en-US",
     );
     expect(result).toContain("# AI CLI Tools Community Digest 2026-03-09");
     expect(result).toContain("Cross-Tool Comparison");
@@ -64,7 +64,7 @@ describe("buildCliReportContent", () => {
       "",
       "",
       "anthropics/skills",
-      "zh",
+      "zh-CN",
     );
     const claudeIdx = result.indexOf("Claude Code");
     const skillsIdx = result.indexOf("SKILLS_CONTENT");

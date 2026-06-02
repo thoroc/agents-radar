@@ -10,8 +10,8 @@ const mockConfig: RepoConfig = { id: "openclaw", repo: "org/openclaw", name: "Op
 const mockRepoFetch: RepoFetch = { cfg: mockConfig, issues: [], prs: [], releases: [] };
 const mockDigest: RepoDigest = { config: mockConfig, issues: [], prs: [], releases: [], summary: "test" };
 const mockSummariesByLang = {
-  zh: { cliDigests: [mockDigest], openclawSummary: "zh summary", peerDigests: [mockDigest] } as const,
-  en: { cliDigests: [mockDigest], openclawSummary: "en summary", peerDigests: [mockDigest] } as const,
+  "zh-CN": { cliDigests: [mockDigest], openclawSummary: "zh-CN summary", peerDigests: [mockDigest] } as const,
+  "en-US": { cliDigests: [mockDigest], openclawSummary: "en-US summary", peerDigests: [mockDigest] } as const,
 };
 
 describe("generateComparisons", () => {
@@ -43,9 +43,9 @@ describe("generateComparisons", () => {
       openclaw: mockConfig,
       dateStr: "2026-01-01",
     });
-    expect(result.comparisonByLang.zh).toBe("mock comparison");
-    expect(result.comparisonByLang.en).toBe("mock comparison");
-    expect(result.peersComparisonByLang.zh).toBe("mock comparison");
-    expect(result.peersComparisonByLang.en).toBe("mock comparison");
+    expect(result.comparisonByLang["zh-CN"]).toBe("mock comparison");
+    expect(result.comparisonByLang["en-US"]).toBe("mock comparison");
+    expect(result.peersComparisonByLang["zh-CN"]).toBe("mock comparison");
+    expect(result.peersComparisonByLang["en-US"]).toBe("mock comparison");
   });
 });

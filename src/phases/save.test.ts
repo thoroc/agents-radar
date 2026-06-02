@@ -22,16 +22,16 @@ const mockWebState: WebState = {
 
 const baseArgs: SavePhaseArgs = {
   summariesByLang: {
-    zh: { cliDigests: [], openclawSummary: "", skillsSummary: "", peerDigests: [], trendingSummary: "" },
-    en: { cliDigests: [], openclawSummary: "", skillsSummary: "", peerDigests: [], trendingSummary: "" },
+    "zh-CN": { cliDigests: [], openclawSummary: "", skillsSummary: "", peerDigests: [], trendingSummary: "" },
+    "en-US": { cliDigests: [], openclawSummary: "", skillsSummary: "", peerDigests: [], trendingSummary: "" },
   },
-  comparisonsByLang: { zh: "", en: "" },
-  peersComparisonsByLang: { zh: "", en: "" },
+  comparisonsByLang: { "zh-CN": "", "en-US": "" },
+  peersComparisonsByLang: { "zh-CN": "", "en-US": "" },
   claudeSkillsRepo: "org/skills",
   utcStr: "2026-01-01T00:00:00Z",
   dateStr: "2026-01-01",
   digestRepo: "owner/repo",
-  enabledLangs: ["zh", "en"],
+  enabledLangs: ["zh-CN", "en-US"],
   fetchedOpenclaw: {
     cfg: { id: "openclaw", repo: "org/openclaw", name: "OpenClaw" },
     issues: [],
@@ -78,9 +78,13 @@ describe("savePhase", () => {
   it("saves CLI and OpenClaw reports for each enabled lang", async () => {
     await savePhase(baseArgs);
     expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "ai-cli.md");
-    expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "ai-cli.en.md");
+    expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "ai-cli.en-US.md");
     expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "ai-agents.md");
-    expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "ai-agents.en.md");
+    expect(saveFileModule.saveFile).toHaveBeenCalledWith(
+      expect.any(String),
+      "2026-01-01",
+      "ai-agents.en-US.md",
+    );
   });
 
   it("calls saveWebReport for each enabled lang", async () => {
@@ -94,7 +98,7 @@ describe("savePhase", () => {
   });
 
   it("handles single language (zh only)", async () => {
-    await savePhase({ ...baseArgs, enabledLangs: ["zh"] });
+    await savePhase({ ...baseArgs, enabledLangs: ["zh-CN"] });
     expect(saveFileModule.saveFile).toHaveBeenCalledTimes(3); // cli + agents + highlights
     expect(saveWebReportModule.saveWebReport).toHaveBeenCalledTimes(1);
   });

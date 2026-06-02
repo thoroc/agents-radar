@@ -25,16 +25,16 @@ describe("buildSkillsPrompt", () => {
   });
 
   it("shows None when no data", () => {
-    const result = buildSkillsPrompt([], [], "2026-03-09", "en");
+    const result = buildSkillsPrompt([], [], "2026-03-09", "en-US");
     expect(result).toContain("Claude Code ecosystem");
     expect(result).toContain("None");
   });
 
   it("appends language suffix", () => {
-    const result = buildSkillsPrompt([], [], "2026-03-09", "en");
+    const result = buildSkillsPrompt([], [], "2026-03-09", "en-US");
     expect(result).toContain("Write the response in English.");
 
-    const zhResult = buildSkillsPrompt([], [], "2026-03-09", "zh");
+    const zhResult = buildSkillsPrompt([], [], "2026-03-09", "zh-CN");
     expect(zhResult).toContain("Write the response in Chinese.");
   });
 });
