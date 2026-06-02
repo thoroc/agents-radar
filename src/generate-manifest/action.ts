@@ -2,66 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
-import { marked } from "marked";
-import { t } from "../utils";
 import { PAGES_URL_DEFAULT } from "../utils/constants";
+import { DIGESTS_DIR } from "./constants";
 import { escapeXml } from "./escape-xml";
+import { getReportContent } from "./get-report-content";
+import { reportLabel } from "./report-label";
 import { toRfc822 } from "./to-rfc822";
 
-const reportLabel = (id: string): string => {
-  const zh = t("zh");
-  const en = t("en");
-  switch (id) {
-    case "ai-cli":
-      return zh.reportLabelAiCli;
-    case "ai-cli-en":
-      return en.reportLabelAiCliEn;
-    case "ai-agents":
-      return zh.reportLabelAiAgents;
-    case "ai-agents-en":
-      return en.reportLabelAiAgentsEn;
-    case "ai-web":
-      return zh.reportLabelAiWeb;
-    case "ai-web-en":
-      return en.reportLabelAiWebEn;
-    case "ai-trending":
-      return zh.reportLabelAiTrending;
-    case "ai-trending-en":
-      return en.reportLabelAiTrendingEn;
-    case "ai-hn":
-      return zh.reportLabelAiHn;
-    case "ai-hn-en":
-      return en.reportLabelAiHnEn;
-    case "ai-ph":
-      return zh.reportLabelAiPh;
-    case "ai-ph-en":
-      return en.reportLabelAiPhEn;
-    case "ai-arxiv":
-      return zh.reportLabelAiArxiv;
-    case "ai-arxiv-en":
-      return en.reportLabelAiArxivEn;
-    case "ai-hf":
-      return zh.reportLabelAiHf;
-    case "ai-hf-en":
-      return en.reportLabelAiHfEn;
-    case "ai-community":
-      return zh.reportLabelAiCommunity;
-    case "ai-community-en":
-      return en.reportLabelAiCommunityEn;
-    case "ai-weekly":
-      return zh.reportLabelAiWeekly;
-    case "ai-weekly-en":
-      return en.reportLabelAiWeeklyEn;
-    case "ai-monthly":
-      return zh.reportLabelAiMonthly;
-    case "ai-monthly-en":
-      return en.reportLabelAiMonthlyEn;
-    default:
-      return id;
-  }
-};
-
-const DIGESTS_DIR = "digests";
 const MANIFEST_PATH = "manifest.json";
 const FEED_PATH = "feed.xml";
 
@@ -101,40 +48,6 @@ interface Manifest {
   generated: string;
   dates: DateEntry[];
 }
-
-interface ReportContent {
-  summary: string;
-  fullHtml: string;
-}
-
-const getReportContent = async (date: string, report: string): Promise<ReportContent> => {
-  const filePath = path.join(DIGESTS_DIR, date, `${report}.md`);
-
-  try {
-    const markdown = fs.readFileSync(filePath, "utf-8");
-    const html = await marked.parse(markdown, { async: false });
-
-    const textOnly = html
-      .replace(/<[^>]+>/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
-    const summary = textOnly.length > 500 ? `${textOnly.slice(0, 500)}...` : textOnly;
-
-    const safeHtml = html.replace(/]]>/g, "]]]]><![CDATA[");
-
-    return {
-      summary: escapeXml(summary),
-      fullHtml: `<![CDATA[${safeHtml}]]>`,
-    };
-  } catch {
-    const label = reportLabel(report);
-    const title = `${label} ${date}`;
-    return {
-      summary: escapeXml(title),
-      fullHtml: `<![CDATA[${escapeXml(title)}]]>`,
-    };
-  }
-};
 
 export interface GenerateManifestActionArgs {
   verbosity: number;

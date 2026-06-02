@@ -2,46 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import type { Highlights } from "../notify/build-message";
 import { buildFeishuMessage } from "./build-feishu-message";
-
-const getWebhookUrls = (env: NodeJS.ProcessEnv = process.env): string[] => {
-  const raw = env.FEISHU_WEBHOOK_URLS ?? env.FEISHU_WEBHOOK_URL ?? "";
-  return raw
-    .split(",")
-    .map((u) => u.trim())
-    .filter(Boolean);
-};
-
-const sendToOneWebhook = async (webhookUrl: string, title: string, content: string): Promise<void> => {
-  const res = await fetch(webhookUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      msg_type: "interactive",
-      card: {
-        header: {
-          title: { tag: "plain_text", content: title },
-          template: "blue",
-        },
-        elements: [{ tag: "markdown", content }],
-      },
-    }),
-  });
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Feishu API ${res.status}: ${body}`);
-  }
-};
-
-const sendFeishu = async (title: string, content: string): Promise<void> => {
-  const urls = getWebhookUrls();
-  const results = await Promise.allSettled(urls.map((url) => sendToOneWebhook(url, title, content)));
-  const failures = results.filter((r) => r.status === "rejected");
-  if (failures.length) {
-    const msgs = failures.map((r) => (r as PromiseRejectedResult).reason);
-    console.error(`[feishu] ${failures.length}/${urls.length} webhook(s) failed:`, msgs);
-    if (failures.length === urls.length) throw new Error("All Feishu webhooks failed");
-  }
-};
+import { getWebhookUrls } from "./get-webhook-urls";
+import { sendFeishu } from "./send-feishu";
 
 export interface FeishuActionArgs {
   verbosity: number;

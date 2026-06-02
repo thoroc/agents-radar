@@ -25,16 +25,6 @@ const mockReadDailyDigest = vi.fn();
 const mockReadWeeklyDigest = vi.fn();
 const mockGenerateRollupHighlights = vi.fn();
 
-vi.mock("./rollup-utils", () => ({
-  DIGESTS_DIR: "digests",
-  ROLLUP_SOURCES: ["ai-cli", "ai-agents", "ai-trending", "ai-hn", "ai-web"],
-  MAX_CHARS_PER_REPORT: 2500,
-  getDateDirs: mockGetDateDirs,
-  readDailyDigest: mockReadDailyDigest,
-  readWeeklyDigest: mockReadWeeklyDigest,
-  generateRollupHighlights: mockGenerateRollupHighlights,
-}));
-
 import { runMonthlyRollup } from "./run-monthly-rollup";
 
 const computeMonthStr = (): string => {

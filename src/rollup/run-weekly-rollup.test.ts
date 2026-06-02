@@ -25,16 +25,6 @@ const mockGetDateDirs = vi.fn();
 const mockReadDailyDigest = vi.fn();
 const mockGenerateRollupHighlights = vi.fn();
 
-vi.mock("./rollup-utils", () => ({
-  DIGESTS_DIR: "digests",
-  ROLLUP_SOURCES: ["ai-cli", "ai-agents", "ai-trending", "ai-hn", "ai-web"],
-  MAX_CHARS_PER_REPORT: 2500,
-  getDateDirs: mockGetDateDirs,
-  readDailyDigest: mockReadDailyDigest,
-  readWeeklyDigest: vi.fn(),
-  generateRollupHighlights: mockGenerateRollupHighlights,
-}));
-
 const mockToWeekStr = vi.fn(() => "2026-W11");
 vi.mock("./week-str", () => ({ toWeekStr: mockToWeekStr }));
 
