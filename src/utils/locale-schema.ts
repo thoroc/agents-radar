@@ -34,6 +34,12 @@ const LocaleDataSchema = z.object({
   hfMeta: z.string(),
   communityMeta: z.string(),
   trendingMeta: z.string(),
+  hnCount: z.string(),
+  arxivCount: z.string(),
+  phCount: z.string(),
+  hfCount: z.string(),
+  headerGeneratedLabel: z.string(),
+  headerSourceLabel: z.string(),
 
   cliTitle: z.string(),
   cliMeta: z.string(),
@@ -50,6 +56,8 @@ const LocaleDataSchema = z.object({
 
   webTitle: z.string(),
   webMeta: z.string(),
+  webModeFirstCrawl: z.string(),
+  webModeIncremental: z.string(),
   webFirstCrawl: z.string(),
   webTodayUpdate: z.string(),
   webNewContent: z.string(),
@@ -64,6 +72,8 @@ const LocaleDataSchema = z.object({
   arxivTitle: z.string(),
   hfTitle: z.string(),
   communityTitle: z.string(),
+  devtoArticles: z.string(),
+  lobstersStories: z.string(),
 
   weeklyTitle: z.string(),
   weeklyCoverage: z.string(),

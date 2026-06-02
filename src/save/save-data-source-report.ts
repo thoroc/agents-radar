@@ -7,8 +7,8 @@ type DataSourceReportOpts = {
   logPrefix: string;
   logAction: string;
   data: unknown;
-  promptBuilder: (data: unknown, dateStr: string, suffix: string) => string;
-  headerBuilder: (suffix: string, dateStr: string, utcStr: string) => string;
+  promptBuilder: (data: unknown, dateStr: string) => string;
+  headerBuilder: (dateStr: string, utcStr: string, lang: string) => string;
   fileName: string;
   issueTitle: string;
   issueLabel: string;
@@ -34,7 +34,7 @@ export const saveDataSourceReport = async (
       {
         data: opts.data,
         promptBuilder: opts.promptBuilder,
-        headerBuilder: (_ds, _us, suffix) => opts.headerBuilder(suffix, _ds, _us),
+        headerBuilder: (_ds, _us, _lang) => opts.headerBuilder(_ds, _us, _lang),
         fileName: opts.fileName,
         issueTitle: opts.issueTitle,
         issueLabel: opts.issueLabel,

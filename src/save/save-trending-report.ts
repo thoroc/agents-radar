@@ -25,9 +25,11 @@ export const saveTrendingReport = async (
   await saveReport(
     {
       data: trendingSummary,
-      promptBuilder: (d, _ds, _suffix) => d as string,
-      headerBuilder: (ds, us, suffix) =>
-        `# ${s.trendingTitle} ${ds}\n\n> ${s.trendingSources} | ${suffix ? "Generated" : "生成时间"}: ${us} UTC`,
+      promptBuilder: (d) => d as string,
+      headerBuilder: (_ds, us) => {
+        const generated = s.headerGeneratedLabel.replace("{utcStr}", us);
+        return `# ${s.trendingTitle} ${_ds}\n\n> ${s.trendingSources} | ${generated} UTC`;
+      },
       fileName: "ai-trending",
       issueTitle: s.issueTitleTrending,
       issueLabel: s.issueLabelTrending,

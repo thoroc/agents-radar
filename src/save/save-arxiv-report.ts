@@ -1,6 +1,5 @@
 import type { ArxivData } from "../fetchers/arxiv";
 import { buildArxivPrompt } from "../prompts";
-import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 import { buildSourceHeader } from "./build-source-header";
 import { saveDataSourceReport } from "./save-data-source-report";
@@ -16,23 +15,23 @@ export const saveArxivReport = async (
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const s = t(lang);
+  const count = s.arxivCount.replace("{n}", String(arxivData.papers.length));
   await saveDataSourceReport(
     {
       hasData: arxivData.fetchSuccess,
       logPrefix: "arxiv",
       logAction: "ArXiv",
       data: arxivData,
-      promptBuilder: (d, ds, _suffix) => buildArxivPrompt(d as ArxivData, ds, toPromptLang(lang)),
-      headerBuilder: (suffix, ds, us) =>
+      promptBuilder: (d) => buildArxivPrompt(d as ArxivData, lang),
+      headerBuilder: (_ds, us) =>
         buildSourceHeader(
-          suffix,
-          ds,
+          lang,
+          _ds,
           us,
           s.arxivTitle,
           "ArXiv",
           "https://arxiv.org/",
-          `${arxivData.papers.length} papers`,
-          `共 ${arxivData.papers.length} 篇论文`,
+          count,
           "cs.AI, cs.CL, cs.LG",
         ),
       fileName: "ai-arxiv",

@@ -15,8 +15,8 @@ describe("saveReport", () => {
 
   const config: SaveReportConfig = {
     data: { test: true },
-    promptBuilder: (_d, ds, suffix) => `test-prompt-${ds}-${suffix}`,
-    headerBuilder: (ds, us, _suffix) => `# Test Report ${ds}\n\nGenerated: ${us} UTC`,
+    promptBuilder: (_d, ds) => `test-prompt-${ds}`,
+    headerBuilder: (ds, us, _lang) => `# Test Report ${ds}\n\nGenerated: ${us} UTC`,
     fileName: "test-report",
     issueTitle: "Test Report",
     issueLabel: "test",
@@ -42,7 +42,7 @@ describe("saveReport", () => {
     );
 
     expect(mockCallLlm).toHaveBeenCalledOnce();
-    expect(mockCallLlm).toHaveBeenCalledWith("test-prompt-2026-01-01-.en", undefined);
+    expect(mockCallLlm).toHaveBeenCalledWith("test-prompt-2026-01-01", undefined);
   });
 
   it("calls saveFile with the correct file path", async () => {

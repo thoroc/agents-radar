@@ -10,7 +10,7 @@ describe("toPromptLang", () => {
     expect(toPromptLang("zh")).toBe("zh");
   });
 
-  it('returns "zh" for all non-English locales', () => {
+  it("returns the same locale for all non-English locales (identity pass-through)", () => {
     const locales: Array<Parameters<typeof toPromptLang>[0]> = [
       "ar",
       "bn",
@@ -33,7 +33,7 @@ describe("toPromptLang", () => {
       "vi",
     ];
     for (const locale of locales) {
-      expect(toPromptLang(locale)).toBe("zh");
+      expect(toPromptLang(locale)).toBe(locale);
     }
   });
 });

@@ -1,7 +1,7 @@
 export type SaveReportConfig = {
   data: unknown;
-  promptBuilder: (data: unknown, dateStr: string, suffix: string) => string;
-  headerBuilder: (dateStr: string, utcStr: string, suffix: string) => string;
+  promptBuilder: (data: unknown, dateStr: string) => string;
+  headerBuilder: (dateStr: string, utcStr: string, lang: string) => string;
   fileName: string;
   issueTitle?: string;
   issueLabel?: string;
