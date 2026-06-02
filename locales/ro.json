@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Romanian",
-    "nativeName": "Română"
+    "nativeName": "Română",
+    "code": "ro"
   },
   "noActivity": "Nicio activitate în ultimele 24 de ore.",
   "summaryFailed": "⚠️ Generarea sumarului a eșuat.",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(Total: {total} elemente)",
+  "webFirstCrawlNote": "Aceasta este prima accesare completă. Vă rugăm să vă concentrați pe peisajul general al conținutului, contextul istoric și temele principale ale fiecărui site, mai degrabă decât pe articole individuale.",
+  "webIncrementalNote": "Aceasta este o actualizare incrementală. Vă rugăm să vă concentrați pe conținutul nou de astăzi și să evaluați semnificația sa strategică în context."
 }

@@ -53,7 +53,7 @@ export const notifyAction = async (
     }
   }
 
-  const text = buildMessage(date, reports, undefined, highlights, env);
+  const text = buildMessage(date, reports, undefined, highlights, ["zh", "en"], env);
 
   console.error(`[notify] Sending Telegram message for ${date} (${reports.length} reports)…`);
   await sendTelegram(text, env);

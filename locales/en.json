@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "English",
-    "nativeName": "English"
+    "nativeName": "English",
+    "code": "en"
   },
   "noActivity": "No activity in the last 24 hours.",
   "summaryFailed": "⚠️ Summary generation failed.",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(Total: {total} items)",
+  "webFirstCrawlNote": "This is the first full crawl. Please focus on the overall content landscape, historical context, and core themes of each site, rather than individual articles.",
+  "webIncrementalNote": "This is an incremental update. Please focus on today's new content and assess its strategic significance in context."
 }

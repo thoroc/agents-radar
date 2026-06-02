@@ -35,6 +35,8 @@ const LocaleDataSchema = z.object({
   webNewContent: z.string(),
   webGenerated: z.string(),
   webSourcesHeader: z.string(),
+  webFirstCrawlNote: z.string(),
+  webIncrementalNote: z.string(),
 
   trendingTitle: z.string(),
   trendingSources: z.string(),
@@ -104,6 +106,7 @@ const LocaleDataSchema = z.object({
   formatItemSummary: z.string(),
 
   sampleNote: z.string(),
+  sampleNoteAll: z.string(),
   noneStr: z.string(),
   unableToExtract: z.string(),
   issueTruncation: z.string(),
@@ -132,6 +135,8 @@ const LocaleDataSchema = z.object({
   hfMeta: z.string(),
   communityMeta: z.string(),
   trendingMeta: z.string(),
+  trendingFetchFailed: z.string(),
+  searchNoResults: z.string(),
   webSourcesAnthropic: z.string(),
   webSourcesOpenai: z.string(),
   webIssueTitle: z.string(),

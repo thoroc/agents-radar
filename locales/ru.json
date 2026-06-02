@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Russian",
-    "nativeName": "Русский"
+    "nativeName": "Русский",
+    "code": "ru"
   },
   "noActivity": "За последние 24 часа активности не было.",
   "summaryFailed": "⚠️ Не удалось создать сводку.",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(Всего: {total} элементов)",
+  "webFirstCrawlNote": "Это первое полное сканирование. Пожалуйста, сосредоточьтесь на общей картине контента, историческом контексте и основных темах каждого сайта, а не на отдельных статьях.",
+  "webIncrementalNote": "Это инкрементальное обновление. Пожалуйста, сосредоточьтесь на новом контенте за сегодня и оцените его стратегическое значение в контексте."
 }

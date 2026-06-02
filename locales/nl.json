@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Dutch",
-    "nativeName": "Nederlands"
+    "nativeName": "Nederlands",
+    "code": "nl"
   },
   "noActivity": "Geen activiteit in de afgelopen 24 uur.",
   "summaryFailed": "⚠️ Samenvatting genereren mislukt.",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(Totaal: {total} items)",
+  "webFirstCrawlNote": "Dit is de eerste volledige crawl. Richt u op het algemene contentlandschap, de historische context en de kernthema's van elke site, in plaats van individuele artikelen.",
+  "webIncrementalNote": "Dit is een incrementele update. Richt u op de nieuwe content van vandaag en beoordeel de strategische betekenis in context."
 }

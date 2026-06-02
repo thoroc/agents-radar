@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Thai",
-    "nativeName": "ไทย"
+    "nativeName": "ไทย",
+    "code": "th"
   },
   "noActivity": "ไม่มีกิจกรรมใน 24 ชั่วโมงที่ผ่านมา",
   "summaryFailed": "⚠️ การสร้างสรุปผลล้มเหลว",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(รวมทั้งหมด: {total} รายการ)",
+  "webFirstCrawlNote": "นี่เป็นการรวบรวมข้อมูลแบบเต็มครั้งแรก โปรดมุ่งเน้นที่ภาพรวมของเนื้อหา บริบททางประวัติศาสตร์ และธีมหลักของแต่ละเว็บไซต์ แทนที่จะเป็นบทความแต่ละบทความ",
+  "webIncrementalNote": "นี่เป็นการอัปเดตเพิ่มเติม โปรดมุ่งเน้นที่เนื้อหาใหม่ของวันนี้และประเมินความสำคัญเชิงกลยุทธ์ในบริบท"
 }

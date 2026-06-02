@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Turkish",
-    "nativeName": "Türkçe"
+    "nativeName": "Türkçe",
+    "code": "tr"
   },
   "noActivity": "Son 24 saatte herhangi bir etkinlik yok.",
   "summaryFailed": "⚠️ Özet oluşturma başarısız oldu.",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(Toplam: {total} öğe)",
+  "webFirstCrawlNote": "Bu ilk tam taramadır. Lütfen tek tek makaleler yerine her sitenin genel içerik manzarasına, tarihsel bağlamına ve temel temalarına odaklanın.",
+  "webIncrementalNote": "Bu artımlı bir güncellemedir. Lütfen bugünün yeni içeriğine odaklanın ve stratejik önemini bağlam içinde değerlendirin."
 }

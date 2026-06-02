@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Hindi",
-    "nativeName": "हिन्दी"
+    "nativeName": "हिन्दी",
+    "code": "hi"
   },
   "noActivity": "पिछले 24 घंटों में कोई गतिविधि नहीं।",
   "summaryFailed": "⚠️ सारांश निर्माण विफल रहा।",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(कुल: {total} आइटम)",
+  "webFirstCrawlNote": "यह पहला पूर्ण क्रॉल है। कृपया व्यक्तिगत लेखों के बजाय प्रत्येक साइट की समग्र सामग्री परिदृश्य, ऐतिहासिक संदर्भ और मुख्य विषयों पर ध्यान केंद्रित करें।",
+  "webIncrementalNote": "यह एक वृद्धिशील अपडेट है। कृपया आज की नई सामग्री पर ध्यान केंद्रित करें और संदर्भ में इसके रणनीतिक महत्व का मूल्यांकन करें।"
 }

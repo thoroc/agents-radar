@@ -1,6 +1,6 @@
 import type { WebFetchResult } from "../fetchers";
 import type { Locale } from "../types";
-import { LANGUAGE_NAMES } from "../utils";
+import { LANGUAGE_NAMES, t } from "../utils";
 
 export const buildWebReportPrompt = (
   results: WebFetchResult[],
@@ -40,9 +40,7 @@ export const buildWebReportPrompt = (
     })
     .join("\n\n---\n\n");
 
-  const firstRunNote = isAnyFirstRun
-    ? "This is the first full crawl. Please focus on the overall content landscape, historical context, and core themes of each site, rather than individual articles."
-    : "This is an incremental update. Please focus on today's new content and assess its strategic significance in context.";
+  const firstRunNote = isAnyFirstRun ? t(lang).webFirstCrawlNote : t(lang).webIncrementalNote;
 
   return `You are a deep content analyst focused on AI, skilled at extracting strategic signals from official announcements, technical blogs, research papers, and product documentation.
 

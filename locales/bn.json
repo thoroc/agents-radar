@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Bengali",
-    "nativeName": "বাংলা"
+    "nativeName": "বাংলা",
+    "code": "bn"
   },
   "noActivity": "গত ২৪ ঘন্টায় কোনো কার্যকলাপ নেই।",
   "summaryFailed": "⚠️ সারাংশ তৈরি ব্যর্থ হয়েছে।",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(মোট: {total} আইটেম)",
+  "webFirstCrawlNote": "এটি প্রথম সম্পূর্ণ ক্রল। অনুগ্রহ করে পৃথক নিবন্ধের পরিবর্তে প্রতিটি সাইটের সামগ্রিক বিষয়বস্তুর পরিদৃশ্য, ঐতিহাসিক প্রেক্ষাপট এবং মূল থিমগুলিতে মনোনিবেশ করুন।",
+  "webIncrementalNote": "এটি একটি বর্ধনশীল আপডেট। অনুগ্রহ করে আজকের নতুন বিষয়বস্তুর উপর মনোনিবেশ করুন এবং প্রেক্ষাপটে এর কৌশলগত তাৎপর্য মূল্যায়ন করুন।"
 }

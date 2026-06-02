@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Indonesian",
-    "nativeName": "Bahasa Indonesia"
+    "nativeName": "Bahasa Indonesia",
+    "code": "id"
   },
   "noActivity": "Tidak ada aktivitas dalam 24 jam terakhir.",
   "summaryFailed": "⚠️ Gagal membuat ringkasan.",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(Total: {total} item)",
+  "webFirstCrawlNote": "Ini adalah perayapan lengkap pertama. Harap fokus pada lanskap konten secara keseluruhan, konteks historis, dan tema inti setiap situs, bukan artikel individual.",
+  "webIncrementalNote": "Ini adalah pembaruan bertahap. Harap fokus pada konten baru hari ini dan evaluasi signifikansi strategisnya dalam konteks."
 }

@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Korean",
-    "nativeName": "한국어"
+    "nativeName": "한국어",
+    "code": "ko"
   },
   "noActivity": "지난 24시간 동안 활동이 없습니다.",
   "summaryFailed": "⚠️ 요약 생성에 실패했습니다.",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(총 {total}개 항목)",
+  "webFirstCrawlNote": "이번이 첫 전체 크롤링입니다. 개별 기사가 아닌 각 사이트의 전반적인 콘텐츠 환경, 역사적 맥락, 핵심 주제에 집중해 주세요.",
+  "webIncrementalNote": "이번은 증분 업데이트입니다. 오늘의 신규 콘텐츠에 집중하고 맥락에서 전략적 중요성을 평가해 주세요."
 }

@@ -1,10 +1,11 @@
 import type { ReportHighlights } from "../../prompts/prompts-data-types";
+import type { Locale } from "../../utils";
 import { PAGES_URL_DEFAULT } from "../../utils/constants";
+import { t } from "../../utils/t";
 import { notifyLabel } from "./notify-label";
 
 export interface Highlights {
-  zh: ReportHighlights;
-  en: ReportHighlights;
+  [lang: string]: ReportHighlights;
 }
 
 const escapeHtml = (s: string): string => {
@@ -16,6 +17,7 @@ export const buildMessage = (
   reports: string[],
   pagesUrl?: string,
   highlights?: Highlights | null,
+  enabledLangs: string[] = ["zh", "en"],
   env: NodeJS.ProcessEnv = process.env,
 ): string => {
   const PAGES_URL = (pagesUrl ?? env.PAGES_URL ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
@@ -23,8 +25,13 @@ export const buildMessage = (
   const isWeekly = baseReports.includes("ai-weekly");
   const isMonthly = baseReports.includes("ai-monthly");
 
+  const primaryLang = enabledLangs[0] ?? "zh";
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
-  const suffix = isMonthly ? " 月报" : isWeekly ? " 周报" : "";
+  const suffix = isMonthly
+    ? t(primaryLang).notifySuffixMonthly
+    : isWeekly
+      ? t(primaryLang).notifySuffixWeekly
+      : "";
   const lines: string[] = [`${icon} <b>agents-radar${suffix} · ${date}</b>`];
 
   const ordered = [
@@ -32,30 +39,30 @@ export const buildMessage = (
     ...baseReports.filter((r) => r.includes("weekly") || r.includes("monthly")),
   ];
 
-  const zhHighlights = highlights?.zh ?? {};
-
   for (const r of ordered) {
-    const zhLabel = notifyLabel(r, "zh");
-    const zhUrl = `${PAGES_URL}/#${date}/${r}`;
-    const enKey = `${r}-en`;
-
     lines.push("");
-    if (reports.includes(enKey)) {
-      const enLabel = notifyLabel(r, "en");
-      const enUrl = `${PAGES_URL}/#${date}/${enKey}`;
-      lines.push(`• <a href="${zhUrl}">${zhLabel}</a>  ·  <a href="${enUrl}">${enLabel}</a>`);
-    } else {
-      lines.push(`• <a href="${zhUrl}">${zhLabel}</a>`);
+    for (const lang of enabledLangs) {
+      const label = notifyLabel(r, lang as Locale);
+      const langSuffix = lang === "zh" ? "" : `.${lang}`;
+      const fileKey = `${r}${langSuffix}`;
+      const url = `${PAGES_URL}/#${date}/${fileKey}`;
+      const prefix = enabledLangs.length > 1 ? `[${lang}] ` : "";
+      lines.push(`•${prefix}${escapeHtml(label)}: <a href="${url}">${url}</a>`);
     }
 
-    const items = zhHighlights[r];
-    if (items?.length) {
-      for (const h of items) {
-        lines.push(`  ◦ ${escapeHtml(h)}`);
+    const langsWithHighlights = enabledLangs.filter((l) => highlights?.[l]?.[r]?.length);
+    const showLangPrefix = langsWithHighlights.length > 1;
+    for (const lang of enabledLangs) {
+      const items = highlights?.[lang]?.[r];
+      if (items?.length) {
+        const prefix = showLangPrefix ? `[${lang}] ` : "";
+        for (const h of items) {
+          lines.push(`  ◦ ${prefix}${escapeHtml(h)}`);
+        }
       }
     }
   }
 
-  lines.push(`\n<a href="${PAGES_URL}">🌐 Web UI</a>  ·  <a href="${PAGES_URL}/feed.xml">⊕ RSS</a>`);
+  lines.push(`\n${t(primaryLang).notifyFooterLinks.replace("{pagesUrl}", PAGES_URL)}`);
   return lines.join("\n");
 };

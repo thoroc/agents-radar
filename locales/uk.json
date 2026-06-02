@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Ukrainian",
-    "nativeName": "Українська"
+    "nativeName": "Українська",
+    "code": "uk"
   },
   "noActivity": "Жодної активності за останні 24 години.",
   "summaryFailed": "⚠️ Не вдалося створити підсумок.",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "(Всього: {total} елементів)",
+  "webFirstCrawlNote": "Це перше повне сканування. Будь ласка, зосередьтеся на загальному ландшафті контенту, історичному контексті та основних темах кожного сайту, а не на окремих статтях.",
+  "webIncrementalNote": "Це інкрементне оновлення. Будь ласка, зосередьтеся на новому контенті за сьогодні та оцініть його стратегічне значення в контексті."
 }

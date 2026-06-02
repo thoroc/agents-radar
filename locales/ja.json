@@ -1,7 +1,8 @@
 {
   "_meta": {
     "name": "Japanese",
-    "nativeName": "日本語"
+    "nativeName": "日本語",
+    "code": "ja"
   },
   "noActivity": "過去24時間にアクティビティはありません。",
   "summaryFailed": "⚠️ サマリーの生成に失敗しました。",
@@ -118,5 +119,10 @@
   "notifySuffixMonthly": " Monthly",
   "notifySuffixWeekly": " Weekly",
   "notifyFooterLinks": "<a href=\"{pagesUrl}\">🌐 Web UI</a>  ·  <a href=\"{pagesUrl}/feed.xml\">⊕ RSS</a>",
-  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)"
+  "feishuFooterLinks": "[🌐 Web UI]({pagesUrl})  ·  [⊕ RSS]({pagesUrl}/feed.xml)",
+  "trendingFetchFailed": "(Unable to fetch today’s GitHub Trending list)",
+  "searchNoResults": "(No search results)",
+  "sampleNoteAll": "（全 {total} 件）",
+  "webFirstCrawlNote": "これは初回のフルクロールです。個々の記事ではなく、各サイトの全体的なコンテンツの概要、歴史的背景、コアテーマに焦点を当ててください。",
+  "webIncrementalNote": "これは増分更新です。本日の新しいコンテンツに焦点を当て、その戦略的意義を文脈の中で評価してください。"
 }
