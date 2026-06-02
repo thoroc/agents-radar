@@ -102,7 +102,7 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       skillsRepo: DEFAULT_SKILLS_REPO,
       openclaw: DEFAULT_OPENCLAW,
       openclawPeers: DEFAULT_OPENCLAW_PEERS,
-      languages: DEFAULT_LANGUAGES,
+      languages: [...DEFAULT_LANGUAGES],
       schedules: DEFAULT_SCHEDULES,
       defaultPrimaryLanguage: "en-US",
       defaultFallbackLanguage: "en-US",
@@ -129,7 +129,9 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       : DEFAULT_OPENCLAW_PEERS;
 
   const languages =
-    Array.isArray(raw?.languages) && raw.languages.length > 0 ? raw.languages.map(String) : DEFAULT_LANGUAGES;
+    Array.isArray(raw?.languages) && raw.languages.length > 0
+      ? raw.languages.map(String)
+      : [...DEFAULT_LANGUAGES];
 
   const schedules: ScheduleConfig = {
     daily: raw?.schedules?.daily?.cron

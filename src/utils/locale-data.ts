@@ -6,32 +6,6 @@ import { type LocaleData, LocaleFileSchema } from "./locale-schema";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export const LOCALE_MAP: Record<string, string> = {
-  ar: "ar",
-  bn: "bn",
-  de: "de",
-  en: "en-US",
-  es: "es",
-  fr: "fr",
-  hi: "hi",
-  id: "id",
-  it: "it",
-  ja: "ja",
-  ko: "ko",
-  nl: "nl",
-  pl: "pl",
-  pt: "pt",
-  ro: "ro",
-  ru: "ru",
-  th: "th",
-  tr: "tr",
-  uk: "uk",
-  vi: "vi",
-  zh: "zh-CN",
-};
-
-export const toBcp47 = (code: string): string => LOCALE_MAP[code] ?? code;
-
 const loadLocales = (): {
   supportedLocales: readonly string[];
   strings: Readonly<Record<string, LocaleData>>;
@@ -77,4 +51,11 @@ export const SUPPORTED_LOCALES: readonly string[] = locales.supportedLocales;
 export const STRINGS: Readonly<Record<string, LocaleData>> = locales.strings;
 export const LANGUAGE_NAMES: Readonly<Record<string, string>> = locales.languageNames;
 
-export const DEFAULT_LANGUAGES: string[] = ["en-US", "zh-CN"];
+const PREFERRED_DEFAULTS = ["en-US", "zh-CN"];
+const resolvedDefaults = PREFERRED_DEFAULTS.filter((c) => locales.supportedLocales.includes(c));
+export const DEFAULT_LANGUAGES: readonly string[] =
+  resolvedDefaults.length > 0
+    ? resolvedDefaults
+    : locales.supportedLocales.length > 0
+      ? [locales.supportedLocales[0]!]
+      : [];
