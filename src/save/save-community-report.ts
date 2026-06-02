@@ -1,7 +1,7 @@
 import type { DevToData } from "../fetchers/dev-to";
 import type { LobstersData } from "../fetchers/lobste-rs";
 import { buildCommunityPrompt } from "../prompts";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 import { saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
 
@@ -12,7 +12,7 @@ export const saveCommunityReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const s = t(lang);

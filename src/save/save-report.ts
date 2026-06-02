@@ -1,6 +1,7 @@
 import { createGitHubIssue } from "../github";
 import { callLlm } from "../report/call-llm";
 import { saveFile } from "../report/save-file";
+import { getPrimaryLang } from "../utils";
 import type { SaveReportConfig, SaveReportDeps } from "./saver-types";
 
 export const defaultDeps: SaveReportDeps = {
@@ -19,7 +20,7 @@ export const saveReport = async (
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const fullDeps = { ...defaultDeps, ...deps };
-  const suffix = lang === "zh-CN" ? "" : `.${lang}`;
+  const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
   const content = await fullDeps.callLlm?.(config.promptBuilder(config.data, dateStr), config.maxTokens);
   if (!content) return;
 

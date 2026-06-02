@@ -1,7 +1,7 @@
 import { saveWebState, type WebFetchResult, type WebState } from "../fetchers";
 import { buildWebReportPrompt } from "../prompts";
 import { LLM_TOKENS_WEB } from "../report/report-constants";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 import { defaultDeps, saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
 
@@ -12,14 +12,14 @@ export const saveWebReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const hasNewContent = webResults.some((r) => r.newItems.length > 0);
 
   if (!hasNewContent) {
     console.error(`  [web/${lang}] No new content detected, skipping report.`);
-    if (lang === "zh-CN") {
+    if (lang === getPrimaryLang()) {
       saveWebState(webState);
       console.error("  [web] State saved.");
     }
@@ -74,7 +74,7 @@ export const saveWebReport = async (
     console.error(`  [web/${lang}] Report generation failed: ${err}`);
   }
 
-  if (lang === "zh-CN") {
+  if (lang === getPrimaryLang()) {
     saveWebState(webState);
     console.error("  [web] State saved.");
   }

@@ -58,7 +58,7 @@ describe("saveWebReport", () => {
   });
 
   it("saves web state after processing", async () => {
-    await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "zh-CN");
+    await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "en-US");
     expect(fetchersModule.saveWebState).toHaveBeenCalled();
   });
 });

@@ -1,11 +1,11 @@
 import type { WebFetchResult } from "../fetchers";
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildWebReportPrompt = (
   results: WebFetchResult[],
   dateStr: string,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const isAnyFirstRun = results.some((r) => r.isFirstRun);
 

@@ -1,10 +1,10 @@
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 import type { ReportHighlights } from "./prompts-data-types";
 
 export const buildHighlightsPrompt = (
   reportContents: Record<string, string>,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
   itemsPerReport: number = 6,
 ): string => {
   const sections = Object.entries(reportContents)

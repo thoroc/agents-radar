@@ -92,6 +92,23 @@ const DEFAULT_OPENCLAW_PEERS: RepoConfig[] = [
   { id: "zeroclaw", repo: "zeroclaw-labs/zeroclaw", name: "ZeroClaw" },
 ];
 
+let _primaryLang: string | null = null;
+let _fallbackLang: string | null = null;
+
+export const getPrimaryLang = (): string => {
+  if (!_primaryLang) {
+    const cfg = loadConfig();
+    _primaryLang = cfg.defaultPrimaryLanguage;
+    _fallbackLang = cfg.defaultFallbackLanguage;
+  }
+  return _primaryLang;
+};
+
+export const getFallbackLang = (): string => {
+  if (!_fallbackLang) getPrimaryLang();
+  return _fallbackLang ?? "en-US";
+};
+
 export const loadConfig = (configPath = "config.yml"): RadarConfig => {
   const resolved = path.resolve(configPath);
 
@@ -104,8 +121,8 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       openclawPeers: DEFAULT_OPENCLAW_PEERS,
       languages: [...DEFAULT_LANGUAGES],
       schedules: DEFAULT_SCHEDULES,
-      defaultPrimaryLanguage: "en-US",
-      defaultFallbackLanguage: "en-US",
+      defaultPrimaryLanguage: DEFAULT_LANGUAGES[0] ?? "en-US",
+      defaultFallbackLanguage: DEFAULT_LANGUAGES[0] ?? "en-US",
     };
   }
 
@@ -145,8 +162,8 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       : DEFAULT_SCHEDULES.monthly,
   };
 
-  const defaultPrimaryLanguage = raw?.default_primary_language ?? "en-US";
-  const defaultFallbackLanguage = raw?.default_fallback_language ?? "en-US";
+  const defaultPrimaryLanguage = raw?.default_primary_language ?? DEFAULT_LANGUAGES[0] ?? "en-US";
+  const defaultFallbackLanguage = raw?.default_fallback_language ?? DEFAULT_LANGUAGES[0] ?? "en-US";
 
   console.error(
     `[config] Loaded from ${configPath}: ` +

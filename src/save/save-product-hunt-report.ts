@@ -1,6 +1,6 @@
 import type { ProductHuntData } from "../fetchers/product-hunt";
 import { buildProductHuntPrompt } from "../prompts";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 import { buildSourceHeader } from "./build-source-header";
 import { saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
@@ -11,7 +11,7 @@ export const saveProductHuntReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const s = t(lang);

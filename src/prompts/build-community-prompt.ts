@@ -1,13 +1,13 @@
 import type { DevToData } from "../fetchers/dev-to";
 import type { LobstersData } from "../fetchers/lobste-rs";
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildCommunityPrompt = (
   devto: DevToData,
   lobsters: LobstersData,
   dateStr: string,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const devtoText =
     devto.articles.length > 0

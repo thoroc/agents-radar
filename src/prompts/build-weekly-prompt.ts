@@ -1,10 +1,10 @@
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildWeeklyPrompt = (
   dailyDigests: Record<string, string>,
   weekStr: string,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const digestEntries = Object.entries(dailyDigests)
     .map(([date, content]) => `## ${date}\n\n${content}`)

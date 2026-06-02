@@ -22,7 +22,7 @@ const makeData = (overrides: Partial<HuggingFaceData> = {}): HuggingFaceData => 
 
 describe("buildHuggingFacePrompt", () => {
   it("includes model details in default locale", () => {
-    const result = buildHuggingFacePrompt(makeData(), "2026-03-09");
+    const result = buildHuggingFacePrompt(makeData(), "2026-03-09", "zh-CN");
     expect(result).toContain("Hugging Face Trending Models Digest");
     expect(result).toContain("meta-llama/Llama-3.1-8B");
     expect(result).toContain("meta");
@@ -43,7 +43,7 @@ describe("buildHuggingFacePrompt", () => {
 
   it("handles pipelineTag being undefined", () => {
     const data = makeData({ models: [makeModel({ pipelineTag: "" })] });
-    const result = buildHuggingFacePrompt(data, "2026-03-09");
+    const result = buildHuggingFacePrompt(data, "2026-03-09", "zh-CN");
     expect(result).toContain("N/A");
   });
 
@@ -51,7 +51,7 @@ describe("buildHuggingFacePrompt", () => {
     const data = makeData({
       models: [makeModel({ id: "model-one", likes: 100 }), makeModel({ id: "model-two", likes: 50 })],
     });
-    const result = buildHuggingFacePrompt(data, "2026-03-09");
+    const result = buildHuggingFacePrompt(data, "2026-03-09", "zh-CN");
     expect(result).toContain("model-one");
     expect(result).toContain("model-two");
     expect(result).toContain("2 models");

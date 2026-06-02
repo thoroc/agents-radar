@@ -1,5 +1,5 @@
 import type { TrendingData } from "../fetchers/trending";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 import { defaultDeps, saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
 
@@ -10,7 +10,7 @@ export const saveTrendingReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const hasData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;

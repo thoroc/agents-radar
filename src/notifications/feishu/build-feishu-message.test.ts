@@ -23,8 +23,8 @@ describe("buildFeishuMessage", () => {
     expect(msg).toContain("agents-radar");
     expect(msg).toContain("2026-03-09");
     expect(msg).toContain("📡");
-    expect(msg).toContain(`[AI CLI 工具 (ZH-CN)](${BASE_URL}/#2026-03-09/ai-cli)`);
-    expect(msg).toContain(`[AI CLI Tools (EN-US)](${BASE_URL}/#2026-03-09/ai-cli.en-US)`);
+    expect(msg).toContain(`[AI CLI 工具 (ZH-CN)](${BASE_URL}/#2026-03-09/ai-cli.zh-CN)`);
+    expect(msg).toContain(`[AI CLI Tools (EN-US)](${BASE_URL}/#2026-03-09/ai-cli)`);
   });
 
   it("shows weekly icon and suffix for weekly reports", () => {
@@ -82,7 +82,7 @@ describe("buildFeishuMessage", () => {
 
   it("includes highlights when provided", () => {
     const highlights: Highlights = {
-      "zh-CN": {
+      "en-US": {
         "ai-cli": ["Claude Code 发布 v1.2.0", "Gemini CLI 修复 streaming"],
         "ai-agents": ["OpenClaw 新增 MCP 支持"],
       },

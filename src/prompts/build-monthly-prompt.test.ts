@@ -9,7 +9,7 @@ const mockDigests: Record<string, string> = {
 
 describe("buildMonthlyPrompt", () => {
   it("includes monthly digest content in default locale", () => {
-    const result = buildMonthlyPrompt(mockDigests, "2026-03");
+    const result = buildMonthlyPrompt(mockDigests, "2026-03", "zh-CN");
     expect(result).toContain("Week 1");
     expect(result).toContain("Week 2");
     expect(result).toContain("Week 3");
@@ -29,7 +29,7 @@ describe("buildMonthlyPrompt", () => {
   });
 
   it("includes month string and report count in output", () => {
-    const result = buildMonthlyPrompt(mockDigests, "2026-03");
+    const result = buildMonthlyPrompt(mockDigests, "2026-03", "zh-CN");
     expect(result).toContain("2026-03");
     expect(result).toContain("3");
   });

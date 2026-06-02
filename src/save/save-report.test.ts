@@ -63,7 +63,7 @@ describe("saveReport", () => {
     expect(mockSaveFile).toHaveBeenCalledWith(
       expect.stringContaining("# Test Report 2026-01-01"),
       "2026-01-01",
-      "test-report.en-US.md",
+      "test-report.md",
     );
   });
 
@@ -148,21 +148,21 @@ describe("saveReport", () => {
     expect(mockCreateGitHubIssue).toHaveBeenCalledWith("Test Report 2026-01-01", expect.any(String), "test");
   });
 
-  it("uses Chinese file suffix when lang is zh", async () => {
+  it("uses Chinese file suffix when lang is zh-CN", async () => {
     mockCallLlm.mockResolvedValueOnce("test content");
-    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.md");
+    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.zh-CN.md");
 
     await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh-CN", deps);
 
-    expect(mockSaveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "test-report.md");
+    expect(mockSaveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "test-report.zh-CN.md");
   });
 
-  it("uses English file suffix when lang is en", async () => {
+  it("uses English file suffix when lang is en-US", async () => {
     mockCallLlm.mockResolvedValueOnce("test content");
-    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en-US.md");
+    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.md");
 
     await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "en-US", deps);
 
-    expect(mockSaveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "test-report.en-US.md");
+    expect(mockSaveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "test-report.md");
   });
 });

@@ -1,12 +1,12 @@
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 import type { RepoDigest } from "./repo-digest";
 
 export const buildPeersComparisonPrompt = (
   openclawDigest: RepoDigest,
   peerDigests: RepoDigest[],
   dateStr: string,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const peerSections = peerDigests
     .map((d) => {

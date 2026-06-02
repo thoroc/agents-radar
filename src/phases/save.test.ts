@@ -77,14 +77,14 @@ describe("savePhase", () => {
 
   it("saves CLI and OpenClaw reports for each enabled lang", async () => {
     await savePhase(baseArgs);
+    expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "ai-cli.zh-CN.md");
     expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "ai-cli.md");
-    expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "ai-cli.en-US.md");
-    expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "ai-agents.md");
     expect(saveFileModule.saveFile).toHaveBeenCalledWith(
       expect.any(String),
       "2026-01-01",
-      "ai-agents.en-US.md",
+      "ai-agents.zh-CN.md",
     );
+    expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "ai-agents.md");
   });
 
   it("calls saveWebReport for each enabled lang", async () => {

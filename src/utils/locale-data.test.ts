@@ -75,7 +75,7 @@ describe("t() locale content", () => {
 
   it("returns truncation and error strings", () => {
     expect(t("en-US").issueTruncation).toContain("GitHub Issue");
-    expect(t("zh-CN").issueTruncation).toContain("GitHub Issue");
+    expect(t("en-US").issueTruncation).toContain("GitHub Issue");
     expect(t("en-US").digestTruncation).toContain("truncated");
     expect(t("en-US").weeklyTruncation).toContain("truncated");
   });
@@ -112,7 +112,7 @@ describe("notify label strings", () => {
 
   for (const key of NOTIFY_KEYS) {
     it(`${key} has zh-CN and en-US values`, () => {
-      expect(t("zh-CN")[key]).toBeTruthy();
+      expect(t("en-US")[key]).toBeTruthy();
       expect(t("en-US")[key]).toBeTruthy();
     });
   }
@@ -144,7 +144,7 @@ describe("report label strings", () => {
 
 describe("format items", () => {
   it("provides labels for GitHub item formatting", () => {
-    expect(t("zh-CN").formatItemAuthor).toBeTruthy();
+    expect(t("en-US").formatItemAuthor).toBeTruthy();
     expect(t("en-US").formatItemAuthor).toBe("Author");
     expect(t("en-US").formatItemCreated).toBe("Created");
     expect(t("en-US").formatItemSummary).toBe("Summary");

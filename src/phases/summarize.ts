@@ -9,7 +9,7 @@ import {
 } from "../prompts";
 import { callLlm } from "../report/call-llm";
 import { LLM_TOKENS_TRENDING } from "../report/report-constants";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 
 const summarize = async (
   id: string,
@@ -55,7 +55,7 @@ export const generateSummaries = async (
   fetchedPeers: RepoFetch[],
   trendingData: TrendingData,
   dateStr: string,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
 ): Promise<GenerateSummariesResult> => {
   const s = t(lang);
   const noActivity = s.noActivity;

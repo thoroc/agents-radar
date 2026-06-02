@@ -28,7 +28,7 @@ const release: GitHubRelease = {
 
 describe("buildCliPrompt", () => {
   it("generates prompt by default", () => {
-    const result = buildCliPrompt(cfg, [makeItem()], [makeItem()], [release], "2026-03-09");
+    const result = buildCliPrompt(cfg, [makeItem()], [makeItem()], [release], "2026-03-09", "zh-CN");
     expect(result).toContain("technical analyst");
     expect(result).toContain("TestTool");
     expect(result).toContain("2026-03-09");
@@ -46,13 +46,13 @@ describe("buildCliPrompt", () => {
   });
 
   it("shows None when no data", () => {
-    const result = buildCliPrompt(cfg, [], [], [], "2026-03-09");
+    const result = buildCliPrompt(cfg, [], [], [], "2026-03-09", "zh-CN");
     expect(result).toContain("None");
   });
 
   it("includes sample notes when items exceed limit", () => {
     const items = Array.from({ length: 50 }, (_, i) => makeItem({ number: i, comments: i }));
-    const result = buildCliPrompt(cfg, items, [], [], "2026-03-09");
+    const result = buildCliPrompt(cfg, items, [], [], "2026-03-09", "zh-CN");
     expect(result).toContain("共 50 条");
     expect(result).toContain("30 条");
   });

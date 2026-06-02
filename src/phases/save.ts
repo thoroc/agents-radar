@@ -23,7 +23,7 @@ import { saveHuggingFaceReport } from "../save/save-hugging-face-report";
 import { saveProductHuntReport } from "../save/save-product-hunt-report";
 import { saveTrendingReport } from "../save/save-trending-report";
 import { saveWebReport } from "../save/save-web-report";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 
 const readReport = (dateStr: string, name: string): string | undefined => {
   const p = path.join("digests", dateStr, name);
@@ -91,7 +91,7 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
   for (const lang of enabledLangs) {
     const s = summariesByLang[lang]!;
     const ft = autoGenFooter(lang as Locale);
-    const suffix = lang === "zh-CN" ? "" : `.${lang}`;
+    const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
 
     cliContent[lang] = buildCliReportContent(
       s.cliDigests,
@@ -149,7 +149,7 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
 
   const reportsByLang: Record<string, Record<string, string>> = {};
   for (const lang of enabledLangs) {
-    const suffix = lang === "zh-CN" ? "" : `.${lang}`;
+    const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
     reportsByLang[lang] = { "ai-cli": cliContent[lang]!, "ai-agents": openclawContent[lang]! };
     for (const id of [
       "ai-trending",

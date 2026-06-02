@@ -30,7 +30,7 @@ const mockData: HackerNewsData = {
 
 describe("buildHackerNewsPrompt", () => {
   it("includes story titles and metadata in default locale", () => {
-    const result = buildHackerNewsPrompt(mockData, "2026-03-09");
+    const result = buildHackerNewsPrompt(mockData, "2026-03-09", "zh-CN");
     expect(result).toContain("AI News");
     expect(result).toContain("LLM Research");
     expect(result).toContain("Score: 200");
@@ -47,7 +47,7 @@ describe("buildHackerNewsPrompt", () => {
   });
 
   it("includes date string in output", () => {
-    const result = buildHackerNewsPrompt(mockData, "2026-03-09");
+    const result = buildHackerNewsPrompt(mockData, "2026-03-09", "zh-CN");
     expect(result).toContain("2026-03-09");
   });
 });

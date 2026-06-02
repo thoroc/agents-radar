@@ -19,7 +19,7 @@ const makeItem = (overrides: Partial<GitHubItem> = {}): GitHubItem => ({
 
 describe("buildSkillsPrompt", () => {
   it("includes skills repository context", () => {
-    const result = buildSkillsPrompt([makeItem()], [makeItem()], "2026-03-09");
+    const result = buildSkillsPrompt([makeItem()], [makeItem()], "2026-03-09", "zh-CN");
     expect(result).toContain("anthropics/skills");
     expect(result).toContain("Claude Code Skills");
   });

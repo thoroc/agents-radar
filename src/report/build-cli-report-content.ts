@@ -1,5 +1,5 @@
 import type { RepoDigest } from "../prompts";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 
 export const buildCliReportContent = (
   cliDigests: RepoDigest[],
@@ -9,7 +9,7 @@ export const buildCliReportContent = (
   dateStr: string,
   footer: string,
   skillsRepo: string,
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const repoLinks =
     cliDigests.map((d) => `- [${d.config.name}](https://github.com/${d.config.repo})`).join("\n") +
@@ -18,7 +18,7 @@ export const buildCliReportContent = (
   const s = t(lang);
   const title = `# ${s.cliTitle} ${dateStr}\n\n`;
   const meta =
-    lang === "en-US"
+    lang === getPrimaryLang()
       ? `> Generated: ${utcStr} UTC | Tools covered: ${cliDigests.length}\n\n`
       : `> 生成时间: ${utcStr} UTC | 覆盖工具: ${cliDigests.length} 个\n\n`;
 

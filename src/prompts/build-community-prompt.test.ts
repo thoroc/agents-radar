@@ -43,7 +43,7 @@ const makeLobstersData = (overrides: Partial<LobstersData> = {}): LobstersData =
 
 describe("buildCommunityPrompt", () => {
   it("includes Dev.to and Lobste.rs sections in default locale", () => {
-    const result = buildCommunityPrompt(makeDevtoData(), makeLobstersData(), "2026-03-09");
+    const result = buildCommunityPrompt(makeDevtoData(), makeLobstersData(), "2026-03-09", "zh-CN");
     expect(result).toContain("Tech Community AI Digest");
     expect(result).toContain("Dev.to Articles");
     expect(result).toContain("Building AI Agents with TypeScript");
@@ -65,7 +65,7 @@ describe("buildCommunityPrompt", () => {
   it("shows empty placeholders when no articles", () => {
     const emptyDevto: DevToData = { articles: [], fetchSuccess: false };
     const emptyLobsters: LobstersData = { stories: [], fetchSuccess: false };
-    const result = buildCommunityPrompt(emptyDevto, emptyLobsters, "2026-03-09");
+    const result = buildCommunityPrompt(emptyDevto, emptyLobsters, "2026-03-09", "zh-CN");
     expect(result).toContain("No Dev.to articles");
     expect(result).toContain("No Lobste.rs stories");
   });

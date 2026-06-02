@@ -8,7 +8,7 @@ describe("buildHighlightsPrompt", () => {
   };
 
   it("includes report sections in default locale", () => {
-    const result = buildHighlightsPrompt(sampleContents);
+    const result = buildHighlightsPrompt(sampleContents, "zh-CN");
     expect(result).toContain("[ai-cli]");
     expect(result).toContain("[ai-agents]");
     expect(result).toContain("Some CLI tools had releases today.");
@@ -33,7 +33,7 @@ describe("buildHighlightsPrompt", () => {
   it("truncates long content to 2000 chars", () => {
     const longContent = "X".repeat(3000);
     const contents = { "ai-cli": longContent };
-    const result = buildHighlightsPrompt(contents);
+    const result = buildHighlightsPrompt(contents, "zh-CN");
     expect(result).toContain("X".repeat(2000));
     expect(result).not.toContain("X".repeat(2001));
   });

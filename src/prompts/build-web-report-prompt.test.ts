@@ -39,7 +39,7 @@ const mockResults: WebFetchResult[] = [
 
 describe("buildWebReportPrompt", () => {
   it("includes site names and article titles in Chinese (default)", () => {
-    const result = buildWebReportPrompt(mockResults, "2026-03-09");
+    const result = buildWebReportPrompt(mockResults, "2026-03-09", "zh-CN");
     expect(result).toContain("Anthropic Blog");
     expect(result).toContain("OpenAI Blog");
     expect(result).toContain("Introducing Claude 4");
@@ -60,7 +60,7 @@ describe("buildWebReportPrompt", () => {
   });
 
   it("includes date string in output", () => {
-    const result = buildWebReportPrompt(mockResults, "2026-03-09");
+    const result = buildWebReportPrompt(mockResults, "2026-03-09", "zh-CN");
     expect(result).toContain("2026-03-09");
   });
 });

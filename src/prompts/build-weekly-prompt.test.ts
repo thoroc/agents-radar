@@ -8,7 +8,7 @@ const mockDigests: Record<string, string> = {
 
 describe("buildWeeklyPrompt", () => {
   it("includes weekly digest content in default locale", () => {
-    const result = buildWeeklyPrompt(mockDigests, "2026-03-09 ~ 2026-03-15");
+    const result = buildWeeklyPrompt(mockDigests, "2026-03-09 ~ 2026-03-15", "zh-CN");
     expect(result).toContain("2026-03-09");
     expect(result).toContain("2026-03-08");
     expect(result).toContain("Claude Code released");
@@ -26,7 +26,7 @@ describe("buildWeeklyPrompt", () => {
   });
 
   it("includes week string in output", () => {
-    const result = buildWeeklyPrompt(mockDigests, "2026-03-09 ~ 2026-03-15");
+    const result = buildWeeklyPrompt(mockDigests, "2026-03-09 ~ 2026-03-15", "zh-CN");
     expect(result).toContain("2026-03-09 ~ 2026-03-15");
   });
 });

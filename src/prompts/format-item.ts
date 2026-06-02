@@ -1,7 +1,7 @@
 import type { GitHubItem } from "../github/types";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 
-export const formatItem = (item: GitHubItem, lang: Locale = "zh-CN"): string => {
+export const formatItem = (item: GitHubItem, lang: Locale = getPrimaryLang() as Locale): string => {
   const labels = item.labels.map((l) => l.name).join(", ");
   const labelStr = labels ? ` [${labels}]` : "";
   const body = (item.body ?? "").replace(/\n/g, " ").trim().slice(0, 300);

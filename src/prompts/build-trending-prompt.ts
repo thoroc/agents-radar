@@ -1,8 +1,12 @@
 import type { TrendingData } from "../fetchers/trending";
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
-export const buildTrendingPrompt = (data: TrendingData, dateStr: string, lang: Locale = "zh-CN"): string => {
+export const buildTrendingPrompt = (
+  data: TrendingData,
+  dateStr: string,
+  lang: Locale = getPrimaryLang() as Locale,
+): string => {
   const trendingSection =
     data.trendingFetchSuccess && data.trendingRepos.length > 0
       ? data.trendingRepos

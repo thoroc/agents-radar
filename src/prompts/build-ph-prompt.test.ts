@@ -23,7 +23,7 @@ const makeData = (overrides: Partial<ProductHuntData> = {}): ProductHuntData => 
 
 describe("buildProductHuntPrompt", () => {
   it("includes product details in default locale", () => {
-    const result = buildProductHuntPrompt(makeData(), "2026-03-09");
+    const result = buildProductHuntPrompt(makeData(), "2026-03-09", "zh-CN");
     expect(result).toContain("Product Hunt AI Products Digest");
     expect(result).toContain("AI Code Assistant");
     expect(result).toContain("Your AI pair programmer");
@@ -44,7 +44,7 @@ describe("buildProductHuntPrompt", () => {
 
   it("handles empty products gracefully", () => {
     const data = makeData({ products: [] });
-    const result = buildProductHuntPrompt(data, "2026-03-09");
+    const result = buildProductHuntPrompt(data, "2026-03-09", "zh-CN");
     expect(result).toContain("0 products");
   });
 
@@ -55,7 +55,7 @@ describe("buildProductHuntPrompt", () => {
         makeProduct({ name: "Product B", votesCount: 50 }),
       ],
     });
-    const result = buildProductHuntPrompt(data, "2026-03-09");
+    const result = buildProductHuntPrompt(data, "2026-03-09", "zh-CN");
     expect(result).toContain("Product A");
     expect(result).toContain("Product B");
     expect(result).toContain("2 products");

@@ -1,6 +1,6 @@
 import type { RepoConfig, RepoFetch } from "../github";
 import type { RepoDigest } from "../prompts";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 
 export const buildOpenclawReportContent = (
   fetchedOpenclaw: RepoFetch,
@@ -12,7 +12,7 @@ export const buildOpenclawReportContent = (
   footer: string,
   openclaw: RepoConfig,
   openclawPeers: RepoConfig[],
-  lang: Locale = "zh-CN",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const { issues, prs } = fetchedOpenclaw;
 
@@ -36,7 +36,7 @@ export const buildOpenclawReportContent = (
   const s = t(lang);
   const title = `# ${s.openclawTitle} ${dateStr}\n\n`;
   const meta =
-    lang === "en-US"
+    lang === getPrimaryLang()
       ? `> Issues: ${issues.length} | PRs: ${prs.length} | Projects covered: ${1 + openclawPeers.length} | Generated: ${utcStr} UTC\n\n`
       : `> Issues: ${issues.length} | PRs: ${prs.length} | 覆盖项目: ${1 + openclawPeers.length} 个 | 生成时间: ${utcStr} UTC\n\n`;
 

@@ -3,13 +3,13 @@ import { sampleNote } from "./sample-note";
 
 describe("sampleNote", () => {
   it("shows sampled note in Chinese when total > sampled", () => {
-    const result = sampleNote(100, 30);
+    const result = sampleNote(100, 30, "zh-CN");
     expect(result).toBe("（共 100 条，展示评论数最高的 30 条）");
   });
 
   it("shows total-only note in Chinese when total <= sampled", () => {
-    expect(sampleNote(10, 10)).toBe("（共 10 条）");
-    expect(sampleNote(5, 10)).toBe("（共 5 条）");
+    expect(sampleNote(10, 10, "zh-CN")).toBe("（共 10 条）");
+    expect(sampleNote(5, 10, "zh-CN")).toBe("（共 5 条）");
   });
 
   it("shows sampled note in English when total > sampled", () => {
