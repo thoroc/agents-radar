@@ -2,7 +2,7 @@
   "_meta": {
     "name": "English",
     "nativeName": "English",
-    "code": "en"
+    "code": "en-US"
   },
   "noActivity": "No activity in the last 24 hours.",
   "summaryFailed": "⚠️ Summary generation failed.",

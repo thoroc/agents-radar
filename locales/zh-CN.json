@@ -2,7 +2,7 @@
   "_meta": {
     "name": "Chinese",
     "nativeName": "中文",
-    "code": "zh"
+    "code": "zh-CN"
   },
   "noActivity": "过去24小时无活动。",
   "summaryFailed": "⚠️ 摘要生成失败。",
