@@ -194,7 +194,7 @@ New articles are detected by comparing sitemap `lastmod` timestamps against a pe
 - Publishes GitHub Issues for each report type; commits Markdown files to `digests/YYYY-MM-DD/`
 - Runs on a daily schedule via GitHub Actions; supports manual triggering
 - All tracked repositories are configurable via `config.yml` — no code changes needed
-- Centralized locale system via `locales/*.json` — 21 supported languages with `t()` catalog in `src/i18n.ts`
+- Centralized locale system via `locales/*.json` — 21 supported languages with `t()` catalog in `src/utils/t.ts`
 
 ## Setup
 
@@ -218,7 +218,7 @@ openclaw_peers:
     name: My Agent
 ```
 
-> The `languages` field at the top of `config.yml` controls which locales are active. Defaults to `["en", "zh"]` if absent. To enable additional languages, add their ISO codes to the list (e.g. `["en", "zh", "ja", "ko"]`). See the full list of 21 supported languages at the top of this page. Each enabled language multiplies the LLM calls per run — be mindful of API costs when enabling many languages.
+> The `languages` field at the top of `config.yml` controls which locales are active. Defaults to `["en-US", "zh-CN"]` if absent. To enable additional languages, add their BCP-47 tags to the list (e.g. `["en-US", "zh-CN", "ja-JP", "ko-KR"]`). See the full list of 21 supported languages at the top of this page. Each enabled language multiplies the LLM calls per run — be mindful of API costs when enabling many languages.
 
 ### 3. Add Secrets
 
@@ -303,6 +303,30 @@ bun test        # run all tests
 bun test --watch  # run in watch mode during development
 ```
 
+## Multi-language support
+
+Reports are generated for every language listed under `languages` in `config.yml`. All 21 pre-translated locales are ready to use — add a BCP-47 tag to enable one:
+
+```yaml
+languages:
+  - en-US     # primary language — empty file suffix (ai-cli.md)
+  - zh-CN
+  - ja-JP     # add any of the 21 supported BCP-47 tags
+  - ko-KR
+```
+
+The first entry (or `defaultPrimaryLanguage` if set explicitly) is the **primary language** and gets an empty file suffix. All other languages use the BCP-47 tag as a suffix (`ai-cli.zh-CN.md`, `ai-cli.ja-JP.md`).
+
+To add a language that isn't pre-translated yet, drop a `locales/xx-XX.json` file (see existing files for the schema) and add its BCP-47 tag to `config.yml`.
+
+You can also override enabled languages at runtime without editing `config.yml`:
+
+```bash
+export REPORT_LANGS=en-US,ja-JP
+```
+
+> Each additional language multiplies LLM calls per run. With 5 languages and 10 data sources, a single run makes roughly 100+ LLM calls. Quality may vary for languages with less training data.
+
 ## Output format
 
 Files are written to `digests/YYYY-MM-DD/`. For each report type, the pipeline generates one file per enabled language:
@@ -314,23 +338,21 @@ Files are written to `digests/YYYY-MM-DD/`. For each report type, the pipeline g
 | `ai-web.{locale}.md` | Official web content report (only written when new content exists) | `web.{locale}` |
 | `ai-trending.{locale}.md` | GitHub AI trending report — repos classified by dimension + trend signals (only written when data is available) | `trending.{locale}` |
 | `ai-hn.{locale}.md` | Hacker News AI community digest — top stories + sentiment analysis (only written when fetch succeeds) | `hn.{locale}` |
+| `ai-ph.{locale}.md` | Product Hunt AI products digest (only written when data is available) | `ph.{locale}` |
+| `ai-arxiv.{locale}.md` | ArXiv AI research digest — key papers from cs.AI/cs.CL/cs.LG | `arxiv.{locale}` |
+| `ai-hf.{locale}.md` | Hugging Face trending models digest — sorted by weekly likes | `hf.{locale}` |
+| `ai-community.{locale}.md` | Tech community AI digest — Dev.to articles + Lobste.rs stories combined | `community.{locale}` |
 
-Where `{locale}` is empty for Chinese (default, e.g. `ai-cli.md`) and the language code for other languages (e.g. `ai-cli.en.md`, `ai-cli.ja.md`). The same suffix applies to GitHub Issue labels.
+Where `{locale}` is empty for the primary language (default: `en-US`, e.g. `ai-cli.md`) and the BCP-47 tag for all other languages (e.g. `ai-cli.zh-CN.md`, `ai-cli.ja-JP.md`). The primary language is set via `defaultPrimaryLanguage` in `config.yml`.
 
-For example, with `["en", "zh"]` configured, `digests/2026-05-28/` would contain:
-- `ai-cli.md` (Chinese), `ai-cli.en.md` (English)
-| `ai-ph.md` | Product Hunt AI products digest (only written when `PRODUCTHUNT_TOKEN` is set and data is available) | `ph` |
-| `ai-arxiv.md` | ArXiv AI research digest — key papers from cs.AI/cs.CL/cs.LG | `arxiv` |
-| `ai-hf.md` | Hugging Face trending models digest — sorted by weekly likes | `hf` |
-| `ai-community.md` | Tech community AI digest — Dev.to articles + Lobste.rs stories combined | `community` |
+For example, with `["en-US", "zh-CN"]` configured, `digests/2026-05-28/` would contain:
+- `ai-cli.md` (English, primary), `ai-cli.zh-CN.md` (Chinese)
 
 A shared state file `digests/web-state.json` tracks which web URLs have been seen; it is committed alongside the daily digests.
 
-Each report is generated in both Chinese (`ai-cli.md`) and English (`ai-cli-en.md`). The Web UI sidebar shows ZH / EN toggle buttons for reports that have both variants.
-
 ---
 
-`ai-cli.md` / `ai-cli-en.md` structure:
+`ai-cli.md` / `ai-cli.zh-CN.md` structure:
 ```
 ## Cross-Tool Comparison
   Ecosystem overview / Activity comparison table / Shared themes / Differentiation / Trend signals
@@ -349,7 +371,7 @@ Each report is generated in both Chinese (`ai-cli.md`) and English (`ai-cli-en.m
   <details> DeepSeek TUI   — ...
 ```
 
-`ai-agents.md` / `ai-agents-en.md` structure:
+`ai-agents.md` / `ai-agents.zh-CN.md` structure:
 ```
 Issues: N | PRs: N | Projects covered: 10
 
@@ -375,7 +397,7 @@ Issues: N | PRs: N | Projects covered: 10
   <details> CoPaw      — ...
 ```
 
-`ai-web.md` / `ai-web-en.md` structure:
+`ai-web.md` / `ai-web.zh-CN.md` structure:
 ```
 Sources: anthropic.com (N articles) + openai.com (N articles)
 
@@ -387,7 +409,7 @@ Notable details
 [First full crawl also includes: Content landscape overview]
 ```
 
-`ai-trending.md` / `ai-trending-en.md` structure:
+`ai-trending.md` / `ai-trending.zh-CN.md` structure:
 ```
 Sources: GitHub Trending + GitHub Search API
 
@@ -402,7 +424,7 @@ Trend signal analysis
 Community focus
 ```
 
-`ai-hn.md` / `ai-hn-en.md` structure:
+`ai-hn.md` / `ai-hn.zh-CN.md` structure:
 ```
 Sources: Hacker News (top-30 AI stories, last 24h)
 
@@ -416,7 +438,7 @@ Community sentiment signals
 Worth reading
 ```
 
-`ai-weekly.md` / `ai-weekly-en.md` structure (generated every Monday):
+`ai-weekly.md` / `ai-weekly.zh-CN.md` structure (generated every Monday):
 ```
 Coverage: YYYY-MM-DD ~ YYYY-MM-DD  (last 7 daily digests)
 
@@ -427,7 +449,7 @@ Community momentum
 Outlook
 ```
 
-`ai-monthly.md` / `ai-monthly-en.md` structure (generated on the 1st of each month):
+`ai-monthly.md` / `ai-monthly.zh-CN.md` structure (generated on the 1st of each month):
 ```
 Sources: N weekly reports  (or sampled daily reports if fewer than 2 weeklies available)
 

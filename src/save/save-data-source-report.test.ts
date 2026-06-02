@@ -147,6 +147,13 @@ describe("saveDataSourceReport", () => {
     expect(footer).toBe("\nfooter");
     expect(lang).toBe("en-US");
     expect(callDeps).toEqual(expect.objectContaining(mockDeps));
+
+    const headerResult = (config.headerBuilder as (ds: string, us: string, l: string) => string)(
+      "2026-01-01",
+      "2026-01-01T00:00:00Z",
+      "en-US",
+    );
+    expect(headerResult).toBe("# Header 2026-01-01 2026-01-01T00:00:00Z");
   });
 
   it("does not throw when saveReport throws", async () => {

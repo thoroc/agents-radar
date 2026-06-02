@@ -78,4 +78,15 @@ describe("saveWebReport", () => {
     expect(typeof header).toBe("string");
     expect(header).toContain("2026-01-01");
   });
+
+  it("promptBuilder returns a string", async () => {
+    await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "en-US");
+    const config = (saveReportModule.saveReport as ReturnType<typeof vi.fn>).mock.calls[0]![0] as Record<
+      string,
+      unknown
+    >;
+    const prompt = (config.promptBuilder as (d: unknown) => string)(webResultsWithContent);
+    expect(typeof prompt).toBe("string");
+    expect(prompt.length).toBeGreaterThan(0);
+  });
 });
