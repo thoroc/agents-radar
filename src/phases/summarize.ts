@@ -40,7 +40,7 @@ const summarizeRepo = async (
   return { config: cfg, issues, prs, releases, summary };
 };
 
-export type GenerateSummariesResult = {
+type GenerateSummariesResult = {
   cliDigests: RepoDigest[];
   openclawSummary: string;
   skillsSummary: string;

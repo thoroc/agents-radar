@@ -8,7 +8,10 @@ const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 
 const localesDir = path.resolve(repoRoot, "locales");
-const localeFiles = fs.readdirSync(localesDir).filter((f) => f.endsWith(".json")).sort();
+const localeFiles = fs
+  .readdirSync(localesDir)
+  .filter((f) => f.endsWith(".json"))
+  .sort();
 
 const generateSchema = () => {
   const schema = LocaleFileSchema.toJSONSchema();

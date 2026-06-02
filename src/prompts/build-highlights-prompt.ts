@@ -1,6 +1,5 @@
 import type { Locale } from "../types/locale";
 import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
-import type { ReportHighlights } from "./prompts-data-types";
 
 export const buildHighlightsPrompt = (
   reportContents: Record<string, string>,
@@ -31,5 +30,3 @@ Rules:
 
 Write the response in ${LANGUAGE_NAMES[lang] ?? lang}.`;
 };
-
-export type { ReportHighlights };

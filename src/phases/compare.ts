@@ -3,15 +3,15 @@ import { buildComparisonPrompt, buildPeersComparisonPrompt, type RepoDigest } fr
 import { callLlm } from "../report/call-llm";
 import type { Locale } from "../types/locale";
 
-export type ComparisonsByLang = Record<string, string>;
-export type PeersComparisonsByLang = Record<string, string>;
+type ComparisonsByLang = Record<string, string>;
+type PeersComparisonsByLang = Record<string, string>;
 
-export type ComparisonsResult = {
+type ComparisonsResult = {
   comparisonByLang: ComparisonsByLang;
   peersComparisonByLang: PeersComparisonsByLang;
 };
 
-export type ComparisonsInput = {
+type ComparisonsInput = {
   summariesByLang: Record<string, GenerateSummariesResult>;
   fetchedOpenclaw: RepoFetch;
   openclaw: RepoConfig;

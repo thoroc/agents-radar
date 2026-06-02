@@ -1,0 +1,17 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": [
+    "src/index.ts",
+    "src/phases/scheduler.ts",
+    "src/rollup/weekly.ts",
+    "src/rollup/monthly.ts",
+    "src/**/main.ts",
+    "scripts/*.ts",
+    "mcp/src/index.ts"
+  ],
+  "project": [
+    "src/**/*.ts",
+    "mcp/src/**/*.ts",
+    "scripts/*.ts"
+  ]
+}

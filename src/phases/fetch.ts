@@ -16,7 +16,7 @@ import {
   type RepoFetch,
 } from "../github";
 
-export type FetchAllDataResult = {
+type FetchAllDataResult = {
   fetched: RepoFetch[];
   skillsData: { prs: GitHubItem[]; issues: GitHubItem[] };
   webResults: WebFetchResult[];

@@ -8,9 +8,8 @@
 export { createAnthropicProvider } from "./anthropic";
 export { createGitHubCopilotProvider } from "./github-copilot";
 export { createOpenAIProvider } from "./openai";
-export { createOpenAICompatibleProvider } from "./openai-compatible";
 export { createOpenRouterProvider } from "./openrouter";
-export type { LlmProvider, ProviderFactory } from "./types";
+export type { LlmProvider } from "./types";
 
 import { createAnthropicProvider } from "./anthropic";
 import { createGitHubCopilotProvider } from "./github-copilot";
@@ -25,8 +24,7 @@ const PROVIDERS = {
   openrouter: (env?: NodeJS.ProcessEnv) => createOpenRouterProvider(undefined, env),
 } satisfies Record<string, (env?: NodeJS.ProcessEnv) => LlmProvider>;
 
-/** Supported provider name — derived from the PROVIDERS registry. */
-export type ProviderName = keyof typeof PROVIDERS;
+type ProviderName = keyof typeof PROVIDERS;
 
 /** All valid provider names — derived from the registry. */
 export const VALID_PROVIDER_NAMES = Object.keys(PROVIDERS) as ProviderName[];

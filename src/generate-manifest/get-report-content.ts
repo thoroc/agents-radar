@@ -5,7 +5,7 @@ import { DIGESTS_DIR } from "./constants";
 import { escapeXml } from "./escape-xml";
 import { reportLabel } from "./report-label";
 
-export interface ReportContent {
+interface ReportContent {
   summary: string;
   fullHtml: string;
 }
