@@ -6,7 +6,7 @@ export const buildPeersComparisonPrompt = (
   openclawDigest: RepoDigest,
   peerDigests: RepoDigest[],
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const peerSections = peerDigests
     .map((d) => {

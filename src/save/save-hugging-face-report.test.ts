@@ -30,7 +30,7 @@ describe("saveHuggingFaceReport", () => {
   };
 
   it("calls saveDataSourceReport with hugging face config", async () => {
-    await saveHuggingFaceReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en");
+    await saveHuggingFaceReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en-US");
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
     const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
@@ -48,7 +48,7 @@ describe("saveHuggingFaceReport", () => {
   it("skips when fetchSuccess is false", async () => {
     const noData = { models: [], fetchSuccess: false };
 
-    await saveHuggingFaceReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh");
+    await saveHuggingFaceReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh-CN");
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
     const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock

@@ -57,7 +57,7 @@ const buildLabels = (): Record<string, string> => {
   for (const lang of SUPPORTED_LOCALES) {
     const s = STRINGS[lang];
     if (!s) continue;
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === "zh-CN" ? "" : `.${lang}`;
     const reportIds = [
       "ai-cli",
       "ai-agents",

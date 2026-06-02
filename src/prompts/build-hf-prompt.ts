@@ -5,7 +5,7 @@ import { LANGUAGE_NAMES } from "../utils";
 export const buildHuggingFacePrompt = (
   data: HuggingFaceData,
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const modelsText = data.models
     .map(

@@ -39,7 +39,7 @@ describe("buildHackerNewsPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildHackerNewsPrompt(mockData, "2026-03-09", "en");
+    const result = buildHackerNewsPrompt(mockData, "2026-03-09", "en-US");
     expect(result).toContain("AI News");
     expect(result).toContain("Score: 200");
     expect(result).toContain("Comments: 50");

@@ -40,11 +40,11 @@ describe("runMonthlyRollup", () => {
     vi.spyOn(utilsModule, "toCstDateStr").mockReturnValue("2026-04-01");
     vi.spyOn(utilsModule, "toUtcStr").mockReturnValue("2026-04-01 00:00:00");
     vi.spyOn(loadConfigModule, "loadConfig").mockReturnValue({
-      languages: ["en", "zh"],
-      defaultPrimaryLanguage: "en",
-      defaultFallbackLanguage: "en",
+      languages: ["en-US", "zh-CN"],
+      defaultPrimaryLanguage: "en-US",
+      defaultFallbackLanguage: "en-US",
     } as never);
-    vi.spyOn(getEnabledLangsModule, "getEnabledLangs").mockReturnValue(["zh", "en"]);
+    vi.spyOn(getEnabledLangsModule, "getEnabledLangs").mockReturnValue(["zh-CN", "en-US"]);
     vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([]);
     vi.spyOn(readDailyDigestModule, "readDailyDigest").mockResolvedValue("daily content");
     vi.spyOn(readWeeklyDigestModule, "readWeeklyDigest").mockReturnValue("weekly content" as never);

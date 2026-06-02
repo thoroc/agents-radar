@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import en from "../../locales/en.json" with { type: "json" };
+import en from "../../locales/en-US.json" with { type: "json" };
 import { LocaleDataSchema, LocaleFileSchema } from "./locale-schema";
 
 describe("LocaleDataSchema", () => {

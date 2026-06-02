@@ -50,7 +50,7 @@ describe("buildTrendingPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildTrendingPrompt(mockData, "2026-03-09", "en");
+    const result = buildTrendingPrompt(mockData, "2026-03-09", "en-US");
     expect(result).toContain("owner/ai-tool");
     expect(result).toContain("owner/llm-app");
     expect(result).toContain("Trending");

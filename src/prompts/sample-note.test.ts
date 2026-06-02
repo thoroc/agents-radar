@@ -13,11 +13,11 @@ describe("sampleNote", () => {
   });
 
   it("shows sampled note in English when total > sampled", () => {
-    const result = sampleNote(50, 20, "en");
+    const result = sampleNote(50, 20, "en-US");
     expect(result).toBe("(Total: 50 items; showing top 20 by comment count)");
   });
 
   it("shows total-only note in English when total <= sampled", () => {
-    expect(sampleNote(8, 8, "en")).toBe("(Total: 8 items)");
+    expect(sampleNote(8, 8, "en-US")).toBe("(Total: 8 items)");
   });
 });

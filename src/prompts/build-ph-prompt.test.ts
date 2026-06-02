@@ -34,7 +34,7 @@ describe("buildProductHuntPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildProductHuntPrompt(makeData(), "2026-03-09", "en");
+    const result = buildProductHuntPrompt(makeData(), "2026-03-09", "en-US");
     expect(result).toContain("Product Hunt AI Products Digest");
     expect(result).toContain("Votes:");
     expect(result).toContain("Comments:");

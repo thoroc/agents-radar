@@ -87,7 +87,7 @@ export const runMonthlyRollup = async (
     allContent[lang] =
       `# ${s.monthlyTitle} ${monthStr}\n\n` + metaLine + `---\n\n` + (summariesByLang[lang] ?? "") + footer;
 
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === "zh-CN" ? "" : `.${lang}`;
     console.error(`  Saved ${saveFile(allContent[lang]!, dateStr, `ai-monthly${suffix}.md`)}`);
   }
 

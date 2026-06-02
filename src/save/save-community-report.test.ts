@@ -53,7 +53,7 @@ describe("saveCommunityReport", () => {
       "2026-01-01",
       "",
       "\nfooter",
-      "en",
+      "en-US",
     );
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
@@ -93,7 +93,7 @@ describe("saveCommunityReport", () => {
       "2026-01-01",
       "",
       "",
-      "zh",
+      "zh-CN",
     );
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
@@ -113,7 +113,7 @@ describe("saveCommunityReport", () => {
       "2026-01-01",
       "",
       "",
-      "zh",
+      "zh-CN",
     );
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();

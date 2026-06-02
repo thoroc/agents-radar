@@ -45,7 +45,7 @@ describe("buildArxivPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildArxivPrompt(makeData(), "2026-03-09", "en");
+    const result = buildArxivPrompt(makeData(), "2026-03-09", "en-US");
     expect(result).toContain("ArXiv AI Research Digest");
     expect(result).toContain("Alice Smith, Bob Jones, Carol Lee et al.");
     expect(result).toContain("Categories: cs.CL, cs.AI, cs.LG");

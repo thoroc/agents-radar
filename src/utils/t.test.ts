@@ -3,11 +3,11 @@ import { t } from "./t";
 
 describe("t()", () => {
   it("returns Chinese strings for zh", () => {
-    expect(t("zh").cliTitle).toBeTruthy();
+    expect(t("zh-CN").cliTitle).toBeTruthy();
   });
 
   it("returns English strings for en", () => {
-    expect(t("en").cliTitle).toBeTruthy();
+    expect(t("en-US").cliTitle).toBeTruthy();
   });
 
   it("returns English for unknown locale", () => {
@@ -26,6 +26,6 @@ describe("t()", () => {
   });
 
   it("returns different strings for zh and en", () => {
-    expect(t("zh").cliTitle).not.toBe(t("en").cliTitle);
+    expect(t("zh-CN").cliTitle).not.toBe(t("en-US").cliTitle);
   });
 });

@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "ar",
+    "code": "ar-SA",
     "name": "Arabic",
     "nativeName": "العربية"
   },

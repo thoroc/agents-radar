@@ -6,7 +6,7 @@ import * as saveReportModule from "./save-report";
 describe("buildSourceHeader", () => {
   it("returns Chinese header for zh locale", () => {
     const result = buildSourceHeader(
-      "zh",
+      "zh-CN",
       "2026-01-01",
       "2026-01-01T00:00:00Z",
       "ArXiv Papers",
@@ -24,7 +24,7 @@ describe("buildSourceHeader", () => {
 
   it("returns English header for en locale", () => {
     const result = buildSourceHeader(
-      "en",
+      "en-US",
       "2026-01-01",
       "2026-01-01T00:00:00Z",
       "ArXiv Papers",
@@ -43,7 +43,7 @@ describe("buildSourceHeader", () => {
 
   it("includes extraMeta when provided", () => {
     const result = buildSourceHeader(
-      "en",
+      "en-US",
       "2026-01-01",
       "2026-01-01T00:00:00Z",
       "Title",
@@ -59,7 +59,7 @@ describe("buildSourceHeader", () => {
 
   it("omits extraMeta pipe when extraMeta is not provided", () => {
     const result = buildSourceHeader(
-      "en",
+      "en-US",
       "2026-01-01",
       "2026-01-01T00:00:00Z",
       "Title",
@@ -105,7 +105,7 @@ describe("saveDataSourceReport", () => {
       "2026-01-01",
       "",
       "",
-      "zh",
+      "zh-CN",
       mockDeps,
     );
 
@@ -119,7 +119,7 @@ describe("saveDataSourceReport", () => {
       "2026-01-01",
       "owner/repo",
       "\nfooter",
-      "en",
+      "en-US",
       mockDeps,
     );
 
@@ -145,7 +145,7 @@ describe("saveDataSourceReport", () => {
     expect(dateStr).toBe("2026-01-01");
     expect(digestRepo).toBe("owner/repo");
     expect(footer).toBe("\nfooter");
-    expect(lang).toBe("en");
+    expect(lang).toBe("en-US");
     expect(callDeps).toEqual(expect.objectContaining(mockDeps));
   });
 
@@ -153,7 +153,7 @@ describe("saveDataSourceReport", () => {
     vi.spyOn(saveReportModule, "saveReport").mockRejectedValueOnce(new Error("boom"));
 
     await expect(
-      saveDataSourceReport(opts, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh", mockDeps),
+      saveDataSourceReport(opts, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh-CN", mockDeps),
     ).resolves.toBeUndefined();
   });
 });

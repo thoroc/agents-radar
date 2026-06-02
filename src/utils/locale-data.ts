@@ -10,7 +10,7 @@ export const LOCALE_MAP: Record<string, string> = {
   ar: "ar",
   bn: "bn",
   de: "de",
-  en: "en",
+  en: "en-US",
   es: "es",
   fr: "fr",
   hi: "hi",
@@ -27,7 +27,7 @@ export const LOCALE_MAP: Record<string, string> = {
   tr: "tr",
   uk: "uk",
   vi: "vi",
-  zh: "zh",
+  zh: "zh-CN",
 };
 
 export const toBcp47 = (code: string): string => LOCALE_MAP[code] ?? code;
@@ -77,4 +77,4 @@ export const SUPPORTED_LOCALES: readonly string[] = locales.supportedLocales;
 export const STRINGS: Readonly<Record<string, LocaleData>> = locales.strings;
 export const LANGUAGE_NAMES: Readonly<Record<string, string>> = locales.languageNames;
 
-export const DEFAULT_LANGUAGES: string[] = ["en", "zh"];
+export const DEFAULT_LANGUAGES: string[] = ["en-US", "zh-CN"];

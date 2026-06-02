@@ -55,7 +55,7 @@ export const generateSummaries = async (
   fetchedPeers: RepoFetch[],
   trendingData: TrendingData,
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): Promise<GenerateSummariesResult> => {
   const s = t(lang);
   const noActivity = s.noActivity;

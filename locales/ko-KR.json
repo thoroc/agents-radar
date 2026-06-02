@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "ko",
+    "code": "ko-KR",
     "name": "Korean",
     "nativeName": "한국어"
   },

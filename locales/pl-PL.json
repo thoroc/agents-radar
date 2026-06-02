@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "pl",
+    "code": "pl-PL",
     "name": "Polish",
     "nativeName": "Polski"
   },

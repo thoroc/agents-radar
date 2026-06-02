@@ -10,7 +10,7 @@ export const saveTrendingReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const hasData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;

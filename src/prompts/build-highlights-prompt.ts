@@ -4,7 +4,7 @@ import type { ReportHighlights } from "./prompts-data-types";
 
 export const buildHighlightsPrompt = (
   reportContents: Record<string, string>,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
   itemsPerReport: number = 6,
 ): string => {
   const sections = Object.entries(reportContents)

@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "zh",
+    "code": "zh-CN",
     "name": "Chinese",
     "nativeName": "中文"
   },

@@ -25,7 +25,7 @@ describe("buildSkillsPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildSkillsPrompt([], [], "2026-03-09", "en");
+    const result = buildSkillsPrompt([], [], "2026-03-09", "en-US");
     expect(result).toContain("Claude Code ecosystem");
     expect(result).toContain("None");
   });

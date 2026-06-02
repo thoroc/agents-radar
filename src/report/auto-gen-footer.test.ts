@@ -20,14 +20,14 @@ describe("autoGenFooter", () => {
   });
   it("returns Chinese footer when DIGEST_REPO is set", () => {
     process.env.DIGEST_REPO = "user/repo";
-    const result = autoGenFooter("zh");
+    const result = autoGenFooter("zh-CN");
     expect(result).toContain("agents-radar");
     expect(result).toContain("github.com/user/repo");
     expect(result).toContain("自动生成");
   });
   it("returns English footer when lang is en", () => {
     process.env.DIGEST_REPO = "user/repo";
-    const result = autoGenFooter("en");
+    const result = autoGenFooter("en-US");
     expect(result).toContain("auto-generated");
     expect(result).toContain("agents-radar");
   });

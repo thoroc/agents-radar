@@ -38,7 +38,7 @@ describe("buildCliPrompt", () => {
   });
 
   it("generates English prompt", () => {
-    const result = buildCliPrompt(cfg, [makeItem()], [], [], "2026-03-09", "en");
+    const result = buildCliPrompt(cfg, [makeItem()], [], [], "2026-03-09", "en-US");
     expect(result).toContain("technical analyst");
     expect(result).toContain("TestTool");
     expect(result).toContain("Hot Issues");

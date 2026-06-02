@@ -14,7 +14,7 @@ export const buildCliPrompt = (
   prs: GitHubItem[],
   releases: GitHubRelease[],
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const sampledIssues = topN(issues, CLI_ISSUE_LIMIT);
   const sampledPrs = topN(prs, CLI_PR_LIMIT);

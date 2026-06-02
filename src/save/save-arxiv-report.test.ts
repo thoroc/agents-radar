@@ -30,7 +30,7 @@ describe("saveArxivReport", () => {
   };
 
   it("calls saveDataSourceReport with arxiv config", async () => {
-    await saveArxivReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en");
+    await saveArxivReport(data as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "\nfooter", "en-US");
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
     const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
@@ -48,7 +48,7 @@ describe("saveArxivReport", () => {
   it("skips when fetchSuccess is false", async () => {
     const noData = { papers: [], fetchSuccess: false };
 
-    await saveArxivReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh");
+    await saveArxivReport(noData as never, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh-CN");
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
     const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock

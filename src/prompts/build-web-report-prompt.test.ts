@@ -49,7 +49,7 @@ describe("buildWebReportPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildWebReportPrompt(mockResults, "2026-03-09", "en");
+    const result = buildWebReportPrompt(mockResults, "2026-03-09", "en-US");
     expect(result).toContain("Anthropic Blog");
     expect(result).toContain("OpenAI Blog");
     expect(result).toContain("Introducing Claude 4");

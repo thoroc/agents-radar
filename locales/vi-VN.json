@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "vi",
+    "code": "vi-VN",
     "name": "Vietnamese",
     "nativeName": "Tiếng Việt"
   },

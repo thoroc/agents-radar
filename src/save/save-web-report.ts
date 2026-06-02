@@ -12,14 +12,14 @@ export const saveWebReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const hasNewContent = webResults.some((r) => r.newItems.length > 0);
 
   if (!hasNewContent) {
     console.error(`  [web/${lang}] No new content detected, skipping report.`);
-    if (lang === "zh") {
+    if (lang === "zh-CN") {
       saveWebState(webState);
       console.error("  [web] State saved.");
     }
@@ -74,7 +74,7 @@ export const saveWebReport = async (
     console.error(`  [web/${lang}] Report generation failed: ${err}`);
   }
 
-  if (lang === "zh") {
+  if (lang === "zh-CN") {
     saveWebState(webState);
     console.error("  [web] State saved.");
   }

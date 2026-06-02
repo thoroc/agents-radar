@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "id",
+    "code": "id-ID",
     "name": "Indonesian",
     "nativeName": "Bahasa Indonesia"
   },

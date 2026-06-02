@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "hi",
+    "code": "hi-IN",
     "name": "Hindi",
     "nativeName": "हिन्दी"
   },

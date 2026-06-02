@@ -48,17 +48,17 @@ describe("saveWebReport", () => {
   ];
 
   it("skips LLM call when no new content", async () => {
-    await saveWebReport([], webState, "utc", "2026-01-01", "", "footer", "zh");
+    await saveWebReport([], webState, "utc", "2026-01-01", "", "footer", "zh-CN");
     expect(saveReportModule.saveReport).not.toHaveBeenCalled();
   });
 
   it("calls saveReport when there is new content", async () => {
-    await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "zh");
+    await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "zh-CN");
     expect(saveReportModule.saveReport).toHaveBeenCalled();
   });
 
   it("saves web state after processing", async () => {
-    await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "zh");
+    await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "zh-CN");
     expect(fetchersModule.saveWebState).toHaveBeenCalled();
   });
 });

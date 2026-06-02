@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "nl",
+    "code": "nl-NL",
     "name": "Dutch",
     "nativeName": "Nederlands"
   },

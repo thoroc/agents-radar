@@ -8,7 +8,7 @@ describe("notifyLabel", () => {
   });
 
   it("returns en label for ai-cli when lang is en", () => {
-    const result = notifyLabel("ai-cli", "en");
+    const result = notifyLabel("ai-cli", "en-US");
     expect(result).toBe("AI CLI Tools");
   });
 
@@ -17,7 +17,7 @@ describe("notifyLabel", () => {
   });
 
   it("returns en label for ai-agents", () => {
-    expect(notifyLabel("ai-agents", "en")).toBe("AI Agents Ecosystem");
+    expect(notifyLabel("ai-agents", "en-US")).toBe("AI Agents Ecosystem");
   });
 
   it("returns zh label for ai-web", () => {

@@ -7,7 +7,7 @@ export const buildCommunityPrompt = (
   devto: DevToData,
   lobsters: LobstersData,
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const devtoText =
     devto.articles.length > 0

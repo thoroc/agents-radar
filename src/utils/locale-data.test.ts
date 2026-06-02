@@ -3,8 +3,8 @@ import { DEFAULT_LANGUAGES, LANGUAGE_NAMES, SUPPORTED_LOCALES } from "./locale-d
 
 describe("SUPPORTED_LOCALES", () => {
   it("includes zh and en", () => {
-    expect(SUPPORTED_LOCALES).toContain("en");
-    expect(SUPPORTED_LOCALES).toContain("zh");
+    expect(SUPPORTED_LOCALES).toContain("en-US");
+    expect(SUPPORTED_LOCALES).toContain("zh-CN");
   });
 
   it("includes all 21 locales", () => {
@@ -14,13 +14,13 @@ describe("SUPPORTED_LOCALES", () => {
 
 describe("LANGUAGE_NAMES", () => {
   it("maps locale codes to names", () => {
-    expect(LANGUAGE_NAMES.en).toBe("English");
-    expect(LANGUAGE_NAMES.zh).toBe("Chinese");
+    expect(LANGUAGE_NAMES["en-US"]).toBe("English");
+    expect(LANGUAGE_NAMES["zh-CN"]).toBe("Chinese");
   });
 });
 
 describe("DEFAULT_LANGUAGES", () => {
   it("returns en and zh", () => {
-    expect(DEFAULT_LANGUAGES).toEqual(["en", "zh"]);
+    expect(DEFAULT_LANGUAGES).toEqual(["en-US", "zh-CN"]);
   });
 });

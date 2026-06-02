@@ -19,7 +19,7 @@ export const saveReport = async (
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const fullDeps = { ...defaultDeps, ...deps };
-  const suffix = lang === "zh" ? "" : `.${lang}`;
+  const suffix = lang === "zh-CN" ? "" : `.${lang}`;
   const content = await fullDeps.callLlm?.(config.promptBuilder(config.data, dateStr), config.maxTokens);
   if (!content) return;
 

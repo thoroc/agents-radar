@@ -5,7 +5,7 @@ import { LANGUAGE_NAMES } from "../utils";
 export const buildProductHuntPrompt = (
   data: ProductHuntData,
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const productsText = data.products
     .map(

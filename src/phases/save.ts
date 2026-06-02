@@ -91,7 +91,7 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
   for (const lang of enabledLangs) {
     const s = summariesByLang[lang]!;
     const ft = autoGenFooter(lang as Locale);
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === "zh-CN" ? "" : `.${lang}`;
 
     cliContent[lang] = buildCliReportContent(
       s.cliDigests,
@@ -149,7 +149,7 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
 
   const reportsByLang: Record<string, Record<string, string>> = {};
   for (const lang of enabledLangs) {
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === "zh-CN" ? "" : `.${lang}`;
     reportsByLang[lang] = { "ai-cli": cliContent[lang]!, "ai-agents": openclawContent[lang]! };
     for (const id of [
       "ai-trending",

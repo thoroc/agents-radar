@@ -12,7 +12,7 @@ export const saveCommunityReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const s = t(lang);

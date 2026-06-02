@@ -64,7 +64,7 @@ export const runWeeklyRollup = async (
     allContent[lang] =
       `# ${s.weeklyTitle} ${weekStr}\n\n` + metaLine + `---\n\n` + (summariesByLang[lang] ?? "") + footer;
 
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === "zh-CN" ? "" : `.${lang}`;
     console.error(`  Saved ${saveFile(allContent[lang]!, dateStr, `ai-weekly${suffix}.md`)}`);
   }
 

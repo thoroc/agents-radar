@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "tr",
+    "code": "tr-TR",
     "name": "Turkish",
     "nativeName": "Türkçe"
   },

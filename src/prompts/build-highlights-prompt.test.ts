@@ -19,14 +19,14 @@ describe("buildHighlightsPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildHighlightsPrompt(sampleContents, "en");
+    const result = buildHighlightsPrompt(sampleContents, "en-US");
     expect(result).toContain("news editor");
     expect(result).toContain("6 highlights");
     expect(result).toContain("Write the response in English");
   });
 
   it("respects custom itemsPerReport", () => {
-    const result = buildHighlightsPrompt(sampleContents, "zh", 3);
+    const result = buildHighlightsPrompt(sampleContents, "zh-CN", 3);
     expect(result).toContain("3 highlights");
   });
 
@@ -39,7 +39,7 @@ describe("buildHighlightsPrompt", () => {
   });
 
   it("requires JSON output format", () => {
-    const result = buildHighlightsPrompt(sampleContents, "en");
+    const result = buildHighlightsPrompt(sampleContents, "en-US");
     expect(result).toContain("Return ONLY valid JSON");
     expect(result).toContain("no markdown fences");
   });

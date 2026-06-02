@@ -104,8 +104,8 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       openclawPeers: DEFAULT_OPENCLAW_PEERS,
       languages: DEFAULT_LANGUAGES,
       schedules: DEFAULT_SCHEDULES,
-      defaultPrimaryLanguage: "en",
-      defaultFallbackLanguage: "en",
+      defaultPrimaryLanguage: "en-US",
+      defaultFallbackLanguage: "en-US",
     };
   }
 
@@ -143,8 +143,8 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       : DEFAULT_SCHEDULES.monthly,
   };
 
-  const defaultPrimaryLanguage = raw?.default_primary_language ?? "en";
-  const defaultFallbackLanguage = raw?.default_fallback_language ?? "en";
+  const defaultPrimaryLanguage = raw?.default_primary_language ?? "en-US";
+  const defaultFallbackLanguage = raw?.default_fallback_language ?? "en-US";
 
   console.error(
     `[config] Loaded from ${configPath}: ` +

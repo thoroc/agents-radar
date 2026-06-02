@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "bn",
+    "code": "bn-BD",
     "name": "Bengali",
     "nativeName": "বাংলা"
   },

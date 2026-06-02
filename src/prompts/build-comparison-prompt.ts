@@ -5,7 +5,7 @@ import type { RepoDigest } from "./repo-digest";
 export const buildComparisonPrompt = (
   digests: RepoDigest[],
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const sections = digests
     .map((d) => {

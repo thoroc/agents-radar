@@ -4,7 +4,7 @@ import { LANGUAGE_NAMES } from "../utils";
 export const buildMonthlyPrompt = (
   sourceDigests: Record<string, string>,
   monthStr: string,
-  lang: Locale = "zh",
+  lang: Locale = "zh-CN",
 ): string => {
   const digestEntries = Object.entries(sourceDigests)
     .map(([key, content]) => `## ${key}\n\n${content}`)

@@ -1,7 +1,6 @@
 {
-  "$schema": "../locale-schema.json",
   "_meta": {
-    "code": "th",
+    "code": "th-TH",
     "name": "Thai",
     "nativeName": "ไทย"
   },

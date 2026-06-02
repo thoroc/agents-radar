@@ -37,7 +37,7 @@ describe("saveTrendingReport", () => {
       "2026-01-01",
       "",
       "\nfooter",
-      "en",
+      "en-US",
     );
 
     expect(saveReportModule.saveReport).toHaveBeenCalledOnce();
@@ -53,7 +53,7 @@ describe("saveTrendingReport", () => {
   it("skips when no data available", async () => {
     const emptyData = { trendingRepos: [], searchRepos: [], trendingFetchSuccess: false };
 
-    await saveTrendingReport(emptyData as never, "", "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh");
+    await saveTrendingReport(emptyData as never, "", "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh-CN");
 
     expect(saveReportModule.saveReport).not.toHaveBeenCalled();
   });
