@@ -6,8 +6,9 @@ social/
 !src/social/
 !src/notifications/social/
 coverage/
-.aislopt/
+.aislop/
 .claude/skills/
+.ctxharness.yml
 .codex/
 .cursor/
 .gemini/
