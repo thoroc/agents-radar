@@ -30,6 +30,15 @@ describe("buildComparisonPrompt", () => {
   it("shows no-activity for empty digests", () => {
     const digests = [makeDigest({ summary: "Summary" })];
     const result = buildComparisonPrompt(digests, "2026-03-09");
-    expect(result).toContain("过去24小时无活动");
+    expect(result).toContain("No activity in the last 24 hours.");
+  });
+
+  it("appends language suffix", () => {
+    const digests = [makeDigest({ summary: "Summary", issues: [{} as never] })];
+    const enResult = buildComparisonPrompt(digests, "2026-03-09", "en");
+    expect(enResult).toContain("Write the response in English.");
+
+    const zhResult = buildComparisonPrompt(digests, "2026-03-09", "zh");
+    expect(zhResult).toContain("Write the response in Chinese.");
   });
 });

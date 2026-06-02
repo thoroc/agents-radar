@@ -42,14 +42,15 @@ const makeLobstersData = (overrides: Partial<LobstersData> = {}): LobstersData =
 });
 
 describe("buildCommunityPrompt", () => {
-  it("includes Dev.to and Lobste.rs sections in Chinese (default)", () => {
+  it("includes Dev.to and Lobste.rs sections (default zh)", () => {
     const result = buildCommunityPrompt(makeDevtoData(), makeLobstersData(), "2026-03-09");
-    expect(result).toContain("技术社区 AI 动态日报");
-    expect(result).toContain("Dev.to 文章");
+    expect(result).toContain("Tech Community AI Digest");
+    expect(result).toContain("Dev.to Articles");
     expect(result).toContain("Building AI Agents with TypeScript");
     expect(result).toContain("Lobste.rs");
     expect(result).toContain("Why Local AI Models Are the Future");
     expect(result).toContain("2026-03-09");
+    expect(result).toContain("Write the response in Chinese.");
   });
 
   it("generates English variant", () => {
@@ -59,20 +60,13 @@ describe("buildCommunityPrompt", () => {
     expect(result).toContain("Lobste.rs Highlights");
     expect(result).toContain("Reactions:");
     expect(result).toContain("Score:");
+    expect(result).toContain("Write the response in English.");
   });
 
   it("shows empty placeholders when no articles", () => {
     const emptyDevto: DevToData = { articles: [], fetchSuccess: false };
     const emptyLobsters: LobstersData = { stories: [], fetchSuccess: false };
     const result = buildCommunityPrompt(emptyDevto, emptyLobsters, "2026-03-09");
-    expect(result).toContain("无 Dev.to 文章");
-    expect(result).toContain("无 Lobste.rs 内容");
-  });
-
-  it("shows English empty placeholders", () => {
-    const emptyDevto: DevToData = { articles: [], fetchSuccess: false };
-    const emptyLobsters: LobstersData = { stories: [], fetchSuccess: false };
-    const result = buildCommunityPrompt(emptyDevto, emptyLobsters, "2026-03-09", "en");
     expect(result).toContain("No Dev.to articles");
     expect(result).toContain("No Lobste.rs stories");
   });

@@ -7,25 +7,18 @@ describe("buildHighlightsPrompt", () => {
     "ai-agents": "New agent frameworks emerged.",
   };
 
-  it("includes report sections in Chinese (default)", () => {
+  it("includes report sections", () => {
     const result = buildHighlightsPrompt(sampleContents);
     expect(result).toContain("[ai-cli]");
     expect(result).toContain("[ai-agents]");
     expect(result).toContain("Some CLI tools had releases today.");
     expect(result).toContain("New agent frameworks emerged.");
-    expect(result).toContain("新闻编辑");
-    expect(result).toContain("6 条");
-  });
-
-  it("generates English variant", () => {
-    const result = buildHighlightsPrompt(sampleContents, "en");
     expect(result).toContain("news editor");
-    expect(result).toContain("6 highlights");
   });
 
   it("respects custom itemsPerReport", () => {
     const result = buildHighlightsPrompt(sampleContents, "zh", 3);
-    expect(result).toContain("3 条");
+    expect(result).toContain("extract 3 of the most noteworthy highlights");
   });
 
   it("truncates long content to 2000 chars", () => {
@@ -40,5 +33,13 @@ describe("buildHighlightsPrompt", () => {
     const result = buildHighlightsPrompt(sampleContents, "en");
     expect(result).toContain("Return ONLY valid JSON");
     expect(result).toContain("no markdown fences");
+  });
+
+  it("appends language suffix", () => {
+    const enResult = buildHighlightsPrompt(sampleContents, "en");
+    expect(enResult).toContain("Write the response in English.");
+
+    const zhResult = buildHighlightsPrompt(sampleContents, "zh");
+    expect(zhResult).toContain("Write the response in Chinese.");
   });
 });

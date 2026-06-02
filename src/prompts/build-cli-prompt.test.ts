@@ -27,9 +27,9 @@ const release: GitHubRelease = {
 };
 
 describe("buildCliPrompt", () => {
-  it("generates Chinese prompt by default", () => {
+  it("generates prompt with correct data", () => {
     const result = buildCliPrompt(cfg, [makeItem()], [makeItem()], [release], "2026-03-09");
-    expect(result).toContain("技术分析师");
+    expect(result).toContain("technical analyst");
     expect(result).toContain("TestTool");
     expect(result).toContain("2026-03-09");
     expect(result).toContain("org/test");
@@ -43,9 +43,9 @@ describe("buildCliPrompt", () => {
     expect(result).toContain("Hot Issues");
   });
 
-  it("shows 无 when no data", () => {
+  it("shows None when no data", () => {
     const result = buildCliPrompt(cfg, [], [], [], "2026-03-09");
-    expect(result).toContain("无");
+    expect(result).toContain("None");
   });
 
   it("includes sample notes when items exceed limit", () => {
@@ -53,5 +53,13 @@ describe("buildCliPrompt", () => {
     const result = buildCliPrompt(cfg, items, [], [], "2026-03-09");
     expect(result).toContain("共 50 条");
     expect(result).toContain("30 条");
+  });
+
+  it("appends language suffix", () => {
+    const result = buildCliPrompt(cfg, [], [], [], "2026-03-09", "en");
+    expect(result).toContain("Write the response in English.");
+
+    const zhResult = buildCliPrompt(cfg, [], [], [], "2026-03-09", "zh");
+    expect(zhResult).toContain("Write the response in Chinese.");
   });
 });

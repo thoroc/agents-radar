@@ -38,25 +38,14 @@ const mockResults: WebFetchResult[] = [
 ];
 
 describe("buildWebReportPrompt", () => {
-  it("includes site names and article titles in Chinese (default)", () => {
+  it("includes site names and article titles", () => {
     const result = buildWebReportPrompt(mockResults, "2026-03-09");
-    expect(result).toContain("Anthropic Blog");
-    expect(result).toContain("OpenAI Blog");
-    expect(result).toContain("Introducing Claude 4");
-    expect(result).toContain("GPT-5 Release");
-    expect(result).toContain("Anthropic");
-    expect(result).toContain("OpenAI");
-  });
-
-  it("generates English variant", () => {
-    const result = buildWebReportPrompt(mockResults, "2026-03-09", "en");
     expect(result).toContain("Anthropic Blog");
     expect(result).toContain("OpenAI Blog");
     expect(result).toContain("Introducing Claude 4");
     expect(result).toContain("GPT-5 Release");
     expect(result).toContain("Incremental update");
     expect(result).toContain("First full crawl");
-    expect(result).toContain("English");
   });
 
   it("includes date string in output", () => {

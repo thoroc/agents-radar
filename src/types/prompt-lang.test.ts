@@ -2,38 +2,11 @@ import { describe, expect, it } from "vitest";
 import { toPromptLang } from "./prompt-lang";
 
 describe("toPromptLang", () => {
-  it('returns "en" for "en" locale', () => {
+  it("returns the locale as-is", () => {
     expect(toPromptLang("en")).toBe("en");
-  });
-
-  it('returns "zh" for "zh" locale', () => {
     expect(toPromptLang("zh")).toBe("zh");
-  });
-
-  it('returns "zh" for all non-English locales', () => {
-    const locales: Array<Parameters<typeof toPromptLang>[0]> = [
-      "ar",
-      "bn",
-      "de",
-      "es",
-      "fr",
-      "hi",
-      "id",
-      "it",
-      "ja",
-      "ko",
-      "nl",
-      "pl",
-      "pt",
-      "ro",
-      "ru",
-      "th",
-      "tr",
-      "uk",
-      "vi",
-    ];
-    for (const locale of locales) {
-      expect(toPromptLang(locale)).toBe("zh");
-    }
+    expect(toPromptLang("ja")).toBe("ja");
+    expect(toPromptLang("ar")).toBe("ar");
+    expect(toPromptLang("de")).toBe("de");
   });
 });

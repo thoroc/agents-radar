@@ -22,28 +22,20 @@ const makeData = (overrides: Partial<ProductHuntData> = {}): ProductHuntData => 
 });
 
 describe("buildProductHuntPrompt", () => {
-  it("includes product details in Chinese (default)", () => {
+  it("includes product details", () => {
     const result = buildProductHuntPrompt(makeData(), "2026-03-09");
-    expect(result).toContain("Product Hunt AI 产品日报");
     expect(result).toContain("AI Code Assistant");
     expect(result).toContain("Your AI pair programmer");
-    expect(result).toContain("投票: 250");
-    expect(result).toContain("评论: 42");
-    expect(result).toContain("2026-03-09");
-  });
-
-  it("generates English variant", () => {
-    const result = buildProductHuntPrompt(makeData(), "2026-03-09", "en");
-    expect(result).toContain("Product Hunt AI Products Digest");
-    expect(result).toContain("Votes:");
-    expect(result).toContain("Comments:");
+    expect(result).toContain("Votes: 250");
+    expect(result).toContain("Comments: 42");
     expect(result).toContain("Topics:");
+    expect(result).toContain("2026-03-09");
   });
 
   it("handles empty products gracefully", () => {
     const data = makeData({ products: [] });
     const result = buildProductHuntPrompt(data, "2026-03-09");
-    expect(result).toContain("0 个");
+    expect(result).toContain("0 total");
   });
 
   it("handles multiple products", () => {
@@ -56,6 +48,6 @@ describe("buildProductHuntPrompt", () => {
     const result = buildProductHuntPrompt(data, "2026-03-09");
     expect(result).toContain("Product A");
     expect(result).toContain("Product B");
-    expect(result).toContain("2 个");
+    expect(result).toContain("2 total");
   });
 });

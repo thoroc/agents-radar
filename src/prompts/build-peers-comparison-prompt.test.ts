@@ -24,8 +24,23 @@ describe("buildPeersComparisonPrompt", () => {
       makeDigest({ config: { ...cfg, name: "Peer" }, summary: "Peer summary", issues: [{} as never] }),
     ];
     const result = buildPeersComparisonPrompt(openclawDigest, peerDigests, "2026-03-09");
-    expect(result).toContain("OpenClaw（核心参照");
+    expect(result).toContain("OpenClaw (core reference");
     expect(result).toContain("OC summary");
     expect(result).toContain("Peer summary");
+  });
+
+  it("appends language suffix", () => {
+    const openclawDigest = makeDigest({
+      config: { id: "openclaw", repo: "openclaw/openclaw", name: "OpenClaw" },
+      summary: "OC summary",
+    });
+    const peerDigests = [
+      makeDigest({ config: { ...cfg, name: "Peer" }, summary: "Peer summary", issues: [{} as never] }),
+    ];
+    const enResult = buildPeersComparisonPrompt(openclawDigest, peerDigests, "2026-03-09", "en");
+    expect(enResult).toContain("Write the response in English.");
+
+    const zhResult = buildPeersComparisonPrompt(openclawDigest, peerDigests, "2026-03-09", "zh");
+    expect(zhResult).toContain("Write the response in Chinese.");
   });
 });

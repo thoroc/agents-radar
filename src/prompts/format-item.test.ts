@@ -22,19 +22,19 @@ describe("formatItem", () => {
     const result = formatItem(makeItem());
     expect(result).toContain("#1 [OPEN]");
     expect(result).toContain("Issue");
-    expect(result).toContain("作者: alice");
-    expect(result).toContain("评论: 5");
+    expect(result).toContain(": alice");
+    expect(result).toContain(": 5");
     expect(result).toContain("👍: 2");
-    expect(result).toContain("链接: org/test Issue #1");
-    expect(result).toContain("摘要: body");
+    expect(result).toContain("org/test Issue #1");
+    expect(result).toContain(": body");
   });
 
   it("formats an item in English", () => {
     const result = formatItem(makeItem(), "en");
-    expect(result).toContain("Author: alice");
-    expect(result).toContain("Comments: 5");
-    expect(result).toContain("URL:");
-    expect(result).toContain("Summary: body");
+    expect(result).toContain(": alice");
+    expect(result).toContain(": 5");
+    expect(result).toContain("org/test Issue #1");
+    expect(result).toContain(": body");
   });
 
   it("includes labels when present", () => {

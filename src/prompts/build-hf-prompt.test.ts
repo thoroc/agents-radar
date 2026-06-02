@@ -21,14 +21,15 @@ const makeData = (overrides: Partial<HuggingFaceData> = {}): HuggingFaceData => 
 });
 
 describe("buildHuggingFacePrompt", () => {
-  it("includes model details in Chinese (default)", () => {
+  it("includes model details (default zh)", () => {
     const result = buildHuggingFacePrompt(makeData(), "2026-03-09");
-    expect(result).toContain("Hugging Face 热门模型日报");
+    expect(result).toContain("Hugging Face Trending Models Digest");
     expect(result).toContain("meta-llama/Llama-3.1-8B");
     expect(result).toContain("meta");
     expect(result).toContain("15,000");
     expect(result).toContain("500,000");
     expect(result).toContain("2026-03-09");
+    expect(result).toContain("Write the response in Chinese.");
   });
 
   it("generates English variant", () => {
@@ -37,6 +38,7 @@ describe("buildHuggingFacePrompt", () => {
     expect(result).toContain("Likes:");
     expect(result).toContain("Downloads:");
     expect(result).toContain("Pipeline:");
+    expect(result).toContain("Write the response in English.");
   });
 
   it("handles pipelineTag being undefined", () => {
@@ -52,6 +54,6 @@ describe("buildHuggingFacePrompt", () => {
     const result = buildHuggingFacePrompt(data, "2026-03-09");
     expect(result).toContain("model-one");
     expect(result).toContain("model-two");
-    expect(result).toContain("2 个");
+    expect(result).toContain("2 models");
   });
 });
