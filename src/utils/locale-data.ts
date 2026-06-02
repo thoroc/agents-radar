@@ -6,6 +6,32 @@ import { type LocaleData, LocaleFileSchema } from "./locale-schema";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+export const LOCALE_MAP: Record<string, string> = {
+  ar: "ar",
+  bn: "bn",
+  de: "de",
+  en: "en",
+  es: "es",
+  fr: "fr",
+  hi: "hi",
+  id: "id",
+  it: "it",
+  ja: "ja",
+  ko: "ko",
+  nl: "nl",
+  pl: "pl",
+  pt: "pt",
+  ro: "ro",
+  ru: "ru",
+  th: "th",
+  tr: "tr",
+  uk: "uk",
+  vi: "vi",
+  zh: "zh",
+};
+
+export const toBcp47 = (code: string): string => LOCALE_MAP[code] ?? code;
+
 const loadLocales = (): {
   supportedLocales: readonly string[];
   strings: Readonly<Record<string, LocaleData>>;
@@ -28,6 +54,11 @@ const loadLocales = (): {
       const code = path.basename(file, ".json");
       const raw = JSON.parse(fs.readFileSync(path.join(localesDir, file), "utf-8"));
       const parsed = LocaleFileSchema.parse(raw);
+      if (parsed._meta && parsed._meta.code !== code) {
+        console.warn(
+          `[i18n] ${file}: _meta.code "${parsed._meta.code}" does not match filename code "${code}"`,
+        );
+      }
       const { _meta, ...data } = parsed;
       strings[code] = data;
       languageNames[code] = _meta.name;

@@ -25,6 +25,8 @@ interface RawSchedules {
 
 interface RawConfig {
   languages?: string[];
+  default_primary_language?: string;
+  default_fallback_language?: string;
   cli_repos?: RawRepoEntry[];
   skills_repo?: string;
   openclaw?: RawRepoEntry;
@@ -51,6 +53,8 @@ export interface RadarConfig {
   openclawPeers: RepoConfig[];
   languages: string[];
   schedules: ScheduleConfig;
+  defaultPrimaryLanguage: string;
+  defaultFallbackLanguage: string;
 }
 
 const DEFAULT_CLI_REPOS: RepoConfig[] = [
@@ -100,6 +104,8 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       openclawPeers: DEFAULT_OPENCLAW_PEERS,
       languages: DEFAULT_LANGUAGES,
       schedules: DEFAULT_SCHEDULES,
+      defaultPrimaryLanguage: "en",
+      defaultFallbackLanguage: "en",
     };
   }
 
@@ -137,11 +143,23 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       : DEFAULT_SCHEDULES.monthly,
   };
 
+  const defaultPrimaryLanguage = raw?.default_primary_language ?? "en";
+  const defaultFallbackLanguage = raw?.default_fallback_language ?? "en";
+
   console.error(
     `[config] Loaded from ${configPath}: ` +
       `${cliRepos.length} CLI repos, ${openclawPeers.length} OpenClaw peers, ` +
       `${languages.length} languages`,
   );
 
-  return { cliRepos, skillsRepo, openclaw, openclawPeers, languages, schedules };
+  return {
+    cliRepos,
+    skillsRepo,
+    openclaw,
+    openclawPeers,
+    languages,
+    schedules,
+    defaultPrimaryLanguage,
+    defaultFallbackLanguage,
+  };
 };

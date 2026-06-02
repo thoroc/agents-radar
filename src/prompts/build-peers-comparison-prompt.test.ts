@@ -24,8 +24,9 @@ describe("buildPeersComparisonPrompt", () => {
       makeDigest({ config: { ...cfg, name: "Peer" }, summary: "Peer summary", issues: [{} as never] }),
     ];
     const result = buildPeersComparisonPrompt(openclawDigest, peerDigests, "2026-03-09");
-    expect(result).toContain("OpenClaw（核心参照");
+    expect(result).toContain("OpenClaw (core reference");
     expect(result).toContain("OC summary");
     expect(result).toContain("Peer summary");
+    expect(result).toContain("Write the response in Chinese");
   });
 });

@@ -4,6 +4,8 @@ import * as autoGenFooterModule from "../report/auto-gen-footer";
 import * as callLlmModule from "../report/call-llm";
 import * as saveFileModule from "../report/save-file";
 import * as utilsModule from "../utils";
+import * as getEnabledLangsModule from "../utils/get-enabled-langs";
+import * as loadConfigModule from "../utils/load-config";
 import * as generateRollupHighlightsModule from "./generate-rollup-highlights";
 import * as getDateDirsModule from "./get-date-dirs";
 import * as readDailyDigestModule from "./read-daily-digest";
@@ -19,9 +21,16 @@ describe("runWeeklyRollup", () => {
     vi.spyOn(utilsModule, "t").mockReturnValue({
       weeklyTitle: "Weekly Report",
       weeklyCoverage: "Coverage",
+      weeklyMeta: "> Coverage: {range} | Generated: {utcStr} UTC\n\n",
     } as never);
     vi.spyOn(utilsModule, "toCstDateStr").mockReturnValue("2026-03-09");
     vi.spyOn(utilsModule, "toUtcStr").mockReturnValue("2026-03-09 00:00:00");
+    vi.spyOn(loadConfigModule, "loadConfig").mockReturnValue({
+      languages: ["en", "zh"],
+      defaultPrimaryLanguage: "en",
+      defaultFallbackLanguage: "en",
+    } as never);
+    vi.spyOn(getEnabledLangsModule, "getEnabledLangs").mockReturnValue(["zh", "en"]);
     vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue(["2026-03-09", "2026-03-02"]);
     vi.spyOn(readDailyDigestModule, "readDailyDigest").mockReturnValue("daily content");
     vi.spyOn(generateRollupHighlightsModule, "generateRollupHighlights").mockResolvedValue({} as never);

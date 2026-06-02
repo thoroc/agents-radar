@@ -7,25 +7,27 @@ describe("buildHighlightsPrompt", () => {
     "ai-agents": "New agent frameworks emerged.",
   };
 
-  it("includes report sections in Chinese (default)", () => {
+  it("includes report sections in default locale", () => {
     const result = buildHighlightsPrompt(sampleContents);
     expect(result).toContain("[ai-cli]");
     expect(result).toContain("[ai-agents]");
     expect(result).toContain("Some CLI tools had releases today.");
     expect(result).toContain("New agent frameworks emerged.");
-    expect(result).toContain("新闻编辑");
-    expect(result).toContain("6 条");
+    expect(result).toContain("news editor");
+    expect(result).toContain("6 highlights");
+    expect(result).toContain("Write the response in Chinese");
   });
 
   it("generates English variant", () => {
     const result = buildHighlightsPrompt(sampleContents, "en");
     expect(result).toContain("news editor");
     expect(result).toContain("6 highlights");
+    expect(result).toContain("Write the response in English");
   });
 
   it("respects custom itemsPerReport", () => {
     const result = buildHighlightsPrompt(sampleContents, "zh", 3);
-    expect(result).toContain("3 条");
+    expect(result).toContain("3 highlights");
   });
 
   it("truncates long content to 2000 chars", () => {

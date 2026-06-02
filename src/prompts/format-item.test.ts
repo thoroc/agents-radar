@@ -18,12 +18,12 @@ const makeItem = (overrides: Partial<GitHubItem> = {}): GitHubItem => ({
 });
 
 describe("formatItem", () => {
-  it("formats a basic item in Chinese (default)", () => {
+  it("formats a basic item in zh (default)", () => {
     const result = formatItem(makeItem());
     expect(result).toContain("#1 [OPEN]");
     expect(result).toContain("Issue");
     expect(result).toContain("作者: alice");
-    expect(result).toContain("评论: 5");
+    expect(result).toContain("评论数: 5");
     expect(result).toContain("👍: 2");
     expect(result).toContain("链接: org/test Issue #1");
     expect(result).toContain("摘要: body");

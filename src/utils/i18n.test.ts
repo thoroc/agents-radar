@@ -140,31 +140,25 @@ describe("notify label strings", () => {
 });
 
 describe("report label strings", () => {
-  const ZH_LABEL_KEYS = [
+  const LABEL_KEYS = [
     "reportLabelAiCli",
     "reportLabelAiAgents",
     "reportLabelAiWeb",
     "reportLabelAiTrending",
     "reportLabelAiHn",
     "reportLabelAiWeekly",
-  ] as const;
-  const EN_LABEL_KEYS = [
-    "reportLabelAiCliEn",
-    "reportLabelAiAgentsEn",
-    "reportLabelAiWebEn",
-    "reportLabelAiTrendingEn",
-    "reportLabelAiHnEn",
-    "reportLabelAiWeeklyEn",
+    "reportLabelAiPh",
+    "reportLabelAiArxiv",
+    "reportLabelAiHf",
+    "reportLabelAiCommunity",
+    "reportLabelAiMonthly",
   ] as const;
 
-  for (const key of ZH_LABEL_KEYS) {
-    it(`${key} has zh content`, () => {
+  for (const key of LABEL_KEYS) {
+    it(`${key} has zh and en values`, () => {
       expect(t("zh")[key]).toBeTruthy();
-    });
-  }
-  for (const key of EN_LABEL_KEYS) {
-    it(`${key} has en content`, () => {
       expect(t("en")[key]).toBeTruthy();
+      expect(t("zh")[key]).not.toBe(t("en")[key]);
     });
   }
 });

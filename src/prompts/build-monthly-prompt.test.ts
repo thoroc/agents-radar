@@ -8,14 +8,15 @@ const mockDigests: Record<string, string> = {
 };
 
 describe("buildMonthlyPrompt", () => {
-  it("includes monthly digest content in Chinese (default)", () => {
+  it("includes monthly digest content in default locale", () => {
     const result = buildMonthlyPrompt(mockDigests, "2026-03");
     expect(result).toContain("Week 1");
     expect(result).toContain("Week 2");
     expect(result).toContain("Week 3");
     expect(result).toContain("Claude Code added");
     expect(result).toContain("GPT-5 was announced");
-    expect(result).toContain("月报");
+    expect(result).toContain("Monthly Report");
+    expect(result).toContain("Write the response in Chinese");
   });
 
   it("generates English variant", () => {
@@ -24,7 +25,7 @@ describe("buildMonthlyPrompt", () => {
     expect(result).toContain("Week 2");
     expect(result).toContain("Claude Code added");
     expect(result).toContain("Monthly Report");
-    expect(result).toContain("English");
+    expect(result).toContain("Write the response in English");
   });
 
   it("includes month string and report count in output", () => {

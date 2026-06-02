@@ -18,7 +18,7 @@ import { fetchAllData } from "./phases/fetch";
 import { savePhase } from "./phases/save";
 import { generateSummaries } from "./phases/summarize";
 import { requireEnv } from "./require-env";
-import { getEnabledLangs, loadConfig, toCstDateStr, toUtcStr } from "./utils";
+import { getEnabledLangs, type Locale, loadConfig, toCstDateStr, toUtcStr } from "./utils";
 
 export const main = async (env: NodeJS.ProcessEnv = process.env): Promise<void> => {
   dotenvx.config({ quiet: true });
@@ -62,14 +62,24 @@ export const main = async (env: NodeJS.ProcessEnv = process.env): Promise<void> 
   const fetchedOpenclaw = fetched.find((f) => f.cfg.id === OPENCLAW.id)!;
   const fetchedPeers = fetched.filter((f) => peerIds.has(f.cfg.id));
 
-  console.error("  Generating summaries in ZH and EN in parallel...");
-  const [zhSummaries, enSummaries] = await Promise.all([
-    generateSummaries(fetchedCli, fetchedOpenclaw, skillsData, fetchedPeers, trendingData, dateStr, "zh"),
-    generateSummaries(fetchedCli, fetchedOpenclaw, skillsData, fetchedPeers, trendingData, dateStr, "en"),
-  ]);
-  const summariesByLang = { zh: zhSummaries, en: enSummaries };
+  console.error(`  Generating summaries in ${ENABLED_LANGS.length} languages...`);
+  const summariesEntries = await Promise.all(
+    ENABLED_LANGS.map(async (lang) => {
+      const summaries = await generateSummaries(
+        fetchedCli,
+        fetchedOpenclaw,
+        skillsData,
+        fetchedPeers,
+        trendingData,
+        dateStr,
+        lang as Locale,
+      );
+      return [lang, summaries] as const;
+    }),
+  );
+  const summariesByLang = Object.fromEntries(summariesEntries);
 
-  console.error("  Calling LLM for comparative analyses (ZH + EN)...");
+  console.error("  Calling LLM for comparative analyses...");
   const { comparisonByLang, peersComparisonByLang } = await generateComparisons({
     summariesByLang,
     fetchedOpenclaw,

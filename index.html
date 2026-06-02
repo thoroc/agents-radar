@@ -314,26 +314,19 @@ function renderMarkdown(raw) {
 
 const GITHUB_REPO = 'duanyytop/agents-radar';
 
-const LABELS = {
-  'ai-cli':          'AI CLI 工具',
-  'ai-cli-en':       'AI CLI Tools',
-  'ai-agents':       'AI Agents 生态',
-  'ai-agents-en':    'AI Agents Ecosystem',
-  'ai-web':          'OpenAI & Anthropic 官网动态',
-  'ai-web-en':       'OpenAI & Anthropic Updates',
-  'ai-trending':     'GitHub AI 趋势',
-  'ai-trending-en':  'GitHub AI Trends',
-  'ai-hn':           'HN 社区动态',
-  'ai-hn-en':        'HN Community Digest',
-  'ai-ph':           'Product Hunt AI',
-  'ai-ph-en':        'Product Hunt AI',
-  'ai-arxiv':        'ArXiv AI 研究',
-  'ai-arxiv-en':     'ArXiv AI Research',
-  'ai-hf':           'HF 热门模型',
-  'ai-hf-en':        'HF Trending Models',
-  'ai-community':    '技术社区 AI',
-  'ai-community-en': 'Tech Community AI',
-};
+// Dynamic labels loaded from manifest.json
+let manifestLabels = {};
+
+async function loadManifestLabels() {
+  try {
+    const res = await fetch('./manifest.json');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.labels) manifestLabels = data.labels;
+  } catch {
+    // ignore — fall back to empty labels
+  }
+}
 
 // ── Theme ──
 const htmlEl = document.documentElement;
@@ -522,7 +515,7 @@ function buildDateGroup(date, reports, isFirst) {
 
       const label = document.createElement('span');
       label.className = 'rpt-label';
-      const baseLabel = LABELS[r] || r;
+      const baseLabel = manifestLabels[r] || r;
       label.textContent = baseLabel;
       label.title = baseLabel;
 
@@ -548,7 +541,7 @@ function buildDateGroup(date, reports, isFirst) {
       const btn = document.createElement('button');
       btn.className = 'rpt-btn';
       btn.dataset.key = `${date}/${r}`;
-      btn.textContent = LABELS[r] || r;
+      btn.textContent = manifestLabels[r] || r;
       btn.onclick = () => loadReport(date, r);
       list.appendChild(btn);
     }
@@ -609,6 +602,7 @@ document.getElementById('githubLink').href = `https://github.com/${GITHUB_REPO}`
 
 (async () => {
   try {
+    await loadManifestLabels();
     const res = await fetch('./manifest.json');
     if (!res.ok) throw new Error('manifest.json not found');
     const { dates } = await res.json();

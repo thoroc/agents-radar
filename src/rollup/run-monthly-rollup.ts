@@ -7,7 +7,7 @@ import { autoGenFooter } from "../report/auto-gen-footer";
 import { callLlm } from "../report/call-llm";
 import { LLM_TOKENS_ROLLUP } from "../report/report-constants";
 import { saveFile } from "../report/save-file";
-import { t, toCstDateStr, toUtcStr } from "../utils";
+import { getEnabledLangs, type Locale, loadConfig, t, toCstDateStr, toUtcStr } from "../utils";
 import { generateRollupHighlights } from "./generate-rollup-highlights";
 import { getDateDirs } from "./get-date-dirs";
 import { readDailyDigest } from "./read-daily-digest";
@@ -26,6 +26,9 @@ export const runMonthlyRollup = async (
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
 
+  const { languages: configLangs } = loadConfig();
+  const enabledLangs = getEnabledLangs(configLangs, env);
+
   console.error(`[monthly] Generating rollup for ${monthStr} (date: ${dateStr})`);
 
   const allDates = getDateDirs();
@@ -34,13 +37,10 @@ export const runMonthlyRollup = async (
   const weeklyDates = monthDates.filter((d) => fs.existsSync(path.join(DIGESTS_DIR, d, "ai-weekly.md")));
 
   let sourceDigests: Record<string, string>;
-  let sourceLabel: { zh: string; en: string };
+  let sourceCount: number;
 
   if (weeklyDates.length >= 2) {
-    sourceLabel = {
-      zh: `${weeklyDates.length} 份周报`,
-      en: `${weeklyDates.length} weekly reports`,
-    };
+    sourceCount = weeklyDates.length;
     sourceDigests = {};
     for (const date of weeklyDates) {
       const content = readWeeklyDigest(date);
@@ -48,10 +48,7 @@ export const runMonthlyRollup = async (
     }
   } else {
     const sampled = monthDates.filter((_, i) => i % 4 === 0).slice(0, 10);
-    sourceLabel = {
-      zh: `${sampled.length} 份日报（每4日采样）`,
-      en: `${sampled.length} daily reports (sampled every 4 days)`,
-    };
+    sourceCount = sampled.length;
     sourceDigests = {};
     for (const date of sampled) {
       const content = readDailyDigest(date);
@@ -64,38 +61,46 @@ export const runMonthlyRollup = async (
     return;
   }
 
-  console.error(`[monthly] Source: ${sourceLabel.zh}`);
+  console.error(`[monthly] Source count: ${sourceCount}`);
 
-  console.error("[monthly] Calling LLM for ZH and EN monthly reports in parallel...");
-  const [zhSummary, enSummary] = await Promise.all([
-    callLlm(buildMonthlyPrompt(sourceDigests, monthStr, "zh"), LLM_TOKENS_ROLLUP),
-    callLlm(buildMonthlyPrompt(sourceDigests, monthStr, "en"), LLM_TOKENS_ROLLUP),
-  ]);
+  console.error(`[monthly] Calling LLM for ${enabledLangs.length} languages...`);
+  const summaryPromises = enabledLangs.map(async (lang) => {
+    const summary = await callLlm(
+      buildMonthlyPrompt(sourceDigests, monthStr, lang as Locale),
+      LLM_TOKENS_ROLLUP,
+    );
+    return [lang, summary] as const;
+  });
+  const summaryResults = await Promise.all(summaryPromises);
+  const summariesByLang = Object.fromEntries(summaryResults);
 
-  const footer = autoGenFooter("zh");
-  const enFooter = autoGenFooter("en");
+  const allContent: Record<string, string> = {};
+  for (const lang of enabledLangs) {
+    const l = lang as Locale;
+    const footer = autoGenFooter(l);
+    const s = t(l);
+    const sourceLabel =
+      weeklyDates.length >= 2
+        ? s.sourceLabelWeekly.replace("{n}", String(sourceCount))
+        : s.sourceLabelDailySampled.replace("{n}", String(sourceCount));
+    const metaLine = s.monthlyMeta.replace("{sources}", sourceLabel).replace("{utcStr}", utcStr);
+    allContent[lang] =
+      `# ${s.monthlyTitle} ${monthStr}\n\n` + metaLine + `---\n\n` + (summariesByLang[lang] ?? "") + footer;
 
-  const zhContent =
-    `# ${t("zh").monthlyTitle} ${monthStr}\n\n` +
-    `> 数据来源: ${sourceLabel.zh} | 生成时间: ${utcStr} UTC\n\n` +
-    `---\n\n` +
-    zhSummary +
-    footer;
+    const suffix = lang === "zh" ? "" : `.${lang}`;
+    console.error(`  Saved ${saveFile(allContent[lang]!, dateStr, `ai-monthly${suffix}.md`)}`);
+  }
 
-  const enContent =
-    `# ${t("en").monthlyTitle} ${monthStr}\n\n` +
-    `> Sources: ${sourceLabel.en} | Generated: ${utcStr} UTC\n\n` +
-    `---\n\n` +
-    enSummary +
-    enFooter;
+  await generateRollupHighlights(allContent, "ai-monthly", dateStr, 6);
 
-  console.error(`  Saved ${saveFile(zhContent, dateStr, "ai-monthly.md")}`);
-  console.error(`  Saved ${saveFile(enContent, dateStr, "ai-monthly.md")}`);
-
-  await generateRollupHighlights(zhContent, enContent, "ai-monthly", dateStr, 6);
-
-  if (resolvedDigestRepo) {
-    const url = await createGitHubIssue(`${t("zh").monthlyTitle} ${monthStr}`, zhContent, "monthly");
+  if (resolvedDigestRepo && enabledLangs.length > 0) {
+    const primaryLang = enabledLangs[0]!;
+    const primaryContent = allContent[primaryLang] ?? "";
+    const url = await createGitHubIssue(
+      `${t(primaryLang).monthlyTitle} ${monthStr}`,
+      primaryContent,
+      "monthly",
+    );
     console.error(`  Created monthly issue: ${url}`);
   }
 

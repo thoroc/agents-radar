@@ -38,23 +38,24 @@ const mockData: TrendingData = {
 };
 
 describe("buildTrendingPrompt", () => {
-  it("includes repo names and metadata in Chinese (default)", () => {
+  it("includes repo names and metadata in default locale", () => {
     const result = buildTrendingPrompt(mockData, "2026-03-09");
     expect(result).toContain("owner/ai-tool");
     expect(result).toContain("owner/ml-framework");
     expect(result).toContain("owner/llm-app");
-    expect(result).toContain("Trending");
+    expect(result).toContain("GitHub Trending");
     expect(result).toContain("10,000");
     expect(result).toContain("50,000");
+    expect(result).toContain("Write the response in Chinese");
   });
 
   it("generates English variant", () => {
     const result = buildTrendingPrompt(mockData, "2026-03-09", "en");
     expect(result).toContain("owner/ai-tool");
     expect(result).toContain("owner/llm-app");
-    expect(result).toContain("Trending List");
-    expect(result).toContain("Topic Search");
-    expect(result).toContain("English");
+    expect(result).toContain("Trending");
+    expect(result).toContain("Topic Repos");
+    expect(result).toContain("Write the response in English");
   });
 
   it("includes date string in output", () => {

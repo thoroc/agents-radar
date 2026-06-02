@@ -1,6 +1,7 @@
 import type { RepoConfig, RepoFetch } from "../github";
 import { buildComparisonPrompt, buildPeersComparisonPrompt, type RepoDigest } from "../prompts";
 import { callLlm } from "../report/call-llm";
+import type { Locale } from "../types/locale";
 
 export type ComparisonsByLang = Record<string, string>;
 export type PeersComparisonsByLang = Record<string, string>;
@@ -34,18 +35,32 @@ const makeOpenclawDigest = (openclaw: RepoConfig, fetched: RepoFetch, summary: s
 export const generateComparisons = async (input: ComparisonsInput): Promise<ComparisonsResult> => {
   const { summariesByLang, fetchedOpenclaw, openclaw, dateStr } = input;
 
-  const makeDigest = (lang: string): RepoDigest =>
-    makeOpenclawDigest(openclaw, fetchedOpenclaw, summariesByLang[lang]!.openclawSummary);
+  const langs = Object.keys(summariesByLang);
+  const results = await Promise.all(
+    langs.flatMap((lang) => [
+      callLlm(buildComparisonPrompt(summariesByLang[lang]!.cliDigests, dateStr, lang as Locale)).then(
+        (r) => [lang, r] as const,
+      ),
+      callLlm(
+        buildPeersComparisonPrompt(
+          makeOpenclawDigest(openclaw, fetchedOpenclaw, summariesByLang[lang]!.openclawSummary),
+          summariesByLang[lang]!.peerDigests,
+          dateStr,
+          lang as Locale,
+        ),
+      ).then((r) => [lang, r] as const),
+    ]),
+  );
 
-  const [zhComparison, zhPeersComparison, enComparison, enPeersComparison] = await Promise.all([
-    callLlm(buildComparisonPrompt(summariesByLang.zh!.cliDigests, dateStr, "zh")),
-    callLlm(buildPeersComparisonPrompt(makeDigest("zh"), summariesByLang.zh!.peerDigests, dateStr, "zh")),
-    callLlm(buildComparisonPrompt(summariesByLang.en!.cliDigests, dateStr, "en")),
-    callLlm(buildPeersComparisonPrompt(makeDigest("en"), summariesByLang.en!.peerDigests, dateStr, "en")),
-  ]);
+  const comparisonByLang: ComparisonsByLang = {};
+  const peersComparisonByLang: PeersComparisonsByLang = {};
+  for (const [lang, result] of results) {
+    if (!comparisonByLang[lang]) {
+      comparisonByLang[lang] = result;
+    } else {
+      peersComparisonByLang[lang] = result;
+    }
+  }
 
-  return {
-    comparisonByLang: { zh: zhComparison, en: enComparison },
-    peersComparisonByLang: { zh: zhPeersComparison, en: enPeersComparison },
-  };
+  return { comparisonByLang, peersComparisonByLang };
 };

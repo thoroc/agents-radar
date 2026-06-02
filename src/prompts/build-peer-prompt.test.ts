@@ -30,9 +30,10 @@ describe("buildPeerPrompt", () => {
   it("includes data overview section", () => {
     const issues = [makeItem({ state: "open" }), makeItem({ state: "closed" })];
     const result = buildPeerPrompt(cfg, issues, [makeItem()], [release], "2026-03-09");
-    expect(result).toContain("数据概览");
-    expect(result).toContain("新开/活跃: 1");
-    expect(result).toContain("已关闭: 1");
+    expect(result).toContain("Data Overview");
+    expect(result).toContain("open/active: 1");
+    expect(result).toContain("closed: 1");
+    expect(result).toContain("Write the response in Chinese");
   });
 
   it("generates English prompt", () => {

@@ -99,19 +99,19 @@ describe("generateRollupHighlights", () => {
   });
 
   it("calls callLlm for zh and en", async () => {
-    await generateRollupHighlights("ZH CONTENT", "EN CONTENT", "ai-cli", "2026-03-09", 6);
+    await generateRollupHighlights({ zh: "ZH CONTENT", en: "EN CONTENT" }, "ai-cli", "2026-03-09", 6);
     expect(callLlmModule.callLlm).toHaveBeenCalledTimes(2);
   });
 
   it("saves highlights.json", async () => {
-    await generateRollupHighlights("ZH CONTENT", "EN CONTENT", "ai-cli", "2026-03-09", 6);
+    await generateRollupHighlights({ zh: "ZH CONTENT", en: "EN CONTENT" }, "ai-cli", "2026-03-09", 6);
     expect(saveFileModule.saveFile).toHaveBeenCalledWith(expect.any(String), "2026-03-09", "highlights.json");
   });
 
   it("handles LLM parse error gracefully", async () => {
     vi.spyOn(callLlmModule, "callLlm").mockResolvedValue("not valid json");
     await expect(
-      generateRollupHighlights("ZH CONTENT", "EN CONTENT", "ai-cli", "2026-03-09", 6),
+      generateRollupHighlights({ zh: "ZH CONTENT", en: "EN CONTENT" }, "ai-cli", "2026-03-09", 6),
     ).resolves.toBeUndefined();
   });
 });

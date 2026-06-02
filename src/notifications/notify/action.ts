@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { getEnabledLangs, type Locale, loadConfig } from "../../utils";
 import { buildMessage, type Highlights } from "./build-message";
 import { sendTelegram } from "./send-telegram";
 
@@ -28,6 +29,10 @@ export const notifyAction = async (
     return;
   }
 
+  const { languages: configLangs, defaultPrimaryLanguage } = loadConfig();
+  const enabledLangs = getEnabledLangs(configLangs, env);
+  const primaryLang: Locale = (defaultPrimaryLanguage ?? "en") as Locale;
+
   const { dates } = JSON.parse(fs.readFileSync("manifest.json", "utf-8")) as {
     dates: { date: string; reports: string[] }[];
   };
@@ -53,7 +58,7 @@ export const notifyAction = async (
     }
   }
 
-  const text = buildMessage(date, reports, undefined, highlights, env);
+  const text = buildMessage(date, reports, undefined, highlights, enabledLangs, primaryLang, env);
 
   console.error(`[notify] Sending Telegram message for ${date} (${reports.length} reports)…`);
   await sendTelegram(text, env);

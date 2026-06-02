@@ -27,13 +27,14 @@ const release: GitHubRelease = {
 };
 
 describe("buildCliPrompt", () => {
-  it("generates Chinese prompt by default", () => {
+  it("generates prompt by default", () => {
     const result = buildCliPrompt(cfg, [makeItem()], [makeItem()], [release], "2026-03-09");
-    expect(result).toContain("技术分析师");
+    expect(result).toContain("technical analyst");
     expect(result).toContain("TestTool");
     expect(result).toContain("2026-03-09");
     expect(result).toContain("org/test");
     expect(result).toContain("v1.0.0");
+    expect(result).toContain("Write the response in Chinese");
   });
 
   it("generates English prompt", () => {
@@ -41,11 +42,12 @@ describe("buildCliPrompt", () => {
     expect(result).toContain("technical analyst");
     expect(result).toContain("TestTool");
     expect(result).toContain("Hot Issues");
+    expect(result).toContain("Write the response in English");
   });
 
-  it("shows 无 when no data", () => {
+  it("shows None when no data", () => {
     const result = buildCliPrompt(cfg, [], [], [], "2026-03-09");
-    expect(result).toContain("无");
+    expect(result).toContain("None");
   });
 
   it("includes sample notes when items exceed limit", () => {

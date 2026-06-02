@@ -3,11 +3,11 @@ import path from "node:path";
 import { buildHighlightsPrompt, type ReportHighlights } from "../prompts";
 import { callLlm } from "../report/call-llm";
 import { saveFile } from "../report/save-file";
+import type { Locale } from "../types/locale";
 import { DIGESTS_DIR } from "./rollup-constants";
 
 export const generateRollupHighlights = async (
-  zhContent: string,
-  enContent: string,
+  allContent: Record<string, string>,
   reportId: string,
   dateStr: string,
   itemsPerReport: number,
@@ -15,7 +15,7 @@ export const generateRollupHighlights = async (
   console.error(`  [${reportId}] Generating highlights for Telegram...`);
 
   const existingPath = path.join(DIGESTS_DIR, dateStr, "highlights.json");
-  let existing: Record<string, ReportHighlights> = { zh: {}, en: {} };
+  let existing: Record<string, ReportHighlights> = {};
   if (fs.existsSync(existingPath)) {
     try {
       existing = JSON.parse(fs.readFileSync(existingPath, "utf-8"));
@@ -24,30 +24,27 @@ export const generateRollupHighlights = async (
     }
   }
 
-  const highlights: Record<string, ReportHighlights> = {
-    zh: { ...existing.zh },
-    en: { ...existing.en },
-  };
+  const highlights: Record<string, ReportHighlights> = { ...existing };
 
   try {
-    const [zhRaw, enRaw] = await Promise.all([
-      callLlm(buildHighlightsPrompt({ [reportId]: zhContent }, "zh", itemsPerReport), 1024),
-      callLlm(buildHighlightsPrompt({ [reportId]: enContent }, "en", itemsPerReport), 1024),
-    ]);
-    const zhNew = JSON.parse(
-      zhRaw
-        .replace(/```json?\n?/g, "")
-        .replace(/```/g, "")
-        .trim(),
-    ) as ReportHighlights;
-    const enNew = JSON.parse(
-      enRaw
-        .replace(/```json?\n?/g, "")
-        .replace(/```/g, "")
-        .trim(),
-    ) as ReportHighlights;
-    Object.assign(highlights.zh ?? {}, zhNew);
-    Object.assign(highlights.en ?? {}, enNew);
+    const results = await Promise.all(
+      Object.entries(allContent).map(async ([lang, content]) => {
+        const raw = await callLlm(
+          buildHighlightsPrompt({ [reportId]: content }, lang as Locale, itemsPerReport),
+          1024,
+        );
+        const parsed = JSON.parse(
+          raw
+            .replace(/```json?\n?/g, "")
+            .replace(/```/g, "")
+            .trim(),
+        ) as ReportHighlights;
+        return [lang, parsed] as const;
+      }),
+    );
+    for (const [lang, parsed] of results) {
+      highlights[lang] = { ...highlights[lang], ...parsed };
+    }
   } catch (err) {
     console.error(`  [${reportId}] Highlights generation failed: ${err}`);
   }
