@@ -83,9 +83,10 @@ describe("buildFeishuMessage", () => {
       BASE_URL,
       highlights,
     );
-    expect(msg).toContain("◦ Claude Code 发布 v1.2.0");
-    expect(msg).toContain("◦ Gemini CLI 修复 streaming");
-    expect(msg).toContain("◦ OpenClaw 新增 MCP 支持");
+    expect(msg).toContain("Claude Code 发布 v1.2.0");
+    expect(msg).toContain("Gemini CLI 修复 streaming");
+    expect(msg).toContain("OpenClaw 新增 MCP 支持");
+    expect(msg).toContain("Claude Code releases v1.2.0");
   });
 
   it("works without highlights", () => {

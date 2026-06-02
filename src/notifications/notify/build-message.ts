@@ -42,9 +42,10 @@ export const buildMessage = (
   for (const r of ordered) {
     lines.push("");
     for (const lang of enabledLangs) {
-      const label = notifyLabel(r, lang as Locale);
-      const langSuffix = lang === "zh" ? "" : `.${lang}`;
+      const langSuffix = lang === "zh" ? "" : "-en";
       const fileKey = `${r}${langSuffix}`;
+      if (!reports.includes(fileKey)) continue;
+      const label = notifyLabel(r, lang as Locale);
       const url = `${PAGES_URL}/#${date}/${fileKey}`;
       const prefix = enabledLangs.length > 1 ? `[${lang}] ` : "";
       lines.push(`•${prefix}${escapeHtml(label)}: <a href="${url}">${url}</a>`);
@@ -63,6 +64,6 @@ export const buildMessage = (
     }
   }
 
-  lines.push(`\n${t(primaryLang).notifyFooterLinks.replace("{pagesUrl}", PAGES_URL)}`);
+  lines.push(`\n${t(primaryLang).notifyFooterLinks.replace(/\{pagesUrl\}/g, PAGES_URL)}`);
   return lines.join("\n");
 };

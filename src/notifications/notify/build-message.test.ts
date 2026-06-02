@@ -19,22 +19,22 @@ describe("buildMessage", () => {
     expect(msg).toContain("agents-radar");
     expect(msg).toContain("2026-03-09");
     expect(msg).toContain("📡");
-    expect(msg).toContain(`${BASE_URL}/#2026-03-09/ai-cli`);
     expect(msg).toContain("AI CLI 工具");
-    expect(msg).toContain(`${BASE_URL}/#2026-03-09/ai-cli-en`);
     expect(msg).toContain("AI CLI Tools");
+    expect(msg).toContain("[zh]");
+    expect(msg).toContain("[en]");
   });
 
   it("shows weekly icon and suffix for weekly reports", () => {
     const msg = buildMessage("2026-03-09", ["ai-weekly", "ai-weekly-en"], BASE_URL);
     expect(msg).toContain("📅");
-    expect(msg).toContain("周报");
+    expect(msg).toContain("Weekly");
   });
 
   it("shows monthly icon and suffix for monthly reports", () => {
     const msg = buildMessage("2026-03-09", ["ai-monthly", "ai-monthly-en"], BASE_URL);
     expect(msg).toContain("📆");
-    expect(msg).toContain("月报");
+    expect(msg).toContain("Monthly");
   });
 
   it("monthly takes priority over weekly", () => {
@@ -78,9 +78,10 @@ describe("buildMessage", () => {
       BASE_URL,
       highlights,
     );
-    expect(msg).toContain("◦ Claude Code 发布 v1.2.0");
-    expect(msg).toContain("◦ Gemini CLI 修复 streaming");
-    expect(msg).toContain("◦ OpenClaw 新增 MCP 支持");
+    expect(msg).toContain("Claude Code 发布 v1.2.0");
+    expect(msg).toContain("Gemini CLI 修复 streaming");
+    expect(msg).toContain("OpenClaw 新增 MCP 支持");
+    expect(msg).toContain("Claude Code releases v1.2.0");
   });
 
   it("works without highlights (null)", () => {

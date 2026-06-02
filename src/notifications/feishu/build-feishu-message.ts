@@ -35,8 +35,9 @@ export const buildFeishuMessage = (
     lines.push("");
     for (const lang of enabledLangs) {
       const label = notifyLabel(r, lang as Locale);
-      const langSuffix = lang === "zh" ? "" : `.${lang}`;
+      const langSuffix = lang === "zh" ? "" : "-en";
       const fileKey = `${r}${langSuffix}`;
+      if (!reports.includes(fileKey)) continue;
       const url = `${PAGES_URL}/#${date}/${fileKey}`;
       const prefix = enabledLangs.length > 1 ? `[${lang}] ` : "";
       lines.push(`•${prefix}[${label}](${url})`);
@@ -55,6 +56,6 @@ export const buildFeishuMessage = (
     }
   }
 
-  lines.push(`\n${t(primaryLang).feishuFooterLinks.replace("{pagesUrl}", PAGES_URL)}`);
+  lines.push(`\n${t(primaryLang).feishuFooterLinks.replace(/\{pagesUrl\}/g, PAGES_URL)}`);
   return lines.join("\n");
 };
