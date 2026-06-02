@@ -61,4 +61,21 @@ describe("saveWebReport", () => {
     await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "en-US");
     expect(fetchersModule.saveWebState).toHaveBeenCalled();
   });
+
+  it("saves web state when skipping due to no new content and primary lang", async () => {
+    await saveWebReport([], webState, "utc", "2026-01-01", "", "footer", "en-US");
+    expect(fetchersModule.saveWebState).toHaveBeenCalledWith(webState);
+    expect(saveReportModule.saveReport).not.toHaveBeenCalled();
+  });
+
+  it("headerBuilder returns a string", async () => {
+    await saveWebReport(webResultsWithContent, webState, "utc", "2026-01-01", "", "footer", "en-US");
+    const config = (saveReportModule.saveReport as ReturnType<typeof vi.fn>).mock.calls[0]![0] as Record<
+      string,
+      unknown
+    >;
+    const header = (config.headerBuilder as (ds: string, us: string) => string)("2026-01-01", "utc");
+    expect(typeof header).toBe("string");
+    expect(header).toContain("2026-01-01");
+  });
 });

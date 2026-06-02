@@ -57,4 +57,27 @@ describe("saveTrendingReport", () => {
 
     expect(saveReportModule.saveReport).not.toHaveBeenCalled();
   });
+
+  it("promptBuilder and headerBuilder return strings", async () => {
+    await saveTrendingReport(
+      data as never,
+      "trending summary",
+      "2026-01-01T00:00:00Z",
+      "2026-01-01",
+      "",
+      "\nfooter",
+      "en-US",
+    );
+    const config = (saveReportModule.saveReport as ReturnType<typeof vi.fn>).mock.calls[0]![0] as Record<
+      string,
+      unknown
+    >;
+    const prompt = (config.promptBuilder as (d: unknown) => string)("trending summary");
+    const header = (config.headerBuilder as (ds: string, us: string) => string)(
+      "2026-01-01",
+      "2026-01-01T00:00:00Z",
+    );
+    expect(typeof prompt).toBe("string");
+    expect(typeof header).toBe("string");
+  });
 });
