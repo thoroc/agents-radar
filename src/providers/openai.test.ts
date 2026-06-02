@@ -13,7 +13,7 @@ describe("createOpenAIProvider", () => {
   });
 
   it("creates a provider without options", () => {
-    const provider = createOpenAIProvider();
+    const provider = createOpenAIProvider({ apiKey: "test-key" });
     expect(provider.name).toBe("openai");
   });
 });
