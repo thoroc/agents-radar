@@ -2,7 +2,6 @@ import fs from "node:fs";
 import path from "node:path";
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
-import type { Locale } from "../types/locale";
 import { getPrimaryLang } from "../utils";
 import { PAGES_URL_DEFAULT } from "../utils/constants";
 import { STRINGS, SUPPORTED_LOCALES } from "../utils/locale-data";
