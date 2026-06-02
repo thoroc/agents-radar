@@ -7,13 +7,14 @@ const mockDigests: Record<string, string> = {
 };
 
 describe("buildWeeklyPrompt", () => {
-  it("includes weekly digest content in Chinese (default)", () => {
+  it("includes weekly digest content in default locale", () => {
     const result = buildWeeklyPrompt(mockDigests, "2026-03-09 ~ 2026-03-15");
     expect(result).toContain("2026-03-09");
     expect(result).toContain("2026-03-08");
     expect(result).toContain("Claude Code released");
     expect(result).toContain("OpenAI introduced");
-    expect(result).toContain("周报");
+    expect(result).toContain("Weekly Report");
+    expect(result).toContain("Write the response in Chinese");
   });
 
   it("generates English variant", () => {
@@ -21,7 +22,7 @@ describe("buildWeeklyPrompt", () => {
     expect(result).toContain("Claude Code released");
     expect(result).toContain("OpenAI introduced");
     expect(result).toContain("Weekly Report");
-    expect(result).toContain("English");
+    expect(result).toContain("Write the response in English");
   });
 
   it("includes week string in output", () => {

@@ -32,15 +32,16 @@ const makeData = (overrides: Partial<ArxivData> = {}): ArxivData => ({
 });
 
 describe("buildArxivPrompt", () => {
-  it("includes paper titles and metadata in Chinese (default)", () => {
+  it("includes paper titles and metadata in default locale", () => {
     const result = buildArxivPrompt(makeData(), "2026-03-09");
-    expect(result).toContain("ArXiv AI 研究日报");
+    expect(result).toContain("ArXiv AI Research Digest");
     expect(result).toContain("Large Language Models as Few-Shot Learners");
     expect(result).toContain("A New Approach to Multi-Agent Planning");
     expect(result).toContain("Alice Smith, Bob Jones, Carol Lee et al.");
     expect(result).toContain("cs.CL, cs.AI, cs.LG");
     expect(result).toContain("2026-03-09");
-    expect(result).toContain("2 篇");
+    expect(result).toContain("2 papers");
+    expect(result).toContain("Write the response in Chinese");
   });
 
   it("generates English variant", () => {
@@ -49,6 +50,7 @@ describe("buildArxivPrompt", () => {
     expect(result).toContain("Alice Smith, Bob Jones, Carol Lee et al.");
     expect(result).toContain("Categories: cs.CL, cs.AI, cs.LG");
     expect(result).toContain("Authors:");
+    expect(result).toContain("Write the response in English");
   });
 
   it("truncates long abstracts with ellipsis", () => {
@@ -61,6 +63,6 @@ describe("buildArxivPrompt", () => {
   it("handles single-paper data", () => {
     const data = makeData({ papers: [makeData().papers[0]!] });
     const result = buildArxivPrompt(data, "2026-03-09");
-    expect(result).toContain("1 篇");
+    expect(result).toContain("1 paper");
   });
 });

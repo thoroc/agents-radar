@@ -29,13 +29,13 @@ const mockData: HackerNewsData = {
 };
 
 describe("buildHackerNewsPrompt", () => {
-  it("includes story titles and metadata in Chinese (default)", () => {
+  it("includes story titles and metadata in default locale", () => {
     const result = buildHackerNewsPrompt(mockData, "2026-03-09");
     expect(result).toContain("AI News");
     expect(result).toContain("LLM Research");
-    expect(result).toContain("分数: 200");
-    expect(result).toContain("评论: 50");
-    expect(result).toContain("Hacker News");
+    expect(result).toContain("Score: 200");
+    expect(result).toContain("Comments: 50");
+    expect(result).toContain("Write the response in Chinese");
   });
 
   it("generates English variant", () => {
@@ -43,8 +43,7 @@ describe("buildHackerNewsPrompt", () => {
     expect(result).toContain("AI News");
     expect(result).toContain("Score: 200");
     expect(result).toContain("Comments: 50");
-    expect(result).toContain("Hacker News");
-    expect(result).toContain("English");
+    expect(result).toContain("Write the response in English");
   });
 
   it("includes date string in output", () => {

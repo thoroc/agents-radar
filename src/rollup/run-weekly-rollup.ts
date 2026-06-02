@@ -5,7 +5,7 @@ import { autoGenFooter } from "../report/auto-gen-footer";
 import { callLlm } from "../report/call-llm";
 import { LLM_TOKENS_ROLLUP } from "../report/report-constants";
 import { saveFile } from "../report/save-file";
-import { t, toCstDateStr, toUtcStr } from "../utils";
+import { getEnabledLangs, type Locale, loadConfig, t, toCstDateStr, toUtcStr } from "../utils";
 import { generateRollupHighlights } from "./generate-rollup-highlights";
 import { getDateDirs } from "./get-date-dirs";
 import { readDailyDigest } from "./read-daily-digest";
@@ -20,6 +20,9 @@ export const runWeeklyRollup = async (
   const dateStr = toCstDateStr(now);
   const utcStr = toUtcStr(now);
   const weekStr = toWeekStr(now.plus({ hours: 8 }));
+
+  const { languages: configLangs } = loadConfig();
+  const enabledLangs = getEnabledLangs(configLangs, env);
 
   console.error(`[weekly] Generating rollup for ${weekStr} (date: ${dateStr})`);
 
@@ -41,36 +44,36 @@ export const runWeeklyRollup = async (
     `[weekly] Found ${Object.keys(dailyDigests).length} daily digests: ${Object.keys(dailyDigests).join(", ")}`,
   );
 
-  console.error("[weekly] Calling LLM for ZH and EN weekly reports in parallel...");
-  const [zhSummary, enSummary] = await Promise.all([
-    callLlm(buildWeeklyPrompt(dailyDigests, weekStr, "zh"), LLM_TOKENS_ROLLUP),
-    callLlm(buildWeeklyPrompt(dailyDigests, weekStr, "en"), LLM_TOKENS_ROLLUP),
-  ]);
+  console.error(`[weekly] Calling LLM for ${enabledLangs.length} languages...`);
+  const summaryPromises = enabledLangs.map(async (lang) => {
+    const summary = await callLlm(
+      buildWeeklyPrompt(dailyDigests, weekStr, lang as Locale),
+      LLM_TOKENS_ROLLUP,
+    );
+    return [lang, summary] as const;
+  });
+  const summaryResults = await Promise.all(summaryPromises);
+  const summariesByLang = Object.fromEntries(summaryResults);
 
-  const footer = autoGenFooter("zh");
-  const enFooter = autoGenFooter("en");
+  const allContent: Record<string, string> = {};
+  for (const lang of enabledLangs) {
+    const l = lang as Locale;
+    const footer = autoGenFooter(l);
+    const s = t(l);
+    const metaLine = `${s.weeklyMeta.replace("{range}", `${last7[last7.length - 1]} ~ ${last7[0]}`).replace("{utcStr}", utcStr)}`;
+    allContent[lang] =
+      `# ${s.weeklyTitle} ${weekStr}\n\n` + metaLine + `---\n\n` + (summariesByLang[lang] ?? "") + footer;
 
-  const zhContent =
-    `# ${t("zh").weeklyTitle} ${weekStr}\n\n` +
-    `> ${t("zh").weeklyCoverage}: ${last7[last7.length - 1]} ~ ${last7[0]} | 生成时间: ${utcStr} UTC\n\n` +
-    `---\n\n` +
-    zhSummary +
-    footer;
+    const suffix = lang === "zh" ? "" : `.${lang}`;
+    console.error(`  Saved ${saveFile(allContent[lang]!, dateStr, `ai-weekly${suffix}.md`)}`);
+  }
 
-  const enContent =
-    `# ${t("en").weeklyTitle} ${weekStr}\n\n` +
-    `> ${t("en").weeklyCoverage}: ${last7[last7.length - 1]} ~ ${last7[0]} | Generated: ${utcStr} UTC\n\n` +
-    `---\n\n` +
-    enSummary +
-    enFooter;
+  await generateRollupHighlights(allContent, "ai-weekly", dateStr, 6);
 
-  console.error(`  Saved ${saveFile(zhContent, dateStr, "ai-weekly.md")}`);
-  console.error(`  Saved ${saveFile(enContent, dateStr, "ai-weekly.md")}`);
-
-  await generateRollupHighlights(zhContent, enContent, "ai-weekly", dateStr, 6);
-
-  if (resolvedDigestRepo) {
-    const url = await createGitHubIssue(`${t("zh").weeklyTitle} ${weekStr}`, zhContent, "weekly");
+  if (resolvedDigestRepo && enabledLangs.length > 0) {
+    const primaryLang = enabledLangs[0]!;
+    const primaryContent = allContent[primaryLang] ?? "";
+    const url = await createGitHubIssue(`${t(primaryLang).weeklyTitle} ${weekStr}`, primaryContent, "weekly");
     console.error(`  Created weekly issue: ${url}`);
   }
 

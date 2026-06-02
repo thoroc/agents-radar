@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { getEnabledLangs, type Locale, loadConfig } from "../../utils";
 import type { Highlights } from "../notify/build-message";
 import { buildFeishuMessage } from "./build-feishu-message";
 import { getWebhookUrls } from "./get-webhook-urls";
@@ -30,6 +31,10 @@ export const feishuAction = async (
     return;
   }
 
+  const { languages: configLangs, defaultPrimaryLanguage } = loadConfig();
+  const enabledLangs = getEnabledLangs(configLangs, env);
+  const primaryLang: Locale = (defaultPrimaryLanguage ?? "en") as Locale;
+
   const { dates } = JSON.parse(fs.readFileSync("manifest.json", "utf-8")) as {
     dates: { date: string; reports: string[] }[];
   };
@@ -58,10 +63,9 @@ export const feishuAction = async (
   const isMonthly = reports.some((r) => r === "ai-monthly");
   const isWeekly = reports.some((r) => r === "ai-weekly");
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
-  const suffix = isMonthly ? " 月报" : isWeekly ? " 周报" : "";
-  const title = `${icon} agents-radar${suffix} · ${date}`;
+  const title = `${icon} agents-radar · ${date}`;
 
-  const content = buildFeishuMessage(date, reports, undefined, highlights, env);
+  const content = buildFeishuMessage(date, reports, undefined, highlights, enabledLangs, primaryLang, env);
 
   console.error(`[feishu] Sending to ${urls.length} webhook(s) for ${date} (${reports.length} reports)…`);
   await sendFeishu(title, content);

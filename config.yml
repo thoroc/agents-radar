@@ -4,6 +4,13 @@
 
 languages: ["en", "zh"]
 
+# Default language for notifications and reports when no locale is specified.
+# Must be one of the enabled languages in the `languages` list above.
+default_primary_language: "en"
+
+# Fallback language when a string is missing in the primary language.
+default_fallback_language: "en"
+
 # ── Schedule configuration ─────────────────────────────────────────────────────
 # Each digest type can be enabled/disabled and given a custom cron expression.
 # The scheduler workflow (.github/workflows/scheduler.yml) checks these every

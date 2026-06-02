@@ -21,7 +21,7 @@ describe("generateRollupHighlights", () => {
   it("calls LLM for zh and en highlights", async () => {
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
 
-    await generateRollupHighlights("zh content", "en content", "ai-weekly", "2026-03-09", 6);
+    await generateRollupHighlights({ zh: "zh content", en: "en content" }, "ai-weekly", "2026-03-09", 6);
 
     expect(callLlmModule.callLlm).toHaveBeenCalledTimes(2);
     expect(promptsModule.buildHighlightsPrompt).toHaveBeenCalledTimes(2);
@@ -32,7 +32,7 @@ describe("generateRollupHighlights", () => {
     vi.spyOn(fs, "existsSync").mockReturnValue(true);
     vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify({ zh: { existing: "data" }, en: {} }));
 
-    await generateRollupHighlights("zh content", "en content", "ai-weekly", "2026-03-09", 6);
+    await generateRollupHighlights({ zh: "zh content", en: "en content" }, "ai-weekly", "2026-03-09", 6);
 
     expect(callLlmModule.callLlm).toHaveBeenCalledTimes(2);
     expect(saveFileModule.saveFile).toHaveBeenCalledOnce();
@@ -43,7 +43,7 @@ describe("generateRollupHighlights", () => {
     vi.spyOn(callLlmModule, "callLlm").mockRejectedValue(new Error("LLM error"));
 
     await expect(
-      generateRollupHighlights("zh content", "en content", "ai-weekly", "2026-03-09", 6),
+      generateRollupHighlights({ zh: "zh content", en: "en content" }, "ai-weekly", "2026-03-09", 6),
     ).resolves.toBeUndefined();
   });
 });

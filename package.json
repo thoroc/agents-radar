@@ -26,7 +26,8 @@
     "aislop:score": "aislop scan src --json",
     "test": "bun test",
     "test:watch": "bun test --watch",
-    "test:coverage": "bun test --coverage"
+    "test:coverage": "bun test --coverage",
+    "validate:schema": "bun run scripts/generate-locale-schema.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

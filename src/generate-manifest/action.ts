@@ -2,7 +2,9 @@ import fs from "node:fs";
 import path from "node:path";
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
+import type { Locale } from "../types/locale";
 import { PAGES_URL_DEFAULT } from "../utils/constants";
+import { STRINGS, SUPPORTED_LOCALES } from "../utils/locale-data";
 import { DIGESTS_DIR } from "./constants";
 import { escapeXml } from "./escape-xml";
 import { getReportContent } from "./get-report-content";
@@ -47,7 +49,37 @@ interface DateEntry {
 interface Manifest {
   generated: string;
   dates: DateEntry[];
+  labels: Record<string, string>;
 }
+
+const buildLabels = (): Record<string, string> => {
+  const labels: Record<string, string> = {};
+  for (const lang of SUPPORTED_LOCALES) {
+    const s = STRINGS[lang];
+    if (!s) continue;
+    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const reportIds = [
+      "ai-cli",
+      "ai-agents",
+      "ai-web",
+      "ai-trending",
+      "ai-hn",
+      "ai-ph",
+      "ai-arxiv",
+      "ai-hf",
+      "ai-community",
+    ];
+    for (const id of reportIds) {
+      const key = id + suffix;
+      const localeKey = `reportLabelAi${id
+        .split("-")
+        .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+        .join("")}` as keyof typeof s;
+      labels[key] = (s[localeKey] as string) ?? key;
+    }
+  }
+  return labels;
+};
 
 export interface GenerateManifestActionArgs {
   verbosity: number;
@@ -79,6 +111,7 @@ export const generateManifestAction = async (
   const manifest: Manifest = {
     generated: DateTime.now().toISO()!,
     dates: entries,
+    labels: buildLabels(),
   };
 
   fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`);

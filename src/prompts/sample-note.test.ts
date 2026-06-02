@@ -4,7 +4,7 @@ import { sampleNote } from "./sample-note";
 describe("sampleNote", () => {
   it("shows sampled note in Chinese when total > sampled", () => {
     const result = sampleNote(100, 30);
-    expect(result).toBe("（共 100 条，以下展示评论数最多的 30 条）");
+    expect(result).toBe("（共 100 条，展示评论数最高的 30 条）");
   });
 
   it("shows total-only note in Chinese when total <= sampled", () => {

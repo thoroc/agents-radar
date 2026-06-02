@@ -1,3 +1,4 @@
+import { type Locale, t } from "../../utils";
 import { PAGES_URL_DEFAULT } from "../../utils/constants";
 import type { Highlights } from "../notify/build-message";
 import { notifyLabel } from "../notify/notify-label";
@@ -7,6 +8,8 @@ export const buildFeishuMessage = (
   reports: string[],
   pagesUrl?: string,
   highlights?: Highlights | null,
+  enabledLangs: string[] = ["zh"],
+  primaryLang: Locale = "zh",
   env: NodeJS.ProcessEnv = process.env,
 ): string => {
   const PAGES_URL = (pagesUrl ?? env.PAGES_URL ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
@@ -15,7 +18,11 @@ export const buildFeishuMessage = (
   const isMonthly = baseReports.includes("ai-monthly");
 
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
-  const suffix = isMonthly ? " 月报" : isWeekly ? " 周报" : "";
+  const suffix = isMonthly
+    ? t(primaryLang).notifySuffixMonthly
+    : isWeekly
+      ? t(primaryLang).notifySuffixWeekly
+      : "";
   const lines: string[] = [`${icon} **agents-radar${suffix} · ${date}**`];
 
   const ordered = [
@@ -23,30 +30,31 @@ export const buildFeishuMessage = (
     ...baseReports.filter((r) => r.includes("weekly") || r.includes("monthly")),
   ];
 
-  const zhHighlights = highlights?.zh ?? {};
+  const multiLang = enabledLangs.length > 1;
 
   for (const r of ordered) {
-    const zhLabel = notifyLabel(r, "zh");
-    const zhUrl = `${PAGES_URL}/#${date}/${r}`;
-    const enKey = `${r}-en`;
-
     lines.push("");
-    if (reports.includes(enKey)) {
-      const enLabel = notifyLabel(r, "en");
-      const enUrl = `${PAGES_URL}/#${date}/${enKey}`;
-      lines.push(`• [${zhLabel}](${zhUrl})  ·  [${enLabel}](${enUrl})`);
-    } else {
-      lines.push(`• [${zhLabel}](${zhUrl})`);
-    }
 
-    const items = zhHighlights[r];
-    if (items?.length) {
-      for (const h of items) {
+    const reportLinks = enabledLangs.map((lang) => {
+      const label = notifyLabel(r, lang as Locale);
+      const suffix = lang === "zh" ? "" : `.${lang}`;
+      const url = `${PAGES_URL}/#${date}/${r}${suffix}`;
+      if (multiLang) {
+        return `[${label} (${lang.toUpperCase()})](${url})`;
+      }
+      return `[${label}](${url})`;
+    });
+
+    lines.push(`• ${reportLinks.join("  ·  ")}`);
+
+    const hls = highlights?.[primaryLang]?.[r];
+    if (hls?.length) {
+      for (const h of hls) {
         lines.push(`  ◦ ${h}`);
       }
     }
   }
 
-  lines.push(`\n[🌐 Web UI](${PAGES_URL})  ·  [⊕ RSS](${PAGES_URL}/feed.xml)`);
+  lines.push(`\n${t(primaryLang).feishuFooterLinks}`);
   return lines.join("\n");
 };

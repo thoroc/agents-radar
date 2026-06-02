@@ -6,6 +6,8 @@ import * as autoGenFooterModule from "../report/auto-gen-footer";
 import * as callLlmModule from "../report/call-llm";
 import * as saveFileModule from "../report/save-file";
 import * as utilsModule from "../utils";
+import * as getEnabledLangsModule from "../utils/get-enabled-langs";
+import * as loadConfigModule from "../utils/load-config";
 import * as generateRollupHighlightsModule from "./generate-rollup-highlights";
 import * as getDateDirsModule from "./get-date-dirs";
 import * as readDailyDigestModule from "./read-daily-digest";
@@ -29,9 +31,20 @@ describe("runMonthlyRollup", () => {
     vi.spyOn(saveFileModule, "saveFile").mockReturnValue("digests/2026-04-01/ai-monthly.md");
     vi.spyOn(autoGenFooterModule, "autoGenFooter").mockReturnValue("\n\n---\nfooter");
     vi.spyOn(githubModule, "createGitHubIssue").mockResolvedValue("https://github.com/owner/repo/issues/1");
-    vi.spyOn(utilsModule, "t").mockReturnValue({ monthlyTitle: "Monthly Report" } as never);
+    vi.spyOn(utilsModule, "t").mockReturnValue({
+      monthlyTitle: "Monthly Report",
+      monthlyMeta: "> Sources: {sources} | Generated: {utcStr} UTC\n\n",
+      sourceLabelWeekly: "{n} weekly reports",
+      sourceLabelDailySampled: "{n} daily reports (sampled every 4 days)",
+    } as never);
     vi.spyOn(utilsModule, "toCstDateStr").mockReturnValue("2026-04-01");
     vi.spyOn(utilsModule, "toUtcStr").mockReturnValue("2026-04-01 00:00:00");
+    vi.spyOn(loadConfigModule, "loadConfig").mockReturnValue({
+      languages: ["en", "zh"],
+      defaultPrimaryLanguage: "en",
+      defaultFallbackLanguage: "en",
+    } as never);
+    vi.spyOn(getEnabledLangsModule, "getEnabledLangs").mockReturnValue(["zh", "en"]);
     vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([]);
     vi.spyOn(readDailyDigestModule, "readDailyDigest").mockResolvedValue("daily content");
     vi.spyOn(readWeeklyDigestModule, "readWeeklyDigest").mockReturnValue("weekly content" as never);
@@ -89,8 +102,7 @@ describe("runMonthlyRollup", () => {
     vi.spyOn(getDateDirsModule, "getDateDirs").mockReturnValue([`${monthStr}-01`, `${monthStr}-08`]);
     await runMonthlyRollup("", {});
     expect(generateRollupHighlightsModule.generateRollupHighlights).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.any(String),
+      expect.any(Object),
       "ai-monthly",
       "2026-04-01",
       6,
