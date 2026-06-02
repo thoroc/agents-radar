@@ -10,13 +10,16 @@
 import { createOpenAICompatibleProvider } from "./openai-compatible";
 import type { LlmProvider } from "./types";
 
-export const createOpenAIProvider = (opts?: {
-  apiKey?: string;
-  baseURL?: string;
-  model?: string;
-}): LlmProvider =>
+export const createOpenAIProvider = (
+  opts?: {
+    apiKey?: string;
+    baseURL?: string;
+    model?: string;
+  },
+  env: NodeJS.ProcessEnv = process.env,
+): LlmProvider =>
   createOpenAICompatibleProvider("openai", {
-    apiKey: opts?.apiKey ?? process.env.OPENAI_API_KEY,
-    baseURL: opts?.baseURL ?? process.env.OPENAI_BASE_URL,
-    model: opts?.model ?? process.env.OPENAI_MODEL ?? "gpt-4o",
+    apiKey: opts?.apiKey ?? env.OPENAI_API_KEY,
+    baseURL: opts?.baseURL ?? env.OPENAI_BASE_URL,
+    model: opts?.model ?? env.OPENAI_MODEL ?? "gpt-4o",
   });

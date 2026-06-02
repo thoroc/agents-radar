@@ -10,8 +10,11 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { LlmProvider } from "./types";
 
-export const createAnthropicProvider = (model?: string): LlmProvider => {
-  const mdl = model ?? process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
+export const createAnthropicProvider = (
+  model?: string,
+  env: NodeJS.ProcessEnv = process.env,
+): LlmProvider => {
+  const mdl = model ?? env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
   const client = new Anthropic();
   return {
     name: "anthropic",

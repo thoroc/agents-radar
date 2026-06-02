@@ -1,17 +1,8 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { RepoConfig, RepoFetch } from "../github";
 import type { RepoDigest } from "../prompts";
-
-const mockCallLlm = vi.fn<(prompt: string) => Promise<string>>();
-
-vi.mock("../report", () => ({
-  callLlm: mockCallLlm,
-}));
-
-vi.mock("../prompts", () => ({
-  buildComparisonPrompt: vi.fn((_digests, _ds, lang) => `comparison-prompt-${lang}`),
-  buildPeersComparisonPrompt: vi.fn((_digest, _peers, _ds, lang) => `peers-comparison-prompt-${lang}`),
-}));
+import * as promptsModule from "../prompts";
+import * as callLlmModule from "../report/call-llm";
 
 import { generateComparisons } from "./compare";
 
@@ -26,7 +17,13 @@ const mockSummariesByLang = {
 describe("generateComparisons", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockCallLlm.mockResolvedValue("mock comparison");
+    vi.spyOn(callLlmModule, "callLlm").mockResolvedValue("mock comparison");
+    vi.spyOn(promptsModule, "buildComparisonPrompt").mockReturnValue("comparison-prompt" as never);
+    vi.spyOn(promptsModule, "buildPeersComparisonPrompt").mockReturnValue("peers-comparison-prompt" as never);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("calls callLlm 4 times (zh/en × CLI/peers)", async () => {
@@ -36,7 +33,7 @@ describe("generateComparisons", () => {
       openclaw: mockConfig,
       dateStr: "2026-01-01",
     });
-    expect(mockCallLlm).toHaveBeenCalledTimes(4);
+    expect(callLlmModule.callLlm).toHaveBeenCalledTimes(4);
   });
 
   it("returns comparisonByLang with zh and en entries", async () => {

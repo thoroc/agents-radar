@@ -1,23 +1,8 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { TrendingData } from "../fetchers/trending";
 import type { GitHubItem, RepoFetch } from "../github";
-
-const mockCallLlm = vi.fn<(prompt: string, maxTokens?: number) => Promise<string>>();
-
-vi.mock("../report", () => ({
-  callLlm: mockCallLlm,
-  LLM_TOKENS_TRENDING: 6144,
-}));
-
-vi.mock("../prompts", () => ({
-  buildCliPrompt: vi.fn(() => "cli-prompt"),
-  buildPeerPrompt: vi.fn(() => "peer-prompt"),
-  buildSkillsPrompt: vi.fn(() => "skills-prompt"),
-}));
-
-vi.mock("../prompts/prompts-data", () => ({
-  buildTrendingPrompt: vi.fn(() => "trending-prompt"),
-}));
+import * as promptsModule from "../prompts";
+import * as callLlmModule from "../report/call-llm";
 
 import { generateSummaries } from "./summarize";
 
@@ -44,7 +29,15 @@ const mockIssue: GitHubItem = {
 describe("generateSummaries", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockCallLlm.mockResolvedValue("mock summary");
+    vi.spyOn(callLlmModule, "callLlm").mockResolvedValue("mock summary");
+    vi.spyOn(promptsModule, "buildCliPrompt").mockReturnValue("cli-prompt");
+    vi.spyOn(promptsModule, "buildPeerPrompt").mockReturnValue("peer-prompt");
+    vi.spyOn(promptsModule, "buildSkillsPrompt").mockReturnValue("skills-prompt");
+    vi.spyOn(promptsModule, "buildTrendingPrompt").mockReturnValue("trending-prompt");
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it("returns no-activity messages for repos with no data", async () => {
@@ -74,7 +67,7 @@ describe("generateSummaries", () => {
       "en",
     );
     expect(result.cliDigests[0]!.summary).toBe("mock summary");
-    expect(mockCallLlm).toHaveBeenCalled();
+    expect(callLlmModule.callLlm).toHaveBeenCalled();
   });
 
   it("handles trending data with trendingNoData when empty", async () => {

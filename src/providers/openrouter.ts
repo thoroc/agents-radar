@@ -9,11 +9,16 @@
 import { createOpenAICompatibleProvider } from "./openai-compatible";
 import type { LlmProvider } from "./types";
 
-const OPENROUTER_BASE_URL = process.env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1";
-
-export const createOpenRouterProvider = (opts?: { apiKey?: string; model?: string }): LlmProvider =>
+export const createOpenRouterProvider = (
+  opts?: {
+    apiKey?: string;
+    model?: string;
+    baseURL?: string;
+  },
+  env: NodeJS.ProcessEnv = process.env,
+): LlmProvider =>
   createOpenAICompatibleProvider("openrouter", {
-    apiKey: opts?.apiKey ?? process.env.OPENROUTER_API_KEY,
-    baseURL: OPENROUTER_BASE_URL,
-    model: opts?.model ?? process.env.OPENROUTER_MODEL ?? "anthropic/claude-sonnet-4",
+    apiKey: opts?.apiKey ?? env.OPENROUTER_API_KEY,
+    baseURL: opts?.baseURL ?? env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1",
+    model: opts?.model ?? env.OPENROUTER_MODEL ?? "anthropic/claude-sonnet-4",
   });

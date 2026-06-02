@@ -4,6 +4,7 @@ node_modules/
 dist/
 social/
 !src/social/
+!src/notifications/social/
 coverage/
 .claude/skills/
 .codex/

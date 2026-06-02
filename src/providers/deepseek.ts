@@ -1,11 +1,14 @@
 import { createOpenAICompatibleProvider } from "./openai-compatible";
 import type { LlmProvider } from "./types";
 
-const DEEPSEEK_BASE_URL = process.env.DEEPSEEK_BASE_URL ?? "https://api.deepseek.com";
-
-export const createDeepSeekProvider = (apiKey: string, model?: string): LlmProvider =>
+export const createDeepSeekProvider = (
+  apiKey: string,
+  model?: string,
+  baseURL?: string,
+  env: NodeJS.ProcessEnv = process.env,
+): LlmProvider =>
   createOpenAICompatibleProvider("deepseek", {
     apiKey,
-    baseURL: DEEPSEEK_BASE_URL,
+    baseURL: baseURL ?? env.DEEPSEEK_BASE_URL ?? "https://api.deepseek.com",
     model: model ?? "deepseek-chat",
   });

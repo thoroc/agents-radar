@@ -7,7 +7,7 @@ import {
   parseSitemapUrls,
   titleFromUrl,
   urlCategory,
-} from "./web";
+} from "./";
 
 // ---------------------------------------------------------------------------
 // parseSitemapUrls

@@ -1,32 +1,41 @@
 import fs from "node:fs";
 import path from "node:path";
+import type { WebFetchResult, WebState } from "../fetchers";
 import type { ArxivData } from "../fetchers/arxiv";
-import type { DevtoData } from "../fetchers/devto";
-import type { HfData } from "../fetchers/hf";
-import type { HnData } from "../fetchers/hn";
-import type { LobstersData } from "../fetchers/lobsters";
-import type { PhData } from "../fetchers/ph";
+import type { DevToData } from "../fetchers/dev-to";
+import type { HackerNewsData } from "../fetchers/hacker-news";
+import type { HuggingFaceData } from "../fetchers/hugging-face";
+import type { LobstersData } from "../fetchers/lobste-rs";
+import type { ProductHuntData } from "../fetchers/product-hunt";
 import type { TrendingData } from "../fetchers/trending";
-import type { WebFetchResult, WebState } from "../fetchers/web";
 import { createGitHubIssue, type RepoConfig, type RepoFetch } from "../github";
 import type { RepoDigest } from "../prompts";
-import { buildHighlightsPrompt, type ReportHighlights } from "../prompts/prompts-data";
-import { autoGenFooter, callLlm, saveFile } from "../report";
-import { buildCliReportContent, buildOpenclawReportContent } from "../report-builders";
-import {
-  saveArxivReport,
-  saveCommunityReport,
-  saveHfReport,
-  saveHnReport,
-  savePhReport,
-  saveTrendingReport,
-  saveWebReport,
-} from "../report-savers";
-import { type Locale, t } from "../utils/i18n";
+import { buildHighlightsPrompt, type ReportHighlights } from "../prompts";
+import { autoGenFooter } from "../report/auto-gen-footer";
+import { buildCliReportContent } from "../report/build-cli-report-content";
+import { buildOpenclawReportContent } from "../report/build-openclaw-report-content";
+import { callLlm } from "../report/call-llm";
+import { saveFile } from "../report/save-file";
+import { saveArxivReport } from "../save/save-arxiv-report";
+import { saveCommunityReport } from "../save/save-community-report";
+import { saveHackerNewsReport } from "../save/save-hacker-news-report";
+import { saveHuggingFaceReport } from "../save/save-hugging-face-report";
+import { saveProductHuntReport } from "../save/save-product-hunt-report";
+import { saveTrendingReport } from "../save/save-trending-report";
+import { saveWebReport } from "../save/save-web-report";
+import { type Locale, t } from "../utils";
 
 const readReport = (dateStr: string, name: string): string | undefined => {
   const p = path.join("digests", dateStr, name);
   return fs.existsSync(p) ? fs.readFileSync(p, "utf-8") : undefined;
+};
+
+type Summaries = {
+  cliDigests: RepoDigest[];
+  openclawSummary: string;
+  skillsSummary: string;
+  peerDigests: RepoDigest[];
+  trendingSummary: string;
 };
 
 export type SavePhaseArgs = {
@@ -44,20 +53,12 @@ export type SavePhaseArgs = {
   webResults: WebFetchResult[];
   webState: WebState;
   trendingData: TrendingData;
-  hnData: HnData;
-  phData: PhData;
+  hnData: HackerNewsData;
+  phData: ProductHuntData;
   arxivData: ArxivData;
-  hfData: HfData;
-  devtoData: DevtoData;
+  hfData: HuggingFaceData;
+  devtoData: DevToData;
   lobstersData: LobstersData;
-};
-
-type Summaries = {
-  cliDigests: RepoDigest[];
-  openclawSummary: string;
-  skillsSummary: string;
-  peerDigests: RepoDigest[];
-  trendingSummary: string;
 };
 
 export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
@@ -150,14 +151,14 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
       autoGenFooter("en"),
       "en",
     ),
-    saveHnReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    saveHnReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
-    savePhReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    savePhReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
+    saveHackerNewsReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
+    saveHackerNewsReport(hnData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
+    saveProductHuntReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
+    saveProductHuntReport(phData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
     saveArxivReport(arxivData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
     saveArxivReport(arxivData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
-    saveHfReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
-    saveHfReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
+    saveHuggingFaceReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
+    saveHuggingFaceReport(hfData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
     saveCommunityReport(devtoData, lobstersData, utcStr, dateStr, digestRepo, autoGenFooter("zh"), "zh"),
     saveCommunityReport(devtoData, lobstersData, utcStr, dateStr, digestRepo, autoGenFooter("en"), "en"),
   ]);
