@@ -1,7 +1,6 @@
 import { saveWebState, type WebFetchResult, type WebState } from "../fetchers";
 import { buildWebReportPrompt } from "../prompts";
 import { LLM_TOKENS_WEB } from "../report/report-constants";
-import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 import { defaultDeps, saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
@@ -48,8 +47,7 @@ export const saveWebReport = async (
     await saveReport(
       {
         data: webResults,
-        promptBuilder: (d, ds, _suffix) =>
-          buildWebReportPrompt(d as WebFetchResult[], ds, toPromptLang(lang)),
+        promptBuilder: (d, ds, _suffix) => buildWebReportPrompt(d as WebFetchResult[], ds, lang),
         headerBuilder: (ds, us, suffix) => {
           const mode = suffix
             ? isFirstRun

@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
+import { SUPPORTED_LOCALES, t } from "../utils";
 import { PAGES_URL_DEFAULT } from "../utils/constants";
 import { DIGESTS_DIR } from "./constants";
 import { escapeXml } from "./escape-xml";
@@ -47,6 +48,7 @@ interface DateEntry {
 interface Manifest {
   generated: string;
   dates: DateEntry[];
+  labels: Record<string, Record<string, string>>;
 }
 
 export interface GenerateManifestActionArgs {
@@ -76,9 +78,22 @@ export const generateManifestAction = async (
     })
     .filter((e) => e.reports.length > 0);
 
+  const REPORT_BASES = [...new Set(REPORT_FILES.map((r) => r.replace(/-en$/, "")))];
+
+  t("en");
+  const labels: Record<string, Record<string, string>> = {};
+  for (const base of REPORT_BASES) {
+    const langLabels: Record<string, string> = {};
+    for (const lang of SUPPORTED_LOCALES) {
+      langLabels[lang] = reportLabel(`${base}${lang === "zh" ? "" : "-en"}`);
+    }
+    labels[base] = langLabels;
+  }
+
   const manifest: Manifest = {
     generated: DateTime.now().toISO()!,
     dates: entries,
+    labels,
   };
 
   fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`);

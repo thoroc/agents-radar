@@ -1,7 +1,6 @@
 import type { DevToData } from "../fetchers/dev-to";
 import type { LobstersData } from "../fetchers/lobste-rs";
 import { buildCommunityPrompt } from "../prompts";
-import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 import { saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
@@ -27,7 +26,7 @@ export const saveCommunityReport = async (
       data: { devto: devtoData, lobsters: lobstersData },
       promptBuilder: (d, ds, _suffix) => {
         const { devto, lobsters } = d as { devto: DevToData; lobsters: LobstersData };
-        return buildCommunityPrompt(devto, lobsters, ds, toPromptLang(lang));
+        return buildCommunityPrompt(devto, lobsters, ds, lang);
       },
       headerBuilder: (suffix, ds, us) =>
         suffix

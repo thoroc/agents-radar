@@ -9,7 +9,6 @@ import {
 } from "../prompts";
 import { callLlm } from "../report/call-llm";
 import { LLM_TOKENS_TRENDING } from "../report/report-constants";
-import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 
 const summarize = async (
@@ -65,12 +64,7 @@ export const generateSummaries = async (
   const [cliDigests, openclawSummary, skillsSummary, peerDigests, trendingSummary] = await Promise.all([
     Promise.all(
       fetchedCli.map((f) =>
-        summarizeRepo(
-          f,
-          buildCliPrompt(f.cfg, f.issues, f.prs, f.releases, dateStr, toPromptLang(lang)),
-          noActivity,
-          fail,
-        ),
+        summarizeRepo(f, buildCliPrompt(f.cfg, f.issues, f.prs, f.releases, dateStr, lang), noActivity, fail),
       ),
     ),
     summarizeRepo(
@@ -83,30 +77,21 @@ export const generateSummaries = async (
         dateStr,
         50,
         30,
-        toPromptLang(lang),
+        lang,
       ),
       noActivity,
       fail,
     ).then((d) => d.summary),
     summarize(
       "claude-code-skills",
-      buildSkillsPrompt(skillsData.prs, skillsData.issues, dateStr, toPromptLang(lang)),
+      buildSkillsPrompt(skillsData.prs, skillsData.issues, dateStr, lang),
       t(lang).skillsFailed,
     ),
     Promise.all(
       fetchedPeers.map((f) =>
         summarizeRepo(
           f,
-          buildPeerPrompt(
-            f.cfg,
-            f.issues,
-            f.prs,
-            f.releases,
-            dateStr,
-            undefined,
-            undefined,
-            toPromptLang(lang),
-          ),
+          buildPeerPrompt(f.cfg, f.issues, f.prs, f.releases, dateStr, undefined, undefined, lang),
           noActivity,
           fail,
         ),
@@ -119,7 +104,7 @@ export const generateSummaries = async (
       }
       return summarize(
         "trending",
-        buildTrendingPrompt(trendingData, dateStr, toPromptLang(lang)),
+        buildTrendingPrompt(trendingData, dateStr, lang),
         t(lang).trendingFailed,
         LLM_TOKENS_TRENDING,
       );

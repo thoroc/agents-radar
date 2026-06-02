@@ -1,6 +1,5 @@
 import type { HackerNewsData } from "../fetchers/hacker-news";
 import { buildHackerNewsPrompt } from "../prompts";
-import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 import { buildSourceHeader } from "./build-source-header";
 import { saveDataSourceReport } from "./save-data-source-report";
@@ -22,7 +21,7 @@ export const saveHackerNewsReport = async (
       logPrefix: "hn",
       logAction: "HN",
       data: hnData,
-      promptBuilder: (d, ds, _suffix) => buildHackerNewsPrompt(d as HackerNewsData, ds, toPromptLang(lang)),
+      promptBuilder: (d, ds, _suffix) => buildHackerNewsPrompt(d as HackerNewsData, ds, lang),
       headerBuilder: (suffix, ds, us) =>
         buildSourceHeader(
           suffix,

@@ -1,6 +1,5 @@
 import type { ArxivData } from "../fetchers/arxiv";
 import { buildArxivPrompt } from "../prompts";
-import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 import { buildSourceHeader } from "./build-source-header";
 import { saveDataSourceReport } from "./save-data-source-report";
@@ -22,7 +21,7 @@ export const saveArxivReport = async (
       logPrefix: "arxiv",
       logAction: "ArXiv",
       data: arxivData,
-      promptBuilder: (d, ds, _suffix) => buildArxivPrompt(d as ArxivData, ds, toPromptLang(lang)),
+      promptBuilder: (d, ds, _suffix) => buildArxivPrompt(d as ArxivData, ds, lang),
       headerBuilder: (suffix, ds, us) =>
         buildSourceHeader(
           suffix,

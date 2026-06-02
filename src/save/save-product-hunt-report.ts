@@ -1,6 +1,5 @@
 import type { ProductHuntData } from "../fetchers/product-hunt";
 import { buildProductHuntPrompt } from "../prompts";
-import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 import { buildSourceHeader } from "./build-source-header";
 import { saveDataSourceReport } from "./save-data-source-report";
@@ -22,7 +21,7 @@ export const saveProductHuntReport = async (
       logPrefix: "ph",
       logAction: "Product Hunt",
       data: phData,
-      promptBuilder: (d, ds, _suffix) => buildProductHuntPrompt(d as ProductHuntData, ds, toPromptLang(lang)),
+      promptBuilder: (d, ds, _suffix) => buildProductHuntPrompt(d as ProductHuntData, ds, lang),
       headerBuilder: (suffix, ds, us) =>
         buildSourceHeader(
           suffix,

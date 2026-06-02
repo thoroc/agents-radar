@@ -1,6 +1,5 @@
 import type { HuggingFaceData } from "../fetchers/hugging-face";
 import { buildHuggingFacePrompt } from "../prompts";
-import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
 import { buildSourceHeader } from "./build-source-header";
 import { saveDataSourceReport } from "./save-data-source-report";
@@ -22,7 +21,7 @@ export const saveHuggingFaceReport = async (
       logPrefix: "hf",
       logAction: "Hugging Face",
       data: hfData,
-      promptBuilder: (d, ds, _suffix) => buildHuggingFacePrompt(d as HuggingFaceData, ds, toPromptLang(lang)),
+      promptBuilder: (d, ds, _suffix) => buildHuggingFacePrompt(d as HuggingFaceData, ds, lang),
       headerBuilder: (suffix, ds, us) =>
         buildSourceHeader(
           suffix,
