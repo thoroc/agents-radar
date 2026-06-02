@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/thoroc/agents-radar/compare/v1.1.0...v1.2.0) (2026-06-02)
+
+
+### Features
+
+* complete i18n save layer port ([#26](https://github.com/thoroc/agents-radar/issues/26)) ([cb80146](https://github.com/thoroc/agents-radar/commit/cb80146e00a151671fcd6053e3b4e5c271a9647d))
+
 ## [1.1.0](https://github.com/thoroc/agents-radar/compare/v1.0.0...v1.1.0) (2026-06-02)
 
 
