@@ -8,6 +8,13 @@ agents-radar is a daily digest generator for the AI open-source ecosystem. A Git
 
 Default branch is **`main`** (not `master`). All PRs target `main`. **Never commit directly to `main`** — always work from a feature branch and merge via PR.
 
+## Workflow
+
+1. Create a new branch from `main` before making changes.
+2. Commit all changes to that branch.
+3. When done, ask the user whether to push and create a PR.
+4. After the PR is merged, switch back to `main` and pull.
+
 ## Release
 
 [release-please](https://github.com/googleapis/release-please) automates changelog generation and versioning. On each merge to `main`, it creates/updates a Release PR with an aggregated changelog. Merging that Release PR tags a new version, bumps `package.json`, and creates a GitHub Release.
