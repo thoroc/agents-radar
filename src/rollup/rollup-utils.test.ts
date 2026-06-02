@@ -7,7 +7,10 @@ vi.mock("../report/call-llm", () => ({ callLlm: mockCallLlm }));
 const mockSaveFile = vi.fn<(content: string, ...segments: string[]) => string>();
 vi.mock("../report/save-file", () => ({ saveFile: mockSaveFile }));
 
-import { generateRollupHighlights, getDateDirs, readDailyDigest, readWeeklyDigest } from "./rollup-utils";
+import { generateRollupHighlights } from "./generate-rollup-highlights";
+import { getDateDirs } from "./get-date-dirs";
+import { readDailyDigest } from "./read-daily-digest";
+import { readWeeklyDigest } from "./read-weekly-digest";
 
 describe("getDateDirs", () => {
   beforeEach(() => {

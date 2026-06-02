@@ -1,6 +1,7 @@
+export { buildSourceHeader } from "./build-source-header";
 export { saveArxivReport } from "./save-arxiv-report";
 export { saveCommunityReport } from "./save-community-report";
-export { buildSourceHeader, saveDataSourceReport } from "./save-data-source-report";
+export { saveDataSourceReport } from "./save-data-source-report";
 export { saveHackerNewsReport } from "./save-hacker-news-report";
 export { saveHuggingFaceReport } from "./save-hugging-face-report";
 export { saveProductHuntReport } from "./save-product-hunt-report";

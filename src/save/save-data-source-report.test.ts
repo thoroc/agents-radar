@@ -5,7 +5,8 @@ vi.mock("./save-report", () => ({
   defaultDeps: {},
 }));
 
-import { buildSourceHeader, saveDataSourceReport } from "./save-data-source-report";
+import { buildSourceHeader } from "./build-source-header";
+import { saveDataSourceReport } from "./save-data-source-report";
 import { saveReport } from "./save-report";
 
 const mockedSaveReport = saveReport as ReturnType<typeof vi.fn>;

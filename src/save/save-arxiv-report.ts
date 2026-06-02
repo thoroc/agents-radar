@@ -2,7 +2,8 @@ import type { ArxivData } from "../fetchers/arxiv";
 import { buildArxivPrompt } from "../prompts";
 import { toPromptLang } from "../types";
 import { type Locale, t } from "../utils";
-import { buildSourceHeader, saveDataSourceReport } from "./save-data-source-report";
+import { buildSourceHeader } from "./build-source-header";
+import { saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
 
 export const saveArxivReport = async (

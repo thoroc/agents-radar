@@ -17,13 +17,8 @@ import { fetchAllData } from "./phases/fetch";
 
 import { savePhase } from "./phases/save";
 import { generateSummaries } from "./phases/summarize";
+import { requireEnv } from "./require-env";
 import { getEnabledLangs, loadConfig, toCstDateStr, toUtcStr } from "./utils";
-
-const requireEnv = (name: string, env: NodeJS.ProcessEnv = process.env): string => {
-  const value = env[name];
-  if (!value) throw new Error(`Missing required environment variable: ${name}`);
-  return value;
-};
 
 export const main = async (env: NodeJS.ProcessEnv = process.env): Promise<void> => {
   dotenvx.config({ quiet: true });

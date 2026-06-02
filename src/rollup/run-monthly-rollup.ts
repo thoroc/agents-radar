@@ -8,13 +8,11 @@ import { callLlm } from "../report/call-llm";
 import { LLM_TOKENS_ROLLUP } from "../report/report-constants";
 import { saveFile } from "../report/save-file";
 import { t, toCstDateStr, toUtcStr } from "../utils";
-import {
-  DIGESTS_DIR,
-  generateRollupHighlights,
-  getDateDirs,
-  readDailyDigest,
-  readWeeklyDigest,
-} from "./rollup-utils";
+import { generateRollupHighlights } from "./generate-rollup-highlights";
+import { getDateDirs } from "./get-date-dirs";
+import { readDailyDigest } from "./read-daily-digest";
+import { readWeeklyDigest } from "./read-weekly-digest";
+import { DIGESTS_DIR } from "./rollup-constants";
 
 export const runMonthlyRollup = async (
   digestRepo?: string,

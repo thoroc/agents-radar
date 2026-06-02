@@ -3,39 +3,7 @@ import path from "node:path";
 import { buildHighlightsPrompt, type ReportHighlights } from "../prompts";
 import { callLlm } from "../report/call-llm";
 import { saveFile } from "../report/save-file";
-
-export const DIGESTS_DIR = "digests";
-export const ROLLUP_SOURCES = ["ai-cli", "ai-agents", "ai-trending", "ai-hn", "ai-web"];
-export const MAX_CHARS_PER_REPORT = 2500;
-
-export const getDateDirs = (): string[] => {
-  if (!fs.existsSync(DIGESTS_DIR)) return [];
-  return fs
-    .readdirSync(DIGESTS_DIR)
-    .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d) && fs.statSync(path.join(DIGESTS_DIR, d)).isDirectory())
-    .sort()
-    .reverse();
-};
-
-export const readDailyDigest = (date: string): string | null => {
-  const parts: string[] = [];
-  for (const type of ROLLUP_SOURCES) {
-    const p = path.join(DIGESTS_DIR, date, `${type}.md`);
-    if (fs.existsSync(p)) {
-      const content = fs.readFileSync(p, "utf-8");
-      const truncated = content.slice(0, MAX_CHARS_PER_REPORT);
-      parts.push(truncated.length < content.length ? `${truncated}\n...[摘要截断]` : truncated);
-    }
-  }
-  return parts.length > 0 ? parts.join("\n\n") : null;
-};
-
-export const readWeeklyDigest = (date: string): string | null => {
-  const p = path.join(DIGESTS_DIR, date, "ai-weekly.md");
-  if (!fs.existsSync(p)) return null;
-  const content = fs.readFileSync(p, "utf-8");
-  return content.slice(0, 3000) + (content.length > 3000 ? "\n...[截断]" : "");
-};
+import { DIGESTS_DIR } from "./rollup-constants";
 
 export const generateRollupHighlights = async (
   zhContent: string,
