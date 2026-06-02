@@ -24,11 +24,11 @@ describe("reportLabel", () => {
   });
 
   it("returns en label for ai-cli-en", () => {
-    expect(reportLabel("ai-cli-en")).toBe(EN_LOCALE.reportLabelAiCliEn);
+    expect(reportLabel("ai-cli-en")).toBe(EN_LOCALE.reportLabelAiCli);
   });
 
   it("returns en label for ai-hn-en", () => {
-    expect(reportLabel("ai-hn-en")).toBe(EN_LOCALE.reportLabelAiHnEn);
+    expect(reportLabel("ai-hn-en")).toBe(EN_LOCALE.reportLabelAiHn);
   });
 
   it("returns the id itself for unknown values", () => {

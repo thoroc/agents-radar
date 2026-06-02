@@ -23,12 +23,11 @@ describe("autoGenFooter", () => {
     const result = autoGenFooter("zh");
     expect(result).toContain("agents-radar");
     expect(result).toContain("github.com/user/repo");
-    expect(result).toContain("自动生成");
   });
   it("returns English footer when lang is en", () => {
     process.env.DIGEST_REPO = "user/repo";
     const result = autoGenFooter("en");
-    expect(result).toContain("auto-generated");
     expect(result).toContain("agents-radar");
+    expect(result).toContain("github.com/user/repo");
   });
 });

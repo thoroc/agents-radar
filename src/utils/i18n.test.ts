@@ -140,7 +140,7 @@ describe("notify label strings", () => {
 });
 
 describe("report label strings", () => {
-  const ZH_LABEL_KEYS = [
+  const REPORT_LABEL_KEYS = [
     "reportLabelAiCli",
     "reportLabelAiAgents",
     "reportLabelAiWeb",
@@ -148,22 +148,12 @@ describe("report label strings", () => {
     "reportLabelAiHn",
     "reportLabelAiWeekly",
   ] as const;
-  const EN_LABEL_KEYS = [
-    "reportLabelAiCliEn",
-    "reportLabelAiAgentsEn",
-    "reportLabelAiWebEn",
-    "reportLabelAiTrendingEn",
-    "reportLabelAiHnEn",
-    "reportLabelAiWeeklyEn",
-  ] as const;
 
-  for (const key of ZH_LABEL_KEYS) {
-    it(`${key} has zh content`, () => {
+  for (const key of REPORT_LABEL_KEYS) {
+    it(`${key} in zh`, () => {
       expect(t("zh")[key]).toBeTruthy();
     });
-  }
-  for (const key of EN_LABEL_KEYS) {
-    it(`${key} has en content`, () => {
+    it(`${key} in en`, () => {
       expect(t("en")[key]).toBeTruthy();
     });
   }

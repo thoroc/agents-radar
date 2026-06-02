@@ -72,27 +72,16 @@ const LocaleDataSchema = z.object({
   autoGen: z.string(),
 
   reportLabelAiCli: z.string(),
-  reportLabelAiCliEn: z.string(),
   reportLabelAiAgents: z.string(),
-  reportLabelAiAgentsEn: z.string(),
   reportLabelAiWeb: z.string(),
-  reportLabelAiWebEn: z.string(),
   reportLabelAiTrending: z.string(),
-  reportLabelAiTrendingEn: z.string(),
   reportLabelAiHn: z.string(),
-  reportLabelAiHnEn: z.string(),
   reportLabelAiPh: z.string(),
-  reportLabelAiPhEn: z.string(),
   reportLabelAiArxiv: z.string(),
-  reportLabelAiArxivEn: z.string(),
   reportLabelAiHf: z.string(),
-  reportLabelAiHfEn: z.string(),
   reportLabelAiCommunity: z.string(),
-  reportLabelAiCommunityEn: z.string(),
   reportLabelAiWeekly: z.string(),
-  reportLabelAiWeeklyEn: z.string(),
   reportLabelAiMonthly: z.string(),
-  reportLabelAiMonthlyEn: z.string(),
 
   notifyCli: z.string(),
   notifyAgents: z.string(),
@@ -136,6 +125,22 @@ const LocaleDataSchema = z.object({
   manifestMonthly: z.string(),
 
   autoGenFooter: z.string(),
+
+  hnMeta: z.string(),
+  phMeta: z.string(),
+  arxivMeta: z.string(),
+  hfMeta: z.string(),
+  communityMeta: z.string(),
+  trendingMeta: z.string(),
+  webSourcesAnthropic: z.string(),
+  webSourcesOpenai: z.string(),
+  webIssueTitle: z.string(),
+  webIssueTitleFirstCrawl: z.string(),
+
+  notifySuffixMonthly: z.string(),
+  notifySuffixWeekly: z.string(),
+  notifyFooterLinks: z.string(),
+  feishuFooterLinks: z.string(),
 });
 
 const LocaleFileSchema = LocaleDataSchema.extend({
