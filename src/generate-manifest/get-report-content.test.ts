@@ -6,10 +6,6 @@ vi.mock("marked", () => ({
   marked: { parse: mockMarkedParse },
 }));
 
-vi.mock("./report-label", () => ({
-  reportLabel: vi.fn((id: string) => `Label[${id}]`),
-}));
-
 import { getReportContent } from "./get-report-content";
 
 describe("getReportContent", () => {
@@ -53,7 +49,7 @@ describe("getReportContent", () => {
 
     const result = await getReportContent("2026-01-01", "ai-cli");
 
-    expect(result.summary).toContain("Label[ai-cli]");
+    expect(result.summary).toContain("AI CLI");
     expect(result.summary).toContain("2026-01-01");
   });
 });
