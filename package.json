@@ -27,7 +27,8 @@
     "test": "bun test",
     "test:watch": "bun test --watch",
     "test:coverage": "bun test --coverage",
-    "validate:schema": "bun run scripts/generate-locale-schema.ts"
+    "validate:schema": "bun run scripts/generate-locale-schema.ts",
+    "validate-locales": "bun x ajv-cli validate -s locale-schema.json -d \"locales/*.json\" --spec=draft2020"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

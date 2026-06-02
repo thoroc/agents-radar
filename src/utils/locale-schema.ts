@@ -158,6 +158,7 @@ const LocaleDataSchema = z.object({
 });
 
 const LocaleFileSchema = LocaleDataSchema.extend({
+  $schema: z.string().optional(),
   _meta: LocaleMetaSchema,
 });
 

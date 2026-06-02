@@ -83,6 +83,24 @@
     "trendingMeta": {
       "type": "string"
     },
+    "hnCount": {
+      "type": "string"
+    },
+    "arxivCount": {
+      "type": "string"
+    },
+    "phCount": {
+      "type": "string"
+    },
+    "hfCount": {
+      "type": "string"
+    },
+    "headerGeneratedLabel": {
+      "type": "string"
+    },
+    "headerSourceLabel": {
+      "type": "string"
+    },
     "cliTitle": {
       "type": "string"
     },
@@ -122,6 +140,12 @@
     "webMeta": {
       "type": "string"
     },
+    "webModeFirstCrawl": {
+      "type": "string"
+    },
+    "webModeIncremental": {
+      "type": "string"
+    },
     "webFirstCrawl": {
       "type": "string"
     },
@@ -156,6 +180,12 @@
       "type": "string"
     },
     "communityTitle": {
+      "type": "string"
+    },
+    "devtoArticles": {
+      "type": "string"
+    },
+    "lobstersStories": {
       "type": "string"
     },
     "weeklyTitle": {
@@ -365,6 +395,9 @@
     "autoGenFooter": {
       "type": "string"
     },
+    "$schema": {
+      "type": "string"
+    },
     "_meta": {
       "type": "object",
       "properties": {
@@ -414,6 +447,12 @@
     "hfMeta",
     "communityMeta",
     "trendingMeta",
+    "hnCount",
+    "arxivCount",
+    "phCount",
+    "hfCount",
+    "headerGeneratedLabel",
+    "headerSourceLabel",
     "cliTitle",
     "cliMeta",
     "cliSkillsHeading",
@@ -427,6 +466,8 @@
     "openclawPeers",
     "webTitle",
     "webMeta",
+    "webModeFirstCrawl",
+    "webModeIncremental",
     "webFirstCrawl",
     "webTodayUpdate",
     "webNewContent",
@@ -439,6 +480,8 @@
     "arxivTitle",
     "hfTitle",
     "communityTitle",
+    "devtoArticles",
+    "lobstersStories",
     "weeklyTitle",
     "weeklyCoverage",
     "monthlyTitle",

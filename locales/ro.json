@@ -1,4 +1,5 @@
 {
+  "$schema": "../locale-schema.json",
   "_meta": {
     "code": "ro",
     "name": "Romanian",
