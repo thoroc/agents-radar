@@ -61,9 +61,9 @@ export ANTHROPIC_BASE_URL=https://api.kimi.com/coding/  # omit for Anthropic
 The pipeline runs in four sequential phases, split into separate modules under `src/phases/`:
 
 1. **`fetchAllData`** (`src/phases/fetch.ts`) — all network I/O in parallel: GitHub API (issues/PRs/releases) for 17 repos, Claude Code Skills, Anthropic/OpenAI sitemaps, GitHub Trending HTML + Search API, Hacker News Algolia API, ArXiv, Hugging Face, Product Hunt, Dev.to, Lobste.rs.
-2. **`generateSummaries`** (`src/phases/summarize.ts`) — per-repo LLM calls, all in parallel, rate-limited to 5 concurrent requests by a queue in `src/report.ts`.
+2. **`generateSummaries`** (`src/phases/summarize.ts`) — per-repo LLM calls, all in parallel, rate-limited to 5 concurrent requests by a queue in `src/report/call-llm.ts`.
 3. **Comparison** (`src/phases/compare.ts`) — two LLM calls: cross-tool CLI comparison and OpenClaw cross-ecosystem comparison.
-4. **Save phase** (`src/phases/save.ts`) — delegates to `buildCliReportContent` / `buildOpenclawReportContent` (in `src/report-builders.ts`) for Markdown formatting, then to savers in `src/report-savers.ts` for LLM call + file write + optional GitHub Issue.
+4. **Save phase** (`src/phases/save.ts`) — delegates to `buildCliReportContent` / `buildOpenclawReportContent` (in `src/report/`) for Markdown formatting, then to savers in `src/save/` for LLM call + file write + optional GitHub Issue.
 
 ## Source files
 
@@ -74,28 +74,66 @@ The pipeline runs in four sequential phases, split into separate modules under `
 | `src/phases/summarize.ts` | Phase 2 — per-repo LLM calls |
 | `src/phases/compare.ts` | Phase 3 — cross-tool + cross-ecosystem comparisons |
 | `src/phases/save.ts` | Phase 4 — report output + GitHub Issues |
-| `src/utils/i18n.ts` | Locale system: lazy-loaded JSON reader, `t(lang)` accessor, `Locale` type, `toPromptLang()`, `SUPPORTED_LOCALES` |
-| `src/utils/config.ts` | YAML config loader; `getEnabledLangs()`, `RadarConfig` interface |
-| `src/utils/date.ts` | Date and timing utilities: `toCstDateStr`, `toUtcStr`, `sleep` |
+| `src/utils/t.ts` | `t(lang)` locale accessor — returns the full `LocaleData` object for a given locale |
+| `src/utils/locale-data.ts` | Lazy-loads all locale JSON files; exports `STRINGS`, `SUPPORTED_LOCALES` |
 | `src/utils/locale-schema.ts` | Zod schema for locale file validation; derives `LocaleData` type |
-| `src/github/api.ts` | GitHub API helpers: `fetchRecentItems`, `fetchRecentReleases`, `fetchSkillsData`, `createGitHubIssue` |
-| `src/github/issues.ts` | GitHub issue formatting helpers |
+| `src/utils/validate-locale.ts` | `validateLocale(lang)` — throws if locale is not supported |
+| `src/utils/get-enabled-langs.ts` | `getEnabledLangs()` — reads enabled languages from config |
+| `src/utils/load-config.ts` | YAML config loader; `getPrimaryLang()`, `getEnabledLangs()`, `RadarConfig` interface |
+| `src/utils/to-cst-date-str.ts` | `toCstDateStr(date)` — formats a date as CST string |
+| `src/utils/to-utc-str.ts` | `toUtcStr(date)` — formats a date as UTC string |
+| `src/utils/sleep.ts` | `sleep(ms)` utility |
+| `src/utils/constants.ts` | Shared constants (e.g. `PAGES_URL_DEFAULT`) |
+| `src/github/fetch-recent-items.ts` | `fetchRecentItems` — GitHub issues/PRs for a repo |
+| `src/github/fetch-recent-releases.ts` | `fetchRecentReleases` — GitHub releases for a repo |
+| `src/github/fetch-skills-data.ts` | `fetchSkillsData` — Claude Code Skills repo data |
+| `src/github/create-issue.ts` | `createGitHubIssue` — creates a GitHub issue |
+| `src/github/ensure-label.ts` | `ensureLabel` — creates a label if it doesn't exist |
 | `src/github/labels.ts` | GitHub issue label colors (`LABEL_COLORS`) |
 | `src/github/types.ts` | Shared `RepoFetch`, `GitHubItem`, `RepoConfig` types |
-| `src/prompts/prompts.ts` | LLM prompt builders for repo reports: `buildCliPrompt`, `buildPeerPrompt`, `buildComparisonPrompt`, `buildPeersComparisonPrompt`, `buildSkillsPrompt` |
-| `src/prompts/prompts-data.ts` | LLM prompt builders for data-source reports: `buildTrendingPrompt`, `buildWebReportPrompt`, `buildHnPrompt`, `buildArxivPrompt`, `buildHfPrompt`, `buildPhPrompt`, `buildCommunityPrompt`, `buildWeeklyPrompt`, `buildMonthlyPrompt` |
-| `src/report.ts` | `callLlm` (with concurrency limiter), `saveFile`, `autoGenFooter`, LLM token budget constants |
-| `src/report-builders.ts` | `buildCliReportContent`, `buildOpenclawReportContent` — final Markdown assemblers |
-| `src/report-savers.ts` | `saveReport` generic + `saveWebReport`, `saveTrendingReport`, `saveHnReport`, `savePhReport`, `saveArxivReport`, `saveHfReport`, `saveCommunityReport` |
-| `src/rollup.ts` | Weekly and monthly rollup report generator |
+| `src/prompts/build-cli-prompt.ts` | `buildCliPrompt` — CLI repo summary prompt |
+| `src/prompts/build-peer-prompt.ts` | `buildPeerPrompt` — OpenClaw peer repo prompt |
+| `src/prompts/build-comparison-prompt.ts` | `buildComparisonPrompt` — cross-tool CLI comparison prompt |
+| `src/prompts/build-peers-comparison-prompt.ts` | `buildPeersComparisonPrompt` — cross-ecosystem comparison prompt |
+| `src/prompts/build-skills-prompt.ts` | `buildSkillsPrompt` — Claude Code Skills prompt |
+| `src/prompts/build-trending-prompt.ts` | `buildTrendingPrompt` |
+| `src/prompts/build-web-report-prompt.ts` | `buildWebReportPrompt` |
+| `src/prompts/build-hn-prompt.ts` | `buildHnPrompt` |
+| `src/prompts/build-arxiv-prompt.ts` | `buildArxivPrompt` |
+| `src/prompts/build-hf-prompt.ts` | `buildHfPrompt` |
+| `src/prompts/build-ph-prompt.ts` | `buildPhPrompt` |
+| `src/prompts/build-community-prompt.ts` | `buildCommunityPrompt` |
+| `src/prompts/build-weekly-prompt.ts` | `buildWeeklyPrompt` |
+| `src/prompts/build-monthly-prompt.ts` | `buildMonthlyPrompt` |
+| `src/prompts/build-highlights-prompt.ts` | `buildHighlightsPrompt` — Telegram highlights prompt |
+| `src/prompts/sample-note.ts` | `sampleNote(total, sampled)` — formats the sampling note |
+| `src/report/call-llm.ts` | `callLlm` with concurrency limiter (`LLM_CONCURRENCY = 5`) and retry logic |
+| `src/report/save-file.ts` | `saveFile` — writes a report file to `digests/YYYY-MM-DD/` |
+| `src/report/auto-gen-footer.ts` | `autoGenFooter` — generates the report footer |
+| `src/report/report-constants.ts` | LLM token budget constants |
+| `src/report/build-cli-report-content.ts` | `buildCliReportContent` — final CLI Markdown assembler |
+| `src/report/build-openclaw-report-content.ts` | `buildOpenclawReportContent` — final OpenClaw Markdown assembler |
+| `src/save/save-report.ts` | `saveReport` — generic LLM call + file write + optional GitHub Issue |
+| `src/save/save-data-source-report.ts` | `saveDataSourceReport` — shared wrapper with skip/error handling |
+| `src/save/save-web-report.ts` | `saveWebReport` |
+| `src/save/save-trending-report.ts` | `saveTrendingReport` |
+| `src/save/save-hacker-news-report.ts` | `saveHackerNewsReport` |
+| `src/save/save-product-hunt-report.ts` | `saveProductHuntReport` |
+| `src/save/save-arxiv-report.ts` | `saveArxivReport` |
+| `src/save/save-hugging-face-report.ts` | `saveHuggingFaceReport` |
+| `src/save/save-community-report.ts` | `saveCommunityReport` |
+| `src/rollup/run-weekly-rollup.ts` | `runWeeklyRollup` entry point |
+| `src/rollup/run-monthly-rollup.ts` | `runMonthlyRollup` entry point |
+| `src/rollup/weekly.ts` | Weekly rollup report generator |
+| `src/rollup/monthly.ts` | Monthly rollup report generator |
 | `src/fetchers/web.ts` | Sitemap-based web content fetching; state persisted to `digests/web-state.json` |
 | `src/fetchers/trending.ts` | GitHub Trending HTML scraper + Search API topic queries |
-| `src/fetchers/hn.ts` | Hacker News top AI stories via Algolia HN Search API |
+| `src/fetchers/hacker-news.ts` | Hacker News top AI stories via Algolia HN Search API |
 | `src/fetchers/arxiv.ts` | ArXiv paper fetcher (cs.AI, cs.CL, cs.LG) |
-| `src/fetchers/hf.ts` | Hugging Face Hub model fetcher |
-| `src/fetchers/ph.ts` | Product Hunt fetcher |
-| `src/fetchers/devto.ts` | Dev.to community articles fetcher |
-| `src/fetchers/lobsters.ts` | Lobste.rs stories fetcher |
+| `src/fetchers/hugging-face.ts` | Hugging Face Hub model fetcher |
+| `src/fetchers/product-hunt.ts` | Product Hunt fetcher |
+| `src/fetchers/dev-to.ts` | Dev.to community articles fetcher |
+| `src/fetchers/lobste-rs.ts` | Lobste.rs stories fetcher |
 | `src/providers/types.ts` | `LlmProvider` interface, `ProviderFactory` type |
 | `src/providers/openai-compatible.ts` | `createOpenAICompatibleProvider` — shared factory for OpenAI-compatible providers |
 | `src/providers/anthropic.ts` | `createAnthropicProvider` — Anthropic SDK wrapper |
@@ -104,13 +142,15 @@ The pipeline runs in four sequential phases, split into separate modules under `
 | `src/providers/openrouter.ts` | `createOpenRouterProvider` — extends `createOpenAICompatibleProvider` |
 | `src/providers/deepseek.ts` | `createDeepSeekProvider` — 403 fallback provider |
 | `src/providers/index.ts` | `createProvider` factory + barrel re-exports |
-| `src/notifications/notify.ts` | Primary notification dispatch |
-| `src/notifications/feishu.ts` | Feishu (Lark) notification channel |
+| `src/notifications/notify/` | Primary notification dispatch (Telegram) |
+| `src/notifications/feishu/` | Feishu (Lark) notification channel |
 | `src/notifications/social/` | Social media posting (CLI command + action) |
-| `src/types/locale.ts` | `Locale` type (21-locale union) |
+| `src/types/locale.ts` | `Locale` type (21-locale BCP-47 union, auto-generated from `locales/`) |
 | `src/types/prompt-lang.ts` | `PromptLang` type + `toPromptLang()` converter |
-| `src/generate-manifest.ts` | Generates `manifest.json` (sidebar) + `feed.xml` (RSS 2.0) |
-| `locales/*.json` | 21 locale files (ar, bn, de, en, es, fr, hi, id, it, ja, ko, nl, pl, pt, ro, ru, th, tr, uk, vi, zh) — drop a new file to add a language |
+| `src/generate-manifest/action.ts` | `generateManifestAction` — generates `manifest.json` + `feed.xml` |
+| `src/generate-manifest/constants.ts` | `REPORT_FILES` list, `DIGESTS_DIR` |
+| `src/generate-manifest/report-label.ts` | `reportLabel(reportId)` — human label for a report type |
+| `locales/*.json` | 21 locale files using BCP-47 tags (ar-SA, bn-BD, de-DE, en-US, es-ES, fr-FR, hi-IN, id-ID, it-IT, ja-JP, ko-KR, nl-NL, pl-PL, pt-BR, ro-RO, ru-RU, th-TH, tr-TR, uk-UA, vi-VN, zh-CN) — drop a new file to add a language |
 
 ## Report outputs
 
@@ -128,7 +168,7 @@ Files written to `digests/YYYY-MM-DD/`. Each report type generates one file per 
 | `ai-hf.{locale}.md` | `hf.{locale}` | Skipped if Hugging Face fetch fails |
 | `ai-community.{locale}.md` | `community.{locale}` | Skipped if both Dev.to and Lobste.rs fail |
 
-Where `{locale}` is empty for Chinese (default, e.g. `ai-cli.md`) and the language code for other languages (e.g. `ai-cli.en.md`, `ai-cli.ja.md`).
+Where `{locale}` is empty for the primary language (default: `en-US`, e.g. `ai-cli.md`) and the BCP-47 code for all other languages (e.g. `ai-cli.zh-CN.md`, `ai-cli.ja-JP.md`). The primary language is set via `defaultPrimaryLanguage` in `config.yml`.
 
 ## Tracked sources
 
@@ -146,32 +186,95 @@ Where `{locale}` is empty for Chinese (default, e.g. `ai-cli.md`) and the langua
 
 ## Key conventions
 
-- All locale strings are stored in `locales/*.json` files (21 languages). Access them via `t(lang)` from `src/utils/i18n.ts`. To add a new language, drop a valid JSON file into `locales/` and add its ISO code to the `languages` list in `config.yml` — no code changes needed.
-- LLM prompt builders are split across two files: `src/prompts/prompts.ts` (repo-level prompts) and `src/prompts/prompts-data.ts` (data-source and rollup prompts). Each report type has its own builder function.
-- `callLlm(prompt, maxTokens?)` defaults to 4096 tokens. Web report uses 8192, trending uses 6144. HN report uses the default 4096.
+- All locale strings are stored in `locales/*.json` files (21 languages, BCP-47 tags). Access them via `t(lang)` from `src/utils/t.ts` (re-exported from `src/utils/index.ts`). To add a new language, drop a valid JSON file into `locales/` and add its BCP-47 tag to the `languages` list in `config.yml` — no code changes needed.
+- Each report type has its own prompt builder in `src/prompts/build-*.ts`. Repo-level prompts live in `build-cli-prompt.ts`, `build-peer-prompt.ts`, etc. Data-source prompts live in `build-trending-prompt.ts`, `build-hn-prompt.ts`, etc.
+- `callLlm(prompt, maxTokens?)` in `src/report/call-llm.ts` defaults to 4096 tokens. Web report uses 8192, trending uses 6144. HN report uses the default 4096.
 - On 429 rate-limit errors `callLlm` retries up to 3 times with exponential backoff (5 s / 10 s / 20 s); the concurrency slot is released during the wait.
-- The concurrency limiter (`LLM_CONCURRENCY = 5`) prevents 429s when many parallel LLM calls fire. Do not bypass it by calling SDK clients directly.
+- The concurrency limiter (`LLM_CONCURRENCY = 5` in `src/report/call-llm.ts`) prevents 429s when many parallel LLM calls fire. Do not bypass it by calling SDK clients directly.
 - LLM provider is selected via `LLM_PROVIDER` env var (default: `anthropic`). Valid values: `anthropic`, `openai`, `github-copilot`, `openrouter`, `deepseek`.
 - Provider implementations live in `src/providers/`. Each file implements the `LlmProvider` interface. The factory in `src/providers/index.ts` validates the provider name and logs only the provider name — never API keys or endpoint URLs. DeepSeek is also available as a 403 fallback provider (requires `DEEPSEEK_API_KEY`).
 - GitHub issue label colors are defined in `LABEL_COLORS` in `src/github/labels.ts`. Add new labels there.
-- `sampleNote(total, sampled)` in `src/prompts/prompts.ts` formats the "(共 N 条，展示前 M 条)" note. Reuse it — do not inline the same string format.
+- `sampleNote(total, sampled)` in `src/prompts/sample-note.ts` formats the "(共 N 条，展示前 M 条)" note. Reuse it — do not inline the same string format.
 - Web state (`digests/web-state.json`) is committed to git on every run. It is the source of truth for which URLs have been seen.
 
 ## Web UI & RSS Feed
 
 - Web UI: `index.html` reads `manifest.json` to build the sidebar, then fetches `digests/YYYY-MM-DD/report.md` on demand.
-- RSS Feed: `feed.xml` at the repo root. Generated by `src/generate-manifest.ts` in the same `bun run manifest` step. Contains the latest 30 items (newest first) across all report types. Item links use hash routing: `https://duanyytop.github.io/agents-radar/#YYYY-MM-DD/report`.
+- RSS Feed: `feed.xml` at the repo root. Generated by `src/generate-manifest/action.ts` in the same `bun run manifest` step. Contains the latest 30 items (newest first) across all report types. Item links use hash routing: `https://duanyytop.github.io/agents-radar/#YYYY-MM-DD/report`.
 - Both `manifest.json` and `feed.xml` are committed together in the "Commit manifest and feed" GHA step.
-- Report labels are generated from JSON locale files via `reportLabel()` in `src/generate-manifest.ts`. They must be kept in sync with the `LABELS` object in `index.html` when adding new report types.
+- Report labels are generated from JSON locale files via `reportLabel()` in `src/generate-manifest/report-label.ts`. They must be kept in sync with the `LABELS` object in `index.html` when adding new report types.
 
 ## Adding a new report type
 
-1. Create a data fetcher (or add to an existing one).
-2. Add a `buildXxxPrompt` function in `src/prompts-data.ts` (for data-source prompts) or `src/prompts.ts` (for repo-level prompts).
-3. Add fields for all strings (titles, labels, etc.) to `src/locale-schema.ts` and all 21 `locales/*.json` files.
-4. Add a `saveXxxReport` function in `src/report-savers.ts`.
-5. Wire into `fetchAllData`, `generateSummaries`, and the save phase in `src/index.ts`.
-6. Add a label color entry in `LABEL_COLORS` in `src/github.ts`.
+1. Create a data fetcher in `src/fetchers/` (or add to an existing one).
+2. Add a `buildXxxPrompt` function as a new file `src/prompts/build-xxx-prompt.ts`. Re-export it from `src/prompts/index.ts`.
+3. Add fields for all strings (titles, labels, etc.) to `src/utils/locale-schema.ts` and all 21 `locales/*.json` files.
+4. Add a `saveXxxReport` function as a new file `src/save/save-xxx-report.ts`. Re-export it from `src/save/index.ts`.
+5. Wire into `fetchAllData`, `generateSummaries`, and the save phase in `src/phases/`.
+6. Add a label color entry in `LABEL_COLORS` in `src/github/labels.ts`.
 7. Add the report ID and label fields to `locales/*.json` files and `LABELS` in `index.html`.
-8. Add the report file name to `REPORT_FILES` in `src/generate-manifest.ts`.
+8. Add the report file name to `REPORT_FILES` in `src/generate-manifest/constants.ts`.
 9. Update both README files and this file.
+
+# context-mode — MANDATORY routing rules
+
+You have context-mode MCP tools available. These rules are NOT optional — they protect your context window from flooding. A single unrouted command can dump 56 KB into context and waste the entire session.
+
+## BLOCKED commands — do NOT attempt these
+
+### curl / wget — BLOCKED
+Any Bash command containing `curl` or `wget` is intercepted and replaced with an error message. Do NOT retry.
+Instead use:
+- `ctx_fetch_and_index(url, source)` to fetch and index web pages
+- `ctx_execute(language: "javascript", code: "const r = await fetch(...)")` to run HTTP calls in sandbox
+
+### Inline HTTP — BLOCKED
+Any Bash command containing `fetch('http`, `requests.get(`, `requests.post(`, `http.get(`, or `http.request(` is intercepted and replaced with an error message. Do NOT retry with Bash.
+Instead use:
+- `ctx_execute(language, code)` to run HTTP calls in sandbox — only stdout enters context
+
+### WebFetch — BLOCKED
+WebFetch calls are denied entirely. The URL is extracted and you are told to use `ctx_fetch_and_index` instead.
+Instead use:
+- `ctx_fetch_and_index(url, source)` then `ctx_search(queries)` to query the indexed content
+
+## REDIRECTED tools — use sandbox equivalents
+
+### Bash (>20 lines output)
+Bash is ONLY for: `git`, `mkdir`, `rm`, `mv`, `cd`, `ls`, `npm install`, `pip install`, and other short-output commands.
+For everything else, use:
+- `ctx_batch_execute(commands, queries)` — run multiple commands + search in ONE call
+- `ctx_execute(language: "shell", code: "...")` — run in sandbox, only stdout enters context
+
+### Read (for analysis)
+If you are reading a file to **Edit** it → Read is correct (Edit needs content in context).
+If you are reading to **analyze, explore, or summarize** → use `ctx_execute_file(path, language, code)` instead. Only your printed summary enters context. The raw file content stays in the sandbox.
+
+### Grep (large results)
+Grep results can flood context. Use `ctx_execute(language: "shell", code: "grep ...")` to run searches in sandbox. Only your printed summary enters context.
+
+## Tool selection hierarchy
+
+1. **GATHER**: `ctx_batch_execute(commands, queries)` — Primary tool. Runs all commands, auto-indexes output, returns search results. ONE call replaces 30+ individual calls.
+2. **FOLLOW-UP**: `ctx_search(queries: ["q1", "q2", ...])` — Query indexed content. Pass ALL questions as array in ONE call.
+3. **PROCESSING**: `ctx_execute(language, code)` | `ctx_execute_file(path, language, code)` — Sandbox execution. Only stdout enters context.
+4. **WEB**: `ctx_fetch_and_index(url, source)` then `ctx_search(queries)` — Fetch, chunk, index, query. Raw HTML never enters context.
+5. **INDEX**: `ctx_index(content, source)` — Store content in FTS5 knowledge base for later search.
+
+## Subagent routing
+
+When spawning subagents (Agent/Task tool), the routing block is automatically injected into their prompt. Bash-type subagents are upgraded to general-purpose so they have access to MCP tools. You do NOT need to manually instruct subagents about context-mode.
+
+## Output constraints
+
+- Keep responses under 500 words.
+- Write artifacts (code, configs, PRDs) to FILES — never return them as inline text. Return only: file path + 1-line description.
+- When indexing content, use descriptive source labels so others can `ctx_search(source: "label")` later.
+
+## ctx commands
+
+| Command | Action |
+|---------|--------|
+| `ctx stats` | Call the `ctx_stats` MCP tool and display the full output verbatim |
+| `ctx doctor` | Call the `ctx_doctor` MCP tool, run the returned shell command, display as checklist |
+| `ctx upgrade` | Call the `ctx_upgrade` MCP tool, run the returned shell command, display as checklist |
