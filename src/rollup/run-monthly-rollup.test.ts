@@ -25,6 +25,13 @@ const mockReadDailyDigest = vi.fn();
 const mockReadWeeklyDigest = vi.fn();
 const mockGenerateRollupHighlights = vi.fn();
 
+vi.mock("./get-date-dirs", () => ({ getDateDirs: mockGetDateDirs }));
+vi.mock("./read-daily-digest", () => ({ readDailyDigest: mockReadDailyDigest }));
+vi.mock("./read-weekly-digest", () => ({ readWeeklyDigest: mockReadWeeklyDigest }));
+vi.mock("./generate-rollup-highlights", () => ({
+  generateRollupHighlights: mockGenerateRollupHighlights,
+}));
+
 import { runMonthlyRollup } from "./run-monthly-rollup";
 
 const computeMonthStr = (): string => {

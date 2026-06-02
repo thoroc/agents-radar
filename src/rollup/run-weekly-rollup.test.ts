@@ -25,6 +25,12 @@ const mockGetDateDirs = vi.fn();
 const mockReadDailyDigest = vi.fn();
 const mockGenerateRollupHighlights = vi.fn();
 
+vi.mock("./get-date-dirs", () => ({ getDateDirs: mockGetDateDirs }));
+vi.mock("./read-daily-digest", () => ({ readDailyDigest: mockReadDailyDigest }));
+vi.mock("./generate-rollup-highlights", () => ({
+  generateRollupHighlights: mockGenerateRollupHighlights,
+}));
+
 const mockToWeekStr = vi.fn(() => "2026-W11");
 vi.mock("./week-str", () => ({ toWeekStr: mockToWeekStr }));
 
