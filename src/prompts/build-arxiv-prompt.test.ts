@@ -33,7 +33,7 @@ const makeData = (overrides: Partial<ArxivData> = {}): ArxivData => ({
 
 describe("buildArxivPrompt", () => {
   it("includes paper titles and metadata in default locale", () => {
-    const result = buildArxivPrompt(makeData(), "2026-03-09");
+    const result = buildArxivPrompt(makeData(), "2026-03-09", "zh-CN");
     expect(result).toContain("ArXiv AI Research Digest");
     expect(result).toContain("Large Language Models as Few-Shot Learners");
     expect(result).toContain("A New Approach to Multi-Agent Planning");
@@ -45,7 +45,7 @@ describe("buildArxivPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildArxivPrompt(makeData(), "2026-03-09", "en");
+    const result = buildArxivPrompt(makeData(), "2026-03-09", "en-US");
     expect(result).toContain("ArXiv AI Research Digest");
     expect(result).toContain("Alice Smith, Bob Jones, Carol Lee et al.");
     expect(result).toContain("Categories: cs.CL, cs.AI, cs.LG");
@@ -56,13 +56,13 @@ describe("buildArxivPrompt", () => {
   it("truncates long abstracts with ellipsis", () => {
     const longSummary = "X".repeat(400);
     const data = makeData({ papers: [{ ...makeData().papers[0]!, summary: longSummary }] });
-    const result = buildArxivPrompt(data, "2026-03-09");
+    const result = buildArxivPrompt(data, "2026-03-09", "zh-CN");
     expect(result).toContain(`${"X".repeat(300)}...`);
   });
 
   it("handles single-paper data", () => {
     const data = makeData({ papers: [makeData().papers[0]!] });
-    const result = buildArxivPrompt(data, "2026-03-09");
+    const result = buildArxivPrompt(data, "2026-03-09", "zh-CN");
     expect(result).toContain("1 paper");
   });
 });

@@ -1,10 +1,10 @@
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildMonthlyPrompt = (
   sourceDigests: Record<string, string>,
   monthStr: string,
-  lang: Locale = "zh",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const digestEntries = Object.entries(sourceDigests)
     .map(([key, content]) => `## ${key}\n\n${content}`)

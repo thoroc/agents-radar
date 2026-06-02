@@ -1,4 +1,4 @@
-import { type Locale, t } from "../../utils";
+import { getPrimaryLang, type Locale, t } from "../../utils";
 
 const NOTIFY_LABEL_MAP: Record<string, keyof ReturnType<typeof t>> = {
   "ai-cli": "notifyCli",
@@ -14,7 +14,7 @@ const NOTIFY_LABEL_MAP: Record<string, keyof ReturnType<typeof t>> = {
   "ai-monthly": "notifyMonthly",
 };
 
-export const notifyLabel = (id: string, lang: Locale = "zh"): string => {
+export const notifyLabel = (id: string, lang: Locale = getPrimaryLang() as Locale): string => {
   const key = NOTIFY_LABEL_MAP[id];
   if (!key) return id;
   return t(lang)[key];

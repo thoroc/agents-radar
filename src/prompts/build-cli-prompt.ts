@@ -1,6 +1,6 @@
 import type { GitHubItem, GitHubRelease, RepoConfig } from "../github/types";
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 import { formatItem } from "./format-item";
 import { sampleNote } from "./sample-note";
 import { topN } from "./top-n";
@@ -14,7 +14,7 @@ export const buildCliPrompt = (
   prs: GitHubItem[],
   releases: GitHubRelease[],
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const sampledIssues = topN(issues, CLI_ISSUE_LIMIT);
   const sampledPrs = topN(prs, CLI_PR_LIMIT);

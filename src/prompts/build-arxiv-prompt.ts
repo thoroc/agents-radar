@@ -1,8 +1,12 @@
 import type { ArxivData } from "../fetchers/arxiv";
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
-export const buildArxivPrompt = (data: ArxivData, dateStr: string, lang: Locale = "zh"): string => {
+export const buildArxivPrompt = (
+  data: ArxivData,
+  dateStr: string,
+  lang: Locale = getPrimaryLang() as Locale,
+): string => {
   const papersText = data.papers
     .map((p, i) => {
       const authors =

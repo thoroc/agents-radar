@@ -31,7 +31,7 @@ export const notifyAction = async (
 
   const { languages: configLangs, defaultPrimaryLanguage } = loadConfig();
   const enabledLangs = getEnabledLangs(configLangs, env);
-  const primaryLang: Locale = (defaultPrimaryLanguage ?? "en") as Locale;
+  const primaryLang: Locale = (defaultPrimaryLanguage ?? "en-US") as Locale;
 
   const { dates } = JSON.parse(fs.readFileSync("manifest.json", "utf-8")) as {
     dates: { date: string; reports: string[] }[];

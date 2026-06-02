@@ -92,6 +92,23 @@ const DEFAULT_OPENCLAW_PEERS: RepoConfig[] = [
   { id: "zeroclaw", repo: "zeroclaw-labs/zeroclaw", name: "ZeroClaw" },
 ];
 
+let _primaryLang: string | null = null;
+let _fallbackLang: string | null = null;
+
+export const getPrimaryLang = (): string => {
+  if (!_primaryLang) {
+    const cfg = loadConfig();
+    _primaryLang = cfg.defaultPrimaryLanguage;
+    _fallbackLang = cfg.defaultFallbackLanguage;
+  }
+  return _primaryLang;
+};
+
+export const getFallbackLang = (): string => {
+  if (!_fallbackLang) getPrimaryLang();
+  return _fallbackLang ?? "en-US";
+};
+
 export const loadConfig = (configPath = "config.yml"): RadarConfig => {
   const resolved = path.resolve(configPath);
 
@@ -102,10 +119,10 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       skillsRepo: DEFAULT_SKILLS_REPO,
       openclaw: DEFAULT_OPENCLAW,
       openclawPeers: DEFAULT_OPENCLAW_PEERS,
-      languages: DEFAULT_LANGUAGES,
+      languages: [...DEFAULT_LANGUAGES],
       schedules: DEFAULT_SCHEDULES,
-      defaultPrimaryLanguage: "en",
-      defaultFallbackLanguage: "en",
+      defaultPrimaryLanguage: DEFAULT_LANGUAGES[0] ?? "en-US",
+      defaultFallbackLanguage: DEFAULT_LANGUAGES[0] ?? "en-US",
     };
   }
 
@@ -129,7 +146,9 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       : DEFAULT_OPENCLAW_PEERS;
 
   const languages =
-    Array.isArray(raw?.languages) && raw.languages.length > 0 ? raw.languages.map(String) : DEFAULT_LANGUAGES;
+    Array.isArray(raw?.languages) && raw.languages.length > 0
+      ? raw.languages.map(String)
+      : [...DEFAULT_LANGUAGES];
 
   const schedules: ScheduleConfig = {
     daily: raw?.schedules?.daily?.cron
@@ -143,8 +162,8 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
       : DEFAULT_SCHEDULES.monthly,
   };
 
-  const defaultPrimaryLanguage = raw?.default_primary_language ?? "en";
-  const defaultFallbackLanguage = raw?.default_fallback_language ?? "en";
+  const defaultPrimaryLanguage = raw?.default_primary_language ?? DEFAULT_LANGUAGES[0] ?? "en-US";
+  const defaultFallbackLanguage = raw?.default_fallback_language ?? DEFAULT_LANGUAGES[0] ?? "en-US";
 
   console.error(
     `[config] Loaded from ${configPath}: ` +

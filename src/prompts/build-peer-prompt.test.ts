@@ -29,7 +29,7 @@ const release: GitHubRelease = {
 describe("buildPeerPrompt", () => {
   it("includes data overview section", () => {
     const issues = [makeItem({ state: "open" }), makeItem({ state: "closed" })];
-    const result = buildPeerPrompt(cfg, issues, [makeItem()], [release], "2026-03-09");
+    const result = buildPeerPrompt(cfg, issues, [makeItem()], [release], "2026-03-09", 30, 20, "zh-CN");
     expect(result).toContain("Data Overview");
     expect(result).toContain("open/active: 1");
     expect(result).toContain("closed: 1");
@@ -37,7 +37,7 @@ describe("buildPeerPrompt", () => {
   });
 
   it("generates English prompt", () => {
-    const result = buildPeerPrompt(cfg, [], [], [], "2026-03-09", 30, 20, "en");
+    const result = buildPeerPrompt(cfg, [], [], [], "2026-03-09", 30, 20, "en-US");
     expect(result).toContain("Data Overview");
     expect(result).toContain("None");
   });

@@ -19,7 +19,7 @@ const makeItem = (overrides: Partial<GitHubItem> = {}): GitHubItem => ({
 
 describe("formatItem", () => {
   it("formats a basic item in zh (default)", () => {
-    const result = formatItem(makeItem());
+    const result = formatItem(makeItem(), "zh-CN");
     expect(result).toContain("#1 [OPEN]");
     expect(result).toContain("Issue");
     expect(result).toContain("作者: alice");
@@ -30,7 +30,7 @@ describe("formatItem", () => {
   });
 
   it("formats an item in English", () => {
-    const result = formatItem(makeItem(), "en");
+    const result = formatItem(makeItem(), "en-US");
     expect(result).toContain("Author: alice");
     expect(result).toContain("Comments: 5");
     expect(result).toContain("URL:");
@@ -39,45 +39,45 @@ describe("formatItem", () => {
 
   it("includes labels when present", () => {
     const item = makeItem({ labels: [{ name: "bug" }, { name: "critical" }] });
-    const result = formatItem(item);
+    const result = formatItem(item, "zh-CN");
     expect(result).toContain("[bug, critical]");
   });
 
   it("shows no label bracket when labels empty", () => {
-    const result = formatItem(makeItem({ labels: [] }));
+    const result = formatItem(makeItem({ labels: [] }), "zh-CN");
     expect(result).toContain("#1 [OPEN] Issue");
     expect(result).not.toContain("[]");
   });
 
   it("truncates body at 300 chars with ellipsis", () => {
     const longBody = "A".repeat(400);
-    const result = formatItem(makeItem({ body: longBody }));
+    const result = formatItem(makeItem({ body: longBody }), "zh-CN");
     expect(result).toContain(`${"A".repeat(300)}...`);
   });
 
   it("does not add ellipsis for body <= 300 chars", () => {
-    const result = formatItem(makeItem({ body: "Short body" }));
+    const result = formatItem(makeItem({ body: "Short body" }), "zh-CN");
     expect(result).toContain("Short body");
     expect(result).not.toContain("...");
   });
 
   it("handles null body gracefully", () => {
-    const result = formatItem(makeItem({ body: null }));
+    const result = formatItem(makeItem({ body: null }), "zh-CN");
     expect(result).toContain("摘要: ");
   });
 
   it("handles missing reactions gracefully", () => {
-    const result = formatItem(makeItem({ reactions: undefined }));
+    const result = formatItem(makeItem({ reactions: undefined }), "zh-CN");
     expect(result).toContain("👍: 0");
   });
 
   it("replaces newlines in body with spaces", () => {
-    const result = formatItem(makeItem({ body: "line1\nline2\nline3" }));
+    const result = formatItem(makeItem({ body: "line1\nline2\nline3" }), "zh-CN");
     expect(result).toContain("line1 line2 line3");
   });
 
   it("shows closed state uppercase", () => {
-    const result = formatItem(makeItem({ state: "closed" }));
+    const result = formatItem(makeItem({ state: "closed" }), "zh-CN");
     expect(result).toContain("[CLOSED]");
   });
 });

@@ -33,7 +33,7 @@ describe("buildOpenclawReportContent", () => {
       "\nfooter",
       openclaw,
       peers,
-      "zh",
+      "zh-CN",
     );
     expect(result).toContain("# OpenClaw 生态日报 2026-03-09");
     expect(result).toContain("Issues: 1");
@@ -57,7 +57,7 @@ describe("buildOpenclawReportContent", () => {
       "",
       openclaw,
       [],
-      "en",
+      "en-US",
     );
     expect(result).toContain("# OpenClaw Ecosystem Digest 2026-03-09");
     expect(result).toContain("OpenClaw Deep Dive");

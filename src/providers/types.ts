@@ -11,6 +11,3 @@ export interface LlmProvider {
   /** Send a prompt and return the model's text response. */
   call(prompt: string, maxTokens: number): Promise<string>;
 }
-
-/** Factory function that creates an LlmProvider instance. */
-export type ProviderFactory = () => LlmProvider;

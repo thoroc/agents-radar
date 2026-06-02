@@ -1,6 +1,6 @@
 import type { GitHubItem } from "../github/types";
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 import { formatItem } from "./format-item";
 import { topN } from "./top-n";
 
@@ -8,7 +8,7 @@ export const buildSkillsPrompt = (
   prs: GitHubItem[],
   issues: GitHubItem[],
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const topPrs = topN(prs, 20);
   const topIssues = topN(issues, 15);

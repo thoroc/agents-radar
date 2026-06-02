@@ -7,7 +7,15 @@ import { autoGenFooter } from "../report/auto-gen-footer";
 import { callLlm } from "../report/call-llm";
 import { LLM_TOKENS_ROLLUP } from "../report/report-constants";
 import { saveFile } from "../report/save-file";
-import { getEnabledLangs, type Locale, loadConfig, t, toCstDateStr, toUtcStr } from "../utils";
+import {
+  getEnabledLangs,
+  getPrimaryLang,
+  type Locale,
+  loadConfig,
+  t,
+  toCstDateStr,
+  toUtcStr,
+} from "../utils";
 import { generateRollupHighlights } from "./generate-rollup-highlights";
 import { getDateDirs } from "./get-date-dirs";
 import { readDailyDigest } from "./read-daily-digest";
@@ -87,7 +95,7 @@ export const runMonthlyRollup = async (
     allContent[lang] =
       `# ${s.monthlyTitle} ${monthStr}\n\n` + metaLine + `---\n\n` + (summariesByLang[lang] ?? "") + footer;
 
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
     console.error(`  Saved ${saveFile(allContent[lang]!, dateStr, `ai-monthly${suffix}.md`)}`);
   }
 

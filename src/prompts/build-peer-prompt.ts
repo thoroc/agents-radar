@@ -1,6 +1,6 @@
 import type { GitHubItem, GitHubRelease, RepoConfig } from "../github/types";
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 import { formatItem } from "./format-item";
 import { sampleNote } from "./sample-note";
 import { topN } from "./top-n";
@@ -16,7 +16,7 @@ export const buildPeerPrompt = (
   dateStr: string,
   issueLimit = PEER_ISSUE_LIMIT,
   prLimit = PEER_PR_LIMIT,
-  lang: Locale = "zh",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const totalIssues = issues.length;
   const totalPrs = prs.length;

@@ -193,7 +193,7 @@ LLM 负责过滤非 AI 项目，将结果按维度分类（AI 基础工具 / AI 
 - 以 GitHub Issues 形式发布报告，同时提交 Markdown 文件至 `digests/YYYY-MM-DD/`
 - 每日通过 GitHub Actions 定时运行，支持手动触发
 - 所有追踪仓库均可通过 `config.yml` 配置，无需修改代码
-- 集中式区域设置系统（`locales/*.json`）—— 21 种支持语言，通过 `src/i18n.ts` 的 `t()` 函数调用
+- 集中式区域设置系统（`locales/*.json`）—— 21 种支持语言，通过 `src/utils/t.ts` 的 `t()` 函数调用
 
 ## 部署配置
 
@@ -217,7 +217,7 @@ openclaw_peers:
     name: My Agent
 ```
 
-> `config.yml` 开头的 `languages` 字段控制启用的语言。默认为 `["en", "zh"]`。如需添加更多语言，将 ISO 代码加入列表（例如 `["en", "zh", "ja", "ko"]`）。21 种支持语言的完整列表请见本页顶部。启用更多语言会增加每次运行的 LLM 调用次数——请注意 API 成本。
+> `config.yml` 开头的 `languages` 字段控制启用的语言。默认为 `["en-US", "zh-CN"]`。如需添加更多语言，将 BCP-47 标签加入列表（例如 `["en-US", "zh-CN", "ja-JP", "ko-KR"]`）。21 种支持语言的完整列表请见本页顶部。启用更多语言会增加每次运行的 LLM 调用次数，请注意 API 成本。
 
 ### 3. 添加 Secrets
 
@@ -302,6 +302,30 @@ bun test        # 运行所有测试
 bun test --watch  # 开发模式下监听变更
 ```
 
+## 多语言支持
+
+报告会为 `config.yml` 中 `languages` 列表内的每种语言生成。21 种预翻译语言均可直接启用，只需在列表中添加对应的 BCP-47 标签：
+
+```yaml
+languages:
+  - en-US     # 主语言 — 文件名无后缀（ai-cli.md）
+  - zh-CN
+  - ja-JP     # 可添加 21 种支持的 BCP-47 标签中的任意一种
+  - ko-KR
+```
+
+列表第一项（或 `defaultPrimaryLanguage` 显式设置的语言）为**主语言**，文件名无后缀；其他语言使用 BCP-47 标签作为后缀（`ai-cli.zh-CN.md`、`ai-cli.ja-JP.md`）。
+
+如需添加尚未翻译的语言，在 `locales/` 目录下放置对应的 `xx-XX.json` 文件（参考现有文件格式），并将 BCP-47 标签加入 `config.yml`。
+
+也可通过环境变量在不修改 `config.yml` 的情况下覆盖启用的语言：
+
+```bash
+export REPORT_LANGS=en-US,ja-JP
+```
+
+> 每增加一种语言，每次运行的 LLM 调用次数就会成倍增加。启用 5 种语言 + 10 个数据源时，单次运行约有 100+ 次 LLM 调用。非英语语言的输出质量可能因训练数据覆盖程度而有所差异。
+
 ## 输出格式
 
 文件写入 `digests/YYYY-MM-DD/`。每种报告类型会为每个启用的语言生成一个文件：
@@ -313,11 +337,15 @@ bun test --watch  # 开发模式下监听变更
 | `ai-web.{locale}.md` | 官网内容报告（仅在有新内容时生成） | `web.{locale}` |
 | `ai-trending.{locale}.md` | GitHub AI 趋势热榜 — 按维度分类 + 趋势信号分析（仅在有数据时生成） | `trending.{locale}` |
 | `ai-hn.{locale}.md` | Hacker News AI 社区动态 — 热门帖子分类 + 情绪分析（仅在抓取成功时生成） | `hn.{locale}` |
+| `ai-ph.{locale}.md` | Product Hunt AI 产品简报（仅在有数据时生成） | `ph.{locale}` |
+| `ai-arxiv.{locale}.md` | ArXiv AI 研究简报 — cs.AI/cs.CL/cs.LG 精选论文 | `arxiv.{locale}` |
+| `ai-hf.{locale}.md` | Hugging Face 热门模型简报 — 按周点赞排序 | `hf.{locale}` |
+| `ai-community.{locale}.md` | 技术社区 AI 动态 — Dev.to 文章 + Lobste.rs 故事合集 | `community.{locale}` |
 
-其中 `{locale}` 对中文（默认语言）为空（如 `ai-cli.md`），对其他语言为语言代码（如 `ai-cli.en.md`、`ai-cli.ja.md`）。GitHub Issue 标签使用相同的后缀规则。
+其中 `{locale}` 对主语言（默认 `en-US`，如 `ai-cli.md`）为空，对其他语言为 BCP-47 标签（如 `ai-cli.zh-CN.md`、`ai-cli.ja-JP.md`）。主语言通过 `config.yml` 中的 `defaultPrimaryLanguage` 设置。
 
-例如，配置 `["en", "zh"]` 时，`digests/2026-05-28/` 目录包含：
-- `ai-cli.md`（中文）、`ai-cli.en.md`（英语）
+例如，配置 `["en-US", "zh-CN"]` 时，`digests/2026-05-28/` 目录包含：
+- `ai-cli.md`（英文，主语言）、`ai-cli.zh-CN.md`（中文）
 
 `digests/web-state.json` 用于记录已处理的 URL，随每日简报一并提交。
 

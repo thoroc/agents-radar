@@ -1,17 +1,19 @@
+import type { Locale } from "../types";
+import { t } from "../utils";
+
 export const buildSourceHeader = (
-  suffix: string,
+  lang: Locale,
   dateStr: string,
   utcStr: string,
   title: string,
   sourceLabel: string,
   sourceUrl: string,
-  countEn: string,
-  countZh: string,
+  count: string,
   extraMeta?: string,
 ): string => {
-  const count = suffix ? countEn : countZh;
+  const s = t(lang);
   const meta = extraMeta ? ` | ${extraMeta}` : "";
-  return suffix
-    ? `# ${title} ${dateStr}\n\n> Source: [${sourceLabel}](${sourceUrl}) | ${count} | Generated: ${utcStr} UTC${meta}`
-    : `# ${title} ${dateStr}\n\n> 数据来源: [${sourceLabel}](${sourceUrl}) | ${count} | 生成时间: ${utcStr} UTC${meta}`;
+  const generated = s.headerGeneratedLabel.replace("{utcStr}", utcStr);
+  const sourcePrefix = s.headerSourceLabel;
+  return `# ${title} ${dateStr}\n\n> ${sourcePrefix}: [${sourceLabel}](${sourceUrl}) | ${count} | ${generated} UTC${meta}`;
 };

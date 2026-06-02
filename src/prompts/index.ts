@@ -13,8 +13,5 @@ export { buildSkillsPrompt } from "./build-skills-prompt";
 export { buildTrendingPrompt } from "./build-trending-prompt";
 export { buildWebReportPrompt } from "./build-web-report-prompt";
 export { buildWeeklyPrompt } from "./build-weekly-prompt";
-export { formatItem } from "./format-item";
 export type { ReportHighlights } from "./prompts-data-types";
 export type { RepoDigest } from "./repo-digest";
-export { sampleNote } from "./sample-note";
-export { topN } from "./top-n";

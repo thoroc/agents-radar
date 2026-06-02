@@ -1,8 +1,7 @@
 import { saveWebState, type WebFetchResult, type WebState } from "../fetchers";
 import { buildWebReportPrompt } from "../prompts";
 import { LLM_TOKENS_WEB } from "../report/report-constants";
-import { toPromptLang } from "../types";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 import { defaultDeps, saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
 
@@ -13,14 +12,14 @@ export const saveWebReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh",
+  lang: Locale = getPrimaryLang() as Locale,
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const hasNewContent = webResults.some((r) => r.newItems.length > 0);
 
   if (!hasNewContent) {
     console.error(`  [web/${lang}] No new content detected, skipping report.`);
-    if (lang === "zh") {
+    if (lang === getPrimaryLang()) {
       saveWebState(webState);
       console.error("  [web] State saved.");
     }
@@ -35,34 +34,29 @@ export const saveWebReport = async (
   const openaiNew = webResults.find((r) => r.site === "openai")?.newItems.length ?? 0;
   const openaiTotal = webResults.find((r) => r.site === "openai")?.totalDiscovered ?? 0;
 
-  const issueTitle = isFirstRun
-    ? lang === "en"
-      ? `🌐 Official AI Content Report ${dateStr} (First Crawl)`
-      : `🌐 AI 官方内容追踪报告 ${dateStr}（首次全量）`
-    : lang === "en"
-      ? `🌐 Official AI Content Report ${dateStr}`
-      : `🌐 AI 官方内容追踪报告 ${dateStr}`;
+  const issueTitle = isFirstRun ? s.webIssueTitleFirstCrawl : s.webIssueTitle;
 
   console.error(`  [web/${lang}] Calling LLM for web content report...`);
   try {
     await saveReport(
       {
         data: webResults,
-        promptBuilder: (d, ds, _suffix) =>
-          buildWebReportPrompt(d as WebFetchResult[], ds, toPromptLang(lang)),
-        headerBuilder: (ds, us, suffix) => {
-          const mode = suffix
-            ? isFirstRun
-              ? `First full crawl (${totalNew} new articles today)`
-              : `Incremental update — ${totalNew} new articles today`
-            : isFirstRun
-              ? `首次全量抓取（今日新增 ${totalNew} 篇）`
-              : `今日增量更新 — 共 ${totalNew} 篇新内容`;
-          const meta = suffix ? `> ${mode} | Generated: ${us} UTC` : `> ${mode} | 生成时间: ${us} UTC`;
-          const sources = suffix
-            ? `\n\n## Sources\n- Anthropic: [anthropic.com](https://www.anthropic.com) — ${anthropicNew} new articles (sitemap total: ${anthropicTotal})\n- OpenAI: [openai.com](https://openai.com) — ${openaiNew} new articles (sitemap total: ${openaiTotal})`
-            : `\n\n## 数据来源\n- Anthropic: [anthropic.com](https://www.anthropic.com) — 新增 ${anthropicNew} 篇（sitemap 共 ${anthropicTotal} 条）\n- OpenAI: [openai.com](https://openai.com) — 新增 ${openaiNew} 篇（sitemap 共 ${openaiTotal} 条）`;
-          return `# ${s.webTitle} ${ds}\n\n${meta}${sources}`;
+        promptBuilder: (d) => buildWebReportPrompt(d as WebFetchResult[], lang),
+        headerBuilder: (_ds, us) => {
+          const mode = isFirstRun
+            ? s.webModeFirstCrawl.replace("{n}", String(totalNew))
+            : s.webModeIncremental.replace("{n}", String(totalNew));
+          const generated = s.headerGeneratedLabel.replace("{utcStr}", us);
+          const sourcesHeading = s.webSourcesHeader;
+          const anthropicLine = s.webSourcesAnthropic
+            .replace("{n}", String(anthropicNew))
+            .replace("{total}", String(anthropicTotal));
+          const openaiLine = s.webSourcesOpenai
+            .replace("{n}", String(openaiNew))
+            .replace("{total}", String(openaiTotal));
+          const meta = `> ${mode} | ${generated} UTC`;
+          const sources = `\n\n## ${sourcesHeading}\n- Anthropic: [anthropic.com](https://www.anthropic.com) — ${anthropicLine}\n- OpenAI: [openai.com](https://openai.com) — ${openaiLine}`;
+          return `# ${s.webTitle} ${_ds}\n\n${meta}${sources}`;
         },
         fileName: "ai-web",
         issueTitle,
@@ -80,7 +74,7 @@ export const saveWebReport = async (
     console.error(`  [web/${lang}] Report generation failed: ${err}`);
   }
 
-  if (lang === "zh") {
+  if (lang === getPrimaryLang()) {
     saveWebState(webState);
     console.error("  [web] State saved.");
   }

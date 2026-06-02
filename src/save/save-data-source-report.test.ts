@@ -4,15 +4,14 @@ import { saveDataSourceReport } from "./save-data-source-report";
 import * as saveReportModule from "./save-report";
 
 describe("buildSourceHeader", () => {
-  it("returns Chinese header when suffix is empty (zh locale)", () => {
+  it("returns Chinese header for zh locale", () => {
     const result = buildSourceHeader(
-      "",
+      "zh-CN",
       "2026-01-01",
       "2026-01-01T00:00:00Z",
       "ArXiv Papers",
       "ArXiv",
       "https://arxiv.org/",
-      "10 papers",
       "共 10 篇论文",
     );
 
@@ -23,35 +22,34 @@ describe("buildSourceHeader", () => {
     expect(result).toContain("生成时间");
   });
 
-  it("returns English header when suffix is set (en locale)", () => {
+  it("returns English header for en locale", () => {
     const result = buildSourceHeader(
-      ".en",
+      "en-US",
       "2026-01-01",
       "2026-01-01T00:00:00Z",
       "ArXiv Papers",
       "ArXiv",
       "https://arxiv.org/",
       "10 papers",
-      "共 10 篇论文",
     );
 
     expect(result).toContain("# ArXiv Papers 2026-01-01");
-    expect(result).toContain("Source:");
+    expect(result).toContain("Sources:");
     expect(result).toContain("10 papers");
     expect(result).toContain("arxiv.org");
+    expect(result).toContain("Generated");
     expect(result).not.toContain("数据来源");
   });
 
   it("includes extraMeta when provided", () => {
     const result = buildSourceHeader(
-      ".en",
+      "en-US",
       "2026-01-01",
       "2026-01-01T00:00:00Z",
       "Title",
       "Source",
       "https://example.com/",
       "5 items",
-      "共 5 条",
       "cs.AI, cs.CL",
     );
 
@@ -61,14 +59,13 @@ describe("buildSourceHeader", () => {
 
   it("omits extraMeta pipe when extraMeta is not provided", () => {
     const result = buildSourceHeader(
-      ".en",
+      "en-US",
       "2026-01-01",
       "2026-01-01T00:00:00Z",
       "Title",
       "Source",
       "https://example.com/",
       "5 items",
-      "共 5 条",
     );
 
     expect(result).not.toContain("| undefined");
@@ -94,8 +91,8 @@ describe("saveDataSourceReport", () => {
     logPrefix: "test",
     logAction: "Test",
     data: { items: [1, 2, 3] },
-    promptBuilder: (_d: unknown, ds: string, _suffix: string) => `prompt-${ds}`,
-    headerBuilder: (_suffix: string, ds: string, us: string) => `# Header ${ds} ${us}`,
+    promptBuilder: (_d: unknown, ds: string) => `prompt-${ds}`,
+    headerBuilder: (ds: string, us: string, _lang: string) => `# Header ${ds} ${us}`,
     fileName: "test-file",
     issueTitle: "Test Issue",
     issueLabel: "test-label",
@@ -108,7 +105,7 @@ describe("saveDataSourceReport", () => {
       "2026-01-01",
       "",
       "",
-      "zh",
+      "zh-CN",
       mockDeps,
     );
 
@@ -122,7 +119,7 @@ describe("saveDataSourceReport", () => {
       "2026-01-01",
       "owner/repo",
       "\nfooter",
-      "en",
+      "en-US",
       mockDeps,
     );
 
@@ -148,15 +145,22 @@ describe("saveDataSourceReport", () => {
     expect(dateStr).toBe("2026-01-01");
     expect(digestRepo).toBe("owner/repo");
     expect(footer).toBe("\nfooter");
-    expect(lang).toBe("en");
+    expect(lang).toBe("en-US");
     expect(callDeps).toEqual(expect.objectContaining(mockDeps));
+
+    const headerResult = (config.headerBuilder as (ds: string, us: string, l: string) => string)(
+      "2026-01-01",
+      "2026-01-01T00:00:00Z",
+      "en-US",
+    );
+    expect(headerResult).toBe("# Header 2026-01-01 2026-01-01T00:00:00Z");
   });
 
   it("does not throw when saveReport throws", async () => {
     vi.spyOn(saveReportModule, "saveReport").mockRejectedValueOnce(new Error("boom"));
 
     await expect(
-      saveDataSourceReport(opts, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh", mockDeps),
+      saveDataSourceReport(opts, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh-CN", mockDeps),
     ).resolves.toBeUndefined();
   });
 });

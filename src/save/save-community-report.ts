@@ -1,8 +1,7 @@
 import type { DevToData } from "../fetchers/dev-to";
 import type { LobstersData } from "../fetchers/lobste-rs";
 import { buildCommunityPrompt } from "../prompts";
-import { toPromptLang } from "../types";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 import { saveDataSourceReport } from "./save-data-source-report";
 import type { SaveReportDeps } from "./saver-types";
 
@@ -13,7 +12,7 @@ export const saveCommunityReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh",
+  lang: Locale = getPrimaryLang() as Locale,
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const s = t(lang);
@@ -25,14 +24,15 @@ export const saveCommunityReport = async (
       logPrefix: "community",
       logAction: "community",
       data: { devto: devtoData, lobsters: lobstersData },
-      promptBuilder: (d, ds, _suffix) => {
+      promptBuilder: (d) => {
         const { devto, lobsters } = d as { devto: DevToData; lobsters: LobstersData };
-        return buildCommunityPrompt(devto, lobsters, ds, toPromptLang(lang));
+        return buildCommunityPrompt(devto, lobsters, lang);
       },
-      headerBuilder: (suffix, ds, us) =>
-        suffix
-          ? `# ${s.communityTitle} ${ds}\n\n> Sources: [Dev.to](https://dev.to/) (${devtoCount} articles) + [Lobste.rs](https://lobste.rs/) (${lobstersCount} stories) | Generated: ${us} UTC`
-          : `# ${s.communityTitle} ${ds}\n\n> 数据来源: [Dev.to](https://dev.to/) (${devtoCount} 篇) + [Lobste.rs](https://lobste.rs/) (${lobstersCount} 条) | 生成时间: ${us} UTC`,
+      headerBuilder: (_ds, us) => {
+        const generated = s.headerGeneratedLabel.replace("{utcStr}", us);
+        const sourceLabel = s.headerSourceLabel;
+        return `# ${s.communityTitle} ${_ds}\n\n> ${sourceLabel}: [Dev.to](https://dev.to/) (${devtoCount} ${s.devtoArticles}) + [Lobste.rs](https://lobste.rs/) (${lobstersCount} ${s.lobstersStories}) | ${generated} UTC`;
+      },
       fileName: "ai-community",
       issueTitle: s.issueTitleCommunity,
       issueLabel: s.issueLabelCommunity,

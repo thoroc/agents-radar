@@ -53,7 +53,7 @@ describe("saveCommunityReport", () => {
       "2026-01-01",
       "",
       "\nfooter",
-      "en",
+      "en-US",
     );
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
@@ -93,7 +93,7 @@ describe("saveCommunityReport", () => {
       "2026-01-01",
       "",
       "",
-      "zh",
+      "zh-CN",
     );
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
@@ -113,12 +113,36 @@ describe("saveCommunityReport", () => {
       "2026-01-01",
       "",
       "",
-      "zh",
+      "zh-CN",
     );
 
     expect(saveDataSourceReportModule.saveDataSourceReport).toHaveBeenCalledOnce();
     const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
       .calls[0]![0] as Record<string, unknown>;
     expect(opts.hasData).toBe(false);
+  });
+
+  it("promptBuilder and headerBuilder return strings", async () => {
+    await saveCommunityReport(
+      devtoData as never,
+      lobstersData as never,
+      "2026-01-01T00:00:00Z",
+      "2026-01-01",
+      "",
+      "\nfooter",
+      "en-US",
+    );
+    const opts = (saveDataSourceReportModule.saveDataSourceReport as ReturnType<typeof vi.fn>).mock
+      .calls[0]![0] as Record<string, unknown>;
+    const prompt = (opts.promptBuilder as (d: unknown) => string)({
+      devto: devtoData,
+      lobsters: lobstersData,
+    });
+    const header = (opts.headerBuilder as (ds: string, us: string) => string)(
+      "2026-01-01",
+      "2026-01-01T00:00:00Z",
+    );
+    expect(typeof prompt).toBe("string");
+    expect(typeof header).toBe("string");
   });
 });

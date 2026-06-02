@@ -39,7 +39,7 @@ const mockData: TrendingData = {
 
 describe("buildTrendingPrompt", () => {
   it("includes repo names and metadata in default locale", () => {
-    const result = buildTrendingPrompt(mockData, "2026-03-09");
+    const result = buildTrendingPrompt(mockData, "2026-03-09", "zh-CN");
     expect(result).toContain("owner/ai-tool");
     expect(result).toContain("owner/ml-framework");
     expect(result).toContain("owner/llm-app");
@@ -50,7 +50,7 @@ describe("buildTrendingPrompt", () => {
   });
 
   it("generates English variant", () => {
-    const result = buildTrendingPrompt(mockData, "2026-03-09", "en");
+    const result = buildTrendingPrompt(mockData, "2026-03-09", "en-US");
     expect(result).toContain("owner/ai-tool");
     expect(result).toContain("owner/llm-app");
     expect(result).toContain("Trending");
@@ -59,7 +59,7 @@ describe("buildTrendingPrompt", () => {
   });
 
   it("includes date string in output", () => {
-    const result = buildTrendingPrompt(mockData, "2026-03-09");
+    const result = buildTrendingPrompt(mockData, "2026-03-09", "zh-CN");
     expect(result).toContain("2026-03-09");
   });
 });

@@ -1,4 +1,4 @@
-import { type Locale, t } from "../../utils";
+import { getPrimaryLang, type Locale, t } from "../../utils";
 import { PAGES_URL_DEFAULT } from "../../utils/constants";
 import type { Highlights } from "../notify/build-message";
 import { notifyLabel } from "../notify/notify-label";
@@ -8,12 +8,12 @@ export const buildFeishuMessage = (
   reports: string[],
   pagesUrl?: string,
   highlights?: Highlights | null,
-  enabledLangs: string[] = ["zh"],
-  primaryLang: Locale = "zh",
+  enabledLangs: string[] = ["zh-CN"],
+  primaryLang: Locale = getPrimaryLang() as Locale,
   env: NodeJS.ProcessEnv = process.env,
 ): string => {
   const PAGES_URL = (pagesUrl ?? env.PAGES_URL ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
-  const baseReports = reports.filter((r) => !r.endsWith("-en"));
+  const baseReports = reports.filter((r) => !r.endsWith(".en-US"));
   const isWeekly = baseReports.includes("ai-weekly");
   const isMonthly = baseReports.includes("ai-monthly");
 
@@ -37,7 +37,7 @@ export const buildFeishuMessage = (
 
     const reportLinks = enabledLangs.map((lang) => {
       const label = notifyLabel(r, lang as Locale);
-      const suffix = lang === "zh" ? "" : `.${lang}`;
+      const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
       const url = `${PAGES_URL}/#${date}/${r}${suffix}`;
       if (multiLang) {
         return `[${label} (${lang.toUpperCase()})](${url})`;

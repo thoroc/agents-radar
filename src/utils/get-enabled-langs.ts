@@ -9,5 +9,5 @@ export const getEnabledLangs = (langConfig?: string[], env: NodeJS.ProcessEnv = 
       .filter(Boolean);
   }
   if (langConfig && langConfig.length > 0) return langConfig;
-  return DEFAULT_LANGUAGES;
+  return [...DEFAULT_LANGUAGES];
 };

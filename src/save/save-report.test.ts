@@ -15,8 +15,8 @@ describe("saveReport", () => {
 
   const config: SaveReportConfig = {
     data: { test: true },
-    promptBuilder: (_d, ds, suffix) => `test-prompt-${ds}-${suffix}`,
-    headerBuilder: (ds, us, _suffix) => `# Test Report ${ds}\n\nGenerated: ${us} UTC`,
+    promptBuilder: (_d, ds) => `test-prompt-${ds}`,
+    headerBuilder: (ds, us, _lang) => `# Test Report ${ds}\n\nGenerated: ${us} UTC`,
     fileName: "test-report",
     issueTitle: "Test Report",
     issueLabel: "test",
@@ -28,7 +28,7 @@ describe("saveReport", () => {
 
   it("calls callLlm with the right prompt and date suffix", async () => {
     mockCallLlm.mockResolvedValueOnce("test content");
-    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en.md");
+    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en-US.md");
     mockCreateGitHubIssue.mockResolvedValueOnce("https://github.com/owner/repo/issues/1");
 
     await saveReport(
@@ -37,17 +37,17 @@ describe("saveReport", () => {
       "2026-01-01",
       "owner/repo",
       "\n\n---\n*footer*",
-      "en",
+      "en-US",
       deps,
     );
 
     expect(mockCallLlm).toHaveBeenCalledOnce();
-    expect(mockCallLlm).toHaveBeenCalledWith("test-prompt-2026-01-01-.en", undefined);
+    expect(mockCallLlm).toHaveBeenCalledWith("test-prompt-2026-01-01", undefined);
   });
 
   it("calls saveFile with the correct file path", async () => {
     mockCallLlm.mockResolvedValueOnce("test content");
-    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en.md");
+    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en-US.md");
     mockCreateGitHubIssue.mockResolvedValueOnce("https://github.com/owner/repo/issues/1");
 
     await saveReport(
@@ -56,20 +56,20 @@ describe("saveReport", () => {
       "2026-01-01",
       "owner/repo",
       "\n\n---\n*footer*",
-      "en",
+      "en-US",
       deps,
     );
 
     expect(mockSaveFile).toHaveBeenCalledWith(
       expect.stringContaining("# Test Report 2026-01-01"),
       "2026-01-01",
-      "test-report.en.md",
+      "test-report.md",
     );
   });
 
   it("includes the footer at the end of the content", async () => {
     mockCallLlm.mockResolvedValueOnce("test content");
-    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en.md");
+    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en-US.md");
 
     await saveReport(
       config,
@@ -77,7 +77,7 @@ describe("saveReport", () => {
       "2026-01-01",
       "owner/repo",
       "\n\n---\n*footer*",
-      "en",
+      "en-US",
       deps,
     );
 
@@ -88,9 +88,9 @@ describe("saveReport", () => {
 
   it("includes a --- separator between header and content", async () => {
     mockCallLlm.mockResolvedValueOnce("test content");
-    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en.md");
+    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en-US.md");
 
-    await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "en", deps);
+    await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "en-US", deps);
 
     const savedContent = mockSaveFile.mock.calls[0]![0];
     expect(savedContent).toContain("---");
@@ -102,7 +102,7 @@ describe("saveReport", () => {
   it("skips saveFile and createGitHubIssue when LLM returns empty string", async () => {
     mockCallLlm.mockResolvedValueOnce("");
 
-    await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "owner/repo", "", "en", deps);
+    await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "owner/repo", "", "en-US", deps);
 
     expect(mockSaveFile).not.toHaveBeenCalled();
     expect(mockCreateGitHubIssue).not.toHaveBeenCalled();
@@ -112,7 +112,7 @@ describe("saveReport", () => {
     mockCallLlm.mockResolvedValueOnce("test content");
     mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.md");
 
-    await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "en", deps);
+    await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "en-US", deps);
 
     expect(mockSaveFile).toHaveBeenCalledOnce();
     expect(mockCreateGitHubIssue).not.toHaveBeenCalled();
@@ -123,7 +123,7 @@ describe("saveReport", () => {
     mockCallLlm.mockResolvedValueOnce("test content");
     mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.md");
 
-    await saveReport(noIssueConfig, "2026-01-01T00:00:00Z", "2026-01-01", "owner/repo", "", "en", deps);
+    await saveReport(noIssueConfig, "2026-01-01T00:00:00Z", "2026-01-01", "owner/repo", "", "en-US", deps);
 
     expect(mockSaveFile).toHaveBeenCalledOnce();
     expect(mockCreateGitHubIssue).not.toHaveBeenCalled();
@@ -131,7 +131,7 @@ describe("saveReport", () => {
 
   it("calls createGitHubIssue with the correct title and label", async () => {
     mockCallLlm.mockResolvedValueOnce("test content");
-    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en.md");
+    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en-US.md");
     mockCreateGitHubIssue.mockResolvedValueOnce("https://github.com/owner/repo/issues/1");
 
     await saveReport(
@@ -140,7 +140,7 @@ describe("saveReport", () => {
       "2026-01-01",
       "owner/repo",
       "\n\n---\n*footer*",
-      "en",
+      "en-US",
       deps,
     );
 
@@ -148,21 +148,21 @@ describe("saveReport", () => {
     expect(mockCreateGitHubIssue).toHaveBeenCalledWith("Test Report 2026-01-01", expect.any(String), "test");
   });
 
-  it("uses Chinese file suffix when lang is zh", async () => {
+  it("uses Chinese file suffix when lang is zh-CN", async () => {
+    mockCallLlm.mockResolvedValueOnce("test content");
+    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.zh-CN.md");
+
+    await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh-CN", deps);
+
+    expect(mockSaveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "test-report.zh-CN.md");
+  });
+
+  it("uses English file suffix when lang is en-US", async () => {
     mockCallLlm.mockResolvedValueOnce("test content");
     mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.md");
 
-    await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "zh", deps);
+    await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "en-US", deps);
 
     expect(mockSaveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "test-report.md");
-  });
-
-  it("uses English file suffix when lang is en", async () => {
-    mockCallLlm.mockResolvedValueOnce("test content");
-    mockSaveFile.mockReturnValueOnce("digests/2026-01-01/test-report.en.md");
-
-    await saveReport(config, "2026-01-01T00:00:00Z", "2026-01-01", "", "", "en", deps);
-
-    expect(mockSaveFile).toHaveBeenCalledWith(expect.any(String), "2026-01-01", "test-report.en.md");
   });
 });

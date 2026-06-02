@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
-import type { Locale } from "../types/locale";
+import { getPrimaryLang } from "../utils";
 import { PAGES_URL_DEFAULT } from "../utils/constants";
 import { STRINGS, SUPPORTED_LOCALES } from "../utils/locale-data";
 import { DIGESTS_DIR } from "./constants";
@@ -57,7 +57,7 @@ const buildLabels = (): Record<string, string> => {
   for (const lang of SUPPORTED_LOCALES) {
     const s = STRINGS[lang];
     if (!s) continue;
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
     const reportIds = [
       "ai-cli",
       "ai-agents",

@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-// Read real locale data for zh and en to avoid breaking downstream tests
-const ZH_LOCALE = JSON.parse(require("fs").readFileSync("locales/zh.json", "utf-8"));
-const EN_LOCALE = JSON.parse(require("fs").readFileSync("locales/en.json", "utf-8"));
+// Read real locale data for zh-CN and en-US to avoid breaking downstream tests
+const ZH_LOCALE = JSON.parse(require("fs").readFileSync("locales/zh-CN.json", "utf-8"));
+const EN_LOCALE = JSON.parse(require("fs").readFileSync("locales/en-US.json", "utf-8"));
 
 vi.mock("../utils", () => ({
-  t: (lang: string) => (lang === "en" ? EN_LOCALE : ZH_LOCALE),
+  t: (lang: string) => (lang === "en-US" ? EN_LOCALE : ZH_LOCALE),
 }));
 
 import { reportLabel } from "./report-label";
@@ -23,12 +23,12 @@ describe("reportLabel", () => {
     expect(reportLabel("ai-agents")).toBe(ZH_LOCALE.reportLabelAiAgents);
   });
 
-  it("returns en label for ai-cli-en", () => {
-    expect(reportLabel("ai-cli-en")).toBe(EN_LOCALE.reportLabelAiCli);
+  it("returns en label for ai-cli.en-US", () => {
+    expect(reportLabel("ai-cli.en-US")).toBe(EN_LOCALE.reportLabelAiCli);
   });
 
-  it("returns en label for ai-hn-en", () => {
-    expect(reportLabel("ai-hn-en")).toBe(EN_LOCALE.reportLabelAiHn);
+  it("returns en label for ai-hn.en-US", () => {
+    expect(reportLabel("ai-hn.en-US")).toBe(EN_LOCALE.reportLabelAiHn);
   });
 
   it("returns the id itself for unknown values", () => {

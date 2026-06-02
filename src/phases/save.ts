@@ -9,8 +9,7 @@ import type { LobstersData } from "../fetchers/lobste-rs";
 import type { ProductHuntData } from "../fetchers/product-hunt";
 import type { TrendingData } from "../fetchers/trending";
 import { createGitHubIssue, type RepoConfig, type RepoFetch } from "../github";
-import type { RepoDigest } from "../prompts";
-import { buildHighlightsPrompt, type ReportHighlights } from "../prompts";
+import { buildHighlightsPrompt, type RepoDigest, type ReportHighlights } from "../prompts";
 import { autoGenFooter } from "../report/auto-gen-footer";
 import { buildCliReportContent } from "../report/build-cli-report-content";
 import { buildOpenclawReportContent } from "../report/build-openclaw-report-content";
@@ -23,7 +22,7 @@ import { saveHuggingFaceReport } from "../save/save-hugging-face-report";
 import { saveProductHuntReport } from "../save/save-product-hunt-report";
 import { saveTrendingReport } from "../save/save-trending-report";
 import { saveWebReport } from "../save/save-web-report";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 
 const readReport = (dateStr: string, name: string): string | undefined => {
   const p = path.join("digests", dateStr, name);
@@ -61,7 +60,9 @@ export type SavePhaseArgs = {
   lobstersData: LobstersData;
 };
 
-export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
+const buildMainReports = (
+  args: SavePhaseArgs,
+): { cliContent: Record<string, string>; openclawContent: Record<string, string> } => {
   const {
     summariesByLang,
     comparisonsByLang,
@@ -69,20 +70,10 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
     claudeSkillsRepo,
     utcStr,
     dateStr,
-    digestRepo,
     enabledLangs,
     fetchedOpenclaw,
     openclaw,
     openclawPeers,
-    webResults,
-    webState,
-    trendingData,
-    hnData,
-    phData,
-    arxivData,
-    hfData,
-    devtoData,
-    lobstersData,
   } = args;
 
   const cliContent: Record<string, string> = {};
@@ -91,7 +82,7 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
   for (const lang of enabledLangs) {
     const s = summariesByLang[lang]!;
     const ft = autoGenFooter(lang as Locale);
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
 
     cliContent[lang] = buildCliReportContent(
       s.cliDigests,
@@ -120,6 +111,27 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
     console.error(`  Saved ${saveFile(openclawContent[lang], dateStr, `ai-agents${suffix}.md`)}`);
   }
 
+  return { cliContent, openclawContent };
+};
+
+const runDataSourceSavers = async (args: SavePhaseArgs): Promise<void> => {
+  const {
+    enabledLangs,
+    webResults,
+    webState,
+    trendingData,
+    hnData,
+    phData,
+    arxivData,
+    hfData,
+    devtoData,
+    lobstersData,
+    utcStr,
+    dateStr,
+    digestRepo,
+    summariesByLang,
+  } = args;
+
   for (const lang of enabledLangs) {
     await saveWebReport(
       webResults,
@@ -146,10 +158,17 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
     ];
   });
   await Promise.all(reportSavers);
+};
 
+const generateHighlights = async (
+  enabledLangs: string[],
+  cliContent: Record<string, string>,
+  openclawContent: Record<string, string>,
+  dateStr: string,
+): Promise<void> => {
   const reportsByLang: Record<string, Record<string, string>> = {};
   for (const lang of enabledLangs) {
-    const suffix = lang === "zh" ? "" : `.${lang}`;
+    const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
     reportsByLang[lang] = { "ai-cli": cliContent[lang]!, "ai-agents": openclawContent[lang]! };
     for (const id of [
       "ai-trending",
@@ -167,24 +186,24 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
 
   console.error("  Generating highlights for Telegram...");
   const highlights: Record<string, ReportHighlights> = {};
-  for (const lang of enabledLangs) {
-    highlights[lang] = {};
-  }
+  for (const lang of enabledLangs) highlights[lang] = {};
+
   try {
-    const highlightPromises = enabledLangs.map(async (lang) => {
-      const reports = reportsByLang[lang] ?? {};
-      const raw = await callLlm(buildHighlightsPrompt(reports, lang as Locale), 2048);
-      return [
-        lang,
-        JSON.parse(
-          raw
-            .replace(/```json?\n?/g, "")
-            .replace(/```/g, "")
-            .trim(),
-        ),
-      ] as const;
-    });
-    const highlightResults = await Promise.all(highlightPromises);
+    const highlightResults = await Promise.all(
+      enabledLangs.map(async (lang) => {
+        const reports = reportsByLang[lang] ?? {};
+        const raw = await callLlm(buildHighlightsPrompt(reports, lang as Locale), 2048);
+        return [
+          lang,
+          JSON.parse(
+            raw
+              .replace(/```json?\n?/g, "")
+              .replace(/```/g, "")
+              .trim(),
+          ),
+        ] as const;
+      }),
+    );
     for (const [lang, parsed] of highlightResults) {
       highlights[lang] = parsed as ReportHighlights;
     }
@@ -194,22 +213,36 @@ export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
 
   const highlightsPath = saveFile(JSON.stringify(highlights, null, 2), dateStr, "highlights.json");
   console.error(`  Saved ${highlightsPath}`);
+};
 
-  if (digestRepo) {
-    for (const lang of enabledLangs) {
-      const cliUrl = await createGitHubIssue(
-        `${t(lang).issueTitleCli} ${dateStr}`,
-        cliContent[lang]!,
-        t(lang).issueLabelCli,
-      );
-      console.error(`  Created CLI issue (${lang}): ${cliUrl}`);
+const postGitHubIssues = async (
+  enabledLangs: string[],
+  cliContent: Record<string, string>,
+  openclawContent: Record<string, string>,
+  dateStr: string,
+): Promise<void> => {
+  for (const lang of enabledLangs) {
+    const cliUrl = await createGitHubIssue(
+      `${t(lang).issueTitleCli} ${dateStr}`,
+      cliContent[lang]!,
+      t(lang).issueLabelCli,
+    );
+    console.error(`  Created CLI issue (${lang}): ${cliUrl}`);
 
-      const ocUrl = await createGitHubIssue(
-        `${t(lang).issueTitleOpenclaw} ${dateStr}`,
-        openclawContent[lang]!,
-        t(lang).issueLabelOpenclaw,
-      );
-      console.error(`  Created OpenClaw issue (${lang}): ${ocUrl}`);
-    }
+    const ocUrl = await createGitHubIssue(
+      `${t(lang).issueTitleOpenclaw} ${dateStr}`,
+      openclawContent[lang]!,
+      t(lang).issueLabelOpenclaw,
+    );
+    console.error(`  Created OpenClaw issue (${lang}): ${ocUrl}`);
+  }
+};
+
+export const savePhase = async (args: SavePhaseArgs): Promise<void> => {
+  const { cliContent, openclawContent } = buildMainReports(args);
+  await runDataSourceSavers(args);
+  await generateHighlights(args.enabledLangs, cliContent, openclawContent, args.dateStr);
+  if (args.digestRepo) {
+    await postGitHubIssues(args.enabledLangs, cliContent, openclawContent, args.dateStr);
   }
 };

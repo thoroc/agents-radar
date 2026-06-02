@@ -1,11 +1,11 @@
 import type { HuggingFaceData } from "../fetchers/hugging-face";
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildHuggingFacePrompt = (
   data: HuggingFaceData,
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const modelsText = data.models
     .map(

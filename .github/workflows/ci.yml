@@ -28,6 +28,9 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
 
+      - name: Validate locale files
+        run: bun run validate-locales
+
       - name: Test
         run: bun test
 

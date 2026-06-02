@@ -1,11 +1,11 @@
 import type { ProductHuntData } from "../fetchers/product-hunt";
 import type { Locale } from "../types/locale";
-import { LANGUAGE_NAMES } from "../utils";
+import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildProductHuntPrompt = (
   data: ProductHuntData,
   dateStr: string,
-  lang: Locale = "zh",
+  lang: Locale = getPrimaryLang() as Locale,
 ): string => {
   const productsText = data.products
     .map(

@@ -1,5 +1,5 @@
 import type { TrendingData } from "../fetchers/trending";
-import { type Locale, t } from "../utils";
+import { getPrimaryLang, type Locale, t } from "../utils";
 import { defaultDeps, saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
 
@@ -10,7 +10,7 @@ export const saveTrendingReport = async (
   dateStr: string,
   digestRepo: string,
   footer: string,
-  lang: Locale = "zh",
+  lang: Locale = getPrimaryLang() as Locale,
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const hasData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;
@@ -25,9 +25,11 @@ export const saveTrendingReport = async (
   await saveReport(
     {
       data: trendingSummary,
-      promptBuilder: (d, _ds, _suffix) => d as string,
-      headerBuilder: (ds, us, suffix) =>
-        `# ${s.trendingTitle} ${ds}\n\n> ${s.trendingSources} | ${suffix ? "Generated" : "生成时间"}: ${us} UTC`,
+      promptBuilder: (d) => d as string,
+      headerBuilder: (_ds, us) => {
+        const generated = s.headerGeneratedLabel.replace("{utcStr}", us);
+        return `# ${s.trendingTitle} ${_ds}\n\n> ${s.trendingSources} | ${generated} UTC`;
+      },
       fileName: "ai-trending",
       issueTitle: s.issueTitleTrending,
       issueLabel: s.issueLabelTrending,
