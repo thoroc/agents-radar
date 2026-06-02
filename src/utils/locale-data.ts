@@ -29,6 +29,11 @@ const loadLocales = (): {
       const raw = JSON.parse(fs.readFileSync(path.join(localesDir, file), "utf-8"));
       const parsed = LocaleFileSchema.parse(raw);
       const { _meta, ...data } = parsed;
+      if (_meta.code !== code) {
+        console.warn(
+          `[i18n] Locale file "${file}" has _meta.code "${_meta.code}" but filename implies "${code}". Using filename as canonical.`,
+        );
+      }
       strings[code] = data;
       languageNames[code] = _meta.name;
       supportedLocales.push(code);

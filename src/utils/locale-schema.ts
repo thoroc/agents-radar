@@ -3,6 +3,7 @@ import { z } from "zod";
 const LocaleMetaSchema = z.object({
   name: z.string(),
   nativeName: z.string(),
+  code: z.string().optional(),
 });
 
 const LocaleDataSchema = z.object({
