@@ -14,5 +14,5 @@
       "@agents-radar/core":      ["./packages/core/src/index.ts"]
     }
   },
-  "include": ["src", "packages/cli"]
+  "include": ["packages"]
 }

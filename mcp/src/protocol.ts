@@ -1,4 +1,4 @@
-import type { JsonRpcRequest, ToolCallParams, Tool } from "./types";
+import type { JsonRpcRequest, Tool, ToolCallParams } from "./types";
 
 const SERVER_INFO = {
   name: "agents-radar",

@@ -2,9 +2,9 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      run: bun biome check src
+      run: bun biome check packages mcp
     format:
-      run: bun biome format src
+      run: bun biome format packages mcp
     typecheck:
       run: bun tsc --noEmit
     aislop:

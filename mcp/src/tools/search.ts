@@ -44,17 +44,14 @@ const searchHandler: ToolHandler = async (args) => {
   if (results.length === 0) {
     return `No matches for "${query}" in the last ${days} day(s).`;
   }
-  const formatted = results
-    .map((r) => `📄 ${r.date} / ${r.type}:\n${r.excerpts}`)
-    .join("\n\n");
+  const formatted = results.map((r) => `📄 ${r.date} / ${r.type}:\n${r.excerpts}`).join("\n\n");
   return `Found "${query}" in ${results.length} report(s):\n\n${formatted}`;
 };
 
 export const searchTool: Tool = {
   definition: {
     name: "search",
-    description:
-      "Search for a keyword or phrase across recent agents-radar digest reports.",
+    description: "Search for a keyword or phrase across recent agents-radar digest reports.",
     inputSchema: {
       type: "object",
       properties: {

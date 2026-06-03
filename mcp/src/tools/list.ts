@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { REPORT_LABELS } from "../labels";
 import { fetchManifest } from "../fetchers";
+import { REPORT_LABELS } from "../labels";
 import type { Tool, ToolHandler } from "../types";
 
 const ListArgsSchema = z.object({
