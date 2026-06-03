@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/thoroc/agents-radar/compare/v1.2.0...v1.3.0) (2026-06-03)
+
+
+### Features
+
+* unified CLI entry point + Bun workspace ([#29](https://github.com/thoroc/agents-radar/issues/29)) ([8f4e838](https://github.com/thoroc/agents-radar/commit/8f4e838a5ca650ff6f6a00242b0ffc6fb0d71032))
+
 ## [1.2.0](https://github.com/thoroc/agents-radar/compare/v1.1.0...v1.2.0) (2026-06-02)
 
 

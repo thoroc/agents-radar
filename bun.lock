@@ -35,6 +35,7 @@
       "dependencies": {
         "@agents-radar/core": "workspace:*",
         "@cliffy/command": "npm:@jsr/cliffy__command",
+        "ajv": "^8.17.1",
       },
     },
     "packages/core": {

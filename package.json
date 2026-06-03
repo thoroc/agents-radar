@@ -1,9 +1,11 @@
 {
 	"name": "agents-radar",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"license": "MIT",
 	"type": "module",
-	"workspaces": ["packages/*"],
+	"workspaces": [
+		"packages/*"
+	],
 	"scripts": {
 		"start": "bun run packages/cli/cli.ts daily",
 		"scheduler": "bun run packages/cli/cli.ts scheduler",
@@ -28,8 +30,8 @@
 		"test": "bun test",
 		"test:watch": "bun test --watch",
 		"test:coverage": "bun test --coverage",
-		"validate:schema": "bun run scripts/generate-locale-schema.ts",
-		"validate-locales": "bun x ajv-cli validate -s locale-schema.json -d \"locales/*.json\" --spec=draft2020"
+		"validate:schema": "bun run packages/cli/cli.ts locale -g",
+		"validate:locales": "bun run packages/cli/cli.ts locale -v"
 	},
 	"dependencies": {
 		"@anthropic-ai/sdk": "^0.78.0",
