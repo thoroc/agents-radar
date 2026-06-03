@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/thoroc/agents-radar/compare/v1.3.0...v1.4.0) (2026-06-03)
+
+
+### Features
+
+* **cli:** add locale subcommand for schema generation and validation ([#31](https://github.com/thoroc/agents-radar/issues/31)) ([f785722](https://github.com/thoroc/agents-radar/commit/f78572268a9ba897b7be1af5413108ccc40f5c33))
+* port manifest, notify, feishu, and close-stale scripts to CLI subcommands ([#35](https://github.com/thoroc/agents-radar/issues/35)) ([3540a05](https://github.com/thoroc/agents-radar/commit/3540a058bbbecd8be625e2c32f4a3962839fcadd))
+* port social media generator to CLI subcommand ([#33](https://github.com/thoroc/agents-radar/issues/33)) ([6c5fe24](https://github.com/thoroc/agents-radar/commit/6c5fe2431804ccb59434c6a9a0a4dd03bf5118fc))
+
+
+### Bug Fixes
+
+* pre-push hook runs tests, generates schema, and commits auto-generated files ([#34](https://github.com/thoroc/agents-radar/issues/34)) ([8b5b5af](https://github.com/thoroc/agents-radar/commit/8b5b5af91d8c64f9bb994c927977d0b944d704f0))
+
 ## [1.3.0](https://github.com/thoroc/agents-radar/compare/v1.2.0...v1.3.0) (2026-06-03)
 
 
