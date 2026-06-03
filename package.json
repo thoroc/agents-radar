@@ -1,9 +1,11 @@
 {
 	"name": "agents-radar",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"license": "MIT",
 	"type": "module",
-	"workspaces": ["packages/*"],
+	"workspaces": [
+		"packages/*"
+	],
 	"scripts": {
 		"start": "bun run packages/cli/cli.ts daily",
 		"scheduler": "bun run packages/cli/cli.ts scheduler",
