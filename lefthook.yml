@@ -24,4 +24,8 @@ pre-push:
     test:
       run: bun test
     validate-schema:
-      run: bun run validate:schema
+      run: >
+        bun run validate:schema &&
+        git add packages/core/src/types/locale.ts locale-schema.json &&
+        git diff --cached --quiet ||
+        git commit -m "chore: update auto-generated locale schema and types"
