@@ -1,0 +1,15 @@
+{
+  "name": "@agents-radar/core",
+  "version": "0.0.0",
+  "private": true,
+  "module": "./src/index.ts",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": {
+    "@agents-radar/providers": "workspace:*",
+    "@dotenvx/dotenvx": "^1.69.2",
+    "js-yaml": "^4.1.1",
+    "luxon": "^3.7.2",
+    "marked": "^17.0.4",
+    "zod": "^4.4.3"
+  }
+}

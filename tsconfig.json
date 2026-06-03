@@ -8,7 +8,11 @@
     "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "paths": {
+      "@agents-radar/providers": ["./packages/providers/src/index.ts"],
+      "@agents-radar/core":      ["./packages/core/src/index.ts"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "packages/cli"]
 }

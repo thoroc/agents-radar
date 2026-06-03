@@ -3,6 +3,7 @@
 	"version": "1.2.0",
 	"license": "MIT",
 	"type": "module",
+	"workspaces": ["packages/*"],
 	"scripts": {
 		"start": "bun run src/index.ts",
 		"typecheck": "tsc --noEmit",

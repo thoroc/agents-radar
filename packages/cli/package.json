@@ -1,0 +1,10 @@
+{
+  "name": "@agents-radar/cli",
+  "version": "0.0.0",
+  "private": true,
+  "bin": { "agents-radar": "./cli.ts" },
+  "dependencies": {
+    "@agents-radar/core": "workspace:*",
+    "@cliffy/command": "npm:@jsr/cliffy__command"
+  }
+}
