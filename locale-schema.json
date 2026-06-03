@@ -23,7 +23,7 @@
     "webFetchFailed": {
       "type": "string"
     },
-    "hnFetchFailed": {
+    "hackerNewsFetchFailed": {
       "type": "string"
     },
     "trendingFetchFailed": {
@@ -65,16 +65,16 @@
     "sampleNoteAll": {
       "type": "string"
     },
-    "hnMeta": {
+    "hackerNewsMeta": {
       "type": "string"
     },
-    "phMeta": {
+    "productHuntMeta": {
       "type": "string"
     },
     "arxivMeta": {
       "type": "string"
     },
-    "hfMeta": {
+    "huggingFaceMeta": {
       "type": "string"
     },
     "communityMeta": {
@@ -83,16 +83,16 @@
     "trendingMeta": {
       "type": "string"
     },
-    "hnCount": {
+    "hackerNewsCount": {
       "type": "string"
     },
     "arxivCount": {
       "type": "string"
     },
-    "phCount": {
+    "productHuntCount": {
       "type": "string"
     },
-    "hfCount": {
+    "huggingFaceCount": {
       "type": "string"
     },
     "headerGeneratedLabel": {
@@ -167,16 +167,16 @@
     "trendingSources": {
       "type": "string"
     },
-    "hnTitle": {
+    "hackerNewsTitle": {
       "type": "string"
     },
-    "phTitle": {
+    "productHuntTitle": {
       "type": "string"
     },
     "arxivTitle": {
       "type": "string"
     },
-    "hfTitle": {
+    "huggingFaceTitle": {
       "type": "string"
     },
     "communityTitle": {
@@ -209,16 +209,16 @@
     "issueLabelTrending": {
       "type": "string"
     },
-    "issueLabelHn": {
+    "issueLabelHackerNews": {
       "type": "string"
     },
-    "issueLabelPh": {
+    "issueLabelProductHunt": {
       "type": "string"
     },
     "issueLabelArxiv": {
       "type": "string"
     },
-    "issueLabelHf": {
+    "issueLabelHuggingFace": {
       "type": "string"
     },
     "issueLabelCommunity": {
@@ -236,16 +236,16 @@
     "issueTitleTrending": {
       "type": "string"
     },
-    "issueTitleHn": {
+    "issueTitleHackerNews": {
       "type": "string"
     },
-    "issueTitlePh": {
+    "issueTitleProductHunt": {
       "type": "string"
     },
     "issueTitleArxiv": {
       "type": "string"
     },
-    "issueTitleHf": {
+    "issueTitleHuggingFace": {
       "type": "string"
     },
     "issueTitleCommunity": {
@@ -266,16 +266,16 @@
     "reportLabelAiTrending": {
       "type": "string"
     },
-    "reportLabelAiHn": {
+    "reportLabelAiHackerNews": {
       "type": "string"
     },
-    "reportLabelAiPh": {
+    "reportLabelAiProductHunt": {
       "type": "string"
     },
     "reportLabelAiArxiv": {
       "type": "string"
     },
-    "reportLabelAiHf": {
+    "reportLabelAiHuggingFace": {
       "type": "string"
     },
     "reportLabelAiCommunity": {
@@ -427,7 +427,7 @@
     "trendingFailed",
     "webNoNewContent",
     "webFetchFailed",
-    "hnFetchFailed",
+    "hackerNewsFetchFailed",
     "trendingFetchFailed",
     "searchNoResults",
     "webSourcesAnthropic",
@@ -441,16 +441,16 @@
     "webFirstCrawlNote",
     "webIncrementalNote",
     "sampleNoteAll",
-    "hnMeta",
-    "phMeta",
+    "hackerNewsMeta",
+    "productHuntMeta",
     "arxivMeta",
-    "hfMeta",
+    "huggingFaceMeta",
     "communityMeta",
     "trendingMeta",
-    "hnCount",
+    "hackerNewsCount",
     "arxivCount",
-    "phCount",
-    "hfCount",
+    "productHuntCount",
+    "huggingFaceCount",
     "headerGeneratedLabel",
     "headerSourceLabel",
     "cliTitle",
@@ -475,10 +475,10 @@
     "webSourcesHeader",
     "trendingTitle",
     "trendingSources",
-    "hnTitle",
-    "phTitle",
+    "hackerNewsTitle",
+    "productHuntTitle",
     "arxivTitle",
-    "hfTitle",
+    "huggingFaceTitle",
     "communityTitle",
     "devtoArticles",
     "lobstersStories",
@@ -489,29 +489,29 @@
     "issueLabelOpenclaw",
     "issueLabelWeb",
     "issueLabelTrending",
-    "issueLabelHn",
-    "issueLabelPh",
+    "issueLabelHackerNews",
+    "issueLabelProductHunt",
     "issueLabelArxiv",
-    "issueLabelHf",
+    "issueLabelHuggingFace",
     "issueLabelCommunity",
     "issueTitleCli",
     "issueTitleOpenclaw",
     "issueTitleWeb",
     "issueTitleTrending",
-    "issueTitleHn",
-    "issueTitlePh",
+    "issueTitleHackerNews",
+    "issueTitleProductHunt",
     "issueTitleArxiv",
-    "issueTitleHf",
+    "issueTitleHuggingFace",
     "issueTitleCommunity",
     "autoGen",
     "reportLabelAiCli",
     "reportLabelAiAgents",
     "reportLabelAiWeb",
     "reportLabelAiTrending",
-    "reportLabelAiHn",
-    "reportLabelAiPh",
+    "reportLabelAiHackerNews",
+    "reportLabelAiProductHunt",
     "reportLabelAiArxiv",
-    "reportLabelAiHf",
+    "reportLabelAiHuggingFace",
     "reportLabelAiCommunity",
     "reportLabelAiWeekly",
     "reportLabelAiMonthly",
