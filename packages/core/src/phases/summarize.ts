@@ -8,7 +8,7 @@ import {
   type RepoDigest,
 } from "../prompts";
 import { callLlm } from "../report/call-llm";
-import { LLM_TOKENS_TRENDING } from "../report/report-constants";
+import { LLM_TOKENS_TRENDING } from "../report/constants";
 import { getPrimaryLang, type Locale, t } from "../utils";
 
 const summarize = async (

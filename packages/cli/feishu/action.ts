@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { buildFeishuMessage, getWebhookUrls, sendFeishu } from "@agents-radar/core/notifications/feishu";
+import { buildMessage, getWebhookUrls, send } from "@agents-radar/core/notifications/feishu";
 import type { Highlights } from "@agents-radar/core/notifications/notify";
 import { getEnabledLangs, type Locale, loadConfig } from "@agents-radar/core/utils";
 
@@ -63,9 +63,9 @@ export const feishuAction = async (
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
   const title = `${icon} agents-radar · ${date}`;
 
-  const content = buildFeishuMessage({ date, reports, highlights, enabledLangs, primaryLang, env });
+  const content = buildMessage({ date, reports, highlights, enabledLangs, primaryLang, env });
 
   console.error(`[feishu] Sending to ${urls.length} webhook(s) for ${date} (${reports.length} reports)…`);
-  await sendFeishu(title, content);
+  await send(title, content);
   console.error("[feishu] Done!");
 };

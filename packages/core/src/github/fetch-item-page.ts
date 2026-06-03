@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { githubGet } from "./github-http";
+import { githubGet } from "./http";
 import type { GitHubItem } from "./types";
 
 export const fetchItemPage = async (

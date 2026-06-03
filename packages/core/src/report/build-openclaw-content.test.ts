@@ -1,0 +1,66 @@
+import { describe, expect, it } from "vitest";
+import type { GitHubItem, GitHubRelease, RepoConfig } from "../github";
+import type { RepoDigest } from "../prompts";
+import { buildOpenclawContent } from "./build-openclaw-content";
+
+const makeDigest = (overrides: Partial<RepoDigest> = {}): RepoDigest => ({
+  config: { id: "test-tool", repo: "org/test-tool", name: "TestTool" },
+  issues: [],
+  prs: [],
+  releases: [],
+  summary: "Test summary content",
+  ...overrides,
+});
+
+describe("buildOpenclawContent", () => {
+  it("includes all sections (zh)", () => {
+    const openclaw: RepoConfig = { id: "openclaw", repo: "openclaw/openclaw", name: "OpenClaw" };
+    const peers: RepoConfig[] = [{ id: "peer1", repo: "org/peer1", name: "Peer1" }];
+    const peerDigests: RepoDigest[] = [makeDigest({ config: peers[0] })];
+    const fetchedOpenclaw = {
+      cfg: openclaw,
+      issues: [{ number: 1 }] as unknown as GitHubItem[],
+      prs: [] as GitHubItem[],
+      releases: [] as GitHubRelease[],
+    };
+    const result = buildOpenclawContent({
+      fetchedOpenclaw,
+      peerDigests,
+      openclawSummary: "OpenClaw summary",
+      peersComparison: "Peers comparison",
+      utcStr: "2026-03-09 00:00",
+      dateStr: "2026-03-09",
+      footer: "\nfooter",
+      openclaw,
+      openclawPeers: peers,
+      lang: "zh-CN",
+    });
+    expect(result).toContain("# OpenClaw 生态日报 2026-03-09");
+    expect(result).toContain("Issues: 1");
+    expect(result).toContain("覆盖项目: 2 个");
+    expect(result).toContain("[OpenClaw](https://github.com/openclaw/openclaw)");
+    expect(result).toContain("[Peer1](https://github.com/org/peer1)");
+    expect(result).toContain("OpenClaw 项目深度报告");
+    expect(result).toContain("横向生态对比");
+    expect(result).toContain("同赛道项目详细报告");
+    expect(result).toContain("footer");
+  });
+  it("renders in English", () => {
+    const openclaw: RepoConfig = { id: "openclaw", repo: "openclaw/openclaw", name: "OpenClaw" };
+    const result = buildOpenclawContent({
+      fetchedOpenclaw: { cfg: openclaw, issues: [], prs: [], releases: [] },
+      peerDigests: [],
+      openclawSummary: "summary",
+      peersComparison: "comparison",
+      utcStr: "",
+      dateStr: "2026-03-09",
+      footer: "",
+      openclaw,
+      openclawPeers: [],
+      lang: "en-US",
+    });
+    expect(result).toContain("# OpenClaw Ecosystem Digest 2026-03-09");
+    expect(result).toContain("OpenClaw Deep Dive");
+    expect(result).toContain("Cross-Ecosystem Comparison");
+  });
+});

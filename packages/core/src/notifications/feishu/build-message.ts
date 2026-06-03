@@ -1,25 +1,26 @@
 import { getPrimaryLang, type Locale, t } from "../../locales";
-import type { ReportHighlights } from "../../prompts/types";
 import { PAGES_URL_DEFAULT } from "../../utils/constants";
-import { label } from "./label";
+import type { Highlights } from "../notify/build-message";
+import { label } from "../notify/label";
 
-export interface Highlights {
-  [key: string]: ReportHighlights | undefined;
+interface BuildFeishuMessageOptions {
+  date: string;
+  reports: string[];
+  pagesUrl?: string;
+  highlights?: Highlights | null;
+  enabledLangs?: string[];
+  primaryLang?: Locale;
+  env?: NodeJS.ProcessEnv;
 }
 
-const escapeHtml = (s: string): string => {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-};
-
-export const buildMessage = (
-  date: string,
-  reports: string[],
-  pagesUrl?: string,
-  highlights?: Highlights | null,
-  enabledLangs: string[] = ["zh-CN"],
-  primaryLang: Locale = getPrimaryLang() as Locale,
-  env: NodeJS.ProcessEnv = process.env,
-): string => {
+export const buildMessage = (args: BuildFeishuMessageOptions): string => {
+  const date = args.date;
+  const reports = args.reports;
+  const pagesUrl = args.pagesUrl;
+  const highlights = args.highlights;
+  const enabledLangs = args.enabledLangs ?? [getPrimaryLang()];
+  const primaryLang = args.primaryLang ?? getPrimaryLang();
+  const env = args.env ?? process.env;
   const PAGES_URL = (pagesUrl ?? env.PAGES_URL ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
   const baseReports = reports.filter((r) => !r.endsWith(".en-US"));
   const isWeekly = baseReports.includes("ai-weekly");
@@ -31,7 +32,7 @@ export const buildMessage = (
     : isWeekly
       ? t(primaryLang).notifySuffixWeekly
       : "";
-  const lines: string[] = [`${icon} <b>agents-radar${suffix} · ${date}</b>`];
+  const lines: string[] = [`${icon} **agents-radar${suffix} · ${date}**`];
 
   const ordered = [
     ...baseReports.filter((r) => !r.includes("weekly") && !r.includes("monthly")),
@@ -48,9 +49,9 @@ export const buildMessage = (
       const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
       const url = `${PAGES_URL}/#${date}/${r}${suffix}`;
       if (multiLang) {
-        return `<a href="${url}">${reportLabel} (${lang.toUpperCase()})</a>`;
+        return `[${reportLabel} (${lang.toUpperCase()})](${url})`;
       }
-      return `<a href="${url}">${reportLabel}</a>`;
+      return `[${reportLabel}](${url})`;
     });
 
     lines.push(`• ${reportLinks.join("  ·  ")}`);
@@ -58,11 +59,11 @@ export const buildMessage = (
     const hls = highlights?.[primaryLang]?.[r];
     if (hls?.length) {
       for (const h of hls) {
-        lines.push(`  ◦ ${escapeHtml(h)}`);
+        lines.push(`  ◦ ${h}`);
       }
     }
   }
 
-  lines.push(`\n${t(primaryLang).notifyFooterLinks}`);
+  lines.push(`\n${t(primaryLang).feishuFooterLinks}`);
   return lines.join("\n");
 };

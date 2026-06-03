@@ -1,7 +1,7 @@
 import { createProvider, type LlmProvider, type ProviderName } from "@agents-radar/providers";
 import { sleep } from "../utils";
+import { LLM_TOKENS_DEFAULT } from "./constants";
 import { is429 } from "./is-429";
-import { LLM_TOKENS_DEFAULT } from "./report-constants";
 
 type CallLlmDeps = {
   provider?: LlmProvider;

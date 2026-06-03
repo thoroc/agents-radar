@@ -7,7 +7,7 @@ import {
   loadMultiDayReports,
   loadReports,
   type Platform,
-  saveSocialFile,
+  saveFile,
 } from "@agents-radar/core/notifications/social";
 import { callLlm } from "@agents-radar/core/report";
 import { getRecentDates } from "../../core/src/notifications/social/get-recent-dates";
@@ -57,7 +57,7 @@ export const socialAction = async (args: SocialActionArgs, deps: ActionDeps = {}
 
     write(`[social] Generating xiaohongshu article for ${date}…`);
     const content = await callLlmFn(buildXiaohongshuPrompt(reports, date), 4096);
-    const filepath = saveSocialFile(content, `${date}-xiaohongshu.md`, fsDeps);
+    const filepath = saveFile(content, `${date}-xiaohongshu.md`, fsDeps);
     write(`[social] Saved to ${filepath}`);
   } else if (platform === "wechat") {
     const { dateRange, content: reports } = loadMultiDayReports(7, fsDeps, 2000);
@@ -66,7 +66,7 @@ export const socialAction = async (args: SocialActionArgs, deps: ActionDeps = {}
 
     write(`[social] Generating wechat weekly article for ${dateRange}…`);
     const content = await callLlmFn(buildWechatPrompt(dateRange, reports), 16384);
-    const filepath = saveSocialFile(content, `${latestDate[0]}-wechat.md`, fsDeps);
+    const filepath = saveFile(content, `${latestDate[0]}-wechat.md`, fsDeps);
     write(`[social] Saved to ${filepath}`);
   } else {
     const { dateRange, content: reports } = loadMultiDayReports(30, fsDeps, 1000);
@@ -75,7 +75,7 @@ export const socialAction = async (args: SocialActionArgs, deps: ActionDeps = {}
 
     write(`[social] Generating wechat monthly article for ${dateRange}…`);
     const content = await callLlmFn(buildWechatMonthlyPrompt(dateRange, reports), 16384);
-    const filepath = saveSocialFile(content, `${latestDate[0]}-wechat-monthly.md`, fsDeps);
+    const filepath = saveFile(content, `${latestDate[0]}-wechat-monthly.md`, fsDeps);
     write(`[social] Saved to ${filepath}`);
   }
 };

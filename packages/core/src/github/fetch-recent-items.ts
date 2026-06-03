@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { env } from "../config/env";
 import { fetchItemPage } from "./fetch-item-page";
-import { githubGet } from "./github-http";
+import { githubGet } from "./http";
 import type { GitHubItem, RepoConfig } from "./types";
 
 const MAX_PAGES = 5;
