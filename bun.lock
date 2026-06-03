@@ -35,7 +35,6 @@
       "dependencies": {
         "@agents-radar/core": "workspace:*",
         "@cliffy/command": "npm:@jsr/cliffy__command",
-        "ajv": "^8.17.1",
       },
     },
     "packages/core": {
@@ -44,6 +43,7 @@
       "dependencies": {
         "@agents-radar/providers": "workspace:*",
         "@dotenvx/dotenvx": "^1.69.2",
+        "ajv": "^8.17.1",
         "js-yaml": "^4.1.1",
         "luxon": "^3.7.2",
         "marked": "^17.0.4",

@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchRecentReleases } from "./fetch-recent-releases";
-import * as githubHttpModule from "./github-http";
+import * as githubHttpModule from "./http";
 import type { GitHubRelease } from "./types";
 
 const makeRelease = (tag: string, publishedAt: string): GitHubRelease => ({

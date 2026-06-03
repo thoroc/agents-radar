@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchSkillsData } from "./fetch-skills-data";
-import * as githubHttpModule from "./github-http";
+import * as githubHttpModule from "./http";
 import type { GitHubItem } from "./types";
 
 const makeItem = (number: number, overrides: Partial<GitHubItem> = {}): GitHubItem => ({

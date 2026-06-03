@@ -1,5 +1,4 @@
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+import { DAYS, MONTHS } from "./constants";
 
 export const toRfc822 = (date: Date): string => {
   return (

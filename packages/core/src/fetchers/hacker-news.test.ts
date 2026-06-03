@@ -59,7 +59,7 @@ describe("fetchHackerNewsData", () => {
     });
     const result = await fetchHackerNewsData();
     expect(result.stories[0]!.url).toBe("https://news.ycombinator.com/item?id=67890");
-    expect(result.stories[0]!.hnUrl).toBe("https://news.ycombinator.com/item?id=67890");
+    expect(result.stories[0]!.hackerNewsUrl).toBe("https://news.ycombinator.com/item?id=67890");
   });
 
   it("deduplicates stories across queries", async () => {

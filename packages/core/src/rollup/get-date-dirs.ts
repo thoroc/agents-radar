@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { DIGESTS_DIR } from "./rollup-constants";
+import { DIGESTS_DIR } from "./constants";
 
 export const getDateDirs = (): string[] => {
   if (!fs.existsSync(DIGESTS_DIR)) return [];

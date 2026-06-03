@@ -11,17 +11,17 @@ import type { TrendingData } from "../fetchers/trending";
 import { createGitHubIssue, type RepoConfig, type RepoFetch } from "../github";
 import { buildHighlightsPrompt, type RepoDigest, type ReportHighlights } from "../prompts";
 import { autoGenFooter } from "../report/auto-gen-footer";
-import { buildCliReportContent } from "../report/build-cli-report-content";
-import { buildOpenclawReportContent } from "../report/build-openclaw-report-content";
+import { buildCliContent } from "../report/build-cli-content";
+import { buildOpenclawContent } from "../report/build-openclaw-content";
 import { callLlm } from "../report/call-llm";
 import { saveFile } from "../report/save-file";
-import { saveArxivReport } from "../save/save-arxiv-report";
-import { saveCommunityReport } from "../save/save-community-report";
-import { saveHackerNewsReport } from "../save/save-hacker-news-report";
-import { saveHuggingFaceReport } from "../save/save-hugging-face-report";
-import { saveProductHuntReport } from "../save/save-product-hunt-report";
-import { saveTrendingReport } from "../save/save-trending-report";
-import { saveWebReport } from "../save/save-web-report";
+import { saveArxiv } from "../save/arxiv-report";
+import { saveCommunity } from "../save/community-report";
+import { saveHackerNews } from "../save/hacker-news-report";
+import { saveHuggingFaceReport } from "../save/hugging-face-report";
+import { saveProductHuntReport } from "../save/product-hunt-report";
+import { saveTrending } from "../save/trending-report";
+import { saveWeb } from "../save/web-report";
 import { getPrimaryLang, type Locale, t } from "../utils";
 
 const readReport = (dateStr: string, name: string): string | undefined => {
@@ -84,7 +84,7 @@ const buildMainReports = (
     const ft = autoGenFooter(lang as Locale);
     const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
 
-    cliContent[lang] = buildCliReportContent({
+    cliContent[lang] = buildCliContent({
       cliDigests: s.cliDigests,
       skillsSummary: s.skillsSummary,
       comparison: comparisonsByLang[lang]!,
@@ -94,7 +94,7 @@ const buildMainReports = (
       skillsRepo: claudeSkillsRepo,
       lang: lang as Locale,
     });
-    openclawContent[lang] = buildOpenclawReportContent({
+    openclawContent[lang] = buildOpenclawContent({
       fetchedOpenclaw,
       peerDigests: s.peerDigests,
       openclawSummary: s.openclawSummary,
@@ -133,7 +133,7 @@ const runDataSourceSavers = async (args: SavePhaseArgs): Promise<void> => {
   } = args;
 
   for (const lang of enabledLangs) {
-    await saveWebReport(
+    await saveWeb(
       webResults,
       webState,
       utcStr,
@@ -149,12 +149,12 @@ const runDataSourceSavers = async (args: SavePhaseArgs): Promise<void> => {
     const footer = autoGenFooter(l);
     const summary = summariesByLang[lang]?.trendingSummary ?? "";
     return [
-      saveTrendingReport(trendingData, summary, utcStr, dateStr, digestRepo, footer, l),
-      saveHackerNewsReport(hnData, utcStr, dateStr, digestRepo, footer, l),
+      saveTrending(trendingData, summary, utcStr, dateStr, digestRepo, footer, l),
+      saveHackerNews(hnData, utcStr, dateStr, digestRepo, footer, l),
       saveProductHuntReport(phData, utcStr, dateStr, digestRepo, footer, l),
-      saveArxivReport(arxivData, utcStr, dateStr, digestRepo, footer, l),
+      saveArxiv(arxivData, utcStr, dateStr, digestRepo, footer, l),
       saveHuggingFaceReport(hfData, utcStr, dateStr, digestRepo, footer, l),
-      saveCommunityReport(devtoData, lobstersData, utcStr, dateStr, digestRepo, footer, l),
+      saveCommunity(devtoData, lobstersData, utcStr, dateStr, digestRepo, footer, l),
     ];
   });
   await Promise.all(reportSavers);

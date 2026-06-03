@@ -1,27 +1,18 @@
-import { createProvider, type LlmProvider, type ProviderName } from "@agents-radar/providers";
+import { createProvider, type LlmProvider } from "@agents-radar/providers";
 import { sleep } from "../utils";
+import { LLM_TOKENS_DEFAULT } from "./constants";
+import { getFallbackProvider } from "./get-fallback-provider";
+import { is403 } from "./is-403";
 import { is429 } from "./is-429";
-import { LLM_TOKENS_DEFAULT } from "./report-constants";
 
 type CallLlmDeps = {
   provider?: LlmProvider;
   sleep?: (ms: number) => Promise<void>;
 };
 
-const getFallbackProvider = (env: NodeJS.ProcessEnv = process.env): LlmProvider | null => {
-  if (!env.DEEPSEEK_API_KEY) return null;
-  return createProvider("deepseek" as ProviderName, env);
-};
-
 const LLM_CONCURRENCY = 5;
 const MAX_RETRIES = 3;
 const RETRY_BASE_MS = 5_000;
-
-const is403 = (err: unknown): boolean => {
-  const status =
-    typeof err === "object" && err !== null ? (err as Record<string, unknown>).status : undefined;
-  return status === 403 || String(err).includes("permission_error");
-};
 
 const createLlmCaller = (concurrency = LLM_CONCURRENCY, env: NodeJS.ProcessEnv = process.env) => {
   let slots = concurrency;

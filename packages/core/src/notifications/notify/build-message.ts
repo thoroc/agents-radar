@@ -1,7 +1,7 @@
-import type { ReportHighlights } from "../../prompts/prompts-data-types";
-import { getPrimaryLang, type Locale, t } from "../../utils";
+import { getPrimaryLang, type Locale, t } from "../../locales";
+import type { ReportHighlights } from "../../prompts/types";
 import { PAGES_URL_DEFAULT } from "../../utils/constants";
-import { notifyLabel } from "./notify-label";
+import { label } from "./label";
 
 export interface Highlights {
   [key: string]: ReportHighlights | undefined;
@@ -44,13 +44,13 @@ export const buildMessage = (
     lines.push("");
 
     const reportLinks = enabledLangs.map((lang) => {
-      const label = notifyLabel(r, lang as Locale);
+      const reportLabel = label(r, lang as Locale);
       const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
       const url = `${PAGES_URL}/#${date}/${r}${suffix}`;
       if (multiLang) {
-        return `<a href="${url}">${label} (${lang.toUpperCase()})</a>`;
+        return `<a href="${url}">${reportLabel} (${lang.toUpperCase()})</a>`;
       }
-      return `<a href="${url}">${label}</a>`;
+      return `<a href="${url}">${reportLabel}</a>`;
     });
 
     lines.push(`• ${reportLinks.join("  ·  ")}`);

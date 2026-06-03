@@ -8,6 +8,7 @@
     "./utils": "./src/utils/index.ts",
     "./github": "./src/github/index.ts",
     "./report": "./src/report/index.ts",
+    "./locales": "./src/locales/index.ts",
     "./generate-manifest": "./src/generate-manifest/index.ts",
     "./notifications/notify": "./src/notifications/notify/index.ts",
     "./notifications/feishu": "./src/notifications/feishu/index.ts",
@@ -19,6 +20,7 @@
     "js-yaml": "^4.1.1",
     "luxon": "^3.7.2",
     "marked": "^17.0.4",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "ajv": "^8.17.1"
   }
 }

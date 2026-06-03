@@ -28,7 +28,7 @@ describe("reportLabel", () => {
   });
 
   it("returns en label for ai-hn.en-US", () => {
-    expect(reportLabel("ai-hn.en-US")).toBe(EN_LOCALE.reportLabelAiHn);
+    expect(reportLabel("ai-hn.en-US")).toBe(EN_LOCALE.reportLabelAiHackerNews);
   });
 
   it("returns the id itself for unknown values", () => {

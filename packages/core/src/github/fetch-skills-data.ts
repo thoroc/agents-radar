@@ -1,5 +1,5 @@
 import { env } from "../config/env";
-import { githubGet } from "./github-http";
+import { githubGet } from "./http";
 import type { GitHubItem } from "./types";
 
 export const fetchSkillsData = async (

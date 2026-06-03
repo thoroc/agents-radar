@@ -1,0 +1,47 @@
+import type { HackerNewsData } from "../fetchers/hacker-news";
+import { buildHackerNewsPrompt } from "../prompts";
+import { getPrimaryLang, type Locale, t } from "../utils";
+import { buildSourceHeader } from "./build-source-header";
+import { saveDataSource } from "./data-source-report";
+import type { SaveReportDeps } from "./saver-types";
+
+export const saveHackerNews = async (
+  hnData: HackerNewsData,
+  utcStr: string,
+  dateStr: string,
+  digestRepo: string,
+  footer: string,
+  lang: Locale = getPrimaryLang() as Locale,
+  deps: SaveReportDeps = {},
+): Promise<void> => {
+  const s = t(lang);
+  const count = s.hackerNewsCount.replace("{n}", String(hnData.stories.length));
+  await saveDataSource(
+    {
+      hasData: hnData.fetchSuccess,
+      logPrefix: "hn",
+      logAction: "HN",
+      data: hnData,
+      promptBuilder: (d) => buildHackerNewsPrompt(d as HackerNewsData, lang),
+      headerBuilder: (_ds, us) =>
+        buildSourceHeader(
+          lang,
+          _ds,
+          us,
+          s.hackerNewsTitle,
+          "Hacker News",
+          "https://news.ycombinator.com/",
+          count,
+        ),
+      fileName: "ai-hn",
+      issueTitle: s.issueTitleHackerNews,
+      issueLabel: s.issueLabelHackerNews,
+    },
+    utcStr,
+    dateStr,
+    digestRepo,
+    footer,
+    lang,
+    deps,
+  );
+};

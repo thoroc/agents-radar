@@ -1,0 +1,53 @@
+import { describe, expect, it } from "vitest";
+import type { HackerNewsData } from "../fetchers/hacker-news";
+import { buildHackerNewsPrompt } from "./hackernews";
+
+const mockData: HackerNewsData = {
+  stories: [
+    {
+      id: "123",
+      title: "AI News",
+      url: "https://example.com/ai",
+      hackerNewsUrl: "https://news.ycombinator.com/item?id=123",
+      points: 200,
+      comments: 50,
+      author: "bob",
+      createdAt: "2026-03-09T10:00:00Z",
+    },
+    {
+      id: "456",
+      title: "LLM Research",
+      url: "https://example.com/llm",
+      hackerNewsUrl: "https://news.ycombinator.com/item?id=456",
+      points: 150,
+      comments: 30,
+      author: "alice",
+      createdAt: "2026-03-09T09:00:00Z",
+    },
+  ],
+  fetchSuccess: true,
+};
+
+describe("buildHackerNewsPrompt", () => {
+  it("includes story titles and metadata in default locale", () => {
+    const result = buildHackerNewsPrompt(mockData, "2026-03-09", "zh-CN");
+    expect(result).toContain("AI News");
+    expect(result).toContain("LLM Research");
+    expect(result).toContain("Score: 200");
+    expect(result).toContain("Comments: 50");
+    expect(result).toContain("Write the response in Chinese");
+  });
+
+  it("generates English variant", () => {
+    const result = buildHackerNewsPrompt(mockData, "2026-03-09", "en-US");
+    expect(result).toContain("AI News");
+    expect(result).toContain("Score: 200");
+    expect(result).toContain("Comments: 50");
+    expect(result).toContain("Write the response in English");
+  });
+
+  it("includes date string in output", () => {
+    const result = buildHackerNewsPrompt(mockData, "2026-03-09", "zh-CN");
+    expect(result).toContain("2026-03-09");
+  });
+});

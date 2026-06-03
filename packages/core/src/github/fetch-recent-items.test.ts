@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchRecentItems } from "./fetch-recent-items";
-import * as githubHttpModule from "./github-http";
+import * as githubHttpModule from "./http";
 import type { GitHubItem, RepoConfig } from "./types";
 
 const testRepo: RepoConfig = { id: "test", repo: "owner/repo", name: "Test Repo" };

@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { DIGESTS_DIR, MAX_CHARS_PER_REPORT, ROLLUP_SOURCES } from "./rollup-constants";
+import { DIGESTS_DIR, MAX_CHARS_PER_REPORT, ROLLUP_SOURCES } from "./constants";
 
 export const readDailyDigest = (date: string): string | null => {
   const parts: string[] = [];

@@ -1,11 +1,6 @@
 import { DateTime } from "luxon";
 import { env } from "../config/env";
-
-const headers = (token: string): Record<string, string> => ({
-  Authorization: `Bearer ${token}`,
-  Accept: "application/vnd.github+json",
-  "X-GitHub-Api-Version": "2022-11-28",
-});
+import { getHeaders } from "./get-headers";
 
 export const closeStaleIssues = async (
   days: number,
@@ -19,7 +14,7 @@ export const closeStaleIssues = async (
   while (true) {
     const issues = await fetch(
       `https://api.github.com/repos/${DIGEST_REPO}/issues?state=open&sort=created&direction=asc&per_page=100`,
-      { headers: headers(GITHUB_TOKEN) },
+      { headers: getHeaders(GITHUB_TOKEN) },
     ).then((r) => {
       if (!r.ok) throw new Error(`Failed to fetch issues: ${r.status}`);
       return r.json() as Promise<{ number: number; created_at: string }[]>;
@@ -34,7 +29,7 @@ export const closeStaleIssues = async (
       stale.map(async (i) => {
         const resp = await fetch(`https://api.github.com/repos/${DIGEST_REPO}/issues/${i.number}`, {
           method: "PATCH",
-          headers: { ...headers(GITHUB_TOKEN), "Content-Type": "application/json" },
+          headers: { ...getHeaders(GITHUB_TOKEN), "Content-Type": "application/json" },
           body: JSON.stringify({ state: "closed" }),
         });
         if (!resp.ok) console.error(`[github] Failed to close #${i.number}: ${resp.status}`);

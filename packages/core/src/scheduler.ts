@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { runDaily } from "./phases/run-daily";
-import { runMonthlyRollup } from "./rollup/run-monthly-rollup";
-import { runWeeklyRollup } from "./rollup/run-weekly-rollup";
+import { runMonthly } from "./rollup/run-monthly";
+import { runWeekly } from "./rollup/run-weekly";
 import { loadConfig } from "./utils";
 import { cronMatch } from "./utils/cron";
 
@@ -16,12 +16,12 @@ export const runScheduler = async (): Promise<void> => {
 
   if (schedules.weekly.enabled && cronMatch(schedules.weekly.cron, now)) {
     console.error(`[scheduler] Weekly rollup due at ${now.toISO()}`);
-    await runWeeklyRollup();
+    await runWeekly();
   }
 
   if (schedules.monthly.enabled && cronMatch(schedules.monthly.cron, now)) {
     console.error(`[scheduler] Monthly rollup due at ${now.toISO()}`);
-    await runMonthlyRollup();
+    await runMonthly();
   }
 
   console.error("[scheduler] Done!");
