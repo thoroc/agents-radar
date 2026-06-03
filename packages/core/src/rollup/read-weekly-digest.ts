@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { DIGESTS_DIR } from "./rollup-constants";
+import { DIGESTS_DIR } from "./constants";
 
 export const readWeeklyDigest = (date: string): string | null => {
   const p = path.join(DIGESTS_DIR, date, "ai-weekly.md");

@@ -1,17 +1,26 @@
-import { getPrimaryLang, type Locale, t } from "../../utils";
+import { getPrimaryLang, type Locale, t } from "../../locales";
 import { PAGES_URL_DEFAULT } from "../../utils/constants";
 import type { Highlights } from "../notify/build-message";
 import { notifyLabel } from "../notify/notify-label";
 
-export const buildFeishuMessage = (
-  date: string,
-  reports: string[],
-  pagesUrl?: string,
-  highlights?: Highlights | null,
-  enabledLangs: string[] = ["zh-CN"],
-  primaryLang: Locale = getPrimaryLang() as Locale,
-  env: NodeJS.ProcessEnv = process.env,
-): string => {
+interface BuildFeishuMessageOptions {
+  date: string;
+  reports: string[];
+  pagesUrl?: string;
+  highlights?: Highlights | null;
+  enabledLangs?: string[];
+  primaryLang?: Locale;
+  env?: NodeJS.ProcessEnv;
+}
+
+export const buildFeishuMessage = (args: BuildFeishuMessageOptions): string => {
+  const date = args.date;
+  const reports = args.reports;
+  const pagesUrl = args.pagesUrl;
+  const highlights = args.highlights;
+  const enabledLangs = args.enabledLangs ?? [getPrimaryLang()];
+  const primaryLang = args.primaryLang ?? getPrimaryLang();
+  const env = args.env ?? process.env;
   const PAGES_URL = (pagesUrl ?? env.PAGES_URL ?? PAGES_URL_DEFAULT).replace(/\/$/, "");
   const baseReports = reports.filter((r) => !r.endsWith(".en-US"));
   const isWeekly = baseReports.includes("ai-weekly");

@@ -1,13 +1,13 @@
 import fs from "node:fs";
 import { DateTime } from "luxon";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import * as loadConfigModule from "../config";
 import * as githubModule from "../github";
+import * as getEnabledLangsModule from "../locales/get-enabled-langs";
 import * as autoGenFooterModule from "../report/auto-gen-footer";
 import * as callLlmModule from "../report/call-llm";
 import * as saveFileModule from "../report/save-file";
 import * as utilsModule from "../utils";
-import * as getEnabledLangsModule from "../utils/get-enabled-langs";
-import * as loadConfigModule from "../utils/load-config";
 import * as generateRollupHighlightsModule from "./generate-rollup-highlights";
 import * as getDateDirsModule from "./get-date-dirs";
 import * as readDailyDigestModule from "./read-daily-digest";

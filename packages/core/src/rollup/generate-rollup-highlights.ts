@@ -4,7 +4,7 @@ import { buildHighlightsPrompt, type ReportHighlights } from "../prompts";
 import { callLlm } from "../report/call-llm";
 import { saveFile } from "../report/save-file";
 import type { Locale } from "../types/locale";
-import { DIGESTS_DIR } from "./rollup-constants";
+import { DIGESTS_DIR } from "./constants";
 
 export const generateRollupHighlights = async (
   allContent: Record<string, string>,

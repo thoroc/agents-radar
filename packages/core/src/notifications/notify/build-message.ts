@@ -1,5 +1,5 @@
-import type { ReportHighlights } from "../../prompts/prompts-data-types";
-import { getPrimaryLang, type Locale, t } from "../../utils";
+import { getPrimaryLang, type Locale, t } from "../../locales";
+import type { ReportHighlights } from "../../prompts/types";
 import { PAGES_URL_DEFAULT } from "../../utils/constants";
 import { notifyLabel } from "./notify-label";
 

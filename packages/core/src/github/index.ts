@@ -3,4 +3,5 @@ export { createGitHubIssue } from "./create-issue";
 export { fetchRecentItems } from "./fetch-recent-items";
 export { fetchRecentReleases } from "./fetch-recent-releases";
 export { fetchSkillsData } from "./fetch-skills-data";
+export { toRepoConfig } from "./to-repo-config";
 export * from "./types";

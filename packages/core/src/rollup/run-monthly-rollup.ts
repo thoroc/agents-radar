@@ -16,11 +16,11 @@ import {
   toCstDateStr,
   toUtcStr,
 } from "../utils";
+import { DIGESTS_DIR } from "./constants";
 import { generateRollupHighlights } from "./generate-rollup-highlights";
 import { getDateDirs } from "./get-date-dirs";
 import { readDailyDigest } from "./read-daily-digest";
 import { readWeeklyDigest } from "./read-weekly-digest";
-import { DIGESTS_DIR } from "./rollup-constants";
 
 export const runMonthlyRollup = async (
   digestRepo?: string,

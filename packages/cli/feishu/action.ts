@@ -63,7 +63,7 @@ export const feishuAction = async (
   const icon = isMonthly ? "📆" : isWeekly ? "📅" : "📡";
   const title = `${icon} agents-radar · ${date}`;
 
-  const content = buildFeishuMessage(date, reports, undefined, highlights, enabledLangs, primaryLang, env);
+  const content = buildFeishuMessage({ date, reports, highlights, enabledLangs, primaryLang, env });
 
   console.error(`[feishu] Sending to ${urls.length} webhook(s) for ${date} (${reports.length} reports)…`);
   await sendFeishu(title, content);
