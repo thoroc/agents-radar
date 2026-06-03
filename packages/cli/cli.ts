@@ -1,6 +1,7 @@
 import { Command } from "@cliffy/command";
 import dotenvx from "@dotenvx/dotenvx";
 import { dailyCommand } from "./daily";
+import { localeCommand } from "./locale";
 import { monthlyCommand } from "./monthly";
 import { schedulerCommand } from "./scheduler";
 import { weeklyCommand } from "./weekly";
@@ -16,6 +17,7 @@ const main = async (): Promise<void> => {
     .command("weekly", weeklyCommand)
     .command("monthly", monthlyCommand)
     .command("scheduler", schedulerCommand)
+    .command("locale", localeCommand)
     .parse(process.argv.slice(2));
 };
 
