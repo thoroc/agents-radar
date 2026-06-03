@@ -84,28 +84,28 @@ const buildMainReports = (
     const ft = autoGenFooter(lang as Locale);
     const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
 
-    cliContent[lang] = buildCliReportContent(
-      s.cliDigests,
-      s.skillsSummary,
-      comparisonsByLang[lang]!,
+    cliContent[lang] = buildCliReportContent({
+      cliDigests: s.cliDigests,
+      skillsSummary: s.skillsSummary,
+      comparison: comparisonsByLang[lang]!,
       utcStr,
       dateStr,
-      ft,
-      claudeSkillsRepo,
-      lang as Locale,
-    );
-    openclawContent[lang] = buildOpenclawReportContent(
+      footer: ft,
+      skillsRepo: claudeSkillsRepo,
+      lang: lang as Locale,
+    });
+    openclawContent[lang] = buildOpenclawReportContent({
       fetchedOpenclaw,
-      s.peerDigests,
-      s.openclawSummary,
-      peersComparisonsByLang[lang]!,
+      peerDigests: s.peerDigests,
+      openclawSummary: s.openclawSummary,
+      peersComparison: peersComparisonsByLang[lang]!,
       utcStr,
       dateStr,
-      ft,
+      footer: ft,
       openclaw,
       openclawPeers,
-      lang as Locale,
-    );
+      lang: lang as Locale,
+    });
 
     console.error(`  Saved ${saveFile(cliContent[lang], dateStr, `ai-cli${suffix}.md`)}`);
     console.error(`  Saved ${saveFile(openclawContent[lang], dateStr, `ai-agents${suffix}.md`)}`);

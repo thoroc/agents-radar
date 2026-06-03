@@ -56,34 +56,19 @@ export type GenerateManifestDeps = {
   write?: (s: string) => void;
 };
 
-export const generateManifestAction = async (
-  args: GenerateManifestActionArgs,
-  _deps: GenerateManifestDeps = {},
-  env: NodeJS.ProcessEnv = process.env,
-): Promise<void> => {
-  dotenvx.config({ quiet: true });
-  const { verbosity } = args;
-  const siteUrl = env.PAGES_URL ?? PAGES_URL_DEFAULT;
-  const entries = fs
+const scanDigestDirs = (): DateEntry[] =>
+  fs
     .readdirSync(DIGESTS_DIR)
     .filter((name) => DATE_RE.test(name) && fs.statSync(path.join(DIGESTS_DIR, name)).isDirectory())
     .sort()
     .reverse()
-    .map((date) => {
-      const reports = REPORT_FILES.filter((r) => fs.existsSync(path.join(DIGESTS_DIR, date, `${r}.md`)));
-      return { date, reports };
-    })
+    .map((date) => ({
+      date,
+      reports: REPORT_FILES.filter((r) => fs.existsSync(path.join(DIGESTS_DIR, date, `${r}.md`))),
+    }))
     .filter((e) => e.reports.length > 0);
 
-  const manifest: Manifest = {
-    generated: DateTime.now().toISO()!,
-    dates: entries,
-    labels: buildLabels(),
-  };
-
-  fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`);
-  console.error(`manifest.json updated: ${entries.length} dates`);
-
+const buildFeedXml = async (entries: DateEntry[], siteUrl: string): Promise<string> => {
   const feedItems: Array<{ date: string; report: string }> = [];
   outer: for (const entry of entries) {
     for (const report of entry.reports) {
@@ -93,11 +78,9 @@ export const generateManifestAction = async (
   }
 
   const buildDate = toRfc822(DateTime.now().toJSDate());
-
   const itemXmlChunks: string[] = [];
   for (const { date, report } of feedItems) {
     const label = reportLabel(report);
-    const title = `${label} ${date}`;
     const link = `${siteUrl}/#${date}/${report}`;
     const parts = date.split("-").map(Number);
     const pubDate = toRfc822(DateTime.utc(parts[0]!, parts[1]!, parts[2]!).toJSDate());
@@ -105,7 +88,7 @@ export const generateManifestAction = async (
     itemXmlChunks.push(
       [
         "    <item>",
-        `      <title>${escapeXml(title)}</title>`,
+        `      <title>${escapeXml(`${label} ${date}`)}</title>`,
         `      <link>${escapeXml(link)}</link>`,
         `      <guid isPermaLink="true">${escapeXml(link)}</guid>`,
         `      <pubDate>${pubDate}</pubDate>`,
@@ -115,9 +98,8 @@ export const generateManifestAction = async (
       ].join("\n"),
     );
   }
-  const itemsXml = itemXmlChunks.join("\n");
 
-  const feedXml =
+  return (
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">\n` +
     `  <channel>\n` +
@@ -127,14 +109,36 @@ export const generateManifestAction = async (
     `    <language>zh-CN</language>\n` +
     `    <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>\n` +
     `    <lastBuildDate>${buildDate}</lastBuildDate>\n` +
-    itemsXml +
+    itemXmlChunks.join("\n") +
     `\n  </channel>\n` +
-    `</rss>\n`;
+    `</rss>\n`
+  );
+};
 
+export const generateManifestAction = async (
+  args: GenerateManifestActionArgs,
+  _deps: GenerateManifestDeps = {},
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<void> => {
+  dotenvx.config({ quiet: true });
+  const { verbosity } = args;
+  const siteUrl = env.PAGES_URL ?? PAGES_URL_DEFAULT;
+
+  const entries = scanDigestDirs();
+  const manifest: Manifest = {
+    generated: DateTime.now().toISO()!,
+    dates: entries,
+    labels: buildLabels(),
+  };
+  fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`);
+  console.error(`manifest.json updated: ${entries.length} dates`);
+
+  const feedXml = await buildFeedXml(entries, siteUrl);
   fs.writeFileSync(FEED_PATH, feedXml);
-  console.error(`feed.xml updated: ${feedItems.length} items`);
+  const feedCount = (feedXml.match(/<item>/g) ?? []).length;
+  console.error(`feed.xml updated: ${feedCount} items`);
 
   if (verbosity >= 1) {
-    console.error(`[manifest] ${feedItems.length} feed items, ${entries.length} dates`);
+    console.error(`[manifest] ${feedCount} feed items, ${entries.length} dates`);
   }
 };

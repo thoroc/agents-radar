@@ -2,18 +2,31 @@ import type { RepoConfig, RepoFetch } from "../github";
 import type { RepoDigest } from "../prompts";
 import { type Locale, t } from "../utils";
 
-export const buildOpenclawReportContent = (
-  fetchedOpenclaw: RepoFetch,
-  peerDigests: RepoDigest[],
-  openclawSummary: string,
-  peersComparison: string,
-  utcStr: string,
-  dateStr: string,
-  footer: string,
-  openclaw: RepoConfig,
-  openclawPeers: RepoConfig[],
-  lang: Locale,
-): string => {
+export interface BuildOpenclawReportOptions {
+  fetchedOpenclaw: RepoFetch;
+  peerDigests: RepoDigest[];
+  openclawSummary: string;
+  peersComparison: string;
+  utcStr: string;
+  dateStr: string;
+  footer: string;
+  openclaw: RepoConfig;
+  openclawPeers: RepoConfig[];
+  lang: Locale;
+}
+
+export const buildOpenclawReportContent = ({
+  fetchedOpenclaw,
+  peerDigests,
+  openclawSummary,
+  peersComparison,
+  utcStr,
+  dateStr,
+  footer,
+  openclaw,
+  openclawPeers,
+  lang,
+}: BuildOpenclawReportOptions): string => {
   const { issues, prs } = fetchedOpenclaw;
 
   const peersRepoLinks =

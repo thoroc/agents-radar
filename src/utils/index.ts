@@ -15,6 +15,7 @@ export {
   type LocaleMeta,
   LocaleMetaSchema,
 } from "./locale-schema";
+export { logger } from "./logger";
 export { sleep } from "./sleep";
 export { t } from "./t";
 export { toCstDateStr } from "./to-cst-date-str";

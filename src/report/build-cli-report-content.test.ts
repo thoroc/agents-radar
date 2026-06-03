@@ -17,16 +17,16 @@ describe("buildCliReportContent", () => {
       makeDigest({ config: { id: "claude-code", repo: "anthropics/claude-code", name: "Claude Code" } }),
       makeDigest({ config: { id: "codex", repo: "openai/codex", name: "OpenAI Codex" } }),
     ];
-    const result = buildCliReportContent(
-      digests,
-      "Skills summary",
-      "Comparison content",
-      "2026-03-09 00:00",
-      "2026-03-09",
-      "\n---\nfooter",
-      "anthropics/skills",
-      "zh-CN",
-    );
+    const result = buildCliReportContent({
+      cliDigests: digests,
+      skillsSummary: "Skills summary",
+      comparison: "Comparison content",
+      utcStr: "2026-03-09 00:00",
+      dateStr: "2026-03-09",
+      footer: "\n---\nfooter",
+      skillsRepo: "anthropics/skills",
+      lang: "zh-CN",
+    });
     expect(result).toContain("# AI CLI 工具社区动态日报 2026-03-09");
     expect(result).toContain("覆盖工具: 2 个");
     expect(result).toContain("[Claude Code](https://github.com/anthropics/claude-code)");
@@ -38,16 +38,16 @@ describe("buildCliReportContent", () => {
   });
   it("includes title and meta in English", () => {
     const digests = [makeDigest()];
-    const result = buildCliReportContent(
-      digests,
-      "Skills",
-      "Comparison",
-      "2026-03-09 00:00",
-      "2026-03-09",
-      "",
-      "anthropics/skills",
-      "en-US",
-    );
+    const result = buildCliReportContent({
+      cliDigests: digests,
+      skillsSummary: "Skills",
+      comparison: "Comparison",
+      utcStr: "2026-03-09 00:00",
+      dateStr: "2026-03-09",
+      footer: "",
+      skillsRepo: "anthropics/skills",
+      lang: "en-US",
+    });
     expect(result).toContain("# AI CLI Tools Community Digest 2026-03-09");
     expect(result).toContain("Cross-Tool Comparison");
   });
@@ -56,16 +56,16 @@ describe("buildCliReportContent", () => {
       makeDigest({ config: { id: "claude-code", repo: "anthropics/claude-code", name: "Claude Code" } }),
       makeDigest({ config: { id: "codex", repo: "openai/codex", name: "Codex" } }),
     ];
-    const result = buildCliReportContent(
-      digests,
-      "SKILLS_CONTENT",
-      "comparison",
-      "",
-      "",
-      "",
-      "anthropics/skills",
-      "zh-CN",
-    );
+    const result = buildCliReportContent({
+      cliDigests: digests,
+      skillsSummary: "SKILLS_CONTENT",
+      comparison: "comparison",
+      utcStr: "",
+      dateStr: "",
+      footer: "",
+      skillsRepo: "anthropics/skills",
+      lang: "zh-CN",
+    });
     const claudeIdx = result.indexOf("Claude Code");
     const skillsIdx = result.indexOf("SKILLS_CONTENT");
     expect(skillsIdx).toBeGreaterThan(claudeIdx);

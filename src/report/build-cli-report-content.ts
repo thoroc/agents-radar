@@ -1,16 +1,27 @@
 import type { RepoDigest } from "../prompts";
 import { type Locale, t } from "../utils";
 
-export const buildCliReportContent = (
-  cliDigests: RepoDigest[],
-  skillsSummary: string,
-  comparison: string,
-  utcStr: string,
-  dateStr: string,
-  footer: string,
-  skillsRepo: string,
-  lang: Locale,
-): string => {
+export interface BuildCliReportOptions {
+  cliDigests: RepoDigest[];
+  skillsSummary: string;
+  comparison: string;
+  utcStr: string;
+  dateStr: string;
+  footer: string;
+  skillsRepo: string;
+  lang: Locale;
+}
+
+export const buildCliReportContent = ({
+  cliDigests,
+  skillsSummary,
+  comparison,
+  utcStr,
+  dateStr,
+  footer,
+  skillsRepo,
+  lang,
+}: BuildCliReportOptions): string => {
   const repoLinks =
     cliDigests.map((d) => `- [${d.config.name}](https://github.com/${d.config.repo})`).join("\n") +
     `\n- [Claude Code Skills](https://github.com/${skillsRepo})`;

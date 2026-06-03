@@ -23,18 +23,18 @@ describe("buildOpenclawReportContent", () => {
       prs: [] as GitHubItem[],
       releases: [] as GitHubRelease[],
     };
-    const result = buildOpenclawReportContent(
+    const result = buildOpenclawReportContent({
       fetchedOpenclaw,
       peerDigests,
-      "OpenClaw summary",
-      "Peers comparison",
-      "2026-03-09 00:00",
-      "2026-03-09",
-      "\nfooter",
+      openclawSummary: "OpenClaw summary",
+      peersComparison: "Peers comparison",
+      utcStr: "2026-03-09 00:00",
+      dateStr: "2026-03-09",
+      footer: "\nfooter",
       openclaw,
-      peers,
-      "zh-CN",
-    );
+      openclawPeers: peers,
+      lang: "zh-CN",
+    });
     expect(result).toContain("# OpenClaw 生态日报 2026-03-09");
     expect(result).toContain("Issues: 1");
     expect(result).toContain("覆盖项目: 2 个");
@@ -47,18 +47,18 @@ describe("buildOpenclawReportContent", () => {
   });
   it("renders in English", () => {
     const openclaw: RepoConfig = { id: "openclaw", repo: "openclaw/openclaw", name: "OpenClaw" };
-    const result = buildOpenclawReportContent(
-      { cfg: openclaw, issues: [], prs: [], releases: [] },
-      [],
-      "summary",
-      "comparison",
-      "",
-      "2026-03-09",
-      "",
+    const result = buildOpenclawReportContent({
+      fetchedOpenclaw: { cfg: openclaw, issues: [], prs: [], releases: [] },
+      peerDigests: [],
+      openclawSummary: "summary",
+      peersComparison: "comparison",
+      utcStr: "",
+      dateStr: "2026-03-09",
+      footer: "",
       openclaw,
-      [],
-      "en-US",
-    );
+      openclawPeers: [],
+      lang: "en-US",
+    });
     expect(result).toContain("# OpenClaw Ecosystem Digest 2026-03-09");
     expect(result).toContain("OpenClaw Deep Dive");
     expect(result).toContain("Cross-Ecosystem Comparison");
