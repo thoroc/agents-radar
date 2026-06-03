@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "module": "./src/index.ts",
-  "exports": { ".": "./src/index.ts" },
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "dependencies": {
     "@agents-radar/providers": "workspace:*",
     "@dotenvx/dotenvx": "^1.69.2",

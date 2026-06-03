@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { LlmProvider } from "@agents-radar/providers";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { callLlm } from "./call-llm";
 
 const mockCall = vi.fn<(prompt: string, maxTokens: number) => Promise<string>>();
