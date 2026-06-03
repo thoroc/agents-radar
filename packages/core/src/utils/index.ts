@@ -1,4 +1,5 @@
 export type { Locale } from "../types/locale";
+export { GITHUB_REPO_DEFAULT, PAGES_URL_DEFAULT } from "./constants";
 export { getEnabledLangs } from "./get-enabled-langs";
 export {
   getFallbackLang,

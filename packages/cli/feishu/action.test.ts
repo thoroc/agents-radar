@@ -1,6 +1,6 @@
+import * as buildFeishuMessageModule from "@agents-radar/core/notifications/feishu";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { feishuAction } from "./action";
-import * as buildFeishuMessageModule from "./build-feishu-message";
 
 describe("feishuAction", () => {
   beforeEach(() => {
