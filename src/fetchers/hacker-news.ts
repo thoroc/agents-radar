@@ -1,8 +1,5 @@
-/**
- * Hacker News AI stories fetched via the Algolia HN Search API.
- */
-
 import { DateTime } from "luxon";
+import { z } from "zod";
 
 export interface HackerNewsStory {
   id: string;
@@ -25,19 +22,27 @@ const HN_TOP_STORIES = 30;
 /** Queries run in parallel; results are deduped by story ID. */
 const QUERIES = ["AI", "LLM", "Claude", "OpenAI", "Anthropic", "machine learning"];
 
-interface AlgoliaHit {
-  objectID: string;
-  title: string;
-  url?: string;
-  points: number;
-  num_comments: number;
-  author: string;
-  created_at: string;
-}
+const AlgoliaHitSchema = z.object({
+  objectID: z.string(),
+  title: z.string().default(""),
+  url: z.string().optional(),
+  points: z.number().nullable().default(0),
+  num_comments: z.number().default(0),
+  author: z.string().default(""),
+  created_at: z.string().default(""),
+});
 
-interface AlgoliaResponse {
-  hits: AlgoliaHit[];
-}
+const AlgoliaResponseSchema = z.object({ hits: z.array(AlgoliaHitSchema).default([]) });
+
+const buildHnQueryUrl = (q: string, since: number): string =>
+  `https://hn.algolia.com/api/v1/search_by_date` +
+  `?tags=story` +
+  `&query=${encodeURIComponent(q)}` +
+  `&numericFilters=created_at_i>${since}` +
+  `&hitsPerPage=${HN_TOP_STORIES}`;
+
+const dedupeAndRankHits = (seen: Map<string, HackerNewsStory>): HackerNewsStory[] =>
+  [...seen.values()].sort((a, b) => b.points - a.points).slice(0, HN_TOP_STORIES);
 
 export const fetchHackerNewsData = async (): Promise<HackerNewsData> => {
   const since = Math.floor(DateTime.now().minus({ days: 1 }).toMillis() / 1000);
@@ -47,21 +52,15 @@ export const fetchHackerNewsData = async (): Promise<HackerNewsData> => {
     await Promise.all(
       QUERIES.map(async (q) => {
         try {
-          const url =
-            `https://hn.algolia.com/api/v1/search_by_date` +
-            `?tags=story` +
-            `&query=${encodeURIComponent(q)}` +
-            `&numericFilters=created_at_i>${since}` +
-            `&hitsPerPage=30`;
-          const resp = await fetch(url, {
+          const resp = await fetch(buildHnQueryUrl(q, since), {
             headers: { "User-Agent": "agents-radar/1.0" },
           });
           if (!resp.ok) {
             console.error(`  [hn] "${q}": HTTP ${resp.status}`);
             return;
           }
-          const data = (await resp.json()) as AlgoliaResponse;
-          for (const hit of data.hits ?? []) {
+          const { hits } = AlgoliaResponseSchema.parse(await resp.json());
+          for (const hit of hits) {
             if (!seen.has(hit.objectID)) {
               const hnUrl = `https://news.ycombinator.com/item?id=${hit.objectID}`;
               seen.set(hit.objectID, {
@@ -70,7 +69,7 @@ export const fetchHackerNewsData = async (): Promise<HackerNewsData> => {
                 url: hit.url ?? hnUrl,
                 hnUrl,
                 points: hit.points ?? 0,
-                comments: hit.num_comments ?? 0,
+                comments: hit.num_comments,
                 author: hit.author,
                 createdAt: hit.created_at,
               });
@@ -82,8 +81,7 @@ export const fetchHackerNewsData = async (): Promise<HackerNewsData> => {
       }),
     );
 
-    const stories = [...seen.values()].sort((a, b) => b.points - a.points).slice(0, HN_TOP_STORIES);
-
+    const stories = dedupeAndRankHits(seen);
     console.error(`  [hn] ${stories.length} stories (from ${seen.size} unique)`);
     return { stories, fetchSuccess: stories.length > 0 };
   } catch (err) {

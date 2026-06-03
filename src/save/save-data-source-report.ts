@@ -34,7 +34,7 @@ export const saveDataSourceReport = async (
       {
         data: opts.data,
         promptBuilder: opts.promptBuilder,
-        headerBuilder: (_ds, _us, _lang) => opts.headerBuilder(_ds, _us, _lang),
+        headerBuilder: opts.headerBuilder,
         fileName: opts.fileName,
         issueTitle: opts.issueTitle,
         issueLabel: opts.issueLabel,

@@ -12,105 +12,105 @@
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
 import { loadWebState } from "./fetchers";
+import type { RepoConfig, RepoFetch } from "./github";
 import { generateComparisons } from "./phases/compare";
 import { fetchAllData } from "./phases/fetch";
-
 import { savePhase } from "./phases/save";
 import { generateSummaries } from "./phases/summarize";
 import { requireEnv } from "./require-env";
-import { getEnabledLangs, type Locale, loadConfig, toCstDateStr, toUtcStr } from "./utils";
+import { getEnabledLangs, type Locale, loadConfig, logger, toCstDateStr, toUtcStr } from "./utils";
 
-export const main = async (env: NodeJS.ProcessEnv = process.env): Promise<void> => {
+const bootstrapContext = (env: NodeJS.ProcessEnv) => {
   dotenvx.config({ quiet: true });
   requireEnv("GITHUB_TOKEN", env);
-
-  const {
-    cliRepos: CLI_REPOS,
-    skillsRepo: CLAUDE_SKILLS_REPO,
-    openclaw: OPENCLAW,
-    openclawPeers: OPENCLAW_PEERS,
-    languages: CONFIG_LANGS,
-  } = loadConfig();
-  const ENABLED_LANGS = getEnabledLangs(CONFIG_LANGS, env);
-  const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
-
+  const { cliRepos, skillsRepo, openclaw, openclawPeers, languages } = loadConfig();
+  const enabledLangs = getEnabledLangs(languages, env) as Locale[];
   const now = DateTime.now();
-  const since = now.minus({ hours: 24 });
-  const dateStr = toCstDateStr(now);
-  const utcStr = toUtcStr(now);
-  const digestRepo = env.DIGEST_REPO ?? "";
+  return {
+    cliRepos,
+    skillsRepo,
+    openclaw,
+    openclawPeers,
+    allConfigs: [...cliRepos, openclaw, ...openclawPeers],
+    enabledLangs,
+    since: now.minus({ hours: 24 }),
+    dateStr: toCstDateStr(now),
+    utcStr: toUtcStr(now),
+    digestRepo: env.DIGEST_REPO ?? "",
+    webState: loadWebState(),
+  };
+};
 
-  const providerName = env.LLM_PROVIDER ?? "anthropic";
-  console.error(`[${now.toISO()}] Starting digest | provider: ${providerName}`);
+const classifyFetchResults = (fetched: RepoFetch[], openclaw: RepoConfig, openclawPeers: RepoConfig[]) => {
+  const peerIds = new Set(openclawPeers.map((p) => p.id));
+  return {
+    fetchedCli: fetched.filter((f) => f.cfg.id !== openclaw.id && !peerIds.has(f.cfg.id)),
+    fetchedOpenclaw: fetched.find((f) => f.cfg.id === openclaw.id)!,
+    fetchedPeers: fetched.filter((f) => peerIds.has(f.cfg.id)),
+  };
+};
 
-  const webState = loadWebState();
-  const {
-    fetched,
-    skillsData,
-    webResults,
-    trendingData,
-    hnData,
-    phData,
-    arxivData,
-    hfData,
-    devtoData,
-    lobstersData,
-  } = await fetchAllData(since, webState, allConfigs, CLAUDE_SKILLS_REPO);
+export const main = async (env: NodeJS.ProcessEnv = process.env): Promise<void> => {
+  const ctx = bootstrapContext(env);
+  logger.info(`Starting digest | provider: ${env.LLM_PROVIDER ?? "anthropic"}`);
 
-  const peerIds = new Set(OPENCLAW_PEERS.map((p) => p.id));
-  const fetchedCli = fetched.filter((f) => f.cfg.id !== OPENCLAW.id && !peerIds.has(f.cfg.id));
-  const fetchedOpenclaw = fetched.find((f) => f.cfg.id === OPENCLAW.id)!;
-  const fetchedPeers = fetched.filter((f) => peerIds.has(f.cfg.id));
-
-  console.error(`  Generating summaries in ${ENABLED_LANGS.length} languages...`);
-  const summariesEntries = await Promise.all(
-    ENABLED_LANGS.map(async (lang) => {
-      const summaries = await generateSummaries(
-        fetchedCli,
-        fetchedOpenclaw,
-        skillsData,
-        fetchedPeers,
-        trendingData,
-        dateStr,
-        lang as Locale,
-      );
-      return [lang, summaries] as const;
-    }),
+  const rawFetch = await fetchAllData(ctx.since, ctx.webState, ctx.allConfigs, ctx.skillsRepo);
+  const { fetchedCli, fetchedOpenclaw, fetchedPeers } = classifyFetchResults(
+    rawFetch.fetched,
+    ctx.openclaw,
+    ctx.openclawPeers,
   );
-  const summariesByLang = Object.fromEntries(summariesEntries);
 
-  console.error("  Calling LLM for comparative analyses...");
+  logger.info(`Generating summaries in ${ctx.enabledLangs.length} languages...`);
+  const summariesByLang = Object.fromEntries(
+    await Promise.all(
+      ctx.enabledLangs.map(async (lang) => [
+        lang,
+        await generateSummaries(
+          fetchedCli,
+          fetchedOpenclaw,
+          rawFetch.skillsData,
+          fetchedPeers,
+          rawFetch.trendingData,
+          ctx.dateStr,
+          lang,
+        ),
+      ]),
+    ),
+  );
+
+  logger.info("Calling LLM for comparative analyses...");
   const { comparisonByLang, peersComparisonByLang } = await generateComparisons({
     summariesByLang,
     fetchedOpenclaw,
-    openclaw: OPENCLAW,
-    dateStr,
+    openclaw: ctx.openclaw,
+    dateStr: ctx.dateStr,
   });
 
   await savePhase({
     summariesByLang,
     comparisonsByLang: comparisonByLang,
     peersComparisonsByLang: peersComparisonByLang,
-    claudeSkillsRepo: CLAUDE_SKILLS_REPO,
-    utcStr,
-    dateStr,
-    digestRepo,
-    enabledLangs: ENABLED_LANGS,
+    claudeSkillsRepo: ctx.skillsRepo,
+    utcStr: ctx.utcStr,
+    dateStr: ctx.dateStr,
+    digestRepo: ctx.digestRepo,
+    enabledLangs: ctx.enabledLangs as string[],
     fetchedOpenclaw,
-    openclaw: OPENCLAW,
-    openclawPeers: OPENCLAW_PEERS,
-    webResults,
-    webState,
-    trendingData,
-    hnData,
-    phData,
-    arxivData,
-    hfData,
-    devtoData,
-    lobstersData,
+    openclaw: ctx.openclaw,
+    openclawPeers: ctx.openclawPeers,
+    webResults: rawFetch.webResults,
+    webState: ctx.webState,
+    trendingData: rawFetch.trendingData,
+    hnData: rawFetch.hnData,
+    phData: rawFetch.phData,
+    arxivData: rawFetch.arxivData,
+    hfData: rawFetch.hfData,
+    devtoData: rawFetch.devtoData,
+    lobstersData: rawFetch.lobstersData,
   });
 
-  console.error("Done!");
+  logger.info("Done!");
 };
 
 main().catch((err) => {

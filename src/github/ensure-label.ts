@@ -1,3 +1,5 @@
+import { env } from "../config/env";
+
 const headers = (token: string): Record<string, string> => ({
   Authorization: `Bearer ${token}`,
   Accept: "application/vnd.github+json",
@@ -7,8 +9,8 @@ const headers = (token: string): Record<string, string> => ({
 export const ensureLabel = async (
   name: string,
   color: string,
-  GITHUB_TOKEN: string = process.env.GITHUB_TOKEN ?? "",
-  DIGEST_REPO: string = process.env.DIGEST_REPO ?? "",
+  GITHUB_TOKEN: string = env.githubToken,
+  DIGEST_REPO: string = env.digestRepo,
 ): Promise<void> => {
   const resp = await fetch(`https://api.github.com/repos/${DIGEST_REPO}/labels`, {
     method: "POST",

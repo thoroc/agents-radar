@@ -1,3 +1,4 @@
+import { env } from "../config/env";
 import { ensureLabel } from "./ensure-label";
 import { LABEL_COLORS } from "./labels";
 
@@ -20,8 +21,8 @@ export const createGitHubIssue = async (
   title: string,
   body: string,
   label: string,
-  GITHUB_TOKEN: string = process.env.GITHUB_TOKEN ?? "",
-  DIGEST_REPO: string = process.env.DIGEST_REPO ?? "",
+  GITHUB_TOKEN: string = env.githubToken,
+  DIGEST_REPO: string = env.digestRepo,
 ): Promise<string> => {
   body = neutralizeGitHubRefs(body);
   if (body.length > GITHUB_ISSUE_BODY_LIMIT) {

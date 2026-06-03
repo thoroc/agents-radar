@@ -1,1 +1,26 @@
 export const DIGESTS_DIR = "digests";
+
+export const REPORT_FILES = [
+  "ai-cli",
+  "ai-cli-en",
+  "ai-agents",
+  "ai-agents-en",
+  "ai-web",
+  "ai-web-en",
+  "ai-trending",
+  "ai-trending-en",
+  "ai-hn",
+  "ai-hn-en",
+  "ai-ph",
+  "ai-ph-en",
+  "ai-arxiv",
+  "ai-arxiv-en",
+  "ai-hf",
+  "ai-hf-en",
+  "ai-community",
+  "ai-community-en",
+  "ai-weekly",
+  "ai-weekly-en",
+  "ai-monthly",
+  "ai-monthly-en",
+] as const;
