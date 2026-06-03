@@ -29,7 +29,7 @@ jobs:
         run: bun run typecheck
 
       - name: Validate locale files
-        run: bun run validate-locales
+        run: bun run validate:locales
 
       - name: Test
         run: bun test
