@@ -1,4 +1,4 @@
-import { socialAction as coreSocialAction } from "../../core/src/notifications/social/action";
+import { socialAction as coreSocialAction } from "@agents-radar/core";
 
 export type SocialActionArgs = {
   platform: "xiaohongshu" | "wechat" | "wechat:monthly";

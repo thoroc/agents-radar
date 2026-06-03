@@ -1,6 +1,10 @@
+export { closeStaleIssuesAction } from "./close-stale-issues";
+export { generateManifestAction } from "./generate-manifest";
+export { feishuAction } from "./notifications/feishu";
+export { notifyAction } from "./notifications/notify";
+export { socialAction } from "./notifications/social";
 export { runDaily } from "./phases/run-daily";
 export { runMonthlyRollup } from "./rollup/run-monthly-rollup";
 export { runWeeklyRollup } from "./rollup/run-weekly-rollup";
 export { runScheduler } from "./scheduler";
-
 export { LocaleFileSchema } from "./utils/locale-schema";

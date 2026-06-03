@@ -1,4 +1,4 @@
-import { feishuAction as coreFeishuAction } from "../../core/src/notifications/feishu/action";
+import { feishuAction as coreFeishuAction } from "@agents-radar/core";
 
 export type FeishuActionArgs = {
   verbosity: number;
