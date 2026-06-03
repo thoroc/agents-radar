@@ -96,6 +96,11 @@ export interface SocialActionArgs {
 export type ActionDeps = {
   callLlm?: (prompt: string, maxTokens: number) => Promise<string>;
   write?: (s: string) => void;
+  readdirSync?: (path: string) => string[];
+  readFileSync?: (path: string, encoding: "utf-8") => string;
+  writeFileSync?: (path: string, content: string, encoding: "utf-8") => void;
+  mkdirSync?: (path: string, options: { recursive: boolean }) => void;
+  existsSync?: (path: string) => boolean;
 };
 
 const defaultFsDeps: FsDeps = {
@@ -114,36 +119,43 @@ export const socialAction = async (
   const {
     callLlm: callLlmFn = callLlm,
     write = console.log,
+    readdirSync = defaultFsDeps.readdirSync,
+    readFileSync = defaultFsDeps.readFileSync,
+    writeFileSync = defaultFsDeps.writeFileSync,
+    mkdirSync = defaultFsDeps.mkdirSync,
+    existsSync = defaultFsDeps.existsSync,
   } = deps;
 
+  const fsDeps: FsDeps = { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync };
+
   if (platform === "xiaohongshu") {
-    const dates = getRecentDates(1, defaultFsDeps);
+    const dates = getRecentDates(1, fsDeps);
     if (dates.length === 0) throw new Error("No digest directories found");
     const date = dates[0]!;
-    const reports = loadReports(date, defaultFsDeps);
+    const reports = loadReports(date, fsDeps);
     if (!reports) throw new Error(`No reports found for ${date}`);
 
     write(`[social] Generating xiaohongshu article for ${date}…`);
     const content = await callLlmFn(buildXiaohongshuPrompt(reports, date), 4096);
-    const filepath = saveSocialFile(content, `${date}-xiaohongshu.md`, defaultFsDeps);
+    const filepath = saveSocialFile(content, `${date}-xiaohongshu.md`, fsDeps);
     write(`[social] Saved to ${filepath}`);
   } else if (platform === "wechat") {
-    const { dateRange, content: reports } = loadMultiDayReports(7, defaultFsDeps, 2000);
-    const latestDate = getRecentDates(1, defaultFsDeps);
+    const { dateRange, content: reports } = loadMultiDayReports(7, fsDeps, 2000);
+    const latestDate = getRecentDates(1, fsDeps);
     if (latestDate.length === 0) throw new Error("No digest directories found");
 
     write(`[social] Generating wechat weekly article for ${dateRange}…`);
     const content = await callLlmFn(buildWechatPrompt(dateRange, reports), 16384);
-    const filepath = saveSocialFile(content, `${latestDate[0]}-wechat.md`, defaultFsDeps);
+    const filepath = saveSocialFile(content, `${latestDate[0]}-wechat.md`, fsDeps);
     write(`[social] Saved to ${filepath}`);
   } else {
-    const { dateRange, content: reports } = loadMultiDayReports(30, defaultFsDeps, 1000);
-    const latestDate = getRecentDates(1, defaultFsDeps);
+    const { dateRange, content: reports } = loadMultiDayReports(30, fsDeps, 1000);
+    const latestDate = getRecentDates(1, fsDeps);
     if (latestDate.length === 0) throw new Error("No digest directories found");
 
     write(`[social] Generating wechat monthly article for ${dateRange}…`);
     const content = await callLlmFn(buildWechatMonthlyPrompt(dateRange, reports), 16384);
-    const filepath = saveSocialFile(content, `${latestDate[0]}-wechat-monthly.md`, defaultFsDeps);
+    const filepath = saveSocialFile(content, `${latestDate[0]}-wechat-monthly.md`, fsDeps);
     write(`[social] Saved to ${filepath}`);
   }
 };
