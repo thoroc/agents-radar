@@ -1,5 +1,5 @@
+import * as githubModule from "@agents-radar/core/github";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import * as githubModule from "../github";
 
 vi.mock("@dotenvx/dotenvx", () => ({
   default: { config: vi.fn() },

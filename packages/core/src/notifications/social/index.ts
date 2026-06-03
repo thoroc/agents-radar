@@ -1,2 +1,3 @@
-export type { Platform, SocialActionArgs, ActionDeps } from "./action";
-export { socialAction } from "./action";
+export { buildWechatMonthlyPrompt } from "./build-wechat-monthly-prompt";
+export { buildWechatPrompt } from "./build-wechat-prompt";
+export { buildXiaohongshuPrompt } from "./build-xiaohongshu-prompt";

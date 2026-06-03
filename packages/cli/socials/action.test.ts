@@ -1,6 +1,5 @@
+import * as callLlmModule from "@agents-radar/core/report";
 import { describe, expect, it, vi } from "vitest";
-
-import * as callLlmModule from "../../report/call-llm";
 
 vi.mock("@dotenvx/dotenvx", () => ({
   default: { config: vi.fn() },

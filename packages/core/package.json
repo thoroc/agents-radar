@@ -4,7 +4,14 @@
   "private": true,
   "module": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./utils": "./src/utils/index.ts",
+    "./github": "./src/github/index.ts",
+    "./report": "./src/report/index.ts",
+    "./generate-manifest": "./src/generate-manifest/index.ts",
+    "./notifications/notify": "./src/notifications/notify/index.ts",
+    "./notifications/feishu": "./src/notifications/feishu/index.ts",
+    "./notifications/social": "./src/notifications/social/index.ts"
   },
   "dependencies": {
     "@agents-radar/providers": "workspace:*",

@@ -1,6 +1,6 @@
+import * as buildMessageModule from "@agents-radar/core/notifications/notify";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { notifyAction } from "./action";
-import * as buildMessageModule from "./build-message";
 
 describe("notifyAction", () => {
   beforeEach(() => {
