@@ -4,6 +4,7 @@ import { dailyCommand } from "./daily";
 import { localeCommand } from "./locale";
 import { monthlyCommand } from "./monthly";
 import { schedulerCommand } from "./scheduler";
+import { socialCommand } from "./socials";
 import { weeklyCommand } from "./weekly";
 
 const main = async (): Promise<void> => {
@@ -17,6 +18,7 @@ const main = async (): Promise<void> => {
     .command("weekly", weeklyCommand)
     .command("monthly", monthlyCommand)
     .command("scheduler", schedulerCommand)
+    .command("social", socialCommand)
     .command("locale", localeCommand)
     .parse(process.argv.slice(2));
 };
