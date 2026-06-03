@@ -2,7 +2,7 @@ import { saveWebState, type WebFetchResult, type WebState } from "../fetchers";
 import { buildWebReportPrompt } from "../prompts";
 import { LLM_TOKENS_WEB } from "../report/report-constants";
 import { getPrimaryLang, type Locale, t } from "../utils";
-import { defaultDeps, saveReport } from "./save-report";
+import { saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
 
 export const saveWebReport = async (
@@ -68,7 +68,7 @@ export const saveWebReport = async (
       digestRepo,
       footer,
       lang,
-      { ...defaultDeps, ...deps },
+      deps,
     );
   } catch (err) {
     console.error(`  [web/${lang}] Report generation failed: ${err}`);

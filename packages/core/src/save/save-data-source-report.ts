@@ -1,5 +1,5 @@
 import type { Locale } from "../types";
-import { defaultDeps, saveReport } from "./save-report";
+import { saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
 
 type DataSourceReportOpts = {
@@ -44,7 +44,7 @@ export const saveDataSourceReport = async (
       digestRepo,
       footer,
       lang,
-      { ...defaultDeps, ...deps },
+      deps,
     );
   } catch (err) {
     console.error(`  [${opts.logPrefix}/${lang}] Report generation failed: ${err}`);

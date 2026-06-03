@@ -4,7 +4,7 @@ import { saveFile } from "../report/save-file";
 import { getPrimaryLang } from "../utils";
 import type { SaveReportConfig, SaveReportDeps } from "./saver-types";
 
-export const defaultDeps: SaveReportDeps = {
+const defaultDeps: SaveReportDeps = {
   callLlm,
   saveFile,
   createGitHubIssue,

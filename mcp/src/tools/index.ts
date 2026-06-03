@@ -1,9 +1,11 @@
-export { getLatestTool, getReportTool } from "./get";
+export { getLatestTool } from "./get-latest";
+export { getReportTool } from "./get-report";
 export { listReportsTool } from "./list";
 export { searchTool } from "./search";
 
 import type { Tool } from "../types";
-import { getLatestTool, getReportTool } from "./get";
+import { getLatestTool } from "./get-latest";
+import { getReportTool } from "./get-report";
 import { listReportsTool } from "./list";
 import { searchTool } from "./search";
 

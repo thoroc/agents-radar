@@ -1,6 +1,6 @@
 import type { TrendingData } from "../fetchers/trending";
 import { getPrimaryLang, type Locale, t } from "../utils";
-import { defaultDeps, saveReport } from "./save-report";
+import { saveReport } from "./save-report";
 import type { SaveReportDeps } from "./saver-types";
 
 export const saveTrendingReport = async (
@@ -39,6 +39,6 @@ export const saveTrendingReport = async (
     digestRepo,
     footer,
     lang,
-    { ...defaultDeps, ...deps },
+    deps,
   );
 };
