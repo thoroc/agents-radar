@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/thoroc/agents-radar/compare/v1.4.0...v1.4.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* TypeScript standards remediation ([#38](https://github.com/thoroc/agents-radar/issues/38)) ([d7dfc4c](https://github.com/thoroc/agents-radar/commit/d7dfc4ca08a9e9b65bc5d40504bb578cbb9e920c))
+
 ## [1.4.0](https://github.com/thoroc/agents-radar/compare/v1.3.0...v1.4.0) (2026-06-03)
 
 
