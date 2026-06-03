@@ -2,9 +2,7 @@
 .DS_Store
 node_modules/
 dist/
-social/
-!src/social/
-!src/notifications/social/
+/social/
 coverage/
 .aislop/
 .claude/skills/
