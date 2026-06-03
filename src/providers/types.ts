@@ -1,13 +1,10 @@
-/**
- * Abstract LLM provider interface.
- *
- * All concrete providers must implement this contract so the rest of the
- * codebase can stay provider-agnostic.
- */
-
 export interface LlmProvider {
-  /** Human-readable provider identifier (e.g. "anthropic", "openai"). */
   readonly name: string;
-  /** Send a prompt and return the model's text response. */
   call(prompt: string, maxTokens: number): Promise<string>;
+}
+
+export interface ProviderOpts {
+  apiKey?: string;
+  baseURL?: string;
+  model?: string;
 }

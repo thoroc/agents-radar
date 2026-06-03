@@ -104,8 +104,8 @@ describe("LlmProvider interface", () => {
 // ---------------------------------------------------------------------------
 
 describe("VALID_PROVIDER_NAMES", () => {
-  it("contains all four supported providers", () => {
-    expect(VALID_PROVIDER_NAMES).toEqual(["anthropic", "openai", "github-copilot", "openrouter"]);
+  it("contains all supported providers", () => {
+    expect(VALID_PROVIDER_NAMES).toEqual(["anthropic", "openai", "github-copilot", "openrouter", "deepseek"]);
   });
 });
 

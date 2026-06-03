@@ -8,14 +8,10 @@
 
 import { DEFAULT_MODELS } from "../config/models";
 import { createOpenAICompatibleProvider } from "./openai-compatible";
-import type { LlmProvider } from "./types";
+import type { LlmProvider, ProviderOpts } from "./types";
 
 export const createOpenRouterProvider = (
-  opts?: {
-    apiKey?: string;
-    model?: string;
-    baseURL?: string;
-  },
+  opts?: ProviderOpts,
   env: NodeJS.ProcessEnv = process.env,
 ): LlmProvider =>
   createOpenAICompatibleProvider("openrouter", {

@@ -12,6 +12,7 @@ export { createOpenRouterProvider } from "./openrouter";
 export type { LlmProvider } from "./types";
 
 import { createAnthropicProvider } from "./anthropic";
+import { createDeepSeekProvider } from "./deepseek";
 import { createGitHubCopilotProvider } from "./github-copilot";
 import { createOpenAIProvider } from "./openai";
 import { createOpenRouterProvider } from "./openrouter";
@@ -22,9 +23,11 @@ const PROVIDERS = {
   openai: (env?: NodeJS.ProcessEnv) => createOpenAIProvider(undefined, env),
   "github-copilot": (env?: NodeJS.ProcessEnv) => createGitHubCopilotProvider(undefined, env),
   openrouter: (env?: NodeJS.ProcessEnv) => createOpenRouterProvider(undefined, env),
+  deepseek: (env?: NodeJS.ProcessEnv) =>
+    createDeepSeekProvider(env?.DEEPSEEK_API_KEY ?? "", undefined, undefined, env),
 } satisfies Record<string, (env?: NodeJS.ProcessEnv) => LlmProvider>;
 
-type ProviderName = keyof typeof PROVIDERS;
+export type ProviderName = keyof typeof PROVIDERS;
 
 /** All valid provider names — derived from the registry. */
 export const VALID_PROVIDER_NAMES = Object.keys(PROVIDERS) as ProviderName[];

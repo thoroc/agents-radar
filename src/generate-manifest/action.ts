@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import { getPrimaryLang } from "../utils";
 import { PAGES_URL_DEFAULT } from "../utils/constants";
 import { STRINGS, SUPPORTED_LOCALES } from "../utils/locale-data";
-import { DIGESTS_DIR } from "./constants";
+import { DIGESTS_DIR, REPORT_FILES } from "./constants";
 import { escapeXml } from "./escape-xml";
 import { getReportContent } from "./get-report-content";
 import { reportLabel } from "./report-label";
@@ -15,30 +15,6 @@ const MANIFEST_PATH = "manifest.json";
 const FEED_PATH = "feed.xml";
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-const REPORT_FILES = [
-  "ai-cli",
-  "ai-cli-en",
-  "ai-agents",
-  "ai-agents-en",
-  "ai-web",
-  "ai-web-en",
-  "ai-trending",
-  "ai-trending-en",
-  "ai-hn",
-  "ai-hn-en",
-  "ai-ph",
-  "ai-ph-en",
-  "ai-arxiv",
-  "ai-arxiv-en",
-  "ai-hf",
-  "ai-hf-en",
-  "ai-community",
-  "ai-community-en",
-  "ai-weekly",
-  "ai-weekly-en",
-  "ai-monthly",
-  "ai-monthly-en",
-] as const;
 const MAX_FEED_ITEMS = 30;
 
 interface DateEntry {
@@ -54,24 +30,15 @@ interface Manifest {
 
 const buildLabels = (): Record<string, string> => {
   const labels: Record<string, string> = {};
+  const baseIds = REPORT_FILES.filter((id) => !id.endsWith("-en"));
   for (const lang of SUPPORTED_LOCALES) {
     const s = STRINGS[lang];
     if (!s) continue;
     const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
-    const reportIds = [
-      "ai-cli",
-      "ai-agents",
-      "ai-web",
-      "ai-trending",
-      "ai-hn",
-      "ai-ph",
-      "ai-arxiv",
-      "ai-hf",
-      "ai-community",
-    ];
-    for (const id of reportIds) {
+    for (const id of baseIds) {
       const key = id + suffix;
-      const localeKey = `reportLabelAi${id
+      const base = id.startsWith("ai-") ? id.slice(3) : id;
+      const localeKey = `reportLabelAi${base
         .split("-")
         .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
         .join("")}` as keyof typeof s;

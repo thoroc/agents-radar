@@ -8,12 +8,12 @@
 
 import { DEFAULT_MODELS } from "../config/models";
 import { createOpenAICompatibleProvider } from "./openai-compatible";
-import type { LlmProvider } from "./types";
+import type { LlmProvider, ProviderOpts } from "./types";
 
 const GITHUB_COPILOT_BASE_URL = "https://models.github.ai/inference";
 
 export const createGitHubCopilotProvider = (
-  opts?: { apiKey?: string; model?: string },
+  opts?: ProviderOpts,
   env: NodeJS.ProcessEnv = process.env,
 ): LlmProvider =>
   createOpenAICompatibleProvider("github-copilot", {
