@@ -6,6 +6,7 @@
  *   GITHUB_COPILOT_MODEL   - model name (default: gpt-4o)
  */
 
+import { DEFAULT_MODELS } from "../config/models";
 import { createOpenAICompatibleProvider } from "./openai-compatible";
 import type { LlmProvider } from "./types";
 
@@ -18,5 +19,5 @@ export const createGitHubCopilotProvider = (
   createOpenAICompatibleProvider("github-copilot", {
     apiKey: opts?.apiKey ?? env.GITHUB_TOKEN,
     baseURL: GITHUB_COPILOT_BASE_URL,
-    model: opts?.model ?? env.GITHUB_COPILOT_MODEL ?? "gpt-4o",
+    model: opts?.model ?? env.GITHUB_COPILOT_MODEL ?? DEFAULT_MODELS.githubCopilot,
   });

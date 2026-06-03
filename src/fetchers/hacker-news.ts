@@ -52,7 +52,7 @@ export const fetchHackerNewsData = async (): Promise<HackerNewsData> => {
             `?tags=story` +
             `&query=${encodeURIComponent(q)}` +
             `&numericFilters=created_at_i>${since}` +
-            `&hitsPerPage=30`;
+            `&hitsPerPage=${HN_TOP_STORIES}`;
           const resp = await fetch(url, {
             headers: { "User-Agent": "agents-radar/1.0" },
           });

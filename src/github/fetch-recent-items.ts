@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { env } from "../config/env";
 import { githubGet } from "./github-http";
 import type { GitHubItem, RepoConfig } from "./types";
 
@@ -34,7 +35,7 @@ export const fetchRecentItems = async (
   cfg: RepoConfig,
   itemType: "issues" | "pulls",
   since: DateTime,
-  GITHUB_TOKEN: string = process.env.GITHUB_TOKEN ?? "",
+  GITHUB_TOKEN: string = env.githubToken,
 ): Promise<GitHubItem[]> => {
   if (!cfg.paginated) {
     const params: Record<string, string> = {

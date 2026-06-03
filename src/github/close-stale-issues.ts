@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { env } from "../config/env";
 
 const headers = (token: string): Record<string, string> => ({
   Authorization: `Bearer ${token}`,
@@ -8,8 +9,8 @@ const headers = (token: string): Record<string, string> => ({
 
 export const closeStaleIssues = async (
   days: number,
-  GITHUB_TOKEN: string = process.env.GITHUB_TOKEN ?? "",
-  DIGEST_REPO: string = process.env.DIGEST_REPO ?? "",
+  GITHUB_TOKEN: string = env.githubToken,
+  DIGEST_REPO: string = env.digestRepo,
 ): Promise<number> => {
   if (!DIGEST_REPO) return 0;
   const cutoffMs = DateTime.now().minus({ days }).toMillis();

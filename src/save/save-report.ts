@@ -22,7 +22,10 @@ export const saveReport = async (
   const fullDeps = { ...defaultDeps, ...deps };
   const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
   const content = await fullDeps.callLlm?.(config.promptBuilder(config.data, dateStr), config.maxTokens);
-  if (!content) return;
+  if (!content) {
+    console.error(`  [save] Skipped ${config.fileName}: empty LLM response`);
+    return;
+  }
 
   const header = config.headerBuilder(dateStr, utcStr, lang);
   const full = `${header}\n\n---\n\n${content}${footer}`;
