@@ -5,7 +5,7 @@ export interface HackerNewsStory {
   id: string;
   title: string;
   url: string; // external URL, or HN discussion link if no external URL
-  hnUrl: string; // always the HN discussion link
+  hackerNewsUrl: string; // always the HN discussion link
   points: number;
   comments: number;
   author: string;
@@ -62,12 +62,12 @@ export const fetchHackerNewsData = async (): Promise<HackerNewsData> => {
           const { hits } = AlgoliaResponseSchema.parse(await resp.json());
           for (const hit of hits) {
             if (!seen.has(hit.objectID)) {
-              const hnUrl = `https://news.ycombinator.com/item?id=${hit.objectID}`;
+              const hackerNewsUrl = `https://news.ycombinator.com/item?id=${hit.objectID}`;
               seen.set(hit.objectID, {
                 id: hit.objectID,
                 title: hit.title,
-                url: hit.url ?? hnUrl,
-                hnUrl,
+                url: hit.url ?? hackerNewsUrl,
+                hackerNewsUrl,
                 points: hit.points ?? 0,
                 comments: hit.num_comments,
                 author: hit.author,

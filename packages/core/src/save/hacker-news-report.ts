@@ -15,7 +15,7 @@ export const saveHackerNews = async (
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const s = t(lang);
-  const count = s.hnCount.replace("{n}", String(hnData.stories.length));
+  const count = s.hackerNewsCount.replace("{n}", String(hnData.stories.length));
   await saveDataSource(
     {
       hasData: hnData.fetchSuccess,
@@ -34,8 +34,8 @@ export const saveHackerNews = async (
           count,
         ),
       fileName: "ai-hn",
-      issueTitle: s.issueTitleHn,
-      issueLabel: s.issueLabelHn,
+      issueTitle: s.issueTitleHackerNews,
+      issueLabel: s.issueLabelHackerNews,
     },
     utcStr,
     dateStr,

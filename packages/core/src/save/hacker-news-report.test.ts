@@ -19,7 +19,7 @@ describe("saveHnReport", () => {
         id: "1",
         title: "AI Story",
         url: "https://example.com/ai",
-        hnUrl: "https://news.ycombinator.com/item?id=1",
+        hackerNewsUrl: "https://news.ycombinator.com/item?id=1",
         points: 100,
         comments: 25,
         author: "test",

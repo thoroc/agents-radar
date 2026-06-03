@@ -15,7 +15,7 @@ export const saveHuggingFaceReport = async (
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const s = t(lang);
-  const count = s.hfCount.replace("{n}", String(hfData.models.length));
+  const count = s.huggingFaceCount.replace("{n}", String(hfData.models.length));
   await saveDataSource(
     {
       hasData: hfData.fetchSuccess,
@@ -34,8 +34,8 @@ export const saveHuggingFaceReport = async (
           count,
         ),
       fileName: "ai-hf",
-      issueTitle: s.issueTitleHf,
-      issueLabel: s.issueLabelHf,
+      issueTitle: s.issueTitleHuggingFace,
+      issueLabel: s.issueLabelHuggingFace,
     },
     utcStr,
     dateStr,

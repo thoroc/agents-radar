@@ -15,7 +15,7 @@ export const saveProductHuntReport = async (
   deps: SaveReportDeps = {},
 ): Promise<void> => {
   const s = t(lang);
-  const count = s.phCount.replace("{n}", String(phData.products.length));
+  const count = s.productHuntCount.replace("{n}", String(phData.products.length));
   await saveDataSource(
     {
       hasData: phData.fetchSuccess,
@@ -34,8 +34,8 @@ export const saveProductHuntReport = async (
           count,
         ),
       fileName: "ai-ph",
-      issueTitle: s.issueTitlePh,
-      issueLabel: s.issueLabelPh,
+      issueTitle: s.issueTitleProductHunt,
+      issueLabel: s.issueLabelProductHunt,
     },
     utcStr,
     dateStr,

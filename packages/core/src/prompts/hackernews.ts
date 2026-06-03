@@ -10,7 +10,7 @@ export const buildHackerNewsPrompt = (
   const storiesText = data.stories
     .map(
       (s, i) =>
-        `${i + 1}. **${s.title}**\n   Link: ${s.url}\n   Discussion: ${s.hnUrl}\n   Score: ${s.points} | Comments: ${s.comments} | Author: ${s.author} | Time: ${s.createdAt.slice(0, 16)}`,
+        `${i + 1}. **${s.title}**\n   Link: ${s.url}\n   Discussion: ${s.hackerNewsUrl}\n   Score: ${s.points} | Comments: ${s.comments} | Author: ${s.author} | Time: ${s.createdAt.slice(0, 16)}`,
     )
     .join("\n\n");
 
