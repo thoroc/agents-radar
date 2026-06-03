@@ -1,4 +1,4 @@
-import { generateManifestAction as coreGenerateManifestAction } from "../../core/src/generate-manifest/action";
+import { generateManifestAction as coreGenerateManifestAction } from "@agents-radar/core";
 
 export type ManifestActionArgs = {
   verbosity: number;

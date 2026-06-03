@@ -1,4 +1,4 @@
-import { notifyAction as coreNotifyAction } from "../../core/src/notifications/notify/action";
+import { notifyAction as coreNotifyAction } from "@agents-radar/core";
 
 export type NotifyActionArgs = {
   verbosity: number;

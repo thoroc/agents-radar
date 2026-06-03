@@ -1,4 +1,4 @@
-import { closeStaleIssuesAction as coreCloseStaleAction } from "../../core/src/close-stale-issues/action";
+import { closeStaleIssuesAction as coreCloseStaleAction } from "@agents-radar/core";
 
 export type CloseStaleActionArgs = {
   verbosity: number;
