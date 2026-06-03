@@ -34,7 +34,7 @@ const AlgoliaHitSchema = z.object({
 
 const AlgoliaResponseSchema = z.object({ hits: z.array(AlgoliaHitSchema).default([]) });
 
-const buildHnQueryUrl = (q: string, since: number): string =>
+const buildHackerNewsQueryUrl = (q: string, since: number): string =>
   `https://hn.algolia.com/api/v1/search_by_date` +
   `?tags=story` +
   `&query=${encodeURIComponent(q)}` +
@@ -52,7 +52,7 @@ export const fetchHackerNewsData = async (): Promise<HackerNewsData> => {
     await Promise.all(
       QUERIES.map(async (q) => {
         try {
-          const resp = await fetch(buildHnQueryUrl(q, since), {
+          const resp = await fetch(buildHackerNewsQueryUrl(q, since), {
             headers: { "User-Agent": "agents-radar/1.0" },
           });
           if (!resp.ok) {

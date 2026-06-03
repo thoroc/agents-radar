@@ -24,7 +24,15 @@ export const saveHuggingFaceReport = async (
       data: hfData,
       promptBuilder: (d) => buildHuggingFacePrompt(d as HuggingFaceData, lang),
       headerBuilder: (_ds, us) =>
-        buildSourceHeader(lang, _ds, us, s.hfTitle, "Hugging Face Hub", "https://huggingface.co/", count),
+        buildSourceHeader(
+          lang,
+          _ds,
+          us,
+          s.huggingFaceTitle,
+          "Hugging Face Hub",
+          "https://huggingface.co/",
+          count,
+        ),
       fileName: "ai-hf",
       issueTitle: s.issueTitleHf,
       issueLabel: s.issueLabelHf,

@@ -24,7 +24,15 @@ export const saveHackerNewsReport = async (
       data: hnData,
       promptBuilder: (d) => buildHackerNewsPrompt(d as HackerNewsData, lang),
       headerBuilder: (_ds, us) =>
-        buildSourceHeader(lang, _ds, us, s.hnTitle, "Hacker News", "https://news.ycombinator.com/", count),
+        buildSourceHeader(
+          lang,
+          _ds,
+          us,
+          s.hackerNewsTitle,
+          "Hacker News",
+          "https://news.ycombinator.com/",
+          count,
+        ),
       fileName: "ai-hn",
       issueTitle: s.issueTitleHn,
       issueLabel: s.issueLabelHn,

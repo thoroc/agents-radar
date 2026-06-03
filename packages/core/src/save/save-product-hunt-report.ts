@@ -24,7 +24,15 @@ export const saveProductHuntReport = async (
       data: phData,
       promptBuilder: (d) => buildProductHuntPrompt(d as ProductHuntData, lang),
       headerBuilder: (_ds, us) =>
-        buildSourceHeader(lang, _ds, us, s.phTitle, "Product Hunt", "https://www.producthunt.com/", count),
+        buildSourceHeader(
+          lang,
+          _ds,
+          us,
+          s.productHuntTitle,
+          "Product Hunt",
+          "https://www.producthunt.com/",
+          count,
+        ),
       fileName: "ai-ph",
       issueTitle: s.issueTitlePh,
       issueLabel: s.issueLabelPh,

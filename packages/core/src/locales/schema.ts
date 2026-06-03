@@ -67,10 +67,10 @@ const LocaleDataSchema = z.object({
   trendingTitle: z.string(),
   trendingSources: z.string(),
 
-  hnTitle: z.string(),
-  phTitle: z.string(),
+  hackerNewsTitle: z.string(),
+  productHuntTitle: z.string(),
   arxivTitle: z.string(),
-  hfTitle: z.string(),
+  huggingFaceTitle: z.string(),
   communityTitle: z.string(),
   devtoArticles: z.string(),
   lobstersStories: z.string(),
