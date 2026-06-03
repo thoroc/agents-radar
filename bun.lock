@@ -26,8 +26,45 @@
         "vitest": "^4.0.18",
       },
     },
+    "packages/cli": {
+      "name": "@agents-radar/cli",
+      "version": "0.0.0",
+      "bin": {
+        "agents-radar": "./cli.ts",
+      },
+      "dependencies": {
+        "@agents-radar/core": "workspace:*",
+        "@cliffy/command": "npm:@jsr/cliffy__command",
+      },
+    },
+    "packages/core": {
+      "name": "@agents-radar/core",
+      "version": "0.0.0",
+      "dependencies": {
+        "@agents-radar/providers": "workspace:*",
+        "@dotenvx/dotenvx": "^1.69.2",
+        "js-yaml": "^4.1.1",
+        "luxon": "^3.7.2",
+        "marked": "^17.0.4",
+        "zod": "^4.4.3",
+      },
+    },
+    "packages/providers": {
+      "name": "@agents-radar/providers",
+      "version": "0.0.0",
+      "dependencies": {
+        "@anthropic-ai/sdk": "^0.78.0",
+        "openai": "^6.27.0",
+      },
+    },
   },
   "packages": {
+    "@agents-radar/cli": ["@agents-radar/cli@workspace:packages/cli"],
+
+    "@agents-radar/core": ["@agents-radar/core@workspace:packages/core"],
+
+    "@agents-radar/providers": ["@agents-radar/providers@workspace:packages/providers"],
+
     "@anthropic-ai/sdk": ["@anthropic-ai/sdk@0.78.0", "", { "dependencies": { "json-schema-to-ts": "3.1.1" }, "optionalDependencies": { "zod": "4.4.3" }, "bin": { "anthropic-ai-sdk": "bin/cli" } }, "sha512-PzQhR715td/m1UaaN5hHXjYB8Gl2lF9UVhrrGrZeysiF6Rb74Wc9GCB8hzLdzmQtBd1qe89F9OptgB9Za1Ib5w=="],
 
     "@babel/helper-string-parser": ["@babel/helper-string-parser@7.27.1", "", {}, "sha512-qMlSxKbpRlAridDExk92nSobyDdpPijUq2DW6oDnUqd0iOGxmQjyqhMIihI9+zv4LPyZdRje2cavWPbCbWm3eA=="],

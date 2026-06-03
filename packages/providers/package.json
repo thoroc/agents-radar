@@ -1,0 +1,13 @@
+{
+  "name": "@agents-radar/providers",
+  "version": "0.0.0",
+  "private": true,
+  "module": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
+    "openai": "^6.27.0"
+  }
+}

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { REPORT_LABELS } from "../labels";
 import { fetchManifest, fetchReport } from "../fetchers";
+import { REPORT_LABELS } from "../labels";
 import type { Tool, ToolHandler } from "../types";
 
 const GetReportArgsSchema = z.object({
@@ -58,8 +58,7 @@ export const getLatestTool: Tool = {
       properties: {
         type: {
           type: "string",
-          description:
-            "Report type (default: ai-cli-en). Use list_reports to see all available types.",
+          description: "Report type (default: ai-cli-en). Use list_reports to see all available types.",
         },
       },
     },

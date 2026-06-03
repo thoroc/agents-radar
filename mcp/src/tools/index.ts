@@ -1,15 +1,10 @@
+export { getLatestTool, getReportTool } from "./get";
 export { listReportsTool } from "./list";
-export { getReportTool, getLatestTool } from "./get";
 export { searchTool } from "./search";
 
 import type { Tool } from "../types";
+import { getLatestTool, getReportTool } from "./get";
 import { listReportsTool } from "./list";
-import { getReportTool, getLatestTool } from "./get";
 import { searchTool } from "./search";
 
-export const tools: Tool[] = [
-  listReportsTool,
-  getReportTool,
-  getLatestTool,
-  searchTool,
-];
+export const tools: Tool[] = [listReportsTool, getReportTool, getLatestTool, searchTool];
