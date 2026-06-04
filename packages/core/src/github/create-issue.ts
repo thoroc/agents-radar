@@ -1,4 +1,4 @@
-import { env } from "../config/env";
+import { env } from "@agents-radar/config";
 import { ensureLabel } from "./ensure-label";
 import { getHeaders } from "./get-headers";
 import { LABEL_COLORS } from "./labels";

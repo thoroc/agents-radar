@@ -1,4 +1,9 @@
-import type { RepoConfig } from "../github";
+export interface RepoConfig {
+  id: string;
+  repo: string;
+  name: string;
+  paginated?: boolean;
+}
 
 export interface RawRepoEntry {
   id: string;

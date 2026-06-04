@@ -1,5 +1,5 @@
+import { env } from "@agents-radar/config";
 import { DateTime } from "luxon";
-import { env } from "../config/env";
 import { getHeaders } from "./get-headers";
 
 export const closeStaleIssues = async (

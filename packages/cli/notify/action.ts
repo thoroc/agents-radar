@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { getEnabledLangs, loadConfig } from "@agents-radar/config";
 import { buildMessage, type Highlights, sendTelegram } from "@agents-radar/core/notifications/notify";
-import { getEnabledLangs, type Locale, loadConfig } from "@agents-radar/core/utils";
+import type { Locale } from "@agents-radar/core/utils";
 
 export interface NotifyActionArgs {
   verbosity: number;

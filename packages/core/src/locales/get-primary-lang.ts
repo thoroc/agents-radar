@@ -1,4 +1,4 @@
-import { loadConfig } from "../config/load";
+import { loadConfig } from "@agents-radar/config";
 
 export interface GetPrimaryLangArgs {
   primaryLang: string | null;

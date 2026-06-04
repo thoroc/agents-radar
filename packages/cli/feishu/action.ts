@@ -1,8 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
+import { getEnabledLangs, loadConfig } from "@agents-radar/config";
 import { buildMessage, getWebhookUrls, send } from "@agents-radar/core/notifications/feishu";
 import type { Highlights } from "@agents-radar/core/notifications/notify";
-import { getEnabledLangs, type Locale, loadConfig } from "@agents-radar/core/utils";
+import type { Locale } from "@agents-radar/core/utils";
 
 export interface FeishuActionArgs {
   verbosity: number;

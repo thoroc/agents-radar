@@ -1,35 +1,46 @@
 import fs from "node:fs";
 import path from "node:path";
-import yaml from "js-yaml";
-import { toRepoConfig } from "../github";
-import { DEFAULT_LANGUAGES } from "../locales";
 import {
   DEFAULT_CLI_REPOS,
+  DEFAULT_LANGUAGES,
   DEFAULT_OPENCLAW,
   DEFAULT_OPENCLAW_PEERS,
   DEFAULT_SCHEDULES,
   DEFAULT_SKILLS_REPO,
 } from "./constants";
+import { detectFormat } from "./detect-format";
+import { findConfig } from "./find-config";
+import { parseJson, parseToml, parseYaml } from "./parse";
+import { toRepoConfig } from "./to-repo-config";
 import type { RadarConfig, RawConfig, ScheduleConfig } from "./types";
 
-export const loadConfig = (configPath = "config.yml"): RadarConfig => {
-  const resolved = path.resolve(configPath);
+const parseContent = (content: string, filePath: string): RawConfig => {
+  const format = detectFormat(filePath);
+  if (format === "json") return parseJson(content);
+  if (format === "toml") return parseToml(content);
+  return parseYaml(content);
+};
 
-  if (!fs.existsSync(resolved)) {
-    console.error(`[config] ${configPath} not found — using built-in defaults.`);
-    return {
-      cliRepos: DEFAULT_CLI_REPOS,
-      skillsRepo: DEFAULT_SKILLS_REPO,
-      openclaw: DEFAULT_OPENCLAW,
-      openclawPeers: DEFAULT_OPENCLAW_PEERS,
-      languages: [...DEFAULT_LANGUAGES],
-      schedules: DEFAULT_SCHEDULES,
-      defaultPrimaryLanguage: DEFAULT_LANGUAGES[0] ?? "en-US",
-      defaultFallbackLanguage: DEFAULT_LANGUAGES[0] ?? "en-US",
-    };
+const buildDefaults = (): RadarConfig => ({
+  cliRepos: DEFAULT_CLI_REPOS,
+  skillsRepo: DEFAULT_SKILLS_REPO,
+  openclaw: DEFAULT_OPENCLAW,
+  openclawPeers: DEFAULT_OPENCLAW_PEERS,
+  languages: [...DEFAULT_LANGUAGES],
+  schedules: DEFAULT_SCHEDULES,
+  defaultPrimaryLanguage: DEFAULT_LANGUAGES[0] ?? "en-US",
+  defaultFallbackLanguage: DEFAULT_LANGUAGES[0] ?? "en-US",
+});
+
+export const loadConfig = (configPath?: string): RadarConfig => {
+  const resolved = configPath ? path.resolve(configPath) : findConfig();
+
+  if (!resolved || !fs.existsSync(resolved)) {
+    console.error(`[config] ${configPath ?? "config"} not found — using built-in defaults.`);
+    return buildDefaults();
   }
 
-  const raw = yaml.load(fs.readFileSync(resolved, "utf-8")) as RawConfig;
+  const raw = parseContent(fs.readFileSync(resolved, "utf-8"), resolved);
 
   const cliRepos =
     Array.isArray(raw?.cli_repos) && raw.cli_repos.length > 0
@@ -69,7 +80,7 @@ export const loadConfig = (configPath = "config.yml"): RadarConfig => {
   const defaultFallbackLanguage = raw?.default_fallback_language ?? DEFAULT_LANGUAGES[0] ?? "en-US";
 
   console.error(
-    `[config] Loaded from ${configPath}: ` +
+    `[config] Loaded from ${path.basename(resolved)}: ` +
       `${cliRepos.length} CLI repos, ${openclawPeers.length} OpenClaw peers, ` +
       `${languages.length} languages`,
   );

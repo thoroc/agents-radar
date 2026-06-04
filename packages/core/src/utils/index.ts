@@ -1,9 +1,8 @@
-export type { RadarConfig, ScheduleConfig } from "../config";
-export { loadConfig } from "../config";
+export type { RadarConfig, ScheduleConfig } from "@agents-radar/config";
+export { getEnabledLangs, loadConfig } from "@agents-radar/config";
 export { toRepoConfig } from "../github";
 export type { Locale } from "../locales";
 export { getPrimaryLang, LANGUAGE_NAMES, STRINGS, SUPPORTED_LOCALES, t } from "../locales";
-export { getEnabledLangs } from "../locales/get-enabled-langs";
 export { GITHUB_REPO_DEFAULT, PAGES_URL_DEFAULT } from "./constants";
 export { logger } from "./logger";
 export { sleep } from "./sleep";

@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "paths": {
+      "@agents-radar/config":    ["./packages/config/src/index.ts"],
       "@agents-radar/providers": ["./packages/providers/src/index.ts"],
       "@agents-radar/core":      ["./packages/core/src/index.ts"]
     }

@@ -1,5 +1,6 @@
-import type { RepoConfig } from "../github";
-import type { ScheduleConfig } from "./types";
+import type { RepoConfig, ScheduleConfig } from "./types";
+
+export const DEFAULT_LANGUAGES: readonly string[] = ["en-US", "zh-CN"];
 
 export const DEFAULT_SCHEDULES: ScheduleConfig = {
   daily: { enabled: true, cron: "0 0 * * *" },

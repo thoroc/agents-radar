@@ -1,4 +1,4 @@
-import { env } from "../config/env";
+import { env } from "@agents-radar/config";
 import { githubGet } from "./http";
 import type { GitHubItem } from "./types";
 

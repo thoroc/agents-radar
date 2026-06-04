@@ -1,7 +1,7 @@
 import fs from "node:fs";
+import * as loadConfigModule from "@agents-radar/config";
 import { DateTime } from "luxon";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import * as loadConfigModule from "../config";
 import * as githubModule from "../github";
 import * as getEnabledLangsModule from "../locales/get-enabled-langs";
 import * as autoGenFooterModule from "../report/auto-gen-footer";
