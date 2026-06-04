@@ -32,7 +32,9 @@
 		"test:watch": "bun test --watch",
 		"test:coverage": "bun test --coverage",
 		"validate:schema": "bun run packages/cli/cli.ts locale -g",
-		"validate:locales": "bun run packages/cli/cli.ts locale -v"
+		"validate:locales": "bun run packages/cli/cli.ts locale -v",
+		"lint:md": "markdownlint-cli2 \"README.md\" \"AGENTS.md\" \"CONTRIBUTING.md\" \"docs/*.md\"",
+		"lint:md:fix": "markdownlint-cli2 --fix \"README.md\" \"AGENTS.md\" \"CONTRIBUTING.md\" \"docs/*.md\""
 	},
 	"dependencies": {
 		"@anthropic-ai/sdk": "^0.78.0",
@@ -52,6 +54,7 @@
 		"@vitest/coverage-v8": "^4.0.18",
 		"aislop": "^0.10.1",
 		"lefthook": "^2.1.9",
+		"markdownlint-cli2": "^0.22.1",
 		"typescript": "^5.7.0",
 		"vitest": "^4.0.18"
 	}

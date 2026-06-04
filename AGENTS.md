@@ -77,102 +77,109 @@ This repo is a Bun workspace with three packages:
 | `@agents-radar/core` | `packages/core/` | Digest pipeline — phases, fetchers, prompts, savers |
 | `@agents-radar/cli` | `packages/cli/` | CLI entry point (`cli.ts`) with daily/weekly/monthly/scheduler subcommands |
 
-The legacy `src/` directory is kept for reference; all active code lives under `packages/`.
+All active code lives under `packages/`. There is no legacy `src/` directory.
 
 ## Architecture
 
 The pipeline runs in four sequential phases, split into separate modules under `packages/core/src/phases/`:
 
-1. **`fetchAllData`** (`src/phases/fetch.ts`) — all network I/O in parallel: GitHub API (issues/PRs/releases) for 17 repos, Claude Code Skills, Anthropic/OpenAI sitemaps, GitHub Trending HTML + Search API, Hacker News Algolia API, ArXiv, Hugging Face, Product Hunt, Dev.to, Lobste.rs.
-2. **`generateSummaries`** (`src/phases/summarize.ts`) — per-repo LLM calls, all in parallel, rate-limited to 5 concurrent requests by a queue in `src/report/call-llm.ts`.
-3. **Comparison** (`src/phases/compare.ts`) — two LLM calls: cross-tool CLI comparison and OpenClaw cross-ecosystem comparison.
-4. **Save phase** (`src/phases/save.ts`) — delegates to `buildCliReportContent` / `buildOpenclawReportContent` (in `src/report/`) for Markdown formatting, then to savers in `src/save/` for LLM call + file write + optional GitHub Issue.
+1. **`fetchAllData`** (`packages/core/src/phases/fetch.ts`) — all network I/O in parallel: GitHub API (issues/PRs/releases) for 17 repos, Claude Code Skills, Anthropic/OpenAI sitemaps, GitHub Trending HTML + Search API, Hacker News Algolia API, ArXiv, Hugging Face, Product Hunt, Dev.to, Lobste.rs.
+2. **`generateSummaries`** (`packages/core/src/phases/summarize.ts`) — per-repo LLM calls, all in parallel, rate-limited to 5 concurrent requests by a queue in `packages/core/src/report/call-llm.ts`.
+3. **Comparison** (`packages/core/src/phases/compare.ts`) — two LLM calls: cross-tool CLI comparison and OpenClaw cross-ecosystem comparison.
+4. **Save phase** (`packages/core/src/phases/save.ts`) — delegates to `buildCliReportContent` / `buildOpenclawReportContent` (in `packages/core/src/report/`) for Markdown formatting, then to savers in `packages/core/src/save/` for LLM call + file write + optional GitHub Issue.
 
 ## Source files
 
 | File | Responsibility |
 |------|---------------|
-| `src/index.ts` | Orchestration: repo config, `main()` entry point |
-| `src/phases/fetch.ts` | Phase 1 — all network I/O in parallel |
-| `src/phases/summarize.ts` | Phase 2 — per-repo LLM calls |
-| `src/phases/compare.ts` | Phase 3 — cross-tool + cross-ecosystem comparisons |
-| `src/phases/save.ts` | Phase 4 — report output + GitHub Issues |
-| `src/utils/t.ts` | `t(lang)` locale accessor — returns the full `LocaleData` object for a given locale |
-| `src/utils/locale-data.ts` | Lazy-loads all locale JSON files; exports `STRINGS`, `SUPPORTED_LOCALES` |
-| `src/utils/locale-schema.ts` | Zod schema for locale file validation; derives `LocaleData` type |
-| `src/utils/validate-locale.ts` | `validateLocale(lang)` — throws if locale is not supported |
-| `src/utils/get-enabled-langs.ts` | `getEnabledLangs()` — reads enabled languages from config |
-| `src/utils/load-config.ts` | YAML config loader; `getPrimaryLang()`, `getEnabledLangs()`, `RadarConfig` interface |
-| `src/utils/to-cst-date-str.ts` | `toCstDateStr(date)` — formats a date as CST string |
-| `src/utils/to-utc-str.ts` | `toUtcStr(date)` — formats a date as UTC string |
-| `src/utils/sleep.ts` | `sleep(ms)` utility |
-| `src/utils/constants.ts` | Shared constants (e.g. `PAGES_URL_DEFAULT`) |
-| `src/github/fetch-recent-items.ts` | `fetchRecentItems` — GitHub issues/PRs for a repo |
-| `src/github/fetch-recent-releases.ts` | `fetchRecentReleases` — GitHub releases for a repo |
-| `src/github/fetch-skills-data.ts` | `fetchSkillsData` — Claude Code Skills repo data |
-| `src/github/create-issue.ts` | `createGitHubIssue` — creates a GitHub issue |
-| `src/github/ensure-label.ts` | `ensureLabel` — creates a label if it doesn't exist |
-| `src/github/labels.ts` | GitHub issue label colors (`LABEL_COLORS`) |
-| `src/github/types.ts` | Shared `RepoFetch`, `GitHubItem`, `RepoConfig` types |
-| `src/prompts/build-cli-prompt.ts` | `buildCliPrompt` — CLI repo summary prompt |
-| `src/prompts/build-peer-prompt.ts` | `buildPeerPrompt` — OpenClaw peer repo prompt |
-| `src/prompts/build-comparison-prompt.ts` | `buildComparisonPrompt` — cross-tool CLI comparison prompt |
-| `src/prompts/build-peers-comparison-prompt.ts` | `buildPeersComparisonPrompt` — cross-ecosystem comparison prompt |
-| `src/prompts/build-skills-prompt.ts` | `buildSkillsPrompt` — Claude Code Skills prompt |
-| `src/prompts/build-trending-prompt.ts` | `buildTrendingPrompt` |
-| `src/prompts/build-web-report-prompt.ts` | `buildWebReportPrompt` |
-| `src/prompts/build-hn-prompt.ts` | `buildHnPrompt` |
-| `src/prompts/build-arxiv-prompt.ts` | `buildArxivPrompt` |
-| `src/prompts/build-hf-prompt.ts` | `buildHfPrompt` |
-| `src/prompts/build-ph-prompt.ts` | `buildPhPrompt` |
-| `src/prompts/build-community-prompt.ts` | `buildCommunityPrompt` |
-| `src/prompts/build-weekly-prompt.ts` | `buildWeeklyPrompt` |
-| `src/prompts/build-monthly-prompt.ts` | `buildMonthlyPrompt` |
-| `src/prompts/build-highlights-prompt.ts` | `buildHighlightsPrompt` — Telegram highlights prompt |
-| `src/prompts/sample-note.ts` | `sampleNote(total, sampled)` — formats the sampling note |
-| `src/report/call-llm.ts` | `callLlm` with concurrency limiter (`LLM_CONCURRENCY = 5`) and retry logic |
-| `src/report/save-file.ts` | `saveFile` — writes a report file to `digests/YYYY-MM-DD/` |
-| `src/report/auto-gen-footer.ts` | `autoGenFooter` — generates the report footer |
-| `src/report/report-constants.ts` | LLM token budget constants |
-| `src/report/build-cli-report-content.ts` | `buildCliReportContent` — final CLI Markdown assembler |
-| `src/report/build-openclaw-report-content.ts` | `buildOpenclawReportContent` — final OpenClaw Markdown assembler |
-| `src/save/save-report.ts` | `saveReport` — generic LLM call + file write + optional GitHub Issue |
-| `src/save/save-data-source-report.ts` | `saveDataSourceReport` — shared wrapper with skip/error handling |
-| `src/save/save-web-report.ts` | `saveWebReport` |
-| `src/save/save-trending-report.ts` | `saveTrendingReport` |
-| `src/save/save-hacker-news-report.ts` | `saveHackerNewsReport` |
-| `src/save/save-product-hunt-report.ts` | `saveProductHuntReport` |
-| `src/save/save-arxiv-report.ts` | `saveArxivReport` |
-| `src/save/save-hugging-face-report.ts` | `saveHuggingFaceReport` |
-| `src/save/save-community-report.ts` | `saveCommunityReport` |
-| `src/rollup/run-weekly-rollup.ts` | `runWeeklyRollup` entry point |
-| `src/rollup/run-monthly-rollup.ts` | `runMonthlyRollup` entry point |
-| `src/rollup/weekly.ts` | Weekly rollup report generator |
-| `src/rollup/monthly.ts` | Monthly rollup report generator |
-| `src/fetchers/web.ts` | Sitemap-based web content fetching; state persisted to `digests/web-state.json` |
-| `src/fetchers/trending.ts` | GitHub Trending HTML scraper + Search API topic queries |
-| `src/fetchers/hacker-news.ts` | Hacker News top AI stories via Algolia HN Search API |
-| `src/fetchers/arxiv.ts` | ArXiv paper fetcher (cs.AI, cs.CL, cs.LG) |
-| `src/fetchers/hugging-face.ts` | Hugging Face Hub model fetcher |
-| `src/fetchers/product-hunt.ts` | Product Hunt fetcher |
-| `src/fetchers/dev-to.ts` | Dev.to community articles fetcher |
-| `src/fetchers/lobste-rs.ts` | Lobste.rs stories fetcher |
-| `src/providers/types.ts` | `LlmProvider` interface, `ProviderFactory` type |
-| `src/providers/openai-compatible.ts` | `createOpenAICompatibleProvider` — shared factory for OpenAI-compatible providers |
-| `src/providers/anthropic.ts` | `createAnthropicProvider` — Anthropic SDK wrapper |
-| `src/providers/openai.ts` | `createOpenAIProvider` — extends `createOpenAICompatibleProvider` |
-| `src/providers/github-copilot.ts` | `createGitHubCopilotProvider` — extends `createOpenAICompatibleProvider` |
-| `src/providers/openrouter.ts` | `createOpenRouterProvider` — extends `createOpenAICompatibleProvider` |
-| `src/providers/deepseek.ts` | `createDeepSeekProvider` — 403 fallback provider |
-| `src/providers/index.ts` | `createProvider` factory + barrel re-exports |
-| `src/notifications/notify/` | Primary notification dispatch (Telegram) |
-| `src/notifications/feishu/` | Feishu (Lark) notification channel |
-| `src/notifications/social/` | Social media posting (CLI command + action) |
-| `src/types/locale.ts` | `Locale` type (21-locale BCP-47 union, auto-generated from `locales/`) |
-| `src/types/prompt-lang.ts` | `PromptLang` type + `toPromptLang()` converter |
-| `src/generate-manifest/action.ts` | `generateManifestAction` — generates `manifest.json` + `feed.xml` |
-| `src/generate-manifest/constants.ts` | `REPORT_FILES` list, `DIGESTS_DIR` |
-| `src/generate-manifest/report-label.ts` | `reportLabel(reportId)` — human label for a report type |
+| `packages/cli/cli.ts` | CLI entry point — wires daily/weekly/monthly/scheduler/manifest subcommands |
+| `packages/core/src/phases/run-daily.ts` | `runDaily` — orchestrates the full daily digest pipeline |
+| `packages/core/src/phases/bootstrap-context.ts` | Loads config, resolves env vars, initialises run context |
+| `packages/core/src/phases/classify-fetch-results.ts` | Splits raw fetch results into CLI / OpenClaw / peers buckets |
+| `packages/core/src/phases/fetch.ts` | Phase 1 — all network I/O in parallel |
+| `packages/core/src/phases/summarize.ts` | Phase 2 — per-repo LLM calls |
+| `packages/core/src/phases/compare.ts` | Phase 3 — cross-tool + cross-ecosystem comparisons |
+| `packages/core/src/phases/save.ts` | Phase 4 — report output + GitHub Issues |
+| `packages/core/src/locales/t.ts` | `t(lang)` locale accessor — returns the full `LocaleData` object for a given locale |
+| `packages/core/src/locales/data.ts` | Lazy-loads all locale JSON files; exports `STRINGS`, `SUPPORTED_LOCALES` |
+| `packages/core/src/locales/schema.ts` | Zod schema for locale file validation; derives `LocaleData` type |
+| `packages/core/src/locales/validate-locale.ts` | `validateLocale(lang)` — throws if locale is not supported |
+| `packages/core/src/locales/get-enabled-langs.ts` | `getEnabledLangs()` — reads enabled languages from config |
+| `packages/core/src/locales/prompt-lang.ts` | `PromptLang` type + `toPromptLang()` converter |
+| `packages/core/src/config/load.ts` | YAML config loader; `getPrimaryLang()`, `getEnabledLangs()`, `RadarConfig` interface |
+| `packages/core/src/utils/to-cst-date-str.ts` | `toCstDateStr(date)` — formats a date as CST string |
+| `packages/core/src/utils/to-utc-str.ts` | `toUtcStr(date)` — formats a date as UTC string |
+| `packages/core/src/utils/sleep.ts` | `sleep(ms)` utility |
+| `packages/core/src/utils/constants.ts` | Shared constants (e.g. `PAGES_URL_DEFAULT`) |
+| `packages/core/src/utils/cron.ts` | Cron expression matching helpers |
+| `packages/core/src/utils/logger.ts` | Structured logger instance |
+| `packages/core/src/github/fetch-recent-items.ts` | `fetchRecentItems` — GitHub issues/PRs for a repo |
+| `packages/core/src/github/fetch-recent-releases.ts` | `fetchRecentReleases` — GitHub releases for a repo |
+| `packages/core/src/github/fetch-skills-data.ts` | `fetchSkillsData` — Claude Code Skills repo data |
+| `packages/core/src/github/create-issue.ts` | `createGitHubIssue` — creates a GitHub issue |
+| `packages/core/src/github/ensure-label.ts` | `ensureLabel` — creates a label if it doesn't exist |
+| `packages/core/src/github/labels.ts` | GitHub issue label colors (`LABEL_COLORS`) |
+| `packages/core/src/github/types.ts` | Shared `RepoFetch`, `GitHubItem`, `RepoConfig` types |
+| `packages/core/src/prompts/cli.ts` | `buildCliPrompt` — CLI repo summary prompt |
+| `packages/core/src/prompts/peer.ts` | `buildPeerPrompt` — OpenClaw peer repo prompt |
+| `packages/core/src/prompts/comparison.ts` | `buildComparisonPrompt` — cross-tool CLI comparison prompt |
+| `packages/core/src/prompts/peers-comparison.ts` | `buildPeersComparisonPrompt` — cross-ecosystem comparison prompt |
+| `packages/core/src/prompts/skills.ts` | `buildSkillsPrompt` — Claude Code Skills prompt |
+| `packages/core/src/prompts/trending.ts` | `buildTrendingPrompt` |
+| `packages/core/src/prompts/web-report.ts` | `buildWebReportPrompt` |
+| `packages/core/src/prompts/hackernews.ts` | `buildHnPrompt` |
+| `packages/core/src/prompts/arxiv.ts` | `buildArxivPrompt` |
+| `packages/core/src/prompts/hugging-face.ts` | `buildHfPrompt` |
+| `packages/core/src/prompts/product-hunt.ts` | `buildPhPrompt` |
+| `packages/core/src/prompts/community.ts` | `buildCommunityPrompt` |
+| `packages/core/src/prompts/weekly.ts` | `buildWeeklyPrompt` |
+| `packages/core/src/prompts/monthly.ts` | `buildMonthlyPrompt` |
+| `packages/core/src/prompts/highlights.ts` | `buildHighlightsPrompt` — Telegram highlights prompt |
+| `packages/core/src/prompts/sample-note.ts` | `sampleNote(total, sampled)` — formats the sampling note |
+| `packages/core/src/report/call-llm.ts` | `callLlm` with concurrency limiter (`LLM_CONCURRENCY = 5`) and retry logic |
+| `packages/core/src/report/save-file.ts` | `saveFile` — writes a report file to `digests/YYYY-MM-DD/` |
+| `packages/core/src/report/auto-gen-footer.ts` | `autoGenFooter` — generates the report footer |
+| `packages/core/src/report/constants.ts` | LLM token budget constants |
+| `packages/core/src/report/build-cli-content.ts` | `buildCliReportContent` — final CLI Markdown assembler |
+| `packages/core/src/report/build-openclaw-content.ts` | `buildOpenclawReportContent` — final OpenClaw Markdown assembler |
+| `packages/core/src/save/report.ts` | `saveReport` — generic LLM call + file write + optional GitHub Issue |
+| `packages/core/src/save/data-source-report.ts` | `saveDataSourceReport` — shared wrapper with skip/error handling |
+| `packages/core/src/save/web-report.ts` | `saveWebReport` |
+| `packages/core/src/save/trending-report.ts` | `saveTrendingReport` |
+| `packages/core/src/save/hacker-news-report.ts` | `saveHackerNewsReport` |
+| `packages/core/src/save/product-hunt-report.ts` | `saveProductHuntReport` |
+| `packages/core/src/save/arxiv-report.ts` | `saveArxivReport` |
+| `packages/core/src/save/hugging-face-report.ts` | `saveHuggingFaceReport` |
+| `packages/core/src/save/community-report.ts` | `saveCommunityReport` |
+| `packages/core/src/rollup/run-weekly.ts` | `runWeekly` — weekly rollup entry point |
+| `packages/core/src/rollup/run-monthly.ts` | `runMonthly` — monthly rollup entry point |
+| `packages/core/src/rollup/generate-highlights.ts` | Telegram highlights generation for rollups |
+| `packages/core/src/fetchers/fetch-site-content.ts` | Sitemap-based web content fetching; state persisted to `digests/web-state.json` |
+| `packages/core/src/fetchers/trending.ts` | GitHub Trending HTML scraper |
+| `packages/core/src/fetchers/fetch-github-trending.ts` | GitHub Search API topic queries (6 AI topics, 7-day window) |
+| `packages/core/src/fetchers/hacker-news.ts` | Hacker News top AI stories via Algolia HN Search API |
+| `packages/core/src/fetchers/arxiv.ts` | ArXiv paper fetcher (cs.AI, cs.CL, cs.LG) |
+| `packages/core/src/fetchers/hugging-face.ts` | Hugging Face Hub model fetcher |
+| `packages/core/src/fetchers/product-hunt.ts` | Product Hunt fetcher |
+| `packages/core/src/fetchers/dev-to.ts` | Dev.to community articles fetcher |
+| `packages/core/src/fetchers/lobste-rs.ts` | Lobste.rs stories fetcher |
+| `packages/providers/types.ts` | `LlmProvider` interface, `ProviderFactory` type |
+| `packages/providers/openai-compatible.ts` | `createOpenAICompatibleProvider` — shared factory for OpenAI-compatible providers |
+| `packages/providers/anthropic.ts` | `createAnthropicProvider` — Anthropic SDK wrapper |
+| `packages/providers/openai.ts` | `createOpenAIProvider` — extends `createOpenAICompatibleProvider` |
+| `packages/providers/github-copilot.ts` | `createGitHubCopilotProvider` — extends `createOpenAICompatibleProvider` |
+| `packages/providers/openrouter.ts` | `createOpenRouterProvider` — extends `createOpenAICompatibleProvider` |
+| `packages/providers/deepseek.ts` | `createDeepSeekProvider` — 403 fallback provider |
+| `packages/providers/index.ts` | `createProvider` factory + barrel re-exports |
+| `packages/core/src/notifications/notify/` | Primary notification dispatch (Telegram) |
+| `packages/core/src/notifications/feishu/` | Feishu (Lark) notification channel |
+| `packages/core/src/notifications/social/` | Social media posting (CLI command + action) |
+| `packages/core/src/types/locale.ts` | `Locale` type (21-locale BCP-47 union, auto-generated from `locales/`) |
+| `packages/core/src/generate-manifest/constants.ts` | `REPORT_FILES` list, `DIGESTS_DIR` |
+| `packages/core/src/generate-manifest/report-label.ts` | `reportLabel(reportId)` — human label for a report type |
+| `packages/core/src/generate-manifest/scan-digest-dirs.ts` | `scanDigestDirs()` — scans `digests/` for date directories and report files |
+| `packages/core/src/generate-manifest/build-feed-xml.ts` | `buildFeedXml()` — generates RSS feed XML |
+| `packages/cli/manifest/action.ts` | `generateManifestAction` — generates `manifest.json` + `feed.xml` |
 | `locales/*.json` | 21 locale files using BCP-47 tags (ar-SA, bn-BD, de-DE, en-US, es-ES, fr-FR, hi-IN, id-ID, it-IT, ja-JP, ko-KR, nl-NL, pl-PL, pt-BR, ro-RO, ru-RU, th-TH, tr-TR, uk-UA, vi-VN, zh-CN) — drop a new file to add a language |
 
 ## Report outputs
@@ -209,32 +216,32 @@ Where `{locale}` is empty for the primary language (default: `en-US`, e.g. `ai-c
 
 ## Key conventions
 
-- All locale strings are stored in `locales/*.json` files (21 languages, BCP-47 tags). Access them via `t(lang)` from `src/utils/t.ts` (re-exported from `src/utils/index.ts`). To add a new language, drop a valid JSON file into `locales/` and add its BCP-47 tag to the `languages` list in `config.yml` — no code changes needed.
-- Each report type has its own prompt builder in `src/prompts/build-*.ts`. Repo-level prompts live in `build-cli-prompt.ts`, `build-peer-prompt.ts`, etc. Data-source prompts live in `build-trending-prompt.ts`, `build-hn-prompt.ts`, etc.
-- `callLlm(prompt, maxTokens?)` in `src/report/call-llm.ts` defaults to 4096 tokens. Web report uses 8192, trending uses 6144. HN report uses the default 4096.
+- All locale strings are stored in `locales/*.json` files (21 languages, BCP-47 tags). Access them via `t(lang)` from `packages/core/src/locales/t.ts` (re-exported from `packages/core/src/locales/index.ts`). To add a new language, drop a valid JSON file into `locales/` and add its BCP-47 tag to the `languages` list in `config.yml` — no code changes needed.
+- Each report type has its own prompt builder in `packages/core/src/prompts/`. Repo-level prompts live in `cli.ts`, `peer.ts`, etc. Data-source prompts live in `trending.ts`, `hackernews.ts`, etc. Note: prompt files use the domain name directly (no `build-` prefix).
+- `callLlm(prompt, maxTokens?)` in `packages/core/src/report/call-llm.ts` defaults to 4096 tokens. Web report uses 8192, trending uses 6144. HN report uses the default 4096.
 - On 429 rate-limit errors `callLlm` retries up to 3 times with exponential backoff (5 s / 10 s / 20 s); the concurrency slot is released during the wait.
-- The concurrency limiter (`LLM_CONCURRENCY = 5` in `src/report/call-llm.ts`) prevents 429s when many parallel LLM calls fire. Do not bypass it by calling SDK clients directly.
+- The concurrency limiter (`LLM_CONCURRENCY = 5` in `packages/core/src/report/call-llm.ts`) prevents 429s when many parallel LLM calls fire. Do not bypass it by calling SDK clients directly.
 - LLM provider is selected via `LLM_PROVIDER` env var (default: `anthropic`). Valid values: `anthropic`, `openai`, `github-copilot`, `openrouter`, `deepseek`.
-- Provider implementations live in `src/providers/`. Each file implements the `LlmProvider` interface. The factory in `src/providers/index.ts` validates the provider name and logs only the provider name — never API keys or endpoint URLs. DeepSeek is also available as a 403 fallback provider (requires `DEEPSEEK_API_KEY`).
-- GitHub issue label colors are defined in `LABEL_COLORS` in `src/github/labels.ts`. Add new labels there.
-- `sampleNote(total, sampled)` in `src/prompts/sample-note.ts` formats the "(共 N 条，展示前 M 条)" note. Reuse it — do not inline the same string format.
+- Provider implementations live in `packages/providers/`. Each file implements the `LlmProvider` interface. The factory in `packages/providers/index.ts` validates the provider name and logs only the provider name — never API keys or endpoint URLs. DeepSeek is also available as a 403 fallback provider (requires `DEEPSEEK_API_KEY`).
+- GitHub issue label colors are defined in `LABEL_COLORS` in `packages/core/src/github/labels.ts`. Add new labels there.
+- `sampleNote(total, sampled)` in `packages/core/src/prompts/sample-note.ts` formats the "(共 N 条，展示前 M 条)" note. Reuse it — do not inline the same string format.
 - Web state (`digests/web-state.json`) is committed to git on every run. It is the source of truth for which URLs have been seen.
 
 ## Web UI & RSS Feed
 
 - Web UI: `index.html` reads `manifest.json` to build the sidebar, then fetches `digests/YYYY-MM-DD/report.md` on demand.
-- RSS Feed: `feed.xml` at the repo root. Generated by `src/generate-manifest/action.ts` in the same `bun run manifest` step. Contains the latest 30 items (newest first) across all report types. Item links use hash routing: `https://duanyytop.github.io/agents-radar/#YYYY-MM-DD/report`.
+- RSS Feed: `feed.xml` at the repo root. Generated by `packages/cli/manifest/action.ts` in the same `bun run manifest` step. Contains the latest 30 items (newest first) across all report types. Item links use hash routing: `https://duanyytop.github.io/agents-radar/#YYYY-MM-DD/report`.
 - Both `manifest.json` and `feed.xml` are committed together in the "Commit manifest and feed" GHA step.
-- Report labels are generated from JSON locale files via `reportLabel()` in `src/generate-manifest/report-label.ts`. They must be kept in sync with the `LABELS` object in `index.html` when adding new report types.
+- Report labels are generated from JSON locale files via `reportLabel()` in `packages/core/src/generate-manifest/report-label.ts`. They must be kept in sync with the `LABELS` object in `index.html` when adding new report types.
 
 ## Adding a new report type
 
-1. Create a data fetcher in `src/fetchers/` (or add to an existing one).
-2. Add a `buildXxxPrompt` function as a new file `src/prompts/build-xxx-prompt.ts`. Re-export it from `src/prompts/index.ts`.
-3. Add fields for all strings (titles, labels, etc.) to `src/utils/locale-schema.ts` and all 21 `locales/*.json` files.
-4. Add a `saveXxxReport` function as a new file `src/save/save-xxx-report.ts`. Re-export it from `src/save/index.ts`.
-5. Wire into `fetchAllData`, `generateSummaries`, and the save phase in `src/phases/`.
-6. Add a label color entry in `LABEL_COLORS` in `src/github/labels.ts`.
+1. Create a data fetcher in `packages/core/src/fetchers/` (or add to an existing one).
+2. Add a `buildXxxPrompt` function as a new file `packages/core/src/prompts/xxx.ts` (no `build-` prefix). Re-export it from `packages/core/src/prompts/index.ts`.
+3. Add fields for all strings (titles, labels, etc.) to `packages/core/src/locales/schema.ts` and all 21 `locales/*.json` files.
+4. Add a `saveXxxReport` function as a new file `packages/core/src/save/xxx-report.ts` (no `save-` prefix). Re-export it from `packages/core/src/save/index.ts`.
+5. Wire into `fetchAllData`, `generateSummaries`, and the save phase in `packages/core/src/phases/`.
+6. Add a label color entry in `LABEL_COLORS` in `packages/core/src/github/labels.ts`.
 7. Add the report ID and label fields to `locales/*.json` files and `LABELS` in `index.html`.
-8. Add the report file name to `REPORT_FILES` in `src/generate-manifest/constants.ts`.
+8. Add the report file name to `REPORT_FILES` in `packages/core/src/generate-manifest/constants.ts`.
 9. Update both README files and this file.

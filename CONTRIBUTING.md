@@ -61,7 +61,7 @@ Thanks for your interest in contributing to agents-radar!
 
 This project uses [release-please](https://github.com/googleapis/release-please) for automated changelog generation. Commits should follow [conventional commits](https://www.conventionalcommits.org/):
 
-```
+```text
 feat: add support for new data source
 fix: handle rate-limiting in GitHub API client
 docs: update README with new environment variables
