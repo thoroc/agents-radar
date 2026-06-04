@@ -28,7 +28,7 @@ Historical digests are stored in [`digests/`](../digests/). Published issues are
 
 ### `ai-cli.md`
 
-```
+```text
 ## Cross-Tool Comparison
   Ecosystem overview / Activity comparison table / Shared themes / Differentiation / Trend signals
 
@@ -44,11 +44,11 @@ Historical digests are stored in [`digests/`](../digests/). Published issues are
   <details> OpenCode       — ...
   <details> Qwen Code      — ...
   <details> DeepSeek TUI   — ...
-```
+```text
 
 ### `ai-agents.md`
 
-```
+```text
 Issues: N | PRs: N | Projects covered: 10
 
 ## OpenClaw Deep Dive
@@ -71,11 +71,11 @@ Issues: N | PRs: N | Projects covered: 10
   <details> IronClaw    — ...
   <details> TinyClaw    — ...
   <details> CoPaw       — ...
-```
+```text
 
 ### `ai-web.md`
 
-```
+```text
 Sources: anthropic.com (N articles) + openai.com (N articles)
 
 Today's summary
@@ -84,11 +84,11 @@ OpenAI highlights              (research / release / company / safety / ...)
 Strategic signals
 Notable details
 [First full crawl also includes: Content landscape overview]
-```
+```text
 
 ### `ai-trending.md`
 
-```
+```text
 Sources: GitHub Trending + GitHub Search API
 
 Today's summary
@@ -100,11 +100,11 @@ Top repos by dimension
   🔍 RAG & Knowledge    — vector databases / retrieval augmentation
 Trend signal analysis
 Community focus
-```
+```text
 
 ### `ai-hn.md`
 
-```
+```text
 Sources: Hacker News (top-30 AI stories, last 24h)
 
 Today's summary
@@ -115,11 +115,11 @@ Top stories & discussions
   💬 Opinions & debate  — Ask HN / Show HN / hot threads
 Community sentiment signals
 Worth reading
-```
+```text
 
 ### `ai-weekly.md`
 
-```
+```text
 Coverage: YYYY-MM-DD ~ YYYY-MM-DD  (last 7 daily digests)
 
 Weekly highlights
@@ -127,11 +127,11 @@ Key trends & developments
 Notable releases
 Community momentum
 Outlook
-```
+```text
 
 ### `ai-monthly.md`
 
-```
+```text
 Sources: N weekly reports  (or sampled daily reports if fewer than 2 weeklies available)
 
 Month in review
@@ -139,4 +139,4 @@ Major themes
 Ecosystem shifts
 Top projects & releases
 Looking ahead
-```
+```text

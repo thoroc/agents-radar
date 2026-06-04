@@ -1,6 +1,6 @@
 # agents-radar
 
-**Supported languages**
+## Supported languages
 
 🇬🇧 English · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
 
@@ -8,7 +8,7 @@ English | [中文](./README.zh.md)
 
 A GitHub Actions workflow that runs every morning at 08:00 CST. It aggregates AI ecosystem signals from 10 data sources, then publishes daily digests (in all configured languages) as GitHub Issues and committed Markdown files. Weekly and monthly rollup reports are also generated automatically.
 
-### Data Sources
+## Data Sources
 
 | Source | Type | Data |
 |--------|------|------|
@@ -78,6 +78,7 @@ A hosted [Model Context Protocol](https://modelcontextprotocol.io) server that e
 ```
 
 Restart Claude Desktop after saving. You can then ask Claude things like:
+
 - *"What's the latest in AI CLI tools?"* → calls `get_latest`
 - *"Search for Claude Code mentions this week"* → calls `search`
 - *"Show me the AI trending report for 2026-03-05"* → calls `get_report`
@@ -102,6 +103,7 @@ Or add it manually to `~/.openclaw/openclaw.json`:
 ```
 
 You can then ask OpenClaw things like:
+
 - *"What's the latest in AI CLI tools?"* → calls `get_latest`
 - *"Search for Claude Code mentions this week"* → calls `search`
 - *"Show me the AI trending report for 2026-03-05"* → calls `get_report`

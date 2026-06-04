@@ -7,6 +7,9 @@ pre-commit:
       run: bun biome format packages mcp
     typecheck:
       run: bun tsc --noEmit
+    markdownlint:
+      glob: "README.md|AGENTS.md|CONTRIBUTING.md|docs/*.md"
+      run: bun markdownlint-cli2 {staged_files}
     aislop:
       run: >
         bun x aislop scan --staged --json | bun -e
