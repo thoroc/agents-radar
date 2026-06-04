@@ -13,3 +13,5 @@ coverage/
 .github/skills/
 .tessl/
 .vscode/skills/
+node-compile-cache/
+.context/
