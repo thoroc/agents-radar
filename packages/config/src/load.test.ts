@@ -2,6 +2,20 @@ import fs from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { loadConfig } from "./load";
 
+const JSON_CONFIG = JSON.stringify({
+  cli_repos: [{ id: "json-tool", repo: "org/json-tool", name: "JSON Tool" }],
+  skills_repo: "org/json-skills",
+});
+
+const TOML_CONFIG = `
+skills_repo = "org/toml-skills"
+
+[[cli_repos]]
+id = "toml-tool"
+repo = "org/toml-tool"
+name = "TOML Tool"
+`;
+
 describe("loadConfig", () => {
   afterEach(() => {
     vi.restoreAllMocks();
@@ -111,5 +125,34 @@ schedules:
     expect(config.schedules.daily.cron).toBe("0 0 * * *");
     expect(config.schedules.weekly.cron).toBe("0 1 * * 1");
     expect(config.schedules.monthly.cron).toBe("0 2 1 * *");
+  });
+
+  it("parses a JSON config file", () => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    vi.spyOn(fs, "readFileSync").mockReturnValue(JSON_CONFIG);
+    const config = loadConfig("test.json");
+    expect(config.cliRepos[0]!.id).toBe("json-tool");
+    expect(config.skillsRepo).toBe("org/json-skills");
+  });
+
+  it("parses a TOML config file", () => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    vi.spyOn(fs, "readFileSync").mockReturnValue(TOML_CONFIG);
+    const config = loadConfig("test.toml");
+    expect(config.cliRepos[0]!.id).toBe("toml-tool");
+    expect(config.skillsRepo).toBe("org/toml-skills");
+  });
+
+  it("auto-discovers config when no path is given", () => {
+    vi.spyOn(fs, "existsSync").mockImplementation((p) => String(p).endsWith("config.yml"));
+    vi.spyOn(fs, "readFileSync").mockReturnValue("skills_repo: auto/skills\n");
+    const config = loadConfig();
+    expect(config.skillsRepo).toBe("auto/skills");
+  });
+
+  it("returns defaults when auto-discovery finds no file", () => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(false);
+    const config = loadConfig();
+    expect(config.skillsRepo).toBe("anthropics/skills");
   });
 });

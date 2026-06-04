@@ -1,4 +1,4 @@
-import { env } from "../config/env";
+import { env } from "@agents-radar/config";
 import { getHeaders } from "./get-headers";
 
 export const ensureLabel = async (

@@ -6,6 +6,7 @@
     "agents-radar": "./cli.ts"
   },
   "dependencies": {
+    "@agents-radar/config": "workspace:*",
     "@agents-radar/core": "workspace:*",
     "@cliffy/command": "npm:@jsr/cliffy__command"
   }

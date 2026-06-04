@@ -1,5 +1,5 @@
+import { env } from "@agents-radar/config";
 import { DateTime } from "luxon";
-import { env } from "../config/env";
 import { fetchItemPage } from "./fetch-item-page";
 import { githubGet } from "./http";
 import type { GitHubItem, RepoConfig } from "./types";

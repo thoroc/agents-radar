@@ -1,9 +1,6 @@
-export interface RepoConfig {
-  id: string;
-  repo: string;
-  name: string;
-  paginated?: boolean;
-}
+import type { RepoConfig } from "@agents-radar/config";
+
+export type { RepoConfig };
 
 export interface GitHubUser {
   login: string;

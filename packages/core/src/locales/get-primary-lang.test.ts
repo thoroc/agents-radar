@@ -1,5 +1,5 @@
+import * as loadModule from "@agents-radar/config";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import * as loadModule from "../config/load";
 import { getPrimaryLang } from "./get-primary-lang";
 
 describe("getPrimaryLang", () => {

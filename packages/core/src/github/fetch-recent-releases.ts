@@ -1,5 +1,5 @@
+import { env } from "@agents-radar/config";
 import { DateTime } from "luxon";
-import { env } from "../config/env";
 import { githubGet } from "./http";
 import type { GitHubRelease } from "./types";
 

@@ -69,10 +69,11 @@ export ANTHROPIC_BASE_URL=https://api.kimi.com/coding/  # omit for Anthropic
 
 ## Workspace layout
 
-This repo is a Bun workspace with three packages:
+This repo is a Bun workspace with four packages:
 
 | Package | Path | Purpose |
 |---------|------|---------|
+| `@agents-radar/config` | `packages/config/` | Config loading — YAML/JSON/TOML parsers, format detection, auto-discovery, env, defaults |
 | `@agents-radar/providers` | `packages/providers/` | LLM provider adapters (Anthropic, OpenAI, etc.) |
 | `@agents-radar/core` | `packages/core/` | Digest pipeline — phases, fetchers, prompts, savers |
 | `@agents-radar/cli` | `packages/cli/` | CLI entry point (`cli.ts`) with daily/weekly/monthly/scheduler subcommands |
@@ -104,9 +105,18 @@ The pipeline runs in four sequential phases, split into separate modules under `
 | `packages/core/src/locales/data.ts` | Lazy-loads all locale JSON files; exports `STRINGS`, `SUPPORTED_LOCALES` |
 | `packages/core/src/locales/schema.ts` | Zod schema for locale file validation; derives `LocaleData` type |
 | `packages/core/src/locales/validate-locale.ts` | `validateLocale(lang)` — throws if locale is not supported |
-| `packages/core/src/locales/get-enabled-langs.ts` | `getEnabledLangs()` — reads enabled languages from config |
+| `packages/core/src/locales/get-enabled-langs.ts` | Re-exports `getEnabledLangs` from `@agents-radar/config` |
 | `packages/core/src/locales/prompt-lang.ts` | `PromptLang` type + `toPromptLang()` converter |
-| `packages/core/src/config/load.ts` | YAML config loader; `getPrimaryLang()`, `getEnabledLangs()`, `RadarConfig` interface |
+| `packages/config/src/load.ts` | `loadConfig` — auto-discovers config file, parses YAML/JSON/TOML, returns `RadarConfig` |
+| `packages/config/src/detect-format.ts` | `detectFormat(filePath)` — derives format from extension (`.yml`/`.yaml`/`.json`/`.toml`) |
+| `packages/config/src/find-config.ts` | `findConfig(dir?)` — probes `config.yml` → `config.yaml` → `config.json` → `config.toml` |
+| `packages/config/src/parse/yaml.ts` | `parseYaml(content)` — parses YAML into `RawConfig` |
+| `packages/config/src/parse/json.ts` | `parseJson(content)` — parses JSON into `RawConfig` |
+| `packages/config/src/parse/toml.ts` | `parseToml(content)` — parses TOML into `RawConfig` via `smol-toml` |
+| `packages/config/src/types.ts` | `RawConfig`, `RadarConfig`, `RepoConfig`, `ScheduleConfig` and related interfaces |
+| `packages/config/src/constants.ts` | Default values: `DEFAULT_CLI_REPOS`, `DEFAULT_OPENCLAW`, `DEFAULT_SCHEDULES`, etc. |
+| `packages/config/src/env.ts` | `env` — central source of truth for env vars (`GITHUB_TOKEN`, `DIGEST_REPO`, `LLM_PROVIDER`) |
+| `packages/config/src/get-enabled-langs.ts` | `getEnabledLangs(langConfig?, env?)` — resolves active languages from config + `REPORT_LANGS` |
 | `packages/core/src/utils/to-cst-date-str.ts` | `toCstDateStr(date)` — formats a date as CST string |
 | `packages/core/src/utils/to-utc-str.ts` | `toUtcStr(date)` — formats a date as UTC string |
 | `packages/core/src/utils/sleep.ts` | `sleep(ms)` utility |
@@ -216,6 +226,7 @@ Where `{locale}` is empty for the primary language (default: `en-US`, e.g. `ai-c
 
 ## Key conventions
 
+- Config loading lives in `@agents-radar/config`. `loadConfig(path?)` supports YAML (`.yml`/`.yaml`), JSON (`.json`), and TOML (`.toml`). When called without an explicit path it auto-discovers the first config file found in the working directory by probing `config.yml` → `config.yaml` → `config.json` → `config.toml`. If none exist, built-in defaults are returned. The format is inferred from the file extension via `detectFormat`.
 - All locale strings are stored in `locales/*.json` files (21 languages, BCP-47 tags). Access them via `t(lang)` from `packages/core/src/locales/t.ts` (re-exported from `packages/core/src/locales/index.ts`). To add a new language, drop a valid JSON file into `locales/` and add its BCP-47 tag to the `languages` list in `config.yml` — no code changes needed.
 - Each report type has its own prompt builder in `packages/core/src/prompts/`. Repo-level prompts live in `cli.ts`, `peer.ts`, etc. Data-source prompts live in `trending.ts`, `hackernews.ts`, etc. Note: prompt files use the domain name directly (no `build-` prefix).
 - `callLlm(prompt, maxTokens?)` in `packages/core/src/report/call-llm.ts` defaults to 4096 tokens. Web report uses 8192, trending uses 6144. HN report uses the default 4096.

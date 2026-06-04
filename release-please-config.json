@@ -1,5 +1,10 @@
 {
   "packages": {
+    "packages/config": {
+      "release-type": "node",
+      "include-component-in-tag": true,
+      "component": "config"
+    },
     ".": {
       "release-type": "node",
       "include-component-in-tag": false,
