@@ -1,4 +1,4 @@
-import { getPrimaryLang, type Locale, t } from "../../locales";
+import { getPrimaryLang, type Locale, t } from "@agents-radar/locales";
 import { PAGES_URL_DEFAULT } from "../../utils/constants";
 import type { Highlights } from "../notify/build-message";
 import { label } from "../notify/label";

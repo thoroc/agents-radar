@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import * as loadConfigModule from "@agents-radar/config";
+import * as getEnabledLangsModule from "@agents-radar/locales";
 import { DateTime } from "luxon";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as githubModule from "../github";
-import * as getEnabledLangsModule from "../locales/get-enabled-langs";
 import * as autoGenFooterModule from "../report/auto-gen-footer";
 import * as callLlmModule from "../report/call-llm";
 import * as saveFileModule from "../report/save-file";

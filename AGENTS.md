@@ -69,11 +69,12 @@ export ANTHROPIC_BASE_URL=https://api.kimi.com/coding/  # omit for Anthropic
 
 ## Workspace layout
 
-This repo is a Bun workspace with four packages:
+This repo is a Bun workspace with five packages:
 
 | Package | Path | Purpose |
 |---------|------|---------|
 | `@agents-radar/config` | `packages/config/` | Config loading — YAML/JSON/TOML parsers, format detection, auto-discovery, env, defaults |
+| `@agents-radar/locales` | `packages/locales/` | Locale system — Zod schema, JSON loader, `t()` accessor, `generate`/`validate` CLI helpers |
 | `@agents-radar/providers` | `packages/providers/` | LLM provider adapters (Anthropic, OpenAI, etc.) |
 | `@agents-radar/core` | `packages/core/` | Digest pipeline — phases, fetchers, prompts, savers |
 | `@agents-radar/cli` | `packages/cli/` | CLI entry point (`cli.ts`) with daily/weekly/monthly/scheduler subcommands |
@@ -101,12 +102,15 @@ The pipeline runs in four sequential phases, split into separate modules under `
 | `packages/core/src/phases/summarize.ts` | Phase 2 — per-repo LLM calls |
 | `packages/core/src/phases/compare.ts` | Phase 3 — cross-tool + cross-ecosystem comparisons |
 | `packages/core/src/phases/save.ts` | Phase 4 — report output + GitHub Issues |
-| `packages/core/src/locales/t.ts` | `t(lang)` locale accessor — returns the full `LocaleData` object for a given locale |
-| `packages/core/src/locales/data.ts` | Lazy-loads all locale JSON files; exports `STRINGS`, `SUPPORTED_LOCALES` |
-| `packages/core/src/locales/schema.ts` | Zod schema for locale file validation; derives `LocaleData` type |
-| `packages/core/src/locales/validate-locale.ts` | `validateLocale(lang)` — throws if locale is not supported |
-| `packages/core/src/locales/get-enabled-langs.ts` | Re-exports `getEnabledLangs` from `@agents-radar/config` |
-| `packages/core/src/locales/prompt-lang.ts` | `PromptLang` type + `toPromptLang()` converter |
+| `packages/locales/src/t.ts` | `t(lang)` locale accessor — returns the full `LocaleData` object for a given locale |
+| `packages/locales/src/data.ts` | Lazy-loads all locale JSON files; exports `STRINGS`, `SUPPORTED_LOCALES` |
+| `packages/locales/src/schema.ts` | Zod schema for locale file validation; derives `LocaleData` type |
+| `packages/locales/src/validate-locale.ts` | `validateLocale(lang)` — falls back to `"en-US"` if locale is not supported |
+| `packages/locales/src/get-enabled-langs.ts` | Re-exports `getEnabledLangs` from `@agents-radar/config` |
+| `packages/locales/src/prompt-lang.ts` | `PromptLang` type + `toPromptLang()` converter |
+| `packages/locales/src/generate.ts` | `generate(repoRoot)` — writes `locale-schema.json` and `packages/locales/src/types/locale.ts` |
+| `packages/locales/src/validate.ts` | `validate(repoRoot)` — validates all locale JSON files against `locale-schema.json` via AJV |
+| `packages/locales/src/types/locale.ts` | `Locale` type (21-locale BCP-47 union, auto-generated from `locales/`) |
 | `packages/config/src/load.ts` | `loadConfig` — auto-discovers config file, parses YAML/JSON/TOML, returns `RadarConfig` |
 | `packages/config/src/detect-format.ts` | `detectFormat(filePath)` — derives format from extension (`.yml`/`.yaml`/`.json`/`.toml`) |
 | `packages/config/src/find-config.ts` | `findConfig(dir?)` — probes `config.yml` → `config.yaml` → `config.json` → `config.toml` |
@@ -184,7 +188,7 @@ The pipeline runs in four sequential phases, split into separate modules under `
 | `packages/core/src/notifications/notify/` | Primary notification dispatch (Telegram) |
 | `packages/core/src/notifications/feishu/` | Feishu (Lark) notification channel |
 | `packages/core/src/notifications/social/` | Social media posting (CLI command + action) |
-| `packages/core/src/types/locale.ts` | `Locale` type (21-locale BCP-47 union, auto-generated from `locales/`) |
+| `packages/core/src/types/locale.ts` | Re-exports `Locale` from `@agents-radar/locales` (kept for backwards-compatible relative imports within core) |
 | `packages/core/src/generate-manifest/constants.ts` | `REPORT_FILES` list, `DIGESTS_DIR` |
 | `packages/core/src/generate-manifest/report-label.ts` | `reportLabel(reportId)` — human label for a report type |
 | `packages/core/src/generate-manifest/scan-digest-dirs.ts` | `scanDigestDirs()` — scans `digests/` for date directories and report files |
@@ -227,7 +231,7 @@ Where `{locale}` is empty for the primary language (default: `en-US`, e.g. `ai-c
 ## Key conventions
 
 - Config loading lives in `@agents-radar/config`. `loadConfig(path?)` supports YAML (`.yml`/`.yaml`), JSON (`.json`), and TOML (`.toml`). When called without an explicit path it auto-discovers the first config file found in the working directory by probing `config.yml` → `config.yaml` → `config.json` → `config.toml`. If none exist, built-in defaults are returned. The format is inferred from the file extension via `detectFormat`.
-- All locale strings are stored in `locales/*.json` files (21 languages, BCP-47 tags). Access them via `t(lang)` from `packages/core/src/locales/t.ts` (re-exported from `packages/core/src/locales/index.ts`). To add a new language, drop a valid JSON file into `locales/` and add its BCP-47 tag to the `languages` list in `config.yml` — no code changes needed.
+- All locale strings are stored in `locales/*.json` files (21 languages, BCP-47 tags). Access them via `t(lang)` from `@agents-radar/locales` (import directly, or through `@agents-radar/core/utils`). To add a new language, drop a valid JSON file into `locales/` and add its BCP-47 tag to the `languages` list in `config.yml` — no code changes needed.
 - Each report type has its own prompt builder in `packages/core/src/prompts/`. Repo-level prompts live in `cli.ts`, `peer.ts`, etc. Data-source prompts live in `trending.ts`, `hackernews.ts`, etc. Note: prompt files use the domain name directly (no `build-` prefix).
 - `callLlm(prompt, maxTokens?)` in `packages/core/src/report/call-llm.ts` defaults to 4096 tokens. Web report uses 8192, trending uses 6144. HN report uses the default 4096.
 - On 429 rate-limit errors `callLlm` retries up to 3 times with exponential backoff (5 s / 10 s / 20 s); the concurrency slot is released during the wait.
@@ -249,7 +253,7 @@ Where `{locale}` is empty for the primary language (default: `en-US`, e.g. `ai-c
 
 1. Create a data fetcher in `packages/core/src/fetchers/` (or add to an existing one).
 2. Add a `buildXxxPrompt` function as a new file `packages/core/src/prompts/xxx.ts` (no `build-` prefix). Re-export it from `packages/core/src/prompts/index.ts`.
-3. Add fields for all strings (titles, labels, etc.) to `packages/core/src/locales/schema.ts` and all 21 `locales/*.json` files.
+3. Add fields for all strings (titles, labels, etc.) to `packages/locales/src/schema.ts` and all 21 `locales/*.json` files.
 4. Add a `saveXxxReport` function as a new file `packages/core/src/save/xxx-report.ts` (no `save-` prefix). Re-export it from `packages/core/src/save/index.ts`.
 5. Wire into `fetchAllData`, `generateSummaries`, and the save phase in `packages/core/src/phases/`.
 6. Add a label color entry in `LABEL_COLORS` in `packages/core/src/github/labels.ts`.
