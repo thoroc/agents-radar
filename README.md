@@ -29,6 +29,13 @@ A GitHub Actions workflow that runs every morning at 08:00 CST. It aggregates AI
 
 Browse all historical digests in a clean, dark-themed interface — no login required. Reports are rendered from the Markdown files in this repo via GitHub Pages.
 
+The web UI is a Vite + TypeScript SPA in `packages/web/`. It fetches `manifest.json` and individual digest files at runtime — new daily digests appear without any UI rebuild.
+
+```bash
+bun run dev:web    # start Vite dev server for local UI development
+bun run build:web  # build the web UI for deployment
+```
+
 ![Web UI](assets/web-en.png)
 
 ## Telegram Channel & Feishu Group
