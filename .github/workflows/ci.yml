@@ -31,6 +31,9 @@ jobs:
       - name: Typecheck web
         run: cd packages/web && bun run typecheck
 
+      - name: Test web
+        run: cd packages/web && bun run test
+
       - name: Validate locale files
         run: bun run validate:locales
 
