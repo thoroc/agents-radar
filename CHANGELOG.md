@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/thoroc/agents-radar/compare/v1.5.0...v1.6.0) (2026-06-05)
+
+
+### Features
+
+* **locales:** extract @agents-radar/locales package ([#44](https://github.com/thoroc/agents-radar/issues/44)) ([28a5f52](https://github.com/thoroc/agents-radar/commit/28a5f5271f60d3499500e8c24acf15d2395fda4a))
+
 ## [1.5.0](https://github.com/thoroc/agents-radar/compare/v1.4.1...v1.5.0) (2026-06-04)
 
 
