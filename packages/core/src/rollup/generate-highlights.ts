@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
+import type { Locale } from "@agents-radar/locales";
 import { buildHighlightsPrompt, type ReportHighlights } from "../prompts";
 import { callLlm } from "../report/call-llm";
 import { saveFile } from "../report/save-file";
-import type { Locale } from "../types/locale";
 import { DIGESTS_DIR } from "./constants";
 
 export const generateHighlights = async (

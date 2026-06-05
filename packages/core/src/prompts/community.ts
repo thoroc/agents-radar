@@ -1,6 +1,6 @@
+import type { Locale } from "@agents-radar/locales";
 import type { DevToData } from "../fetchers/dev-to";
 import type { LobstersData } from "../fetchers/lobste-rs";
-import type { Locale } from "../types/locale";
 import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildCommunityPrompt = (

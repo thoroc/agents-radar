@@ -1,5 +1,5 @@
+import type { Locale } from "@agents-radar/locales";
 import type { GitHubItem, GitHubRelease, RepoConfig } from "../github/types";
-import type { Locale } from "../types/locale";
 import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 import { formatItem } from "./format-item";
 import { sampleNote } from "./sample-note";

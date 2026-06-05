@@ -1,5 +1,5 @@
+import type { Locale } from "@agents-radar/locales";
 import type { ArxivData } from "../fetchers/arxiv";
-import type { Locale } from "../types/locale";
 import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildArxivPrompt = (

@@ -1,5 +1,5 @@
+import type { Locale } from "@agents-radar/locales";
 import type { ProductHuntData } from "../fetchers/product-hunt";
-import type { Locale } from "../types/locale";
 import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildProductHuntPrompt = (
