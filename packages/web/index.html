@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📡 agents-radar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link rel="alternate" type="application/rss+xml" title="agents-radar RSS" href="./feed.xml">
+  <script type="module" src="/src/main.ts"></script>
+</head>
+<body>
+<div id="app">
+  <div id="hdr">
+    <div class="brand">
+      <span class="brand-icon">📡</span>
+      <span>agents-<em>radar</em></span>
+    </div>
+    <div class="hdr-right">
+      <div class="signal"></div>
+      <a class="hdr-btn icon-only" id="githubLink" href="https://github.com/thoroc/agents-radar" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+      <a class="hdr-btn" href="https://t.me/agents_radar" target="_blank" rel="noopener noreferrer" title="Join Telegram"><span class="hdr-icon">✈</span><span class="hdr-join">Join</span>Telegram</a>
+      <a class="hdr-btn" href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=478g7865-04a8-4fab-a7f8-23af85ba927b" target="_blank" rel="noopener noreferrer" title="Join Feishu Group"><span class="hdr-icon">◈</span><span class="hdr-join">Join</span>Feishu<span class="hdr-join">Group</span></a>
+      <a id="rssLink" class="hdr-btn" href="./feed.xml" title="RSS Feed"><span class="hdr-icon">⊕</span>RSS</a>
+      <button id="themeBtn" type="button" class="hdr-btn"><span class="hdr-icon">◐</span><span class="hdr-label">LIGHT</span></button>
+    </div>
+  </div>
+
+  <div id="body">
+    <div id="sidebar">
+      <div id="mob-toggle">☰ &nbsp;选择报告</div>
+      <div class="side-label">REPORTS</div>
+      <div class="search-wrap">
+        <input id="searchInput" type="search" placeholder="搜索全文，如 Claude">
+        <div id="searchStatus"></div>
+      </div>
+      <div id="nav"></div>
+    </div>
+
+    <div id="cwrap">
+      <div id="content">
+        <div class="msg"><div class="msg-icon">📡</div><div>正在加载…</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
