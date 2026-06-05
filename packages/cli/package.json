@@ -8,6 +8,7 @@
   "dependencies": {
     "@agents-radar/config": "workspace:*",
     "@agents-radar/core": "workspace:*",
+    "@agents-radar/locales": "workspace:*",
     "@cliffy/command": "npm:@jsr/cliffy__command"
   }
 }

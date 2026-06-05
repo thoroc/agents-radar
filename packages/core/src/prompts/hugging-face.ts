@@ -1,5 +1,5 @@
+import type { Locale } from "@agents-radar/locales";
 import type { HuggingFaceData } from "../fetchers/hugging-face";
-import type { Locale } from "../types/locale";
 import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildHuggingFacePrompt = (

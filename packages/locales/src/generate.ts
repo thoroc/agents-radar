@@ -19,7 +19,7 @@ export type Locale =
 ${union};
 `;
 
-  const typePath = path.resolve(repoRoot, "packages/core/src/types/locale.ts");
+  const typePath = path.resolve(repoRoot, "packages/locales/src/types/locale.ts");
   fs.writeFileSync(typePath, content);
   console.error(`Generated ${typePath} (${codes.length} locales)`);
 };

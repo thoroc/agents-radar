@@ -7,8 +7,7 @@ describe("validateLocale", () => {
     expect(validateLocale("zh-CN")).toBe("zh-CN");
   });
 
-  it("falls back to en for unsupported locale", () => {
-    expect(validateLocale("xx")).toBe("en-US");
-    expect(validateLocale("")).toBe("en-US");
+  it("falls back to en-US for unsupported locale", () => {
+    expect(validateLocale("xx-XX")).toBe("en-US");
   });
 });

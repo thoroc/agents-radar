@@ -1,4 +1,4 @@
-import type { Locale } from "../types/locale";
+import type { Locale } from "@agents-radar/locales";
 import { getPrimaryLang, LANGUAGE_NAMES } from "../utils";
 
 export const buildHighlightsPrompt = (

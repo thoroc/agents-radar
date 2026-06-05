@@ -1,4 +1,4 @@
-import type { Locale } from "../types";
+import type { Locale } from "@agents-radar/locales";
 import { saveReport } from "./report";
 import type { SaveReportDeps } from "./saver-types";
 

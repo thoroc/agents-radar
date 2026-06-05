@@ -164,7 +164,7 @@ describe("rollup strings", () => {
 });
 
 describe("all locale files pass Zod schema", () => {
-  const localesDir = path.resolve(__dirname, "../../../../locales");
+  const localesDir = path.resolve(__dirname, "../../../locales");
   const files = fs.readdirSync(localesDir).filter((f) => f.endsWith(".json"));
 
   for (const file of files) {

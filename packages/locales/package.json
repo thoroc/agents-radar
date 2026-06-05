@@ -1,0 +1,14 @@
+{
+  "name": "@agents-radar/locales",
+  "version": "0.0.0",
+  "private": true,
+  "module": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@agents-radar/config": "workspace:*",
+    "ajv": "^8.17.1",
+    "zod": "^4.4.3"
+  }
+}

@@ -37,6 +37,7 @@
       "dependencies": {
         "@agents-radar/config": "workspace:*",
         "@agents-radar/core": "workspace:*",
+        "@agents-radar/locales": "workspace:*",
         "@cliffy/command": "npm:@jsr/cliffy__command",
       },
     },
@@ -53,12 +54,21 @@
       "version": "0.0.0",
       "dependencies": {
         "@agents-radar/config": "workspace:*",
+        "@agents-radar/locales": "workspace:*",
         "@agents-radar/providers": "workspace:*",
         "@dotenvx/dotenvx": "^1.69.2",
-        "ajv": "^8.17.1",
         "js-yaml": "^4.1.1",
         "luxon": "^3.7.2",
         "marked": "^17.0.4",
+        "zod": "^4.4.3",
+      },
+    },
+    "packages/locales": {
+      "name": "@agents-radar/locales",
+      "version": "0.0.0",
+      "dependencies": {
+        "@agents-radar/config": "workspace:*",
+        "ajv": "^8.17.1",
         "zod": "^4.4.3",
       },
     },
@@ -77,6 +87,8 @@
     "@agents-radar/config": ["@agents-radar/config@workspace:packages/config"],
 
     "@agents-radar/core": ["@agents-radar/core@workspace:packages/core"],
+
+    "@agents-radar/locales": ["@agents-radar/locales@workspace:packages/locales"],
 
     "@agents-radar/providers": ["@agents-radar/providers@workspace:packages/providers"],
 

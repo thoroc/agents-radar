@@ -1,4 +1,4 @@
-import { generate, validate } from "@agents-radar/core/locales";
+import { generate, validate } from "@agents-radar/locales";
 
 export interface LocaleActionArgs {
   generate?: boolean;

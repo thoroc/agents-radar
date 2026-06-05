@@ -1,7 +1,7 @@
+import type { Locale } from "@agents-radar/locales";
 import type { RepoConfig, RepoFetch } from "../github";
 import { buildComparisonPrompt, buildPeersComparisonPrompt, type RepoDigest } from "../prompts";
 import { callLlm } from "../report/call-llm";
-import type { Locale } from "../types/locale";
 
 type ComparisonsByLang = Record<string, string>;
 type PeersComparisonsByLang = Record<string, string>;

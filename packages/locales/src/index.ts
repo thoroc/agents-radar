@@ -1,6 +1,6 @@
-export type { Locale } from "../types/locale";
 export { DEFAULT_LANGUAGES, LANGUAGE_NAMES, STRINGS, SUPPORTED_LOCALES } from "./data";
 export { generate } from "./generate";
+export { getEnabledLangs } from "./get-enabled-langs";
 export { getFallbackLang } from "./get-fallback-lang";
 export { getLocaleFiles } from "./get-files";
 export { getPrimaryLang } from "./get-primary-lang";
@@ -13,5 +13,6 @@ export {
   LocaleMetaSchema,
 } from "./schema";
 export { t } from "./t";
+export type { Locale } from "./types/locale";
 export { validate } from "./validate";
 export { validateLocale } from "./validate-locale";

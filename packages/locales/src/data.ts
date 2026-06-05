@@ -16,7 +16,7 @@ const loadLocales = (): {
   const languageNames: Record<string, string> = {};
 
   try {
-    const localesDir = path.resolve(__dirname, "../../../../locales");
+    const localesDir = path.resolve(__dirname, "../../../locales");
 
     if (!fs.existsSync(localesDir)) {
       console.warn(`[i18n] locales directory not found: ${localesDir}`);
