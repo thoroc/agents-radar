@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { getPrimaryLang } from "./get-primary-lang";
 
 describe("getPrimaryLang", () => {
@@ -6,12 +6,10 @@ describe("getPrimaryLang", () => {
     expect(getPrimaryLang({ primaryLang: "zh-CN", fallbackLang: null })).toBe("zh-CN");
   });
 
-  it("loads from config when primaryLang is null", () => {
-    vi.mock("@agents-radar/config", () => ({
-      loadConfig: () => ({ defaultPrimaryLanguage: "en-US", defaultFallbackLanguage: "en-US" }),
-    }));
+  it("returns a non-empty string when primaryLang is null (falls back to config defaults)", () => {
     const args = { primaryLang: null, fallbackLang: null };
     const result = getPrimaryLang(args);
-    expect(result).toBeTruthy();
+    expect(typeof result).toBe("string");
+    expect(result.length).toBeGreaterThan(0);
   });
 });
