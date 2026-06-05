@@ -18,6 +18,8 @@
 		"format": "bun run sort-locales && biome format --write packages mcp",
 		"format:check": "biome format packages mcp",
 		"manifest": "bun run packages/cli/cli.ts manifest",
+		"dev:web": "bun run --cwd packages/web dev",
+		"build:web": "bun run --cwd packages/web build",
 		"notify": "bun run packages/cli/cli.ts notify",
 		"notify:feishu": "bun run packages/cli/cli.ts feishu",
 		"close-stale": "bun run packages/cli/cli.ts close-stale",
