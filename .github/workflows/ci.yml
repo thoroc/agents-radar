@@ -38,7 +38,7 @@ jobs:
         run: bun run validate:locales
 
       - name: Test
-        run: bun test
+        run: bun test packages/cli packages/config packages/core packages/locales packages/providers
 
       - name: AISlop quality gate
         run: bun run aislop:ci
