@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { WebState } from "../fetchers";
 import * as githubModule from "../github";
@@ -54,6 +55,7 @@ const baseArgs: SavePhaseArgs = {
 describe("savePhase", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(fs, "existsSync").mockReturnValue(false);
     vi.spyOn(autoGenFooterModule, "autoGenFooter").mockReturnValue("\n\n---\nfooter");
     vi.spyOn(callLlmModule, "callLlm").mockResolvedValue("{}");
     vi.spyOn(saveFileModule, "saveFile").mockReturnValue("digests/2026-01-01/test.md");

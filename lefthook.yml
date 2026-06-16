@@ -25,7 +25,9 @@ pre-push:
   parallel: false
   commands:
     test:
-      run: bun test
+      run: bun test packages/cli packages/config packages/core packages/locales packages/providers mcp
+    test-web:
+      run: cd packages/web && bun run test
     validate-schema:
       run: >
         bun run validate:schema &&

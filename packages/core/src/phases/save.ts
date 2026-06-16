@@ -25,8 +25,12 @@ import { saveWeb } from "../save/web-report";
 import { getPrimaryLang, type Locale, t } from "../utils";
 
 const readReport = (dateStr: string, name: string): string | undefined => {
-  const p = path.join("digests", dateStr, name);
-  return fs.existsSync(p) ? fs.readFileSync(p, "utf-8") : undefined;
+  try {
+    const p = path.join("digests", dateStr, name);
+    return fs.existsSync(p) ? fs.readFileSync(p, "utf-8") : undefined;
+  } catch {
+    return undefined;
+  }
 };
 
 type Summaries = {

@@ -15,3 +15,6 @@ coverage/
 .vscode/skills/
 node-compile-cache/
 .context/
+packages/web/dist/
+packages/web/.vite/
+packages/web/node_modules/

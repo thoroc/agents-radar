@@ -28,11 +28,17 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
 
+      - name: Typecheck web
+        run: cd packages/web && bun run typecheck
+
+      - name: Test web
+        run: cd packages/web && bun run test
+
       - name: Validate locale files
         run: bun run validate:locales
 
       - name: Test
-        run: bun test
+        run: bun test packages/cli packages/config packages/core packages/locales packages/providers
 
       - name: AISlop quality gate
         run: bun run aislop:ci
