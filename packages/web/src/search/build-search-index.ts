@@ -1,6 +1,6 @@
 import type { ManifestEntry } from "../types";
 
-const BASE_URL = "https://raw.githubusercontent.com/thoroc/agents-radar/main/digests";
+const BASE_URL = "https://raw.githubusercontent.com/thoroc/agents-radar/main/assets/digests";
 
 export const buildSearchIndex = async (dates: ManifestEntry[]): Promise<Map<string, string>> => {
   const index = new Map<string, string>();

@@ -4,7 +4,7 @@ import Ajv from "ajv/dist/2020";
 import { getLocaleFiles } from "./get-files";
 
 export const validate = (repoRoot: string): boolean => {
-  const schemaPath = path.resolve(repoRoot, "locale-schema.json");
+  const schemaPath = path.resolve(repoRoot, "assets/locale-schema.json");
   const schema = JSON.parse(fs.readFileSync(schemaPath, "utf-8"));
 
   const ajv = new Ajv();

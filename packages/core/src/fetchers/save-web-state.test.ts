@@ -20,7 +20,7 @@ describe("saveWebState", () => {
 
   it("creates digests directory if needed", () => {
     saveWebState(testState);
-    expect(mockMkdirSync).toHaveBeenCalledWith(expect.stringContaining("digests"), {
+    expect(mockMkdirSync).toHaveBeenCalledWith(expect.stringContaining("assets/digests"), {
       recursive: true,
     });
   });

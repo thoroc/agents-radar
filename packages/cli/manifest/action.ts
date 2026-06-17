@@ -9,8 +9,8 @@ import { PAGES_URL_DEFAULT } from "@agents-radar/core/utils";
 import dotenvx from "@dotenvx/dotenvx";
 import { DateTime } from "luxon";
 
-const MANIFEST_PATH = "manifest.json";
-const FEED_PATH = "feed.xml";
+const MANIFEST_PATH = "assets/manifest.json";
+const FEED_PATH = "assets/feed.xml";
 
 export interface GenerateManifestActionArgs {
   verbosity: number;

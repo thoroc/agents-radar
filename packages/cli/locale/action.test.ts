@@ -22,8 +22,8 @@ describe("localeAction generate", () => {
 
       await localeAction({ generate: true }, { repoRoot: dir });
 
-      expect(fs.existsSync(path.resolve(dir, "locale-schema.json"))).toBe(true);
-      const schema = JSON.parse(fs.readFileSync(path.resolve(dir, "locale-schema.json"), "utf-8"));
+      expect(fs.existsSync(path.resolve(dir, "assets/locale-schema.json"))).toBe(true);
+      const schema = JSON.parse(fs.readFileSync(path.resolve(dir, "assets/locale-schema.json"), "utf-8"));
       expect(schema.$schema).toBe("https://json-schema.org/draft/2020-12/schema");
 
       const typePath = path.resolve(dir, "packages/locales/src/types/locale.ts");
@@ -43,7 +43,7 @@ describe("localeAction validate", () => {
     try {
       write(
         dir,
-        "locale-schema.json",
+        "assets/locale-schema.json",
         JSON.stringify({
           $schema: "https://json-schema.org/draft/2020-12/schema",
           type: "object",
@@ -64,7 +64,7 @@ describe("localeAction validate", () => {
     try {
       write(
         dir,
-        "locale-schema.json",
+        "assets/locale-schema.json",
         JSON.stringify({
           $schema: "https://json-schema.org/draft/2020-12/schema",
           type: "object",

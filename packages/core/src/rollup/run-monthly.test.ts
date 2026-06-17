@@ -28,7 +28,7 @@ describe("runMonthly", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(callLlmModule, "callLlm").mockResolvedValue("monthly summary content");
-    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("digests/2026-04-01/ai-monthly.md");
+    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("assets/digests/2026-04-01/ai-monthly.md");
     vi.spyOn(autoGenFooterModule, "autoGenFooter").mockReturnValue("\n\n---\nfooter");
     vi.spyOn(githubModule, "createGitHubIssue").mockResolvedValue("https://github.com/owner/repo/issues/1");
     vi.spyOn(utilsModule, "t").mockReturnValue({

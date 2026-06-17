@@ -15,7 +15,7 @@ import * as weekStrModule from "./week-str";
 describe("runWeekly", () => {
   beforeEach(() => {
     vi.spyOn(callLlmModule, "callLlm").mockResolvedValue("mocked summary");
-    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("digests/2026-03-09/report.md");
+    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("assets/digests/2026-03-09/report.md");
     vi.spyOn(autoGenFooterModule, "autoGenFooter").mockReturnValue("\n\n---\nfooter");
     vi.spyOn(githubModule, "createGitHubIssue").mockResolvedValue("https://github.com/owner/repo/issues/1");
     vi.spyOn(utilsModule, "t").mockReturnValue({

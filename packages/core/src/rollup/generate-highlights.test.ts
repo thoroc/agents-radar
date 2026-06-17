@@ -10,7 +10,7 @@ describe("generateHighlights", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(callLlmModule, "callLlm").mockResolvedValue('{"key": "value"}');
-    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("digests/2026-03-09/highlights.json");
+    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("assets/digests/2026-03-09/highlights.json");
     vi.spyOn(promptsModule, "buildHighlightsPrompt").mockReturnValue("prompt" as never);
   });
 

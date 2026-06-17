@@ -4,7 +4,7 @@ import type { FetcherDeps } from "./types";
 
 export const fetchManifest = async (deps?: FetcherDeps): Promise<Manifest> => {
   const base = resolveUrl(deps);
-  const res = await fetch(`${base}/manifest.json`, {
+  const res = await fetch(`${base}/assets/manifest.json`, {
     cf: { cacheTtl: 300 },
   } as RequestInit);
   if (!res.ok) throw new Error(`Failed to fetch manifest: HTTP ${res.status}`);

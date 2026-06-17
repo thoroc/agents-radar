@@ -91,7 +91,7 @@ describe("generateHighlights", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(callLlmModule, "callLlm").mockResolvedValue('{"ai-cli":["test highlight"]}');
-    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("digests/2026-03-09/highlights.json");
+    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("assets/digests/2026-03-09/highlights.json");
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
   });
   afterEach(() => {

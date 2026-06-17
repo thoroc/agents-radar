@@ -26,7 +26,7 @@ import { getPrimaryLang, type Locale, t } from "../utils";
 
 const readReport = (dateStr: string, name: string): string | undefined => {
   try {
-    const p = path.join("digests", dateStr, name);
+    const p = path.join("assets", "digests", dateStr, name);
     return fs.existsSync(p) ? fs.readFileSync(p, "utf-8") : undefined;
   } catch {
     return undefined;

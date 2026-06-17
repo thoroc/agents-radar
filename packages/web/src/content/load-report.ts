@@ -1,7 +1,7 @@
 import { renderMarkdown } from "../markdown";
 import { setContent } from "./set-content";
 
-const BASE_URL = "https://raw.githubusercontent.com/thoroc/agents-radar/main/digests";
+const BASE_URL = "https://raw.githubusercontent.com/thoroc/agents-radar/main/assets/digests";
 
 export const loadReport = async (
   date: string,

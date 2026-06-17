@@ -3,7 +3,7 @@ import { DIGESTS_DIR, MAX_CHARS_PER_REPORT, ROLLUP_SOURCES } from "./constants";
 
 describe("rollupConstants", () => {
   it("has expected DIGESTS_DIR", () => {
-    expect(DIGESTS_DIR).toBe("digests");
+    expect(DIGESTS_DIR).toBe("assets/digests");
   });
 
   it("has expected ROLLUP_SOURCES", () => {

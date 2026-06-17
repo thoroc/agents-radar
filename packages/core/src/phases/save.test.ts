@@ -58,7 +58,7 @@ describe("savePhase", () => {
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
     vi.spyOn(autoGenFooterModule, "autoGenFooter").mockReturnValue("\n\n---\nfooter");
     vi.spyOn(callLlmModule, "callLlm").mockResolvedValue("{}");
-    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("digests/2026-01-01/test.md");
+    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("assets/digests/2026-01-01/test.md");
     vi.spyOn(buildCliContentModule, "buildCliContent").mockReturnValue("# CLI Report");
     vi.spyOn(buildOpenclawContentModule, "buildOpenclawContent").mockReturnValue("# OpenClaw Report");
     vi.spyOn(saveWebModule, "saveWeb").mockResolvedValue(undefined);
@@ -68,7 +68,7 @@ describe("savePhase", () => {
     vi.spyOn(saveHuggingFaceReportModule, "saveHuggingFaceReport").mockResolvedValue(undefined);
     vi.spyOn(saveCommunityModule, "saveCommunity").mockResolvedValue(undefined);
     vi.spyOn(githubModule, "createGitHubIssue").mockResolvedValue("https://github.com/owner/repo/issues/1");
-    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("digests/2026-01-01/test.md");
+    vi.spyOn(saveFileModule, "saveFile").mockReturnValue("assets/digests/2026-01-01/test.md");
   });
 
   afterEach(() => {
