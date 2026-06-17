@@ -5,7 +5,8 @@ import { LocaleFileSchema } from "./schema";
 
 export const generate = (repoRoot: string): void => {
   const schema = LocaleFileSchema.toJSONSchema();
-  const schemaPath = path.resolve(repoRoot, "locale-schema.json");
+  const schemaPath = path.resolve(repoRoot, "assets/locale-schema.json");
+  fs.mkdirSync(path.dirname(schemaPath), { recursive: true });
   fs.writeFileSync(schemaPath, `${JSON.stringify(schema, null, 2)}\n`);
   console.error(`Generated ${schemaPath}`);
 

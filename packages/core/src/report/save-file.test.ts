@@ -12,14 +12,18 @@ describe("saveFile", () => {
   });
   it("returns the expected file path", () => {
     const result = saveFile("content", "2026-03-09", "ai-cli.md");
-    expect(result).toBe("digests/2026-03-09/ai-cli.md");
+    expect(result).toBe("assets/digests/2026-03-09/ai-cli.md");
   });
   it("creates parent directories recursively", () => {
     saveFile("content", "2026-03-09", "ai-cli.md");
-    expect(fs.mkdirSync).toHaveBeenCalledWith("digests/2026-03-09", { recursive: true });
+    expect(fs.mkdirSync).toHaveBeenCalledWith("assets/digests/2026-03-09", { recursive: true });
   });
   it("writes content as utf-8", () => {
     saveFile("hello world", "2026-03-09", "test.md");
-    expect(fs.writeFileSync).toHaveBeenCalledWith("digests/2026-03-09/test.md", "hello world", "utf-8");
+    expect(fs.writeFileSync).toHaveBeenCalledWith(
+      "assets/digests/2026-03-09/test.md",
+      "hello world",
+      "utf-8",
+    );
   });
 });

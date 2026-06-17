@@ -28,7 +28,7 @@ describe("getReportContent", () => {
 
     expect(result.summary).toContain("Hello");
     expect(result.fullHtml).toContain("<h1>Hello</h1>");
-    expect(fs.readFileSync).toHaveBeenCalledWith("digests/2026-01-01/ai-cli.md", "utf-8");
+    expect(fs.readFileSync).toHaveBeenCalledWith("assets/digests/2026-01-01/ai-cli.md", "utf-8");
   });
 
   it("truncates summary when content exceeds 500 chars", async () => {

@@ -3,7 +3,7 @@ import path from "node:path";
 import { emptyState } from "./empty-state";
 import type { WebState } from "./web-state-types";
 
-const STATE_FILE = path.join("digests", "web-state.json");
+const STATE_FILE = path.join("assets", "digests", "web-state.json");
 
 export const loadWebState = (): WebState => {
   try {

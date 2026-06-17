@@ -14,8 +14,8 @@ export const boot = async (): Promise<void> => {
   if (mobToggle && sidebar) mobToggle.onclick = () => sidebar.classList.toggle("open");
 
   try {
-    const res = await fetch("./manifest.json");
-    if (!res.ok) throw new Error("manifest.json not found");
+    const res = await fetch("./assets/manifest.json");
+    if (!res.ok) throw new Error("assets/manifest.json not found");
     const data = (await res.json()) as ManifestData;
     if (!data.dates?.length) throw new Error("manifest is empty");
 

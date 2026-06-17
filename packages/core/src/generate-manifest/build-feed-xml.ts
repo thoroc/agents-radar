@@ -45,7 +45,7 @@ export const buildFeedXml = async (entries: DateEntry[], siteUrl: string): Promi
     `    <link>${siteUrl}</link>\n` +
     `    <description>AI 开源生态每日简报 · Daily AI ecosystem digest</description>\n` +
     `    <language>zh-CN</language>\n` +
-    `    <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>\n` +
+    `    <atom:link href="${siteUrl}/assets/feed.xml" rel="self" type="application/rss+xml"/>\n` +
     `    <lastBuildDate>${buildDate}</lastBuildDate>\n` +
     itemXmlChunks.join("\n") +
     `\n  </channel>\n` +

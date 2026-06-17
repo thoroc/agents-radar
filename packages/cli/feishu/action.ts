@@ -25,8 +25,8 @@ export const feishuAction = async (
     return;
   }
 
-  if (!fs.existsSync("manifest.json")) {
-    console.error("[feishu] manifest.json not found — skipping.");
+  if (!fs.existsSync("assets/manifest.json")) {
+    console.error("[feishu] assets/manifest.json not found — skipping.");
     return;
   }
 
@@ -34,7 +34,7 @@ export const feishuAction = async (
   const enabledLangs = getEnabledLangs(configLangs, env);
   const primaryLang: Locale = (defaultPrimaryLanguage ?? "en-US") as Locale;
 
-  const { dates } = JSON.parse(fs.readFileSync("manifest.json", "utf-8")) as {
+  const { dates } = JSON.parse(fs.readFileSync("assets/manifest.json", "utf-8")) as {
     dates: { date: string; reports: string[] }[];
   };
 
@@ -50,7 +50,7 @@ export const feishuAction = async (
   }
 
   let highlights: Highlights | null = null;
-  const highlightsPath = path.join("digests", date, "highlights.json");
+  const highlightsPath = path.join("assets", "digests", date, "highlights.json");
   if (fs.existsSync(highlightsPath)) {
     try {
       highlights = JSON.parse(fs.readFileSync(highlightsPath, "utf-8")) as Highlights;

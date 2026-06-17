@@ -35,7 +35,7 @@ jobs:
           VITE_BASE_PATH: /${{ github.event.repository.name }}/
 
       - name: Copy manifest and feed into dist
-        run: cp manifest.json feed.xml packages/web/dist/
+        run: mkdir -p packages/web/dist/assets && cp assets/manifest.json assets/feed.xml packages/web/dist/assets/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

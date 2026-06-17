@@ -35,7 +35,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add digests/
+          git add assets/digests/
           if git diff --cached --quiet; then
             echo "No weekly report to commit"
           else
@@ -52,7 +52,7 @@ jobs:
 
       - name: Commit manifest and feed
         run: |
-          git add manifest.json feed.xml
+          git add assets/manifest.json assets/feed.xml
           if ! git diff --cached --quiet; then
             git commit -m "chore: update manifest.json"
             git pull --rebase
