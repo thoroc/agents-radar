@@ -2,9 +2,7 @@
 
 ## Idiomas suportados
 
-🇬🇧 Inglês · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonésia · 🇺🇦 Українська · 🇧🇩 বাংলা
-
-Inglês | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Alemão](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polês](./README.pl-PL.md) | [Italiano](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Português](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Espanhol](./README.es-ES.md) | [Bahasa Indonésia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Holanda](./README.nl-NL.md) | [Japonês](./README.ja-JP.md)
+🇬🇧 Inglês | [🇺🇦 Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Russo](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Alemão](./README.de-DE.md) | [🇹🇷 Turco](./README.tr-TR.md) | [🇹🇭 Tailandês](./README.th-TH.md) | [🇵🇱 Polonês](./README.pl-PL.md) | [🇮🇹 Italiano](./README.it-IT.md) | [🇫🇷 Francês](./README.fr-FR.md) | [🇨🇳 Chinês](./README.zh-CN.md) | [🇧🇷 Português](./README.pt-BR.md) | [🇻🇳 Vietnamita](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 Bahasa Indonésia](./README.id-ID.md) | [🇷🇴 Română](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱 Holanda](./README.nl-NL.md) | [🇯🇵 Japonês](./README.ja-JP.md)
 
 Para habilitar idiomas adicionais para a geração de relatórios, consulte [Suporte a vários idiomas](./docs/setup.md#multi-language-support).
 
@@ -15,11 +13,10 @@ Um fluxo de trabalho do GitHub Actions que é executado todas as manhãs às 8h 
 | Fonte | Tipo | Dados |
 
 |--------|------|------|
-| [Repositórios do GitHub](https://github.com) | API | Issues, PRs e releases de mais de 17 repositórios de ferramentas de IA monitorados |
+| [Repositórios do GitHub](https://github.com) | API | Issues, PRs, releases de mais de 17 repositórios de ferramentas de IA monitorados |
 
-| [Habilidades do Claude Code](https://github.com/anthropics/skills) | API | Habilidades em alta classificadas por engajamento da comunidade |
-
-| [Tendências do GitHub](https://github.com/trending) | HTML + API | Repositórios em alta diariamente + busca por tópicos de IA (janela de 7 dias) |
+| [Claude Code Skills](https://github.com/anthropics/skills) | API | Habilidades em alta classificadas por engajamento da comunidade |
+| [GitHub Trending](https://github.com/trending) | HTML + API | Repositórios em alta diariamente + busca por tópicos de IA (janela de 7 dias) |
 | [Hacker News](https://news.ycombinator.com) | [API da Algolia](https://hn.algolia.com/api) | 30 principais notícias de IA das últimas 24 horas, 6 consultas paralelas |
 | [Product Hunt](https://www.producthunt.com) | API GraphQL | Principais produtos de IA de ontem por votos |
 | [ArXiv](https://arxiv.org) | [API do ArXiv](https://export.arxiv.org/api/query) | Artigos mais recentes de cs.AI, cs.CL, cs.LG (últimas 48 horas) |
@@ -129,7 +126,7 @@ Ou adicione-o manualmente ao arquivo `~/.openclaw/openclaw.json`:
   }
 }
 ```
-Você pode então consultar o OpenClaw para perguntas como:
+Você pode então consultar o OpenClaw para obter informações como:
 
 - *"Quais são as ferramentas de linha de comando de IA mais recentes?"* → chama `get_latest`
 - *"Buscar menções a Claude Code esta semana"* → chama `search`

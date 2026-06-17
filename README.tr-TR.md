@@ -2,13 +2,11 @@
 
 ## Desteklenen diller
 
-🇬🇧 İngilizce · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Almanca · 🇮🇹 İtalyan · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Hollanda · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Endonezya · 🇺🇦 Українська · 🇧🇩 বাংলা
+🇬🇧 İngilizce | [🇺🇦 Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Almanca](./README.de-DE.md) | [🇹🇷 Türkçe](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱 Polski](./README.pl-PL.md) | [🇮🇹 İtalyanca](./README.it-IT.md) | [🇫🇷 Fransızca](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷Portekizce](./README.pt-BR.md) | [🇻🇳 Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 Bahasa Endonezya](./README.id-ID.md) | [🇷🇴 Roma](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱 Hollanda](./README.nl-NL.md) | [🇯🇵 Japonca](./README.ja-JP.md)
 
-İngilizce | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Almanca](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [İtalyanca](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Portekizce](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
+Rapor oluşturma için ek dilleri etkinleştirmek için [Çoklu dil desteği](./docs/setup.md#multi-language-support) bölümüne bakın.
 
-Rapor oluşturma için ek dilleri etkinleştirmek için [Çok dilli destek](./docs/setup.md#multi-language-support) bölümüne bakın.
-
-Her sabah 08:00 CST'de çalışan bir GitHub Actions iş akışı. Yapay zeka ekosistemine ait sinyalleri 10 veri kaynağından toplar ve ardından günlük özetleri (yapılandırılmış tüm dillerde) GitHub Sorunları ve taahhüt edilmiş Markdown dosyaları olarak yayınlar. Haftalık ve aylık özet raporlar da otomatik olarak oluşturulur.
+Her sabah 08:00 CST'de çalışan bir GitHub Actions iş akışı. 10 veri kaynağından yapay zeka ekosistemi sinyallerini toplar ve ardından günlük özetleri (yapılandırılmış tüm dillerde) GitHub Sorunları ve taahhüt edilmiş Markdown dosyaları olarak yayınlar. Haftalık ve aylık özet raporlar da otomatik olarak oluşturulur.
 
 ## Veri Kaynakları
 
@@ -16,21 +14,21 @@ Her sabah 08:00 CST'de çalışan bir GitHub Actions iş akışı. Yapay zeka ek
 
 |--------|------|------|
 
-| [GitHub Depoları](https://github.com) | API | 17'den fazla takip edilen yapay zeka aracı deposundan sorunlar, çekme istekleri ve sürümler |
+| [GitHub Depoları](https://github.com) | API | 17'den fazla takip edilen yapay zeka aracı deposundan sorunlar, PR'lar, sürümler |
 
 | [Claude Kod Becerileri](https://github.com/anthropics/skills) | API | Topluluk etkileşimine göre sıralanmış trend beceriler |
 
-| [GitHub Trendleri](https://github.com/trending) | HTML + API | Günlük trend depolar + yapay zeka konu araması (7 günlük pencere) |
+| [GitHub Trendleri](https://github.com/trending) | HTML + API | Günlük trend olan depolar + Yapay Zeka konu araması (7 günlük pencere) |
 
-| [Hacker Haberleri](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | Son 24 saatteki en iyi 30 yapay zeka haberi, 6 paralel sorgu |
+| [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | Son 24 saatteki en iyi 30 Yapay Zeka haberi, 6 paralel sorgu |
 
-| [Product Hunt](https://www.producthunt.com) | GraphQL API | Dün oylara göre en iyi yapay zeka ürünleri |
+| [Product Hunt](https://www.producthunt.com) | GraphQL API | Dün oylara göre en iyi Yapay Zeka ürünleri |
 
-| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | cs.AI, cs.CL, cs.LG'den en yeni makaleler (son 48 saat) |
+| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | cs.AI, cs.CL, cs.LG'den son makaleler (son 48 saat) |
 
 | [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | Haftalık beğenilere göre sıralanmış 30 trend model |
 
-| [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | 5 etiketten en iyi yapay zeka/LLM makaleleri |
+| [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | 5 etiketten en iyi AI/LLM makaleleri |
 
 | [Lobste.rs](https://lobste.rs) | JSON API | Son 7 günün AI/ML etiketli haberleri |
 
@@ -40,7 +38,7 @@ Her sabah 08:00 CST'de çalışan bir GitHub Actions iş akışı. Yapay zeka ek
 
 **`PAGES_URL`** — Çatalınız için Web Arayüzü temel URL'sini yapılandırmak üzere bunu bir depo değişkeni olarak ayarlayın.
 
-Tüm geçmiş özetleri temiz, koyu temalı bir arayüzde inceleyin — oturum açmaya gerek yok. Raporlar, bu depodaki Markdown dosyalarından GitHub Pages aracılığıyla oluşturulur.
+Tüm geçmiş özetleri temiz, koyu temalı bir arayüzde inceleyin — oturum açmanıza gerek yok. Raporlar, bu depodaki Markdown dosyalarından GitHub Pages aracılığıyla oluşturulur.
 
 Web arayüzü, `packages/web/` dizininde bulunan bir Vite + TypeScript SPA'dır. Çalışma zamanında `manifest.json` ve bireysel özet dosyalarını getirir — yeni günlük özetler herhangi bir arayüz yeniden oluşturma işlemine gerek kalmadan görünür.
 

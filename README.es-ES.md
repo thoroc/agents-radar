@@ -2,13 +2,11 @@
 
 ## Idiomas admitidos
 
-🇬🇧 Inglés · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
+🇬🇧 Inglés | [🇺🇦 Ucraniano](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Alemán](./README.de-DE.md) | [🇹🇷 Türkçe](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱 Polski](./README.pl-PL.md) | [🇮🇹 Italiano](./README.it-IT.md) | [🇫🇷 Français](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷 Português](./README.pt-BR.md) | [🇻🇳 Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 Bahasa Indonesia](./README.id-ID.md) | [🇷🇴 Română](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱 Países Bajos](./README.nl-NL.md) | [🇯🇵 Japonés](./README.ja-JP.md)
 
-Inglés | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Turco](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italiano](./README.it-IT.md) | [Francés](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Portugués](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
+Para habilitar idiomas adicionales para la generación de informes, consulte [Soporte multilingüe](./docs/setup.md#multi-language-support).
 
-Para habilitar idiomas adicionales para la generación de informes, consulte [Compatibilidad con varios idiomas](./docs/setup.md#multi-language-support).
-
-Un flujo de trabajo de GitHub Actions que se ejecuta cada mañana a las 08:00 CST. Agrega señales del ecosistema de IA de 10 fuentes de datos y publica resúmenes diarios (en todos los idiomas configurados) como incidencias de GitHub y archivos Markdown confirmados. También se generan automáticamente informes acumulativos semanales y mensuales.
+Un flujo de trabajo de GitHub Actions que se ejecuta cada mañana a las 08:00 CST. Agrega señales del ecosistema de IA de 10 fuentes de datos y luego publica resúmenes diarios (en todos los idiomas configurados) como incidencias de GitHub y archivos Markdown confirmados. También se generan automáticamente informes acumulativos semanales y mensuales.
 
 ## Fuentes de datos
 
@@ -16,11 +14,11 @@ Un flujo de trabajo de GitHub Actions que se ejecuta cada mañana a las 08:00 CS
 
 |--------|------|------|
 
-| [Repositorios de GitHub](https://github.com) | API | Incidencias, solicitudes de extracción y lanzamientos de más de 17 repositorios de herramientas de IA monitorizados |
+| [Repositorios de GitHub](https://github.com) | API | Incidencias, solicitudes de extracción y versiones de más de 17 repositorios de herramientas de IA |
 
-| [Habilidades de Claude Code](https://github.com/anthropics/skills) | API | Habilidades de tendencia ordenadas por participación de la comunidad |
+| [Habilidades de Claude Code](https://github.com/anthropics/skills) | API | Habilidades en tendencia ordenadas por participación de la comunidad |
 
-| [Tendencias de GitHub](https://github.com/trending) | HTML + API | Repositorios de tendencia diarios + búsqueda de temas de IA (ventana de 7 días) |
+| [GitHub Trending](https://github.com/trending) | HTML + API | Repositorios en tendencia diarios + búsqueda de temas de IA (ventana de 7 días) |
 
 | [Hacker News](https://news.ycombinator.com) | [API de Algolia](https://hn.algolia.com/api) | Las 30 noticias más importantes sobre IA de las últimas 24 horas, 6 consultas paralelas |
 
@@ -28,21 +26,19 @@ Un flujo de trabajo de GitHub Actions que se ejecuta cada mañana a las 08:00 CS
 
 | [ArXiv](https://arxiv.org) | [API de ArXiv](https://export.arxiv.org/api/query) | Últimos artículos de cs.AI, cs.CL, cs.LG (últimas 48 horas) |
 
-| [Hugging Face](https://huggingface.co) | [API de Hub](https://huggingface.co/api/models) | 30 modelos de tendencia ordenados por "me gusta" semanales |
+| [Hugging Face](https://huggingface.co) | [API de Hub](https://huggingface.co/api/models) | 30 modelos populares ordenados por "Me gusta" semanales |
 
-| [Dev.to](https://dev.to) | [API del foro](https://dev.to/api) | Artículos destacados de IA/LLM de 5 etiquetas |
+| [Dev.to](https://dev.to) | [API de Forem](https://dev.to/api) | Artículos destacados de IA/LLM de 5 etiquetas |
 
-| [Lobste.rs](https://lobste.rs) | API JSON | Artículos etiquetados con IA/ML de los últimos 7 días |
+| [Lobste.rs](https://lobste.rs) | API JSON | Noticias etiquetadas como IA/ML de los últimos 7 días |
 
 | [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Mapa del sitio | Nuevos artículos detectados mediante la comparación de `lastmod` |
 
 ## Interfaz web
 
-**`PAGES_URL`** — Establezca esta variable en el repositorio para configurar la URL base de la interfaz web para su bifurcación.
+**`PAGES_URL`** — Establece esta variable de repositorio para configurar la URL base de la interfaz web de tu bifurcación.
 
-Explore todos los resúmenes históricos en una interfaz limpia con tema oscuro; no se requiere iniciar sesión. Los informes se generan a partir de los archivos Markdown de este repositorio mediante GitHub Pages.
-
-La interfaz web es una SPA (Single Page Application) de Vite + TypeScript ubicada en `packages/web/`. Obtiene `manifest.json` y los archivos de resumen individuales en tiempo de ejecución; los nuevos resúmenes diarios aparecen sin necesidad de reconstruir la interfaz.
+Consulta todos los resúmenes históricos en una interfaz limpia y oscura; no se requiere iniciar sesión. Los informes se generan a partir de los archivos Markdown de este repositorio mediante GitHub Pages. La interfaz web es una aplicación de una sola página (SPA) de Vite + TypeScript ubicada en `packages/web/`. Obtiene `manifest.json` y los archivos de resumen individuales en tiempo de ejecución; los nuevos resúmenes diarios aparecen sin necesidad de reconstruir la interfaz.
 
 ```bash
 bun run dev:web    # start Vite dev server for local UI development

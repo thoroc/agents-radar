@@ -2,13 +2,11 @@
 
 ## समर्थित भाषाएँ
 
-🇬🇧 अंग्रेजी · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 पुर्तगाली · 🇫🇷 फ़्रांसीसी · 🇩🇪 जर्मन · 🇮🇹 इटालियनो · 🇵🇱 पोल्स्की · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 तुर्कसे · 🇻🇳 तिआंग वियत · 🇹🇭 ไทย · 🇳🇱 नीदरलैंड्स · 🇮🇳 हिन्दी · 🇷🇴 रोमाना · 🇮🇩 बहासा इंडोनेशिया · 🇺🇦 Українська · 🇧🇩 বাংলা
+🇬🇧 अंग्रेजी | [🇺🇦 Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Deutsch](./README.de-DE.md) | [🇹🇷 तुर्कसे](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱 पोल्स्की](./README.pl-PL.md) | [🇮🇹 इटालियनो](./README.it-IT.md) | [🇫🇷Français](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷 पुर्तगाली](./README.pt-BR.md) | [🇻🇳 Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 बहासा इंडोनेशिया](./README.id-ID.md) | [🇷🇴 रोमाना](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱 नीदरलैंड्स](./README.nl-NL.md) | [🇯🇵 日本語](./README.ja-JP.md)
 
-अंग्रेजी | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [तुर्की](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [पोल्स्की](./README.pl-PL.md) | [इतालवी](./README.it-IT.md) | [फ़्रांसीसी](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [पुर्तगाली](./README.pt-BR.md) | [वियतनामी](./README.vi-VN.md) | [बांग्ला](./README.bn-BD.md) | [स्पेनिश](./README.es-ES.md) | [इंडोनेशियाई](./README.id-ID.md) | [रोमानियाई](./README.ro-RO.md) | [कोरियाई](./README.ko-KR.md) | [डच](./README.nl-NL.md) | [जापानी](./README.ja-JP.md)
+रिपोर्ट जनरेशन के लिए अतिरिक्त भाषाओं को सक्षम करने हेतु, [बहु-भाषा समर्थन](./docs/setup.md#multi-language-support) देखें।
 
-रिपोर्ट तैयार करने के लिए अतिरिक्त भाषाओं को सक्षम करने हेतु, [बहु-भाषा समर्थन](./docs/setup.md#multi-language-support) देखें।
-
-यह GitHub Actions वर्कफ़्लो हर सुबह 8:00 CST पर चलता है। यह 10 डेटा स्रोतों से AI इकोसिस्टम सिग्नल एकत्रित करता है और फिर GitHub Issues और कमिटेड Markdown फ़ाइलों के रूप में दैनिक सारांश (सभी कॉन्फ़िगर की गई भाषाओं में) प्रकाशित करता है। साप्ताहिक और मासिक रोलअप रिपोर्ट भी स्वचालित रूप से तैयार की जाती हैं।
+यह GitHub Actions वर्कफ़्लो हर सुबह 8:00 CST पर चलता है। यह 10 डेटा स्रोतों से AI इकोसिस्टम सिग्नल एकत्रित करता है और फिर दैनिक सारांश (सभी कॉन्फ़िगर की गई भाषाओं में) GitHub Issues और कमिटेड Markdown फ़ाइलों के रूप में प्रकाशित करता है। साप्ताहिक और मासिक रोलअप रिपोर्ट भी स्वचालित रूप से जेनरेट होती हैं।
 
 ## डेटा स्रोत
 
@@ -16,34 +14,29 @@
 
 |--------|------|------|
 
-| [GitHub रिपॉज़िटरी](https://github.com) | API | 17+ ट्रैक किए गए AI टूल रिपॉज़िटरी से इश्यू, PR, रिलीज़ |
+| [GitHub रिपॉज़िटरी](https://github.com) | API | 17+ ट्रैक किए गए AI टूल रिपॉज़िटरी से Issues, PRs, रिलीज़ |
 
-| [Claude Code Skills](https://github.com/anthropics/skills) | API | सामुदायिक सहभागिता के आधार पर क्रमबद्ध ट्रेंडिंग कौशल |
-
-| [GitHub ट्रेंडिंग](https://github.com/trending) | HTML + API | दैनिक ट्रेंडिंग रिपॉज़िटरी + AI विषय खोज (7-दिवसीय विंडो) |
-
+| [क्लाउड कोड स्किल्स](https://github.com/anthropics/skills) | एपीआई | सामुदायिक सहभागिता के आधार पर क्रमबद्ध ट्रेंडिंग स्किल्स |
+| [गिटहब ट्रेंडिंग](https://github.com/trending) | HTML + एपीआई | दैनिक ट्रेंडिंग रिपॉजिटरी + एआई विषय खोज (7-दिवसीय विंडो) |
 | [हैकर न्यूज़](https://news.ycombinator.com) | [अल्गोलिया एपीआई](https://hn.algolia.com/api) | पिछले 24 घंटों की शीर्ष 30 एआई कहानियां, 6 समानांतर क्वेरी |
-
 | [प्रोडक्ट हंट](https://www.producthunt.com) | ग्राफक्यूएल एपीआई | वोटों के आधार पर कल के शीर्ष एआई उत्पाद |
-
 | [आर्काइव](https://arxiv.org) | [आर्काइव एपीआई](https://export.arxiv.org/api/query) | cs.AI, cs.CL, cs.LG के नवीनतम शोध पत्र (पिछले 48 घंटे) |
 
-| [हगिंग फेस](https://huggingface.co) | [हब एपीआई](https://huggingface.co/api/models) | साप्ताहिक पसंद के आधार पर क्रमबद्ध 30 ट्रेंडिंग मॉडल |
+| [हगिंग फेस](https://huggingface.co) | [हब एपीआई](https://huggingface.co/api/models) | साप्ताहिक लाइक्स के आधार पर क्रमबद्ध 30 ट्रेंडिंग मॉडल |
 
-| [Dev.to](https://dev.to) | [फोरम एपीआई](https://dev.to/api) | 5 टैग से शीर्ष एआई/एलएलएम लेख |
+| [Dev.to](https://dev.to) | [फोरम एपीआई](https://dev.to/api) | 5 टैग से शीर्ष AI/LLM लेख |
 
-[लोब्स्टे.आरएस](https://lobste.rs) | JSON एपीआई | पिछले 7 दिनों की एआई/एमएल टैग वाली कहानियां |
+| [Lobste.rs](https://lobste.rs) | JSON एपीआई | पिछले 7 दिनों की AI/ML टैग वाली कहानियां |
 
-[एंथ्रोपिक](https://anthropic.com) + [ओपनएआई](https://openai.com) | साइटमैप | `lastmod` अंतर के माध्यम से पता लगाए गए नए लेख |
+| [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | साइटमैप | `lastmod` अंतर के माध्यम से पता लगाए गए नए लेख |
 
-## वेब यूआई
+## वेब UI
 
-**`PAGES_URL`** — अपने फोर्क के लिए वेब यूआई बेस यूआरएल को कॉन्फ़िगर करने के लिए इसे रिपॉजिटरी वेरिएबल के रूप में सेट करें।
+**`PAGES_URL`** — अपने फोर्क के लिए वेब UI बेस URL को कॉन्फ़िगर करने के लिए इसे रिपॉजिटरी वेरिएबल के रूप में सेट करें।
 
-एक साफ, डार्क-थीम वाले इंटरफ़ेस में सभी ऐतिहासिक डाइजेस्ट ब्राउज़ करें — लॉगिन की आवश्यकता नहीं है। रिपोर्ट इस रिपॉजिटरी में मौजूद मार्कडाउन फ़ाइलों से GitHub Pages के माध्यम से प्रदर्शित की जाती हैं।
+एक साफ, डार्क-थीम वाले इंटरफ़ेस में सभी ऐतिहासिक डाइजेस्ट ब्राउज़ करें — लॉगिन की आवश्यकता नहीं है। इस रिपॉजिटरी में मौजूद मार्कडाउन फ़ाइलों से रिपोर्ट GitHub Pages के ज़रिए प्रदर्शित की जाती हैं।
 
-वेब यूआई `packages/web/` में स्थित एक Vite + TypeScript SPA है। यह रनटाइम पर `manifest.json` और व्यक्तिगत डाइजेस्ट फ़ाइलें प्राप्त करता है — नए दैनिक डाइजेस्ट बिना किसी यूआई पुनर्निर्माण के दिखाई देते हैं।
-
+वेब यूआई एक Vite + TypeScript SPA है जो `packages/web/` में स्थित है। यह रनटाइम पर `manifest.json` और अलग-अलग डाइजेस्ट फ़ाइलें प्राप्त करता है — नए दैनिक डाइजेस्ट बिना किसी यूआई पुनर्निर्माण के दिखाई देते हैं।
 
 ```bash
 bun run dev:web    # start Vite dev server for local UI development
@@ -186,7 +179,6 @@ wrangler deploy
 योगदान का स्वागत है। शाखा रणनीति, कोडिंग मानक, कमिट कन्वेंशन और नई भाषाओं या रिपोर्ट प्रकारों को जोड़ने के निर्देशों के लिए [CONTRIBUTING.md](./CONTRIBUTING.md) देखें।
 
 
-## स्टार इतिहास
+## स्टार हिस्ट्री
 
-[![स्टार इतिहास चार्ट](https://api.star-history.com/svg?repos=duanyytop/agents-radar&type=Date)](https://star-history.com/#duanyytop/agents-radar&Date)
-
+[![स्टार हिस्ट्री चार्ट](https://api.star-history.com/svg?repos=duanyytop/agents-radar&type=Date)](https://star-history.com/#duanyytop/agents-radar&Date)

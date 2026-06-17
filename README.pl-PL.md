@@ -2,36 +2,34 @@
 
 ## Obsługiwane języki
 
-🇬🇧 angielski · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
-
-Angielski | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [włoski](./README.it-IT.md) | [Francja](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Portugalski](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
+🇬🇧 angielski | [🇺🇦 Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Deutsch](./README.de-DE.md) | [🇹🇷 Türkçe](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱 Polski](./README.pl-PL.md) | [🇮🇹 Italiano](./README.it-IT.md) | [🇫🇷 Français](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷 Português](./README.pt-BR.md) | [🇻🇳 Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 Bahasa Indonesia](./README.id-ID.md) | [🇷🇴 Română](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱 Nederlands](./README.nl-NL.md) | [🇯🇵 日本語](./README.ja-JP.md)
 
 Aby włączyć dodatkowe języki do generowania raportów, zobacz [Obsługa wielu języków](./docs/setup.md#multi-language-support).
 
-Przepływ pracy GitHub Actions, który działa każdego ranka o 8:00 CST. Agreguje sygnały ekosystemu AI z 10 źródeł danych, a następnie publikuje codzienne podsumowania (we wszystkich skonfigurowanych językach) jako zgłoszenia GitHub i zatwierdzone pliki Markdown. Tygodniowe i miesięczne raporty zbiorcze są również generowane automatycznie.
+Przepływ pracy GitHub Actions, który jest uruchamiany każdego ranka o 08:00 CST. Agreguje sygnały ekosystemu AI z 10 źródeł danych, a następnie publikuje dzienne podsumowania (we wszystkich skonfigurowanych językach) jako zgłoszenia GitHub i zatwierdzone pliki Markdown. Tygodniowe i miesięczne raporty zbiorcze są również generowane automatycznie.
 
 ## Źródła danych
 
 | Źródło | Typ | Dane |
 |--------|------|------|
 | [Repozytoria GitHub](https://github.com) | API | Zgłoszenia, PR, wydania z ponad 17 śledzonych repozytoriów narzędzi AI |
-| [Umiejętności Claude Code](https://github.com/anthropics/skills) | API | Popularne umiejętności posortowane według zaangażowania społeczności |
-| [Trendy GitHub](https://github.com/trending) | HTML + API | Codzienne repozytoria trendów + wyszukiwanie tematów związanych ze sztuczną inteligencją (okno 7-dniowe) |
-| [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | 30 najpopularniejszych artykułów o sztucznej inteligencji z ostatnich 24 godzin, 6 równoległych zapytań |
-| [Product Hunt](https://www.producthunt.com) | GraphQL API | Wczorajsze najpopularniejsze produkty AI według głosów |
-| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | Najnowsze artykuły z cs.AI, cs.CL, cs.LG (ostatnie 48 godzin) |
-| [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 najpopularniejszych modeli posortowanych według tygodniowych polubień |
+| [Umiejętności Claude'a w zakresie kodowania](https://github.com/anthropics/skills) | API | Popularne umiejętności posortowane według zaangażowania społeczności |
+| [Trendy w GitHubie](https://github.com/trending) | HTML + API | Codzienne repozytoria trendów + wyszukiwanie tematów AI (okno 7-dniowe) |
+| [Hacker News](https://news.ycombinator.com) | [API Algolia](https://hn.algolia.com/api) | 30 najważniejszych artykułów o AI z ostatnich 24 godzin, 6 równoległych zapytań |
+| [Product Hunt](https://www.producthunt.com) | API GraphQL | Wczorajsze najlepsze produkty AI według głosów |
+| [ArXiv](https://arxiv.org) | [API ArXiv](https://export.arxiv.org/api/query) | Najnowsze artykuły z cs.AI, cs.CL, cs.LG (ostatnie 48 godz.) |
+| [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 popularnych modeli posortowanych według tygodniowych polubień |
 | [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | Najlepsze artykuły z zakresu AI/LLM z 5 tagów |
 | [Lobste.rs](https://lobste.rs) | JSON API | Artykuły oznaczone tagami AI/ML z ostatnich 7 dni |
-| [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Mapa witryny | Nowe artykuły wykryte za pomocą `lastmod` diff |
+| [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Mapa witryny | Nowe artykuły wykryte przez `lastmod` diff |
 
-## Interfejs użytkownika (UI)
+## Interfejs użytkownika
 
-**`PAGES_URL`** — Ustaw tę zmienną repozytorium, aby skonfigurować podstawowy adres URL interfejsu użytkownika (UI) dla swojego forka.
+**`PAGES_URL`** — Ustaw tę zmienną repozytorium, aby skonfigurować podstawowy adres URL interfejsu użytkownika dla forka.
 
 Przeglądaj wszystkie historyczne streszczenia w przejrzystym, ciemnym interfejsie — logowanie nie jest wymagane. Raporty są renderowane z plików Markdown w tym repozytorium za pośrednictwem GitHub Pages.
 
-Interfejs użytkownika (UI) to aplikacja SPA Vite + TypeScript w `packages/web/`. Pobiera plik `manifest.json` i pojedyncze pliki streszczenia w czasie wykonywania — nowe codzienne streszczenia pojawiają się bez konieczności przebudowy interfejsu użytkownika.
+Interfejs użytkownika to aplikacja SPA oparta na Vite i TypeScript w `packages/web/`. Pobiera `manifest.json` i poszczególne pliki streszczenia w czasie wykonywania — nowe codzienne streszczenia pojawiają się bez konieczności przebudowy interfejsu użytkownika.
 
 ```bash
 bun run dev:web    # start Vite dev server for local UI development

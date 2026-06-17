@@ -2,27 +2,25 @@
 
 ## Unterstützte Sprachen
 
-🇬🇧 Englisch · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
+🇬🇧 Englisch | [🇺🇦 Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Deutsch](./README.de-DE.md) | [🇹🇷 Türkçe](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱 Polski](./README.pl-PL.md) | [🇮🇹 Italiano](./README.it-IT.md) | [🇫🇷 Français](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷 Português](./README.pt-BR.md) | [🇻🇳 Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 Bahasa Indonesia](./README.id-ID.md) | [🇷🇴 Română](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱 Nederlands](./README.nl-NL.md) | [🇯🇵 Japanisch](./README.ja-JP.md)
 
-Englisch | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Russisch](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italienisch](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Português](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
+Informationen zur Aktivierung weiterer Sprachen für die Berichtserstellung finden Sie unter [Mehrsprachige Unterstützung](./docs/setup.md#multi-language-support).
 
-Informationen zur Aktivierung weiterer Sprachen für die Berichtserstellung finden Sie unter [Mehrsprachigkeitsunterstützung](./docs/setup.md#multi-language-support).
-
-Ein GitHub Actions-Workflow, der jeden Morgen um 8:00 Uhr CST ausgeführt wird. Er aggregiert Signale aus dem KI-Ökosystem von 10 Datenquellen und veröffentlicht anschließend tägliche Zusammenfassungen (in allen konfigurierten Sprachen) als GitHub-Issues und Commits in Markdown. Wöchentliche und monatliche Rollup-Berichte werden ebenfalls automatisch generiert.
+Ein GitHub Actions-Workflow, der täglich um 8:00 Uhr CST ausgeführt wird. Er aggregiert Signale des KI-Ökosystems aus 10 Datenquellen und veröffentlicht anschließend tägliche Zusammenfassungen (in allen konfigurierten Sprachen) als GitHub-Issues und Commits in Markdown. Wöchentliche und monatliche Rollup-Berichte werden ebenfalls automatisch generiert.
 
 ## Datenquellen
 
 | Quelle | Typ | Daten |
 
-|--------|------|------|
+--------|------|------|
 
-| [GitHub Repos](https://github.com) | API | Issues, Pull Requests und Releases aus über 17 verfolgten KI-Tool-Repos |
+[GitHub-Repos](https://github.com) | API | Issues, Pull Requests, Releases aus über 17 verfolgten KI-Tool-Repos |
 
-| [Claude Code Skills](https://github.com/anthropics/skills) | API | Trend-Skills, sortiert nach Community-Engagement |
+[Claude Code Skills](https://github.com/anthropics/skills) | API | Trendkompetenzen sortiert nach Community-Engagement |
 
-| [GitHub Trending](https://github.com/trending) | HTML + API | Täglich trendige Repos + KI-Themensuche (7-Tage-Fenster) |
+[GitHub Trending](https://github.com/trending) | HTML + API | Täglich trendige Repositories + KI-Themensuche (7-Tage-Fenster) |
 
-| [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | Top 30 KI-News der letzten 24 Stunden, 6 parallele Abfragen |
+[Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | Die 30 wichtigsten KI-News der letzten 24 Stunden, 6 parallele Abfragen |
 
 [Product Hunt](https://www.producthunt.com) | GraphQL API | Die beliebtesten KI-Produkte von gestern (nach Stimmen) |
 
@@ -30,20 +28,20 @@ Ein GitHub Actions-Workflow, der jeden Morgen um 8:00 Uhr CST ausgeführt wird. 
 
 [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 Trendmodelle, sortiert nach wöchentlichen Likes |
 
-[Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | Top-Artikel zu KI/LLM aus 5 Kategorien |
-| [Lobste.rs](https://lobste.rs) | JSON-API | KI/ML-getaggte Artikel der letzten 7 Tage |
+[Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | Top-Artikel zu KI/ML aus 5 Tags |
 
-| [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Sitemap | Neue Artikel werden über `lastmod`-Diff erkannt |
+[Lobste.rs](https://lobste.rs) | JSON API | Artikel zu KI/ML der letzten 7 Tage |
+
+[Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Sitemap | Neue Artikel werden über `lastmod`-Diff erkannt |
 
 ## Web-UI
 
 **`PAGES_URL`** – Legen Sie diese Variable im Repository fest, um die Basis-URL der Web-UI für Ihren Fork zu konfigurieren.
 
-Durchsuchen Sie alle historischen Digests in einer übersichtlichen, dunklen Oberfläche – keine Anmeldung erforderlich. Die Berichte werden aus den Markdown-Dateien dieses Repos über GitHub Pages gerendert.
+Durchsuchen Sie alle historischen Digests in einer übersichtlichen, dunklen Oberfläche – keine Anmeldung erforderlich. Die Berichte werden aus den Markdown-Dateien dieses Repos über GitHub Pages generiert.
 
-Die Web-UI ist eine Vite- und TypeScript-SPA im Verzeichnis `packages/web/`. Sie lädt die `manifest.json` und die einzelnen Digest-Dateien zur Laufzeit – neue tägliche Digests werden ohne Neuaufbau der UI angezeigt.
-
-```bash
+Die Web-Oberfläche ist eine Vite-basierte Single-Page-Anwendung (SPA) mit TypeScript im Verzeichnis `packages/web/`. Sie lädt die `manifest.json`-Datei und die einzelnen Digest-Dateien zur Laufzeit – neue tägliche Digests werden ohne Neuaufbau der Benutzeroberfläche angezeigt.
+...```bash
 bun run dev:web    # start Vite dev server for local UI development
 bun run build:web  # build the web UI for deployment
 ```

@@ -2,9 +2,7 @@
 
 ## Ondersteunde talen
 
-🇬🇧 Engels · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
-
-Engels | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italiaans](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Português](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesië](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [Japans](./README.ja-JP.md)
+🇬🇧 Engels | [🇺🇦 Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Deutsch](./README.de-DE.md) | [🇹🇷 Türkçe](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱 Polski](./README.pl-PL.md) | [🇮🇹 Italiano](./README.it-IT.md) | [🇫🇷 Français](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷 Português](./README.pt-BR.md) | [🇻🇳 Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 Bahasa Indonesië](./README.id-ID.md) | [🇷🇴 Română](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱 English](./README.nl-NL.md) | [🇯🇵 Japans](./README.ja-JP.md)
 
 Zie [Ondersteuning voor meerdere talen](./docs/setup.md#multi-language-support) voor meer informatie over het inschakelen van extra talen voor het genereren van rapporten.
 
@@ -14,21 +12,25 @@ Een GitHub Actions-workflow die elke ochtend om 08:00 CST wordt uitgevoerd. Deze
 
 | Bron | Type | Gegevens |
 
-| ... Populaire vaardigheden gesorteerd op betrokkenheid van de community |
+|--------|------|------|
 
-| [GitHub Trending](https://github.com/trending) | HTML + API | Dagelijkse trending repositories + zoekopdracht naar AI-onderwerpen (venster van 7 dagen) |
+| [GitHub-repositories](https://github.com) | API | Issues, pull requests, releases van meer dan 17 gevolgde AI-toolrepositories |
+
+| [Claude Code Skills](https://github.com/anthropics/skills) | API | Trending skills gesorteerd op community engagement |
+
+| [GitHub Trending](https://github.com/trending) | HTML + API | Dagelijks trending repositories + AI-onderwerp zoeken (venster van 7 dagen) |
 
 | [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | Top 30 AI-verhalen van de afgelopen 24 uur, 6 parallelle zoekopdrachten |
 
 | [Product Hunt](https://www.producthunt.com) | GraphQL API | De beste AI-producten van gisteren op basis van stemmen |
 
-| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | Nieuwste papers van cs.AI, cs.CL, cs.LG (afgelopen 48 uur) |
+| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | Laatste papers van cs.AI, cs.CL, cs.LG (laatste 48 uur) |
 
 | [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 trending modellen gesorteerd op wekelijkse likes |
 
 | [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | Top AI/LLM-artikelen van 5 tags |
 
-| [Lobste.rs](https://lobste.rs) | JSON API | Verhalen met AI/ML-tags van de afgelopen 7 dagen |
+| [Lobste.rs](https://lobste.rs) | JSON API | AI/ML-verhalen van de afgelopen 7 dagen |
 
 | [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Sitemap | Nieuwe artikelen gedetecteerd via `lastmod` diff |
 
