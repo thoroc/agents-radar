@@ -1,4 +1,4 @@
-export { DEFAULT_LANGUAGES, LANGUAGE_NAMES, STRINGS, SUPPORTED_LOCALES } from "./data";
+export { DEFAULT_LANGUAGES, LANGUAGE_NAMES, LANGUAGE_NATIVE_NAMES, STRINGS, SUPPORTED_LOCALES } from "./data";
 export { generate } from "./generate";
 export { getEnabledLangs } from "./get-enabled-langs";
 export { getFallbackLang } from "./get-fallback-lang";

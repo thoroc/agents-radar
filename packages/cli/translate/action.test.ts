@@ -26,7 +26,7 @@ describe("translateAction", () => {
 
   it("writes translated files for each non-source locale", async () => {
     const cwd = makeTmp();
-    writeFileSync(join(cwd, "README.md"), "Hello world\n", "utf-8");
+    writeFileSync(join(cwd, "README.md"), "English | [中文](./README.zh-CN.md)\n\nHello world\n", "utf-8");
 
     await translateAction(
       { file: "README.md", verbosity: 0 },
@@ -39,7 +39,7 @@ describe("translateAction", () => {
 
   it("preserves code blocks untranslated", async () => {
     const cwd = makeTmp();
-    const content = "Intro\n\n```bash\nnpm install\n```\n\nOutro\n";
+    const content = "English | [中文](./README.zh-CN.md)\n\nIntro\n\n```bash\nnpm install\n```\n\nOutro\n";
     writeFileSync(join(cwd, "README.md"), content, "utf-8");
 
     await translateAction(

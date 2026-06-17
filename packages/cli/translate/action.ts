@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { getPrimaryLang, SUPPORTED_LOCALES, toGoogleLang } from "@agents-radar/locales";
 import { segmentContent } from "./segment-content";
+import { updateReadmeLinks } from "./update-readme-links";
 
 type TranslateFn = (texts: string[], options: { to: string; from?: string }) => Promise<[string[], unknown]>;
 
@@ -64,5 +65,16 @@ export const translateAction = async (args: TranslateActionArgs, deps: Translate
     if (verbosity >= 1) {
       console.error(`  ${locale} done`);
     }
+  }
+
+  const updatedContent = updateReadmeLinks({
+    content,
+    locales: SUPPORTED_LOCALES,
+    primaryLang: getPrimaryLang(),
+  });
+  writeFileSync(filePath, updatedContent, "utf-8");
+
+  if (verbosity >= 1) {
+    console.error(`Updated language links in ${file}`);
   }
 };
