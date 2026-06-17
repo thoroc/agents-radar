@@ -2,9 +2,9 @@
 
 ## সমর্থিত ভাষা
 
-🇬🇧 ইংরেজি · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇧 পর্তুগিজ · 🇧🇷 পর্তুগুয়েস · 🇪🇳 Frank · 🇮🇹 ইতালীয় · 🇵🇱 পোলস্কি · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
+🇬🇧 ইংরেজি · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇧 পর্তুগিজ · 🇧🇷 পর্তুগুয়েস · 🇪🇳 Frank · 🇮🇹 ইতালীয় · 🇵🇱 পোলস্কি · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 নেদারল্যান্ডস · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 বাহাসা ইন্দোনেশিয়া · 🇺🇦 Українь 🇺🇦 Українка
 
-English | [中文](./README.zh-CN.md)
+ইংরেজি | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [ডয়েচ](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [পোলস্কি](./README.pl-PL.md) | [ইতালিয়ানো](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [পর্তুগিজ](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [স্প্যানিশ](./README.es-ES.md) | [ইন্দোনেশীয়](./README.id-ID.md) | [রোমানীয়](./README.ro-RO.md) | [কোরীয়](./README.ko-KR.md) | [ডাচ](./README.nl-NL.md) | [জাপানি](./README.ja-JP.md)
 
 রিপোর্ট তৈরির জন্য অতিরিক্ত ভাষা সক্রিয় করতে, [বহুভাষিক সমর্থন](./docs/setup.md#multi-language-support) দেখুন।
 

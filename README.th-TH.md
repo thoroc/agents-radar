@@ -2,11 +2,11 @@
 
 ## ภาษาที่รองรับ
 
-🇹🇷 English · 🇮🇹 中文 · �� �� � 日本語 · �� 🇻🏽 Tiếng Viết · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
+🇹🇷 English · 🇮🇹 中文 · �� �� � 日本語 · �� �� � � � � � � � � � � � � � � � Español · ��� Português · 🇫🇷 Français · 🇩🇪 Deutsch ถิ่นที่อยู่ ��� Italiano · ���🇱 Polski · ��� �� ����������� · �� �� �� العربية · 🇹🇷 Türkçe · 🇻🏽 Tiếng Viết · 🇹🇭 ไทย · ...
 
-English | [中文](./README.zh-CN.md)
+อังกฤษ | [Укра́ська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [เยอรมัน](./README.de-DE.md) | [ตุรกี](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [โปแลนด์](./README.pl-PL.md) | [อิตาลี](./README.it-IT.md) | [ฝรั่งเศส](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [ภาษาโปรตุเกส](./README.pt-BR.md) | [เตี่ยงเวียต](./README.vi-VN.md) | [বংলা](./README.bn-BD.md) | [ภาษาสเปน](./README.es-ES.md) | [ภาษาอินโดนีเซีย](./README.id-ID.md) | [ภาษาโรมาเนีย](./README.ro-RO.md) | [ภาษาเกาหลี](./README.ko-KR.md) | [ภาษาดัตช์](./README.nl-NL.md) | [ภาษาญี่ปุ่น](./README.ja-JP.md)
 
-หากต้องการเปิดใช้งานภาษาเพิ่มเติมสำหรับการสร้างรายงาน โปรดดู [การสนับสนุนหลายภาษา](./docs/setup.md#multi-language-support)
+หากต้องการเปิดใช้งานภาษาเพิ่มเติมสำหรับการสร้างรายงาน โปรดดูที่ [การสนับสนุนหลายภาษา](./docs/setup.md#multi-language-support)
 
 เวิร์กโฟลว์ GitHub Actions ที่ทำงานทุกเช้าเวลา 08:00 CST โดยจะรวบรวมสัญญาณระบบนิเวศ AI จาก 10 แหล่งข้อมูล จากนั้นเผยแพร่บทสรุปรายวัน (ในทุกภาษาที่กำหนดค่าไว้) ในรูปแบบ GitHub Issues และไฟล์ Markdown ที่คอมมิตแล้ว รายงานสรุปรายสัปดาห์และรายเดือนจะถูกสร้างขึ้นโดยอัตโนมัติเช่นกัน
 

@@ -2,14 +2,13 @@
 
 ## サポートされている言語
 
-🇬🇧 英語 · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 スペイン語 · 🇧🇷 ポルトガル語 · 🇫🇷 フランス語 · 🇩🇪 ドイツ語 · 🇮🇹 イタリアーノ · 🇵🇱 ポルスキ · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱オランダ語 · 🇮🇳 ヒンディー語 · 🇷🇴 ルーマニア語 · 🇮🇩 インドネシア語 · 🇺🇦 ウクライナ語 · 🇧🇩 ベンガル語
+🇬🇧 英語 · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 スペイン語 · 🇧🇷 ポルトガル語 · 🇫🇷 フランス語 · 🇩🇪 ドイツ語 · 🇮🇹 イタリアーノ · 🇵🇱 ポルスキ · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱オランダ · 🇮🇳 हिन्दी · 🇷🇴 ローマ · 🇮🇩 インドネシア語 · 🇺🇦 Українська · 🇧🇩 বাংলা
 
-英語 | [中国語](./README.zh-CN.md)
+英語 | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [ドイツ語](./README.de-DE.md) | [テュルクチェ](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [ポルスキー](./README.pl-PL.md) | [イタリア語](./README.it-IT.md) | [フランス語](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [ポルトガル語](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [スペイン語](./README.es-ES.md) | [インドネシア語](./README.id-ID.md) | [ルーマニア語](./README.ro-RO.md) | [韓国語](./README.ko-KR.md) | [オランダ語](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
 
 レポート生成に他の言語を追加するには、[多言語サポート](./docs/setup.md#multi-language-support) を参照してください。
 
-毎日午前8時（CST）に実行されるGitHub Actionsワークフローです。10のデータソースからAIエコシステムのシグナルを集約し、設定されたすべての言語で日次ダイジェストをGitHub Issuesとコミット済みMarkdownファイルとして公開します。週次および月次のロールアップレポートも自動的に生成されます。
-
+毎日午前8時（CST）に実行されるGitHub Actionsワークフローです。10のデータソースからAIエコシステムのシグナルを集約し、GitHub Issuesとコミット済みMarkdownファイルとして、日次ダイジェスト（設定済みのすべての言語）を公開します。週次および月次のロールアップレポートも自動的に生成されます。
 
 ## データソース
 
@@ -25,9 +24,9 @@
 
 | [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | 過去24時間のAI関連ニュース上位30件、6件の並列クエリ |
 
-| [Product Hunt](https://www.producthunt.com) | GraphQL API |昨日の投票数上位AI製品 |
+| [Product Hunt](https://www.producthunt.com) | GraphQL API | 昨日の投票数上位AI製品 |
 
-| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | cs.AI、cs.CL、cs.LGの最新論文（過去48時間） |
+| [arXiv](https://arxiv.org) | [arXiv API](https://export.arxiv.org/api/query) | cs.AI、cs.CL、cs.LGの最新論文（過去48時間） |
 
 | [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 週間のいいね数でソートされたトレンドモデル30選 |
 
@@ -35,15 +34,15 @@
 
 | [Lobste.rs](https://lobste.rs) | JSON API | 過去7日間のAI/MLタグ付き記事 |
 
-| [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | サイトマップ | `lastmod` diff で検出された新しい記事 |
+| [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | サイトマップ | `lastmod` diffで検出された新着記事 |
 
 ## Web UI
 
-**`PAGES_URL`** — リポジトリ変数として設定することで、フォークの Web UI ベース URL を構成できます。
+**`PAGES_URL`** — リポジトリ変数としてこの値を設定することで、フォークしたリポジトリのWeb UIベースURLを設定できます。
 
-クリーンなダークテーマのインターフェースで、過去のダイジェストをすべて閲覧できます。ログインは不要です。レポートは、このリポジトリ内の Markdown ファイルから GitHub Pages を介してレンダリングされます。
+クリーンなダークテーマのインターフェースで、過去のダイジェストをすべて閲覧できます。ログインは不要です。レポートは、このリポジトリ内のMarkdownファイルからGitHub Pages経由でレンダリングされます。
 
-Web UI は、`packages/web/` にある Vite + TypeScript の SPA です。実行時に `manifest.json` と個々のダイジェストファイルを取得します。新しいデイリーダイジェストは、UI を再構築することなく表示されます。
+Web UIは、`packages/web/`にあるVite + TypeScriptのSPAです。実行時に`manifest.json`と個々のダイジェストファイルを取得するため、UIを再構築することなく、新しい日刊ダイジェストが表示されます。
 
 
 ```bash

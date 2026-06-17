@@ -2,13 +2,13 @@
 
 ## Langues prises en charge
 
-🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 Thaï · 🇳🇱 Néerlandais · 🇮🇳 Hindi · 🇷🇴 Roumain · 🇮🇩 Indonésien · 🇺🇦 Ukrainien · 🇧🇩 Bengali
+🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
 
-Anglais | [Chinois](./README.zh-CN.md)
+Anglais | [Українська](./README.uk-UA.md) | [عربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Turc](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italien](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Português](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
 
 Pour activer d'autres langues pour la génération de rapports, consultez la section [Prise en charge multilingue](./docs/setup.md#multi-language-support).
 
-Un workflow GitHub Actions s'exécute chaque matin à 8 h 00 CST. Il agrège les signaux de l'écosystème de l'IA provenant de 10 sources de données, puis publie des synthèses quotidiennes (dans toutes les langues configurées) sous forme de tickets GitHub et de fichiers Markdown. Des rapports de synthèse hebdomadaires et mensuels sont également générés automatiquement.
+Un workflow GitHub Actions exécuté chaque matin à 8h00 CST. Il agrège les signaux de l'écosystème IA provenant de 10 sources de données, puis publie des synthèses quotidiennes (dans toutes les langues configurées) sous forme de tickets GitHub et de fichiers Markdown. Des rapports de synthèse hebdomadaires et mensuels sont également générés automatiquement.
 
 ## Sources de données
 
@@ -20,17 +20,19 @@ Un workflow GitHub Actions s'exécute chaque matin à 8 h 00 CST. Il agrège les
 
 | [Claude Code Skills](https://github.com/anthropics/skills) | API | Compétences populaires classées par engagement communautaire |
 
-| [Tendances GitHub](https://github.com/trending) | HTML + API | Dépôts populaires du jour + recherche de sujets d'IA (période de 7 jours) |
+| [Tendances GitHub](https://github.com/trending) | HTML + API | Dépôts populaires du jour + recherche par sujet IA (période de 7 jours) |
 
-| [Hacker News](https://news.ycombinator.com) | [API Algolia](https://hn.algolia.com/api) | Top 30 des articles IA des dernières 24h, 6 requêtes parallèles |
+| [Hacker News](https://news.ycombinator.com) | [API Algolia](https://hn.algolia.com/api) | Top 30 des actualités IA des dernières 24h, 6 requêtes parallèles |
 
 | [Product Hunt](https://www.producthunt.com) | API GraphQL | Meilleurs produits IA d'hier (par votes) |
 
-| [ArXiv](https://arxiv.org) | [API ArXiv](https://export.arxiv.org/api/query) | Publications récentes de cs.AI, cs.CL et cs.LG (48h) |
+| [ArXiv](https://arxiv.org) | [API ArXiv](https://export.arxiv.org/api/query) | Dernières publications de cs.AI, cs.CL et cs.LG (48h) |
 
 | [Hugging Face](https://huggingface.co) | [API Hub](https://huggingface.co/api/models) | 30 modèles populaires (classés par popularité hebdomadaire) |
 
-| [Dev.to](https://dev.to) | [API Forem](https://dev.to/api) | Meilleurs articles IA/LLM (5 tags) | | [Lobste.rs](https://lobste.rs) | API JSON | Articles étiquetés IA/ML des 7 derniers jours |
+| [Dev.to](https://dev.to) | [API Forem](https://dev.to/api) | Meilleurs articles IA/ML (5 tags) |
+
+| [Lobste.rs](https://lobste.rs) | API JSON | Articles étiquetés IA/ML des 7 derniers jours |
 
 | [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Plan du site | Nouveaux articles détectés via la commande `lastmod` diff |
 
@@ -38,7 +40,7 @@ Un workflow GitHub Actions s'exécute chaque matin à 8 h 00 CST. Il agrège les
 
 **`PAGES_URL`** — Définissez cette variable de dépôt pour configurer l'URL de base de l'interface web de votre fork.
 
-Parcourez tous les résumés historiques dans une interface épurée au thème sombre — aucune connexion requise. Les rapports sont générés à partir des fichiers Markdown de ce dépôt via GitHub Pages.
+Consultez tous les résumés historiques dans une interface épurée au thème sombre — aucune connexion requise. Les rapports sont générés à partir des fichiers Markdown de ce dépôt via GitHub Pages.
 
 L'interface web est une application monopage (SPA) Vite + TypeScript située dans `packages/web/`. Elle récupère `manifest.json` et les fichiers de résumés individuels à l'exécution — les nouveaux résumés quotidiens s'affichent sans reconstruction de l'interface.
 

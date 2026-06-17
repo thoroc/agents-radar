@@ -4,7 +4,7 @@
 
 🇬🇧 Engels · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
 
-Engels | [中文](./README.zh-CN.md)
+Engels | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italiaans](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Português](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesië](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [Japans](./README.ja-JP.md)
 
 Zie [Ondersteuning voor meerdere talen](./docs/setup.md#multi-language-support) voor meer informatie over het inschakelen van extra talen voor het genereren van rapporten.
 
@@ -14,11 +14,7 @@ Een GitHub Actions-workflow die elke ochtend om 08:00 CST wordt uitgevoerd. Deze
 
 | Bron | Type | Gegevens |
 
-|--------|------|------|
-
-| [GitHub-repositories](https://github.com) | API | Issues, pull requests, releases van meer dan 17 gevolgde AI-toolrepositories |
-
-| [Claude Code Skills](https://github.com/anthropics/skills) | API | Populaire vaardigheden gesorteerd op betrokkenheid van de community |
+| ... Populaire vaardigheden gesorteerd op betrokkenheid van de community |
 
 | [GitHub Trending](https://github.com/trending) | HTML + API | Dagelijkse trending repositories + zoekopdracht naar AI-onderwerpen (venster van 7 dagen) |
 

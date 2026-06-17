@@ -4,11 +4,12 @@
 
 🇬🇧 Inglese · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
 
-Inglese | [Cina](./README.zh-CN.md)
+Inglese | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italiano](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Português](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
 
-Per abilitare lingue aggiuntive per la generazione di report, consultare [Supporto multilingue](./docs/setup.md#multi-language-support).
+Per abilitare altre lingue per la generazione di report, consultare [Supporto multilingue](./docs/setup.md#multi-language-support).
 
-Un flusso di lavoro di GitHub Actions che viene eseguito ogni mattina alle 08:00 CST. Aggrega i segnali dell'ecosistema AI da 10 fonti di dati e pubblica riepiloghi giornalieri (in tutte le lingue configurate) come Issue di GitHub e file Markdown di commit. Vengono inoltre generati automaticamente report riepilogativi settimanali e mensili.
+
+Un flusso di lavoro di GitHub Actions che viene eseguito ogni mattina alle 08:00 CST. Aggrega i segnali dell'ecosistema AI da 10 fonti di dati, quindi pubblica riepiloghi giornalieri (in tutte le lingue configurate) come Issue di GitHub e file Markdown di commit. Vengono inoltre generati automaticamente report di riepilogo settimanali e mensili.
 
 ## Fonti di dati
 
@@ -22,27 +23,27 @@ Un flusso di lavoro di GitHub Actions che viene eseguito ogni mattina alle 08:00
 
 | [Tendenze di GitHub](https://github.com/trending) | HTML + API | Repository di tendenza giornalieri + ricerca di argomenti AI (finestra temporale di 7 giorni) |
 
-| [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | Le 30 notizie più importanti sull'IA delle ultime 24 ore, 6 query parallele |
+[Hacker News](https://news.ycombinator.com) | [API Algolia](https://hn.algolia.com/api) | Le 30 notizie più importanti sull'IA delle ultime 24 ore, 6 query parallele |
 
-[Product Hunt](https://www.producthunt.com) | GraphQL API | I migliori prodotti IA di ieri in base ai voti |
+[Product Hunt](https://www.producthunt.com) | API GraphQL | I migliori prodotti IA di ieri in base ai voti |
 
-[ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | Ultimi articoli da cs.AI, cs.CL, cs.LG (ultime 48 ore) |
+[ArXiv](https://arxiv.org) | [API ArXiv](https://export.arxiv.org/api/query) | Ultimi articoli da cs.AI, cs.CL, cs.LG (ultime 48 ore) |
 
-[Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 modelli di tendenza ordinati per numero di "mi piace" settimanali |
+[Hugging Face](https://huggingface.co) | [API Hub](https://huggingface.co/api/models) | 30 modelli di tendenza ordinati per like settimanali |
 
-[Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | I migliori articoli su IA/LLM per 5 tag |
+[Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | Articoli principali su AI/ML da 5 tag |
 
 [Lobste.rs](https://lobste.rs) | API JSON | Articoli con tag AI/ML degli ultimi 7 giorni |
 
 [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Sitemap | Nuovi articoli rilevati tramite diff `lastmod` |
 
-# Interfaccia Web
+## Interfaccia Web
 
 **`PAGES_URL`** — Imposta questa variabile di repository per configurare l'URL di base dell'interfaccia Web per il tuo fork.
 
-Consulta tutti i digest storici in un'interfaccia pulita e con tema scuro, senza bisogno di effettuare l'accesso. I report vengono generati dai file Markdown presenti in questo repository tramite GitHub Pages.
+Consulta tutti i digest storici in un'interfaccia pulita con tema scuro, senza bisogno di effettuare l'accesso. I report vengono generati dai file Markdown presenti in questo repository tramite GitHub Pages.
 
-L'interfaccia Web è una SPA Vite + TypeScript in `packages/web/`. Recupera `manifest.json` e i singoli file digest in fase di esecuzione: i nuovi digest giornalieri vengono visualizzati senza dover ricostruire l'interfaccia.
+L'interfaccia Web è una SPA Vite + TypeScript in `packages/web/`. Il programma scarica il file `manifest.json` e i singoli file di riepilogo in fase di esecuzione: i nuovi riepiloghi giornalieri vengono visualizzati senza che l'interfaccia utente venga ricostruita.
 
 
 ```bash

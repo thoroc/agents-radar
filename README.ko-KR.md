@@ -4,11 +4,11 @@
 
 🇬🇧 영어 · 🇨🇳 中文 · 🇯🇵 日本語 · 🇷🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Viet · 🇹🇭 ไท้ · 🇳🇱 Nederlands · 🇮🇳 hin्دي · 🇷🇴 Română · 🇮🇩 바하사 인도네시아 · 🇺🇦 Украѕнська · 🇧🇩 বাংলা
 
-English | [中文](./README.zh-CN.md)
+영어 | [Украѕнська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [힌디어](./README.hi-IN.md) | [독일어](./README.de-DE.md) | [터키어](./README.tr-TR.md) | [ไท้](./README.th-TH.md) | [폴스키](./README.pl-PL.md) | [이탈리아어](./README.it-IT.md) | [프랑스어](./README.fr-FR.md) | [중문](./README.zh-CN.md) | [포르투갈어](./README.pt-BR.md) | [Tiếng Viet](./README.vi-VN.md) | [문서](./README.bn-BD.md) | [스페인어](./README.es-ES.md) | [인도네시아어](./README.id-ID.md) | [로마](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [네덜란드](./README.nl-NL.md) | [일본어](./README.ja-JP.md)
 
-보고서 생성을 위한 추가 언어를 활성화하려면 [다국어 지원](./docs/setup.md#multi-language-support)을 참조하세요.
+보고서 생성에 추가 언어를 사용하려면 [다국어 지원](./docs/setup.md#multi-language-support)을 참조하세요.
 
-이 GitHub Actions 워크플로는 매일 아침 8:00(CST)에 실행됩니다. 10개의 데이터 소스에서 AI 생태계 신호를 집계하여 구성된 모든 언어로 일일 요약 보고서를 GitHub 이슈 및 커밋된 Markdown 파일로 게시합니다. 주간 및 월간 종합 보고서도 자동으로 생성됩니다.
+이 GitHub Actions 워크플로는 매일 아침 8시(미국 중부 표준시)에 실행됩니다. 10개의 데이터 소스에서 AI 생태계 신호를 집계하여 구성된 모든 언어로 일일 요약 보고서를 GitHub 이슈 및 커밋된 Markdown 파일로 게시합니다. 주간 및 월간 종합 보고서도 자동으로 생성됩니다.
 
 ## 데이터 소스
 
@@ -18,7 +18,7 @@ English | [中文](./README.zh-CN.md)
 
 [GitHub 리포지토리](https://github.com) | API | 추적 중인 17개 이상의 AI 도구 리포지토리의 이슈, PR, 릴리스 |
 
-[Claude Code Skills](https://github.com/anthropics/skills) | API | 커뮤니티 참여도 순으로 정렬된 인기 스킬 |
+[Claude Code 스킬](https://github.com/anthropics/skills) | API | 커뮤니티 참여도 순으로 정렬된 인기 스킬 |
 
 | [GitHub Trending](https://github.com/trending) | HTML + API | 일일 인기 저장소 + AI 주제 검색(7일 기간) |
 
@@ -26,23 +26,23 @@ English | [中文](./README.zh-CN.md)
 
 | [Product Hunt](https://www.producthunt.com) | GraphQL API | 어제 투표 수 기준 최고 AI 제품 |
 
-| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | cs.AI, cs.CL, cs.LG 최신 논문 (지난 48시간) |
+| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | cs.AI, cs.CL, cs.LG 최신 논문(지난 48시간) |
 
-[Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 주간 좋아요 수 기준 인기 모델 30개 |
+| [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 주간 좋아요 수 기준으로 정렬된 인기 모델 30개 |
 
 [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | 5개 태그별 인기 AI/LLM 기사 |
 
 [Lobste.rs](https://lobste.rs) | JSON API | 지난 7일간 AI/ML 태그가 지정된 기사 |
 
-[Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | 사이트맵 | `lastmod` diff를 통해 감지된 새 기사 |
+[Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | 사이트맵 | `lastmod` 변경 사항을 통해 새 기사 감지 |
 
 ## 웹 UI
 
-**`PAGES_URL`** — 포크의 웹 UI 기본 URL을 구성하려면 이 변수를 저장소 변수로 설정하세요.
+**`PAGES_URL`** — 이 변수를 저장소 변수로 설정하여 포크의 웹 UI 기본 URL을 구성하세요.
 
-로그인 없이 깔끔한 다크 테마 인터페이스에서 모든 과거 요약 보고서를 열람할 수 있습니다. 보고서는 이 저장소의 마크다운 파일을 GitHub Pages를 통해 렌더링합니다.
+깔끔하고 어두운 테마의 인터페이스에서 모든 과거 요약을 탐색할 수 있습니다. 로그인이 필요하지 않습니다. 보고서는 이 저장소의 Markdown 파일을 GitHub Pages를 통해 렌더링합니다.
 
-웹 UI는 `packages/web/`에 있는 Vite + TypeScript 기반의 SPA입니다. 런타임에 `manifest.json` 파일과 개별 요약 보고서를 가져오므로, 새로운 일일 요약 보고서는 UI를 다시 빌드하지 않고 바로 표시됩니다.
+웹 UI는 `packages/web/`에 있는 Vite + TypeScript 기반의 SPA입니다. 런타임에 `manifest.json` 파일과 개별 요약 파일을 가져오므로, 새로운 일일 요약 정보는 UI를 다시 빌드하지 않고도 표시됩니다.
 
 ```bash
 bun run dev:web    # start Vite dev server for local UI development

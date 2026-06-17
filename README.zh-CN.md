@@ -2,13 +2,13 @@
 
 ## 支持的语言
 
-🇬🇧 英语 · 🇨🇳 中文 · 🇯🇵 日本语 · 🇰🇷 한국어 · 🇪🇸 西班牙语 · 🇧🇷 葡萄牙语 · 🇫🇷 法语 · 🇩🇪 德语 · 🇮🇹 意大利语 · 🇵🇱 波兰语 · 🇷🇺 Русский · 🇸🇦 ไทย · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱荷兰语 · 🇮🇳 印地语 · 🇷🇴 罗马尼亚语 · 🇮🇩 印尼语 · 🇺🇦 乌克兰语 · 🇧🇩 孟加拉语
+🇬🇧 英语 · 🇨🇳 中文 · 🇯🇵 日本语 · 🇰🇷 한국어 · 🇪🇸 西班牙语 · 🇧🇷 葡萄牙语 · 🇫🇷 法语 · 🇩🇪 德语 · 🇮🇹 意大利语 · 🇵🇱 波兰语 · 🇷🇺 Русский · 🇸🇦 ไทย · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱荷兰语 · 🇮🇳 हिन्दी · 🇷🇴 罗马语 · 🇮🇩 印度尼西亚语 · 🇺🇦 Українська · 🇧🇩 বাংলা
 
-英语 | [中文](./README.zh-CN.md)
+英语 | [Українська](./README.uk-UA.md) | [更多](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [德语](./README.de-DE.md) | [土耳其](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [意大利语](./README.it-IT.md) | [法语](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [葡萄牙语](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [西班牙语](./README.es-ES.md) | [印尼语](./README.id-ID.md) | [罗马尼亚语](./README.ro-RO.md) | [韩语](./README.ko-KR.md) | [荷兰语](./README.nl-NL.md) | [日语](./README.ja-JP.md)
 
 要启用其他语言的报告生成，请参阅[多语言支持](./docs/setup.md#multi-language-support)。
 
-这是一个每天早上 8:00 CST 运行的 GitHub Actions 工作流。它聚合来自 10 个数据源的 AI 生态系统信号，然后将每日摘要（以所有已配置的语言）发布为 GitHub Issues 和已提交的 Markdown 文件。此外，它还会自动生成每周和每月的汇总报告。
+这是一个每天早上 8:00 CST 运行的 GitHub Actions 工作流。它聚合来自 10 个数据源的 AI 生态系统信号，然后将每日摘要（以所有已配置的语言）发布为 GitHub Issues 和已提交的 Markdown 文件。每周和每月的汇总报告也会自动生成。
 
 ## 数据源
 
@@ -16,21 +16,21 @@
 
 |--------|------|------|
 
-| [GitHub 代码库](https://github.com) | API | 来自 17 个以上追踪的 AI 工具代码库的 Issues、PR 和发布版本 |
+| [GitHub 仓库](https://github.com) | API |来自 17 个以上追踪的 AI 工具代码库的问题、PR 和版本发布信息 |
 
 | [Claude Code Skills](https://github.com/anthropics/skills) | API | 按社区参与度排序的热门技能 |
 
 | [GitHub Trending](https://github.com/trending) | HTML + API | 每日热门代码库 + AI 主题搜索（7 天窗口） |
 
-| [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | 过去 24 小时内 30 条热门 AI 新闻，6 个并行查询 |
+| [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | 过去 24 小时内 30 条最热门的 AI 新闻，支持 6 个并行查询 |
 
-| [Product Hunt](https://www.producthunt.com) | GraphQL API | 昨日投票最多的热门 AI 产品 |
+| [Product Hunt](https://www.producthunt.com) | GraphQL API | 昨日最热门的 AI 产品（按投票数排名） |
 
-| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | cs.AI、cs.CL、cs.LG 最新论文（过去 48 小时） |
+| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | cs.AI、cs.CL、cs.LG 最新论文（过去 48 小时）|
 
 | [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 个热门模型，按每周点赞数排序 |
 
-| [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | 5 个标签下的热门 AI/LLM 文章 |
+| [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | 5 个标签的 AI/LLM 热门文章 |
 
 | [Lobste.rs](https://lobste.rs) | JSON API | 过去 7 天的 AI/ML 标签文章 |
 
@@ -38,11 +38,11 @@
 
 ## Web UI
 
-**`PAGES_URL`** — 将此设置为仓库变量，即可配置您 fork 的 Web UI 基本 URL。
+**`PAGES_URL`** — 将此设置为仓库变量，以配置您 fork 的 Web UI 基本 URL。
 
-浏览所有历史摘要，界面简洁，采用深色主题 — 无需登录。报告通过 GitHub Pages 从本仓库中的 Markdown 文件渲染。
+浏览所有历史摘要，界面简洁，采用深色主题——无需登录。报告通过 GitHub Pages 从本仓库的 Markdown 文件渲染。
 
-Web UI 是一个基于 Vite 和 TypeScript 的单页应用 (SPA)，位于 `packages/web/` 目录下。它会在运行时获取 `manifest.json` 和各个摘要文件 — 新的每日摘要无需重新构建 UI 即可显示。
+Web UI 是一个基于 Vite 和 TypeScript 的单页应用 (SPA)，位于 `packages/web/` 目录下。它会在运行时获取 `manifest.json` 文件和各个摘要文件——每日更新的摘要无需重新构建 UI 即可显示。
 
 ```bash
 bun run dev:web    # start Vite dev server for local UI development

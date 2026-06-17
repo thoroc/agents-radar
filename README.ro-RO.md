@@ -2,9 +2,9 @@
 
 ## Limbi acceptate
 
-🇬🇧 engleză · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇷 · Deutsch · 🇷 · Deutsch 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng ViỢ🇹🇹 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
+🇬🇧 engleză · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇷 · Deutsch · 🇷 · Deutsch 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng ViỢ🇹🇹 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українсь्दी · 🇳🇴
 
-Engleză | [中文](./README.zh-CN.md)
+engleză | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italiano](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Portugheză](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
 
 Pentru a activa limbi suplimentare pentru generarea de rapoarte, consultați [Suport multilingv](./docs/setup.md#multi-language-support).
 
@@ -13,16 +13,16 @@ Un flux de lucru GitHub Actions care rulează în fiecare dimineață la ora 08:
 ## Surse de date
 
 | Sursă | Tip | Date |
-|--------|------|------|
+|--------|------|-------|
 | [Depozite GitHub](https://github.com) | API | Probleme, PR-uri, lansări din peste 17 depozite de instrumente AI urmărite |
 | [Abilități de cod Claude](https://github.com/anthropics/skills) | API | Abilități în tendințe, sortate în funcție de implicarea comunității |
 | [Tendințe GitHub](https://github.com/trending) | HTML + API | Depozite zilnice în tendințe + căutare de subiecte AI (fereastră de 7 zile) |
 | [Știri despre hackeri](https://news.ycombinator.com) | [API Algolia](https://hn.algolia.com/api) | Top 30 de știri despre AI din ultimele 24 de ore, 6 interogări paralele |
 | [Vânătoare de produse](https://www.producthunt.com) | API GraphQL | Cele mai bune produse AI de ieri, după voturi |
-| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | Cele mai recente articole de la cs.AI, cs.CL, cs.LG (ultimele 48 de ore) |
-| [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 de modele în tendințe, sortate după aprecieri săptămânale |
-| [Dev.to](https://dev.to) | [Forum API](https://dev.to/api) | Articole de top AI/LLM din 5 etichete |
-| [Lobste.rs](https://lobste.rs) | JSON API | Articole etichetate AI/ML din ultimele 7 zile |
+| [ArXiv](https://arxiv.org) | [API ArXiv](https://export.arxiv.org/api/query) | Cele mai recente articole de la cs.AI, cs.CL, cs.LG (ultimele 48 de ore) |
+| [Hugging Face](https://huggingface.co) | [API Hub](https://huggingface.co/api/models) | 30 de modele în tendințe, sortate după aprecieri săptămânale |
+| [Dev.to](https://dev.to) | [API Forem](https://dev.to/api) | Articole de top AI/LLM din 5 etichete |
+| [Lobste.rs](https://lobste.rs) | API JSON | Articole etichetate AI/ML din ultimele 7 zile |
 | [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Harta site-ului | Articole noi detectate prin `lastmod` diff |
 
 ## Interfață web

@@ -2,13 +2,13 @@
 
 ## Unterstützte Sprachen
 
-🇬🇧 Englisch · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 Thai · 🇳🇱 Niederländisch · 🇮🇳 Hindi · 🇷🇴 Română · 🇮🇩 Indonesisch · 🇺🇦 Ukrainisch · 🇧🇩 Bengali
+🇬🇧 Englisch · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
 
-Englisch | [中文](./README.zh-CN.md)
+Englisch | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Russisch](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italienisch](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Português](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
 
-Informationen zur Aktivierung weiterer Sprachen für die Berichtserstellung finden Sie unter [Mehrsprachigkeit](./docs/setup.md#multi-language-support).
+Informationen zur Aktivierung weiterer Sprachen für die Berichtserstellung finden Sie unter [Mehrsprachigkeitsunterstützung](./docs/setup.md#multi-language-support).
 
-Ein GitHub Actions-Workflow, der jeden Morgen um 8:00 Uhr CST ausgeführt wird. Es aggregiert Signale aus dem KI-Ökosystem von 10 Datenquellen und veröffentlicht anschließend tägliche Zusammenfassungen (in allen konfigurierten Sprachen) als GitHub-Issues und Commits in Markdown. Wöchentliche und monatliche Rollup-Berichte werden ebenfalls automatisch generiert.
+Ein GitHub Actions-Workflow, der jeden Morgen um 8:00 Uhr CST ausgeführt wird. Er aggregiert Signale aus dem KI-Ökosystem von 10 Datenquellen und veröffentlicht anschließend tägliche Zusammenfassungen (in allen konfigurierten Sprachen) als GitHub-Issues und Commits in Markdown. Wöchentliche und monatliche Rollup-Berichte werden ebenfalls automatisch generiert.
 
 ## Datenquellen
 
@@ -24,17 +24,16 @@ Ein GitHub Actions-Workflow, der jeden Morgen um 8:00 Uhr CST ausgeführt wird. 
 
 | [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | Top 30 KI-News der letzten 24 Stunden, 6 parallele Abfragen |
 
-[Product Hunt](https://www.producthunt.com) | GraphQL-API | Die beliebtesten KI-Produkte von gestern (nach Stimmen) |
+[Product Hunt](https://www.producthunt.com) | GraphQL API | Die beliebtesten KI-Produkte von gestern (nach Stimmen) |
 
-[ArXiv](https://arxiv.org) | [ArXiv-API](https://export.arxiv.org/api/query) | Neueste Veröffentlichungen aus cs.AI, cs.CL und cs.LG (letzte 48 Stunden) |
+[ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | Neueste Veröffentlichungen aus cs.AI, cs.CL und cs.LG (letzte 48 Stunden) |
 
-[Hugging Face](https://huggingface.co) | [Hub-API](https://huggingface.co/api/models) | 30 Trendmodelle, sortiert nach wöchentlichen Likes |
+[Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 Trendmodelle, sortiert nach wöchentlichen Likes |
 
-[Dev.to](https://dev.to) | [Forem-API](https://dev.to/api) | Top-Artikel zu KI/LLM aus 5 Kategorien |
+[Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | Top-Artikel zu KI/LLM aus 5 Kategorien |
+| [Lobste.rs](https://lobste.rs) | JSON-API | KI/ML-getaggte Artikel der letzten 7 Tage |
 
-[Lobste.rs](https://lobste.rs) | JSON-API | KI/ML-getaggte Artikel der letzten 7 Tage |
-
-| [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Sitemap | Neue Artikel erkannt über `lastmod`-Diff |
+| [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Sitemap | Neue Artikel werden über `lastmod`-Diff erkannt |
 
 ## Web-UI
 

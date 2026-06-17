@@ -4,7 +4,7 @@
 
 Indonesia العربية · 🇹🇷 Türkçe · 🇻€ Tiếng Việt · 🇹hon ไทย · nai🇱 Nederlands · 🇮🇩 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇮🇩 Українська · 🇧🇩 lagi
 
-Bahasa Inggris | [Bahasa Mandarin](./README.zh-CN.md)
+Bahasa Inggris | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Jerman](./README.de-DE.md) | [Turki](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italia](./README.it-IT.md) | [Perancis](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Portugis](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Romană](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederland](./README.nl-NL.md) | [Bahasa Jepang](./README.ja-JP.md)
 
 Untuk mengaktifkan bahasa tambahan untuk pembuatan laporan, lihat [Dukungan multibahasa](./docs/setup.md#multi-language-support).
 
@@ -18,9 +18,9 @@ Sebuah alur kerja GitHub Actions yang berjalan setiap pagi pukul 08:00 CST. Alur
 
 | [Repositori GitHub](https://github.com) | API | Issues, PR, rilis dari 17+ repositori alat AI yang dilacak |
 
-| [Keterampilan Claude Code](https://github.com/anthropics/skills) | API | Keterampilan yang sedang tren diurutkan berdasarkan keterlibatan komunitas |
+| [Keterampilan Kode Claude](https://github.com/anthropics/skills) | API | Keterampilan yang sedang tren diurutkan berdasarkan keterlibatan komunitas |
 
-| [GitHub Trending](https://github.com/trending) | HTML + API | Repositori trending harian + pencarian topik AI (jendela 7 hari) |
+| [GitHub Trending](https://github.com/trending) | HTML + API | Repositori yang sedang tren setiap hari + pencarian topik AI (jendela 7 hari) |
 
 | [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | 30 berita AI teratas dari 24 jam terakhir, 6 kueri paralel |
 
@@ -32,17 +32,17 @@ Sebuah alur kerja GitHub Actions yang berjalan setiap pagi pukul 08:00 CST. Alur
 
 | [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | Artikel AI/LLM teratas dari 5 tag |
 
-| [Lobste.rs](https://lobste.rs) | JSON API | Berita bertag AI/ML dari 7 hari terakhir |
+| [Lobste.rs](https://lobste.rs) | JSON API | Cerita bertag AI/ML dari 7 hari terakhir |
 
 | [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Peta Situs | Artikel baru terdeteksi melalui perbedaan `lastmod` |
 
-## Antarmuka Web
+## UI Web
 
-**`PAGES_URL`** — Tetapkan ini sebagai variabel repositori untuk mengkonfigurasi URL dasar Antarmuka Web untuk fork Anda.
+**`PAGES_URL`** — Tetapkan ini sebagai variabel repositori untuk mengkonfigurasi URL dasar UI Web untuk fork Anda.
 
-Jelajahi semua ringkasan historis dalam antarmuka bertema gelap yang bersih — tidak perlu login. Laporan dihasilkan dari file Markdown di repositori ini melalui GitHub Pages.
+Telusuri semua ringkasan historis dalam antarmuka bertema gelap yang bersih — tanpa perlu login. Laporan ditampilkan dari file Markdown di repositori ini melalui GitHub Pages.
 
-Antarmuka pengguna web adalah SPA Vite + TypeScript di `packages/web/`. Antarmuka ini mengambil `manifest.json` dan file digest individual saat runtime — digest harian baru muncul tanpa perlu membangun ulang UI.
+UI web adalah SPA Vite + TypeScript di `packages/web/`. UI ini mengambil `manifest.json` dan file ringkasan individual saat runtime — ringkasan harian baru muncul tanpa perlu membangun ulang UI.
 
 ```bash
 bun run dev:web    # start Vite dev server for local UI development
@@ -55,6 +55,7 @@ bun run build:web  # build the web UI for deployment
 Berlangganan untuk mendapatkan notifikasi ringkasan harian yang dikirim langsung ke platform pilihan Anda. Setiap pesan berisi tautan ke semua laporan untuk hari itu ditambah Web UI dan umpan RSS.
 
 <table>
+
 <tr>
 <td align="center"><b><a href="https://t.me/agents_radar">Gabung Saluran Telegram</a></b></td>
 <td align="center"><b><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=b56v3be8-b027-4ee6-abc4-65bf1f80bccd">Gabung Grup Feishu</a></b></td>

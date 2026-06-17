@@ -4,7 +4,7 @@
 
 🇬🇧 angielski · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
 
-Angielski | [中文](./README.zh-CN.md)
+Angielski | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [włoski](./README.it-IT.md) | [Francja](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Portugalski](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
 
 Aby włączyć dodatkowe języki do generowania raportów, zobacz [Obsługa wielu języków](./docs/setup.md#multi-language-support).
 
@@ -14,7 +14,7 @@ Przepływ pracy GitHub Actions, który działa każdego ranka o 8:00 CST. Agregu
 
 | Źródło | Typ | Dane |
 |--------|------|------|
-| [Repozytoria GitHub](https://github.com) | API | Zgłoszenia, żądania i wydania z ponad 17 śledzonych repozytoriów narzędzi AI |
+| [Repozytoria GitHub](https://github.com) | API | Zgłoszenia, PR, wydania z ponad 17 śledzonych repozytoriów narzędzi AI |
 | [Umiejętności Claude Code](https://github.com/anthropics/skills) | API | Popularne umiejętności posortowane według zaangażowania społeczności |
 | [Trendy GitHub](https://github.com/trending) | HTML + API | Codzienne repozytoria trendów + wyszukiwanie tematów związanych ze sztuczną inteligencją (okno 7-dniowe) |
 | [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | 30 najpopularniejszych artykułów o sztucznej inteligencji z ostatnich 24 godzin, 6 równoległych zapytań |

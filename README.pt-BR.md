@@ -2,13 +2,13 @@
 
 ## Idiomas suportados
 
-🇬🇧 Inglês · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Vietnamita · 🇹🇭 Tailandês · 🇳🇱 Holandês · 🇮🇳 Hindi · 🇷🇴 Romeno · 🇮🇩 Indonésio · 🇺🇦 Ucraniano · 🇧🇩 Bengali
+🇬🇧 Inglês · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonésia · 🇺🇦 Українська · 🇧🇩 বাংলা
 
-Inglês | [Chinês](./README.zh-CN.md)
+Inglês | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Alemão](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polês](./README.pl-PL.md) | [Italiano](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Português](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Espanhol](./README.es-ES.md) | [Bahasa Indonésia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Holanda](./README.nl-NL.md) | [Japonês](./README.ja-JP.md)
 
 Para habilitar idiomas adicionais para a geração de relatórios, consulte [Suporte a vários idiomas](./docs/setup.md#multi-language-support).
 
-Um fluxo de trabalho do GitHub Actions que é executado todas as manhãs às 8h (horário de Brasília). Ele agrega sinais do ecossistema de IA de 10 fontes de dados e publica resumos diários (em todos os idiomas configurados) como Issues do GitHub e arquivos Markdown. Relatórios consolidados semanais e mensais também são gerados automaticamente.
+Um fluxo de trabalho do GitHub Actions que é executado todas as manhãs às 8h CST. Ele agrega sinais do ecossistema de IA de 10 fontes de dados e, em seguida, publica resumos diários (em todos os idiomas configurados) como Issues do GitHub e arquivos Markdown. Relatórios consolidados semanais e mensais também são gerados automaticamente.
 
 ## Fontes de Dados
 
@@ -16,15 +16,15 @@ Um fluxo de trabalho do GitHub Actions que é executado todas as manhãs às 8h 
 
 |--------|------|------|
 | [Repositórios do GitHub](https://github.com) | API | Issues, PRs e releases de mais de 17 repositórios de ferramentas de IA monitorados |
+
 | [Habilidades do Claude Code](https://github.com/anthropics/skills) | API | Habilidades em alta classificadas por engajamento da comunidade |
 
 | [Tendências do GitHub](https://github.com/trending) | HTML + API | Repositórios em alta diariamente + busca por tópicos de IA (janela de 7 dias) |
-
 | [Hacker News](https://news.ycombinator.com) | [API da Algolia](https://hn.algolia.com/api) | 30 principais notícias de IA das últimas 24 horas, 6 consultas paralelas |
 | [Product Hunt](https://www.producthunt.com) | API GraphQL | Principais produtos de IA de ontem por votos |
 | [ArXiv](https://arxiv.org) | [API do ArXiv](https://export.arxiv.org/api/query) | Artigos mais recentes de cs.AI, cs.CL, cs.LG (últimas 48 horas) |
-| [Hugging Face](https://huggingface.co) | [API do Hub](https://huggingface.co/api/models) | 30 modelos em alta classificados por curtidas semanais |
-| [Dev.to](https://dev.to) | [API do Forem](https://dev.to/api) | Principais artigos de IA/LLM de 5 tags |
+| [Hugging Face](https://huggingface.co) | [API do Hub](https://huggingface.co/api/models) | 30 modelos em alta, classificados por curtidas semanais |
+| [Dev.to](https://dev.to) | [API do Forem](https://dev.to/api) | Principais artigos de IA/ML de 5 tags |
 | [Lobste.rs](https://lobste.rs) | API JSON | Artigos com a tag IA/ML dos últimos 7 dias |
 
 | [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Mapa do site | Novos artigos detectados via diff de `lastmod` |
@@ -35,7 +35,7 @@ Um fluxo de trabalho do GitHub Actions que é executado todas as manhãs às 8h 
 
 Navegue por todos os resumos históricos em uma interface limpa e com tema escuro — sem necessidade de login. Os relatórios são renderizados a partir dos arquivos Markdown neste repositório via GitHub Pages.
 
-A interface web é um SPA Vite + TypeScript em `packages/web/`. Ela busca o arquivo `manifest.json` e os arquivos de resumo individuais em tempo de execução — novos resumos diários aparecem sem qualquer reconstrução da interface.
+A interface web é um SPA Vite + TypeScript em `packages/web/`. Ela busca o arquivo `manifest.json` e os arquivos de resumo individuais em tempo de execução — novos resumos diários aparecem sem a necessidade de recompilar a interface.
 
 ```bash
 bun run dev:web    # start Vite dev server for local UI development
