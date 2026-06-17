@@ -2,13 +2,11 @@
 
 ## ภาษาที่รองรับ
 
-🇹🇷 English · 🇮🇹 中文 · �� �� � 日本語 · �� �� � � � � � � � � � � � � � � � Español · ��� Português · 🇫🇷 Français · 🇩🇪 Deutsch ถิ่นที่อยู่ ��� Italiano · ���🇱 Polski · ��� �� ����������� · �� �� �� العربية · 🇹🇷 Türkçe · 🇻🏽 Tiếng Viết · 🇹🇭 ไทย · ...
-
-อังกฤษ | [Укра́ська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [เยอรมัน](./README.de-DE.md) | [ตุรกี](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [โปแลนด์](./README.pl-PL.md) | [อิตาลี](./README.it-IT.md) | [ฝรั่งเศส](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [ภาษาโปรตุเกส](./README.pt-BR.md) | [เตี่ยงเวียต](./README.vi-VN.md) | [বংলা](./README.bn-BD.md) | [ภาษาสเปน](./README.es-ES.md) | [ภาษาอินโดนีเซีย](./README.id-ID.md) | [ภาษาโรมาเนีย](./README.ro-RO.md) | [ภาษาเกาหลี](./README.ko-KR.md) | [ภาษาดัตช์](./README.nl-NL.md) | [ภาษาญี่ปุ่น](./README.ja-JP.md)
+ประเทศอังกฤษ | [เชคเกอร์](./README.uk-UA.md) | [🇮🇹 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮รี हिन्दी](./README.hi-IN.md) | [🇩🇪 Deutsch](./README.de-DE.md) | [🇹🇷 Türkçe](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [ภูธร🇱 Polski](./README.pl-PL.md) | [🇮🇹 อิตาลี](./README.it-IT.md) | [🇫🇷 ฝรั่งเศส](./README.fr-FR.md) | [🇮🇹 中文](./README.zh-CN.md) | [🇧🇷 Português](./README.pt-BR.md) | [🇻🇷 Tiếng Viết](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇷 Español](./README.es-ES.md) | [🇮🇩 บาฮาซา อินโดนีเซีย](./README.id-ID.md) | [🇷🇴 โรมานา](./README.ro-RO.md) | [🇰🇷 เกาหลี](./README.ko-KR.md) | [🇮🇱 เนเธอร์แลนด์](./README.nl-NL.md) | [🇯🇵 ภาษาญี่ปุ่น](./README.ja-JP.md)
 
 หากต้องการเปิดใช้งานภาษาเพิ่มเติมสำหรับการสร้างรายงาน โปรดดูที่ [การสนับสนุนหลายภาษา](./docs/setup.md#multi-language-support)
 
-เวิร์กโฟลว์ GitHub Actions ที่ทำงานทุกเช้าเวลา 08:00 CST โดยจะรวบรวมสัญญาณระบบนิเวศ AI จาก 10 แหล่งข้อมูล จากนั้นเผยแพร่บทสรุปรายวัน (ในทุกภาษาที่กำหนดค่าไว้) ในรูปแบบ GitHub Issues และไฟล์ Markdown ที่คอมมิตแล้ว รายงานสรุปรายสัปดาห์และรายเดือนจะถูกสร้างขึ้นโดยอัตโนมัติเช่นกัน
+เวิร์กโฟลว์ GitHub Actions ที่ทำงานทุกเช้าเวลา 08:00 CST โดยจะรวบรวมสัญญาณระบบนิเวศ AI จากแหล่งข้อมูล 10 แหล่ง จากนั้นเผยแพร่บทสรุปรายวัน (ในทุกภาษาที่กำหนดค่าไว้) ในรูปแบบ GitHub Issues และไฟล์ Markdown ที่คอมมิตไว้ นอกจากนี้ยังมีการสร้างรายงานสรุปรายสัปดาห์และรายเดือนโดยอัตโนมัติ
 
 ## แหล่งข้อมูล
 
@@ -16,19 +14,19 @@
 
 |--------|------|------|
 
-| [GitHub Repos](https://github.com) | API | ปัญหา, PRs, การเผยแพร่จาก repos เครื่องมือ AI ที่ติดตามมากกว่า 17 รายการ |
+| [GitHub Repos](https://github.com) | API | ปัญหา, PRs, การเผยแพร่จาก 17+ repos เครื่องมือ AI ที่ติดตาม |
 
-| [Claude Code Skills](https://github.com/anthropics/skills) | API | ทักษะยอดนิยมเรียงลำดับตามการมีส่วนร่วมของชุมชน |
+| [ทักษะการเขียนโค้ดของ Claude](https://github.com/anthropics/skills) | API | ทักษะยอดนิยมเรียงลำดับตามการมีส่วนร่วมของชุมชน |
 
-| [GitHub Trending](https://github.com/trending) | HTML + API | repos ยอดนิยมรายวัน + การค้นหาหัวข้อ AI (ช่วงเวลา 7 วัน) |
+[GitHub Trending](https://github.com/trending) | HTML + API | คลังเก็บข้อมูลยอดนิยมรายวัน + การค้นหาหัวข้อ AI (ช่วงเวลา 7 วัน) |
 
-| [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | เรื่องราว AI ยอดนิยม 30 อันดับแรกจาก 24 ชั่วโมงที่ผ่านมา, การค้นหาแบบขนาน 6 รายการ |
+[Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | 30 เรื่องราว AI ยอดนิยมจาก 24 ชั่วโมงที่ผ่านมา, 6 การค้นหาแบบขนาน |
 
-| [Product Hunt](https://www.producthunt.com) | GraphQL API | ผลิตภัณฑ์ AI ยอดนิยมเมื่อวานนี้ตามจำนวนโหวต |
+[Product Hunt](https://www.producthunt.com) | GraphQL API | ผลิตภัณฑ์ AI ยอดนิยมเมื่อวานนี้ตามคะแนนโหวต |
 
 [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | บทความล่าสุดจาก cs.AI, cs.CL, cs.LG (48 ชั่วโมงที่ผ่านมา) |
 
-[Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 โมเดลยอดนิยมเรียงตามจำนวนไลค์รายสัปดาห์ |
+[Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 โมเดลยอดนิยม เรียงตามจำนวนไลค์รายสัปดาห์ |
 
 [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | บทความ AI/LLM ยอดนิยมจาก 5 แท็ก |
 
@@ -42,7 +40,7 @@
 
 เรียกดูบทสรุปย้อนหลังทั้งหมดในอินเทอร์เฟซที่สะอาดตาและมีธีมสีเข้ม — ไม่จำเป็นต้องเข้าสู่ระบบ รายงานจะแสดงผลจากไฟล์ Markdown ในที่เก็บข้อมูลนี้ผ่าน GitHub Pages
 
-ส่วนติดต่อผู้ใช้บนเว็บเป็น SPA ที่เขียนด้วย Vite + TypeScript ใน `packages/web/` มันดึง `manifest.json` และไฟล์บทสรุปแต่ละไฟล์ในขณะทำงาน — บทสรุปรายวันใหม่จะปรากฏขึ้นโดยไม่ต้องสร้างส่วนติดต่อผู้ใช้ใหม่
+ส่วนติดต่อผู้ใช้บนเว็บเป็น SPA ที่เขียนด้วย Vite และ TypeScript อยู่ใน `packages/web/` มันจะดึงไฟล์ `manifest.json` และไฟล์ไดเจสต์แต่ละไฟล์ในระหว่างการทำงาน — ไดเจสต์รายวันใหม่จะปรากฏขึ้นโดยไม่ต้องสร้างส่วนติดต่อผู้ใช้ใหม่
 
 ```bash
 bun run dev:web    # start Vite dev server for local UI development

@@ -2,13 +2,11 @@
 
 ## Підтримувані мови
 
-🇬🇧 англійська · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 українська · 🇧🇩 বাংলা
-
-англійська | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Італійський](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Português](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Румунська](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Нідерландська](./README.nl-NL.md) | [Японська](./README.ja-JP.md)
+🇬🇧 англійська | [🇺🇦 Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Deutsch](./README.de-DE.md) | [🇹🇷 Türkçe](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱 Polski](./README.pl-PL.md) | [🇮🇹 Italiano](./README.it-IT.md) | [🇫🇷 Français](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷 Português](./README.pt-BR.md) | [🇻🇳 Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 Індонезійська](./README.id-ID.md) | [🇷🇴 Ромână](./README.ro-RO.md) | [🇰🇷 Корейська](./README.ko-KR.md) | [🇳🇱 Нідерландська](./README.nl-NL.md) | [🇯🇵 Японська](./README.ja-JP.md)
 
 Щоб увімкнути додаткові мови для створення звітів, див. [Підтримка багатьох мов](./docs/setup.md#multi-language-support).
 
-Робочий процес GitHub Actions, який запускається щоранку о 08:00 за центральним стандартним часом. Він агрегує сигнали екосистеми ШІ з 10 джерел даних, а потім публікує щоденні дайджести (всіма налаштованими мовами) як файли GitHub Issues та зафіксовані файли Markdown. Щотижневі та щомісячні зведені звіти також генеруються автоматично.
+Рабочий процес GitHub Actions, який запускається щоранку о 08:00 за центральним стандартним часом. Він агрегує сигнали екосистеми ШІ з 10 джерел даних, а потім публікує щоденні дайджести (всіма налаштованими мовами) у вигляді файлів GitHub Issues та зафіксованих Markdown. Щотижневі та щомісячні звіти також генеруються автоматично.
 
 ## Джерела даних
 
@@ -17,13 +15,13 @@
 | [Репозиторії GitHub](https://github.com) | API | Проблеми, PR, релізи з понад 17 відстежуваних репозиторіїв інструментів ШІ |
 | [Навички Claude Code](https://github.com/anthropics/skills) | API | Трендові навички, відсортовані за залученням спільноти |
 | [Тренди GitHub](https://github.com/trending) | HTML + API | Щоденні трендові репозиторії + пошук за темами ШІ (7-денне вікно) |
-| [Новини хакерів](https://news.ycombinator.com) | [API Algolia](https://hn.algolia.com/api) | 30 найкращих історій про ШІ за останні 24 години, 6 паралельних запитів |
-| [Полювання за продуктами](https://www.producthunt.com) | API GraphQL | Найкращі продукти ШІ за кількістю голосів за вчорашній день |
-| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | Останні статті з cs.AI, cs.CL, cs.LG (за останні 48 годин) |
+| [Новини хакерів](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | 30 найкращих історій про ШІ за останні 24 години, 6 паралельних запитів |
+| [Product Hunt](https://www.producthunt.com) | GraphQL API | Найкращі продукти ШІ за кількістю голосів за вчорашній день |
+| [ArXiv](https://arxiv.org) | [ArXiv API](https://export.arxiv.org/api/query) | Останні статті від cs.AI, cs.CL, cs.LG (за останні 48 годин) |
 | [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 30 трендових моделей, відсортованих за тижневими вподобаннями |
-| [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | Найкращі статті про AI/LLM з 5 тегів |
+| [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | Найкращі статті про ШІ/LLM з 5 тегів |
 | [Lobste.rs](https://lobste.rs) | JSON API | Історії з тегами AI/ML за останні 7 днів |
-| [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Карта сайту | Нові статті виявлені за допомогою `lastmod` diff |
+| [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Карта сайту | Нові статті виявлені через `lastmod` diff |
 
 ## Веб-інтерфейс
 

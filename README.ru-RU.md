@@ -2,9 +2,7 @@
 
 ## Поддерживаемые языки
 
-🇬🇧 Английский · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Испанский · 🇧🇷 Португальский · 🇫🇷 Французский · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Тианг Вьет · 🇹🇭 ไทย · 🇳🇱 Нидерланды · 🇮🇳 हिन्दी · 🇷🇴 Романа · 🇮🇩 Бахаса Индонезия · 🇺🇦 Українська · 🇧🇩 বাংলা
-
-английский | [Українська](./README.uk-UA.md) | [Обращение](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Польский](./README.pl-PL.md) | [Итальянский](./README.it-IT.md) | [Французский](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Португальский](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Испанский](./README.es-ES.md) | [Бахаса Индонезия](./README.id-ID.md) | [Романэ](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Нидерланды](./README.nl-NL.md) | [Японский](./README.ja-JP.md)
+🇬🇧 Английский | [🇺🇦 Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Deutsch](./README.de-DE.md) | [🇹🇷 Türkçe](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱Польский](./README.pl-PL.md) | [🇮🇹 Итальянский](./README.it-IT.md) | [🇫🇷 Français](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷 Португальский](./README.pt-BR.md) | [🇻🇳 Тианг Вьет](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 Бахаса Индонезия](./README.id-ID.md) | [🇷🇴 Романа](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱 Нидерланды](./README.nl-NL.md) | [🇯🇵 Японский](./README.ja-JP.md)
 
 Чтобы включить поддержку дополнительных языков для генерации отчетов, см. [Многоязычная поддержка](./docs/setup.md#multi-language-support).
 

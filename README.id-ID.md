@@ -2,9 +2,7 @@
 
 ## Bahasa yang didukung
 
-Indonesia العربية · 🇹🇷 Türkçe · 🇻€ Tiếng Việt · 🇹hon ไทย · nai🇱 Nederlands · 🇮🇩 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇮🇩 Українська · 🇧🇩 lagi
-
-Bahasa Inggris | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Jerman](./README.de-DE.md) | [Turki](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italia](./README.it-IT.md) | [Perancis](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Portugis](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Romană](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederland](./README.nl-NL.md) | [Bahasa Jepang](./README.ja-JP.md)
+🇮🇧 Bahasa Inggris | [Ukraina Українська](./README.uk-UA.md) | [wahah العربية](./README.ar-SA.md) | [🇷 Русский](./README.ru-RU.md) | [🇮nai हिन्दी](./README.hi-IN.md) | [🇩🇪 Jerman](./README.de-DE.md) | [🇹🇷 Türkçe](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱 Polski](./README.pl-PL.md) | [🇮🇹 Italiano](./README.it-IT.md) | [🇫🇷 Français](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷 Português](./README.pt-BR.md) | [🇻€ Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇪 Español](./README.es-ES.md) | [🇮🇩 Bahasa Indonesia](./README.id-ID.md) | [🇷🇴 Română](./README.ro-RO.md) | [Krisik 한국어](./README.ko-KR.md) | [€🇱 Belanda](./README.nl-NL.md) | [🇯🇵 Bahasa Jepang](./README.ja-JP.md)
 
 Untuk mengaktifkan bahasa tambahan untuk pembuatan laporan, lihat [Dukungan multibahasa](./docs/setup.md#multi-language-support).
 

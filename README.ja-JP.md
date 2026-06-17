@@ -2,13 +2,11 @@
 
 ## サポートされている言語
 
-🇬🇧 英語 · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 スペイン語 · 🇧🇷 ポルトガル語 · 🇫🇷 フランス語 · 🇩🇪 ドイツ語 · 🇮🇹 イタリアーノ · 🇵🇱 ポルスキ · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱オランダ · 🇮🇳 हिन्दी · 🇷🇴 ローマ · 🇮🇩 インドネシア語 · 🇺🇦 Українська · 🇧🇩 বাংলা
+🇬🇧 英語 | [🇺🇦Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪ドイツ語](./README.de-DE.md) | [🇹🇷 テュルクチェ](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱ポルスキー](./README.pl-PL.md) | [🇮🇹 イタリアーノ](./README.it-IT.md) | [🇫🇷フランス語](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷ポルトガル語](./README.pt-BR.md) | [🇻🇳 Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸スペイン語](./README.es-ES.md) | [🇮🇩インドネシア語](./README.id-ID.md) | [🇷🇴ローマ](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱オランダ](./README.nl-NL.md) | [🇯🇵 日本語](./README.ja-JP.md)
 
-英語 | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [ドイツ語](./README.de-DE.md) | [テュルクチェ](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [ポルスキー](./README.pl-PL.md) | [イタリア語](./README.it-IT.md) | [フランス語](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [ポルトガル語](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [スペイン語](./README.es-ES.md) | [インドネシア語](./README.id-ID.md) | [ルーマニア語](./README.ro-RO.md) | [韓国語](./README.ko-KR.md) | [オランダ語](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
+レポート生成で追加言語を有効にするには、[多言語サポート](./docs/setup.md#multi-language-support) を参照してください。
 
-レポート生成に他の言語を追加するには、[多言語サポート](./docs/setup.md#multi-language-support) を参照してください。
-
-毎日午前8時（CST）に実行されるGitHub Actionsワークフローです。10のデータソースからAIエコシステムのシグナルを集約し、GitHub Issuesとコミット済みMarkdownファイルとして、日次ダイジェスト（設定済みのすべての言語）を公開します。週次および月次のロールアップレポートも自動的に生成されます。
+毎日午前8時（CST）に実行されるGitHub Actionsワークフローです。10のデータソースからAIエコシステムのシグナルを集約し、GitHub Issuesとコミット済みMarkdownファイルとして、日次ダイジェスト（設定済みの全言語）を公開します。週次および月次のロールアップレポートも自動的に生成されます。
 
 ## データソース
 
@@ -16,21 +14,21 @@
 
 |--------|------|------|
 
-| [GitHub Repos](https://github.com) | API | 17以上の追跡対象AIツールリポジトリからの課題、プルリクエスト、リリース |
+| [GitHubリポジトリ](https://github.com) | API | 17以上の追跡対象AIツールリポジトリからのIssue、PR、リリース |
 
-| [Claude Code Skills](https://github.com/anthropics/skills) | API | コミュニティエンゲージメント順にソートされたトレンドスキル |
+| [Claude Code Skills](https://github.com/anthropics/skills) | API | コミュニティエンゲージメント順に並べられたトレンドスキル |
 
-| [GitHub Trending](https://github.com/trending) | HTML + API | 日次トレンドリポジトリ + AIトピック検索（7日間） |
+| [GitHub Trending](https://github.com/trending) | HTML + API | 毎日のトレンドリポジトリ + AIトピック検索 (7日間) |
 
 | [Hacker News](https://news.ycombinator.com) | [Algolia API](https://hn.algolia.com/api) | 過去24時間のAI関連ニュース上位30件、6件の並列クエリ |
 
 | [Product Hunt](https://www.producthunt.com) | GraphQL API | 昨日の投票数上位AI製品 |
 
-| [arXiv](https://arxiv.org) | [arXiv API](https://export.arxiv.org/api/query) | cs.AI、cs.CL、cs.LGの最新論文（過去48時間） |
+| [arXiv](https://arxiv.org) | [arXiv API](https://export.arxiv.org/api/query) | cs.AI、cs.CL、cs.LGの最新論文 (過去48時間) |
 
 | [Hugging Face](https://huggingface.co) | [Hub API](https://huggingface.co/api/models) | 週間のいいね数でソートされたトレンドモデル30選 |
 
-| [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | 5つのタグによるAI/LLMのトップ記事 |
+| [Dev.to](https://dev.to) | [Forem API](https://dev.to/api) | 5つのタグで人気のAI/LLM記事 |
 
 | [Lobste.rs](https://lobste.rs) | JSON API | 過去7日間のAI/MLタグ付き記事 |
 
@@ -38,12 +36,12 @@
 
 ## Web UI
 
-**`PAGES_URL`** — リポジトリ変数としてこの値を設定することで、フォークしたリポジトリのWeb UIベースURLを設定できます。
+**`PAGES_URL`** — リポジトリ変数として設定することで、フォークのWeb UIベースURLを設定できます。
 
-クリーンなダークテーマのインターフェースで、過去のダイジェストをすべて閲覧できます。ログインは不要です。レポートは、このリポジトリ内のMarkdownファイルからGitHub Pages経由でレンダリングされます。
+クリーンなダークテーマのインターフェースで、過去のダイジェストをすべて閲覧できます。ログインは不要です。レポートは、このリポジトリのMarkdownファイルからGitHub Pages経由でレンダリングされます。
 
-Web UIは、`packages/web/`にあるVite + TypeScriptのSPAです。実行時に`manifest.json`と個々のダイジェストファイルを取得するため、UIを再構築することなく、新しい日刊ダイジェストが表示されます。
 
+ウェブUIは`packages/web/`にあるViteとTypeScriptで構築されたSPAです。実行時に`manifest.json`と個々のダイジェストファイルを取得し、UIを再構築することなく新しいデイリーダイジェストが表示されます。
 
 ```bash
 bun run dev:web    # start Vite dev server for local UI development
