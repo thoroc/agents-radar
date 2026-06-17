@@ -6,6 +6,8 @@
 
 English | [中文](./README.zh.md)
 
+To enable additional languages for report generation, see [Multi-language support](./docs/setup.md#multi-language-support).
+
 A GitHub Actions workflow that runs every morning at 08:00 CST. It aggregates AI ecosystem signals from 10 data sources, then publishes daily digests (in all configured languages) as GitHub Issues and committed Markdown files. Weekly and monthly rollup reports are also generated automatically.
 
 ## Data Sources
@@ -138,7 +140,7 @@ wrangler deploy
 - Scrapes official Anthropic and OpenAI web content via sitemaps; detects new articles incrementally
 - Monitors GitHub Trending daily + searches 6 AI topic tags; classifies repos by dimension and extracts trend signals
 - Fetches top-30 AI stories from Hacker News (last 24h, ranked by points); generates community sentiment report
-- Publishes GitHub Issues for each report type; commits Markdown files to `digests/YYYY-MM-DD/`
+- Publishes GitHub Issues for each report type; commits Markdown files to `assets/digests/YYYY-MM-DD/`
 - Runs on a daily schedule via GitHub Actions; supports manual triggering
 - All tracked repositories are configurable via `config.yml` — no code changes needed
 - Centralized locale system via `locales/*.json` — 21 supported languages with `t()` catalog in `packages/core/src/locales/t.ts`
@@ -153,15 +155,15 @@ For the full guide — secrets reference, LLM providers, `config.yml` customisat
 
 ## Output format
 
-Files are written to `digests/YYYY-MM-DD/` — one file per report type per enabled language. See [docs/output-format.md](./docs/output-format.md) for the full file listing, per-report structure, and GitHub Issue label reference.
-
-**Example:** with `["en-US", "zh-CN"]` configured, `digests/2026-05-28/` contains `ai-cli.md` (English, primary) and `ai-cli.zh-CN.md` (Chinese).
-
-Historical digests are stored in [`digests/`](./digests/). Published issues are tagged by type: [`digest`](../../issues?label=digest) · [`openclaw`](../../issues?label=openclaw) · [`web`](../../issues?label=web) · [`trending`](../../issues?label=trending) · [`hn`](../../issues?label=hn) · [`ph`](../../issues?label=ph) · [`arxiv`](../../issues?label=arxiv) · [`hf`](../../issues?label=hf) · [`community`](../../issues?label=community) · [`weekly`](../../issues?label=weekly) · [`monthly`](../../issues?label=monthly).
+One file per report type per enabled language, written to `assets/digests/YYYY-MM-DD/`. Historical digests are in [`assets/digests/`](./assets/digests/). See [docs/output-format.md](./docs/output-format.md) for the full file listing, per-report structure, and GitHub Issue label reference.
 
 ## FAQ
 
 Common questions — why a report was skipped, how much it costs to run, adding repos, changing the schedule, troubleshooting 429s — answered in [docs/faq.md](./docs/faq.md).
+
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for branch strategy, coding standards, commit conventions, and instructions for adding new languages or report types.
 
 ## Star History
 
