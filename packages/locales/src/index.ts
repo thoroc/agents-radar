@@ -12,6 +12,8 @@ export {
   type LocaleMeta,
   LocaleMetaSchema,
 } from "./schema";
+export { sort } from "./sort";
+export { sortLocaleFile } from "./sort-file";
 export { t } from "./t";
 export type { Locale } from "./types/locale";
 export { validate } from "./validate";

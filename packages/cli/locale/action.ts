@@ -1,8 +1,9 @@
-import { generate, validate } from "@agents-radar/locales";
+import { generate, sort, validate } from "@agents-radar/locales";
 
 export interface LocaleActionArgs {
   generate?: boolean;
   validate?: boolean;
+  sort?: boolean;
 }
 
 export type LocaleActionDeps = {
@@ -19,5 +20,7 @@ export const localeAction = async (args: LocaleActionArgs, deps: LocaleActionDep
       throw new Error("Locale validation failed — see errors above");
     }
     console.error("All locale files are valid.");
+  } else if (args.sort) {
+    sort(repoRoot);
   }
 };
