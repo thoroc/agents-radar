@@ -1,8 +1,14 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { getPrimaryLang, SUPPORTED_LOCALES, toGoogleLang } from "@agents-radar/locales";
-import { segmentContent } from "./segment-content";
+import type { TranslationCache } from "./cache-types";
+import { loadCache } from "./load-cache";
+import { reconstructTranslation } from "./reconstruct-translation";
+import { saveCache } from "./save-cache";
+import { segmentSource } from "./segment-source";
 import { updateReadmeLinks } from "./update-readme-links";
+
+const CACHE_FILE = "assets/translation-cache.json";
 
 type TranslateFn = (texts: string[], options: { to: string; from?: string }) => Promise<[string[], unknown]>;
 
@@ -15,6 +21,7 @@ export type TranslateDeps = {
   translateFn?: TranslateFn;
   apiKey?: string;
   cwd?: string;
+  cachePath?: string;
 };
 
 export const translateAction = async (args: TranslateActionArgs, deps: TranslateDeps = {}): Promise<void> => {
@@ -38,34 +45,41 @@ export const translateAction = async (args: TranslateActionArgs, deps: Translate
   const baseName = file.replace(/\.md$/, "");
   const locales = SUPPORTED_LOCALES.filter((l) => l !== getPrimaryLang());
 
+  const cachePath = deps.cachePath ?? join(cwd, CACHE_FILE);
+  const cache: TranslationCache = loadCache(cachePath);
+  const segments = segmentSource(content);
+  const translatableSegments = segments.filter((s) => !s.isCode && s.text.trim() && s.hash);
+
   if (verbosity >= 1) {
-    console.error(`Translating ${file} into ${locales.length} languages`);
+    console.error(`Translating ${file} — ${translatableSegments.length} segments, ${locales.length} locales`);
   }
 
   for (const locale of locales) {
     const googleLang = toGoogleLang(locale);
-    const segments = segmentContent(content);
+    const missing = translatableSegments.filter((s) => !cache[s.hash]?.[locale]);
 
-    const proseSegments = segments.filter((s) => !s.isCode && s.text.trim());
-    const proseTexts = proseSegments.map((s) => s.text);
-
-    const [translations] = await translateFn(proseTexts, { to: googleLang, from: "en" });
-
-    let idx = 0;
-    const translated = segments
-      .map((s) => {
-        if (s.isCode || !s.text.trim()) return s.text;
-        return translations[idx++] ?? s.text;
-      })
-      .join("");
-
-    const outPath = join(cwd, `${baseName}.${locale}.md`);
-    writeFileSync(outPath, translated, "utf-8");
-
-    if (verbosity >= 1) {
-      console.error(`  ${locale} done`);
+    if (missing.length === 0) {
+      if (verbosity >= 1) console.error(`  ${locale} — fully cached, skipping`);
+    } else {
+      if (verbosity >= 1) {
+        console.error(`  ${locale} — translating ${missing.length}/${translatableSegments.length} segments`);
+      }
+      const [translations] = await translateFn(
+        missing.map((s) => s.text),
+        { to: googleLang, from: "en" },
+      );
+      for (const [i, segment] of missing.entries()) {
+        const entry = cache[segment.hash] ?? {};
+        cache[segment.hash] = entry;
+        entry[locale] = translations[i] ?? segment.text;
+      }
     }
+
+    const translated = reconstructTranslation(segments, cache, locale);
+    writeFileSync(join(cwd, `${baseName}.${locale}.md`), translated, "utf-8");
   }
+
+  saveCache(cachePath, cache);
 
   const updatedContent = updateReadmeLinks({
     content,
