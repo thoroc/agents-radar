@@ -15,6 +15,7 @@ export {
 export { sort } from "./sort";
 export { sortLocaleFile } from "./sort-file";
 export { t } from "./t";
+export { toGoogleLang } from "./to-google-lang";
 export type { Locale } from "./types/locale";
 export { validate } from "./validate";
 export { validateLocale } from "./validate-locale";

@@ -9,6 +9,7 @@ import { monthlyCommand } from "./monthly";
 import { notifyCommand } from "./notify";
 import { schedulerCommand } from "./scheduler";
 import { socialCommand } from "./socials";
+import { translateCommand } from "./translate";
 import { weeklyCommand } from "./weekly";
 
 const main = async (): Promise<void> => {
@@ -27,6 +28,7 @@ const main = async (): Promise<void> => {
     .command("notify", notifyCommand)
     .command("scheduler", schedulerCommand)
     .command("social", socialCommand)
+    .command("translate", translateCommand)
     .command("weekly", weeklyCommand)
     .parse(process.argv.slice(2));
 };
