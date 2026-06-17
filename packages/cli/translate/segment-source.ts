@@ -8,7 +8,7 @@ export interface SourceSegment {
 }
 
 export const segmentSource = (content: string): SourceSegment[] => {
-  const rawSegments = segmentContent(content);
+  const rawSegments = segmentContent(content.replace(/\r\n/g, "\n"));
   const result: SourceSegment[] = [];
 
   for (const segment of rawSegments) {

@@ -4,8 +4,9 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { loadCache } from "./load-cache";
 
+let tmpIdx = 0;
 const makeTmp = () => {
-  const dir = join(tmpdir(), `load-cache-test-${Math.floor(Date.now() / 1000)}-${process.pid}`);
+  const dir = join(tmpdir(), `load-cache-test-${process.pid}-${tmpIdx++}`);
   mkdirSync(dir, { recursive: true });
   return dir;
 };
