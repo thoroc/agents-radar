@@ -67,7 +67,7 @@ export const runWeekly = async (digestRepo?: string, env: NodeJS.ProcessEnv = pr
     const s = t(l);
     const metaLine = `${s.weeklyMeta.replace("{range}", `${last7[last7.length - 1]} ~ ${last7[0]}`).replace("{utcStr}", utcStr)}`;
     allContent[lang] =
-      `# ${s.weeklyTitle} ${weekStr}\n\n` + metaLine + `---\n\n` + (summariesByLang[lang] ?? "") + footer;
+      `# ${s.weeklyTitle} ${weekStr}\n\n${metaLine}---\n\n${summariesByLang[lang] ?? ""}${footer}`;
 
     const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
     console.error(`  Saved ${saveFile(allContent[lang]!, dateStr, `ai-weekly${suffix}.md`)}`);

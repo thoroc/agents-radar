@@ -1,6 +1,5 @@
 import { handleMcp } from "./protocol";
 import { tools } from "./tools";
-import { PAGES_URL } from "./types";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",

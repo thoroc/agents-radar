@@ -16,10 +16,10 @@ export const loadReport = async (
   if (push) history.pushState(null, "", `#${key}`);
 
   document.querySelectorAll<HTMLElement>(".rpt-btn").forEach((b) => {
-    b.classList.toggle("active", b.dataset["key"] === key);
+    b.classList.toggle("active", b.dataset.key === key);
   });
   document.querySelectorAll<HTMLElement>(".lang-btn").forEach((b) => {
-    b.classList.toggle("active", b.dataset["key"] === key);
+    b.classList.toggle("active", b.dataset.key === key);
   });
   document.querySelectorAll<HTMLElement>(".date-hdr").forEach((h) => {
     const grp = h.closest(".date-group");
@@ -32,7 +32,7 @@ export const loadReport = async (
     h.classList.toggle("lit", !!hasActive);
   });
   document.querySelectorAll<HTMLElement>(".date-group").forEach((g) => {
-    if (g.dataset["date"] === date) {
+    if (g.dataset.date === date) {
       g.classList.add("open");
       const monthGrp = g.closest(".month-group");
       if (monthGrp) monthGrp.classList.add("open");

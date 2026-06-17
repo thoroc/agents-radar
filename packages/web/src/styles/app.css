@@ -225,6 +225,11 @@ body {
 .month-group.open .month-body {
   max-height: 9999px;
 }
+.arr {
+  font-size: 8px;
+  transition: transform 0.2s;
+  display: inline-block;
+}
 .month-group.open > .month-hdr .arr {
   transform: rotate(90deg);
 }
@@ -251,11 +256,6 @@ body {
 .date-hdr.search-hit {
   color: var(--accent);
   background: linear-gradient(90deg, var(--accent-bg), transparent);
-}
-.arr {
-  font-size: 8px;
-  transition: transform 0.2s;
-  display: inline-block;
 }
 .date-group.open .arr {
   transform: rotate(90deg);

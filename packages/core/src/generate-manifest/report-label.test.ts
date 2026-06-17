@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Read real locale data for zh-CN and en-US to avoid breaking downstream tests
-const ZH_LOCALE = JSON.parse(require("fs").readFileSync("locales/zh-CN.json", "utf-8"));
-const EN_LOCALE = JSON.parse(require("fs").readFileSync("locales/en-US.json", "utf-8"));
+const ZH_LOCALE = JSON.parse(require("node:fs").readFileSync("locales/zh-CN.json", "utf-8"));
+const EN_LOCALE = JSON.parse(require("node:fs").readFileSync("locales/en-US.json", "utf-8"));
 
 vi.mock("../utils", () => ({
   t: (lang: string) => (lang === "en-US" ? EN_LOCALE : ZH_LOCALE),

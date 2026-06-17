@@ -19,7 +19,9 @@ describe("getDateDirs", () => {
   });
 
   it("returns sorted date directories in reverse order", () => {
-    vi.spyOn(fs, "readdirSync").mockReturnValue(["2026-03-09", "2026-03-08"] as any);
+    vi.spyOn(fs, "readdirSync").mockReturnValue(["2026-03-09", "2026-03-08"] as unknown as ReturnType<
+      typeof fs.readdirSync
+    >);
     expect(getDateDirs()).toEqual(["2026-03-09", "2026-03-08"]);
   });
 
@@ -29,7 +31,9 @@ describe("getDateDirs", () => {
   });
 
   it("filters out non-date directories", () => {
-    vi.spyOn(fs, "readdirSync").mockReturnValue(["2026-03-09", "not-a-date"] as any);
+    vi.spyOn(fs, "readdirSync").mockReturnValue(["2026-03-09", "not-a-date"] as unknown as ReturnType<
+      typeof fs.readdirSync
+    >);
     const dirs = getDateDirs();
     expect(dirs).toEqual(["2026-03-09"]);
   });

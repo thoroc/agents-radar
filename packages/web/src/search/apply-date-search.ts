@@ -15,7 +15,7 @@ export const applyDateSearch = (
       return;
     }
 
-    const text = searchIndex.get(grp.dataset["date"] ?? "") ?? "";
+    const text = searchIndex.get(grp.dataset.date ?? "") ?? "";
     const matched = text.includes(needle);
     hdr.classList.toggle("search-hit", matched);
     if (matched) hits += 1;

@@ -3,17 +3,19 @@ import { localeAction } from "./action";
 
 export const localeCommand = new Command()
   .name("locale")
-  .description("Generate or validate locale schema and types")
+  .description("Generate, validate, or sort locale schema and types")
   .option("-g, --generate", "Generate locale-schema.json and locale.ts from locale files")
   .option("-v, --validate", "Validate all locale files against locale-schema.json")
+  .option("-s, --sort", "Sort all locale JSON files alphabetically (pins $schema and _meta first)")
   .action(async (options) => {
-    if (options.generate && options.validate) {
-      console.error("--generate and --validate are mutually exclusive");
+    const flagCount = [options.generate, options.validate, options.sort].filter(Boolean).length;
+    if (flagCount > 1) {
+      console.error("--generate, --validate, and --sort are mutually exclusive");
       process.exit(1);
     }
-    if (!options.generate && !options.validate) {
-      console.error("Specify --generate or --validate");
+    if (flagCount === 0) {
+      console.error("Specify --generate, --validate, or --sort");
       process.exit(1);
     }
-    await localeAction({ generate: !!options.generate, validate: !!options.validate });
+    await localeAction({ generate: !!options.generate, validate: !!options.validate, sort: !!options.sort });
   });

@@ -37,6 +37,22 @@ describe("localeAction generate", () => {
   });
 });
 
+describe("localeAction sort", () => {
+  it("sorts all locale files alphabetically", async () => {
+    const dir = tmpDir();
+    try {
+      write(dir, "locales/en-US.json", JSON.stringify({ zebra: "z", apple: "a" }));
+
+      await localeAction({ sort: true }, { repoRoot: dir });
+
+      const result = JSON.parse(fs.readFileSync(path.resolve(dir, "locales/en-US.json"), "utf-8"));
+      expect(Object.keys(result)).toEqual(["apple", "zebra"]);
+    } finally {
+      fs.rmSync(dir, { recursive: true });
+    }
+  });
+});
+
 describe("localeAction validate", () => {
   it("passes for valid locale files", async () => {
     const dir = tmpDir();

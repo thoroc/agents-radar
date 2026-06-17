@@ -93,7 +93,7 @@ export const runMonthly = async (
         : s.sourceLabelDailySampled.replace("{n}", String(sourceCount));
     const metaLine = s.monthlyMeta.replace("{sources}", sourceLabel).replace("{utcStr}", utcStr);
     allContent[lang] =
-      `# ${s.monthlyTitle} ${monthStr}\n\n` + metaLine + `---\n\n` + (summariesByLang[lang] ?? "") + footer;
+      `# ${s.monthlyTitle} ${monthStr}\n\n${metaLine}---\n\n${summariesByLang[lang] ?? ""}${footer}`;
 
     const suffix = lang === getPrimaryLang() ? "" : `.${lang}`;
     console.error(`  Saved ${saveFile(allContent[lang]!, dateStr, `ai-monthly${suffix}.md`)}`);

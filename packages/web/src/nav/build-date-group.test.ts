@@ -19,7 +19,7 @@ describe("buildDateGroup", () => {
 
   it("sets data-date attribute", () => {
     const el = buildDateGroup("2024-01-15", ["ai-cli"], false, {}, vi.fn());
-    expect(el.dataset["date"]).toBe("2024-01-15");
+    expect(el.dataset.date).toBe("2024-01-15");
   });
 
   it("shows day part (DD) in header", () => {
