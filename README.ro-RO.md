@@ -140,7 +140,7 @@ wrangler deploy
 - Monitorizează zilnic tendințele GitHub + caută 6 etichete de subiecte AI; clasifică depozitele după dimensiune și extrage semnale de tendință
 - Preia top 30 de știri AI din Hacker News (ultimele 24 de ore, clasate după puncte); generează un raport de sentiment al comunității
 - Publică probleme GitHub pentru fiecare tip de raport; salvează fișierele Markdown în `assets/digests/AAAA-LL-ZZ/`
-- Rulează zilnic prin intermediul GitHub Actions; acceptă declanșarea manuală
+- Rulează zilnic prin intermediul GitHub Actions; Acceptă declanșarea manuală
 - Toate depozitele urmărite sunt configurabile prin `config.yml` — nu sunt necesare modificări de cod
 - Sistem centralizat de localizare prin `locales/*.json` — 21 de limbi acceptate cu catalogul `t()` în `packages/core/src/locales/t.ts`
 

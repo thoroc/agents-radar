@@ -55,7 +55,6 @@ bun run build:web  # build the web UI for deployment
 Berlangganan untuk mendapatkan notifikasi ringkasan harian yang dikirim langsung ke platform pilihan Anda. Setiap pesan berisi tautan ke semua laporan untuk hari itu ditambah Web UI dan umpan RSS.
 
 <table>
-
 <tr>
 <td align="center"><b><a href="https://t.me/agents_radar">Gabung Saluran Telegram</a></b></td>
 <td align="center"><b><a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=b56v3be8-b027-4ee6-abc4-65bf1f80bccd">Gabung Grup Feishu</a></b></td>

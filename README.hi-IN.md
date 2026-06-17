@@ -186,6 +186,7 @@ wrangler deploy
 योगदान का स्वागत है। शाखा रणनीति, कोडिंग मानक, कमिट कन्वेंशन और नई भाषाओं या रिपोर्ट प्रकारों को जोड़ने के निर्देशों के लिए [CONTRIBUTING.md](./CONTRIBUTING.md) देखें।
 
 
-## स्टार हिस्ट्री
+## स्टार इतिहास
 
-[![स्टार हिस्ट्री चार्ट](https://api.star-history.com/svg?repos=duanyytop/agents-radar&type=Date)](https://star-history.com/#duanyytop/agents-radar&Date)
+[![स्टार इतिहास चार्ट](https://api.star-history.com/svg?repos=duanyytop/agents-radar&type=Date)](https://star-history.com/#duanyytop/agents-radar&Date)
+

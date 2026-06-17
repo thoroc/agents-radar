@@ -4,7 +4,7 @@
 
 🇬🇧 영어 · 🇨🇳 中文 · 🇯🇵 日本語 · 🇷🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Viet · 🇹🇭 ไท้ · 🇳🇱 Nederlands · 🇮🇳 hin्دي · 🇷🇴 Română · 🇮🇩 바하사 인도네시아 · 🇺🇦 Украѕнська · 🇧🇩 বাংলা
 
-영어 | [Украѕнська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [힌디어](./README.hi-IN.md) | [독일어](./README.de-DE.md) | [터키어](./README.tr-TR.md) | [ไท้](./README.th-TH.md) | [폴스키](./README.pl-PL.md) | [이탈리아어](./README.it-IT.md) | [프랑스어](./README.fr-FR.md) | [중문](./README.zh-CN.md) | [포르투갈어](./README.pt-BR.md) | [Tiếng Viet](./README.vi-VN.md) | [문서](./README.bn-BD.md) | [스페인어](./README.es-ES.md) | [인도네시아어](./README.id-ID.md) | [로마](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [네덜란드](./README.nl-NL.md) | [일본어](./README.ja-JP.md)
+영어 | [Украѕнська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [힌디](./README.hi-IN.md) | [독일어](./README.de-DE.md) | [터키어](./README.tr-TR.md) | [ไท้](./README.th-TH.md) | [폴스키](./README.pl-PL.md) | [이탈리아어](./README.it-IT.md) | [프랑스어](./README.fr-FR.md) | [중문](./README.zh-CN.md) | [포르투갈어](./README.pt-BR.md) | [Tiếng Viet](./README.vi-VN.md) | [문서](./README.bn-BD.md) | [스페인어](./README.es-ES.md) | [인도네시아어](./README.id-ID.md) | [로마](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [네덜란드](./README.nl-NL.md) | [일본어](./README.ja-JP.md)
 
 보고서 생성에 추가 언어를 사용하려면 [다국어 지원](./docs/setup.md#multi-language-support)을 참조하세요.
 
