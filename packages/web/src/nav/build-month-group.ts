@@ -10,11 +10,11 @@ export const buildMonthGroup = (
   onLoad: (date: string, report: string) => void,
 ): HTMLElement => {
   const mGrp = document.createElement("div");
-  mGrp.className = "month-group" + (isFirstMonth ? " open" : "");
+  mGrp.className = `month-group${isFirstMonth ? " open" : ""}`;
 
   const mHdr = document.createElement("div");
   mHdr.className = "month-hdr";
-  mHdr.appendChild(document.createTextNode(month + " "));
+  mHdr.appendChild(document.createTextNode(`${month} `));
   const mArr = document.createElement("span");
   mArr.className = "arr";
   mArr.textContent = "▶";

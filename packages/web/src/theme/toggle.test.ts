@@ -4,12 +4,12 @@ import { applyTheme } from "./toggle";
 describe("applyTheme", () => {
   beforeEach(() => {
     localStorage.clear();
-    delete document.documentElement.dataset["theme"];
+    delete document.documentElement.dataset.theme;
   });
 
   it("sets data-theme on documentElement", () => {
     applyTheme("dark");
-    expect(document.documentElement.dataset["theme"]).toBe("dark");
+    expect(document.documentElement.dataset.theme).toBe("dark");
   });
 
   it("stores theme in localStorage", () => {
@@ -20,6 +20,6 @@ describe("applyTheme", () => {
   it("updates theme value", () => {
     applyTheme("dark");
     applyTheme("light");
-    expect(document.documentElement.dataset["theme"]).toBe("light");
+    expect(document.documentElement.dataset.theme).toBe("light");
   });
 });

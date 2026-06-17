@@ -1,6 +1,6 @@
 import { runScheduler } from "@agents-radar/core";
 
-export type SchedulerActionArgs = {};
+export type SchedulerActionArgs = Record<string, never>;
 export type SchedulerDeps = Record<string, never>;
 
 export const schedulerAction = async (

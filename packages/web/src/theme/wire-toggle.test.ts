@@ -4,7 +4,7 @@ import { wireThemeToggle } from "./wire-toggle";
 describe("wireThemeToggle", () => {
   beforeEach(() => {
     localStorage.clear();
-    delete document.documentElement.dataset["theme"];
+    delete document.documentElement.dataset.theme;
     document.body.innerHTML = `
       <button id="themeBtn">
         <span class="hdr-icon"></span>
@@ -15,13 +15,13 @@ describe("wireThemeToggle", () => {
 
   it("applies default dark theme on init", () => {
     wireThemeToggle();
-    expect(document.documentElement.dataset["theme"]).toBe("dark");
+    expect(document.documentElement.dataset.theme).toBe("dark");
   });
 
   it("applies stored light theme on init", () => {
     localStorage.setItem("ar-theme", "light");
     wireThemeToggle();
-    expect(document.documentElement.dataset["theme"]).toBe("light");
+    expect(document.documentElement.dataset.theme).toBe("light");
   });
 
   it("sets icon to ◐ for dark theme", () => {
@@ -50,13 +50,13 @@ describe("wireThemeToggle", () => {
     localStorage.setItem("ar-theme", "light");
     wireThemeToggle();
     document.getElementById("themeBtn")!.click();
-    expect(document.documentElement.dataset["theme"]).toBe("dark");
+    expect(document.documentElement.dataset.theme).toBe("dark");
   });
 
   it("toggles from dark to light on button click", () => {
     wireThemeToggle();
     document.getElementById("themeBtn")!.click();
-    expect(document.documentElement.dataset["theme"]).toBe("light");
+    expect(document.documentElement.dataset.theme).toBe("light");
   });
 
   it("does not throw when button is absent", () => {
