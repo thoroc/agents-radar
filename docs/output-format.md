@@ -1,6 +1,6 @@
 # Output Format
 
-Files are written to `digests/YYYY-MM-DD/`. For each report type, the pipeline generates one file per enabled language.
+Files are written to `assets/digests/YYYY-MM-DD/`. For each report type, the pipeline generates one file per enabled language.
 
 ## Report types
 
@@ -20,9 +20,9 @@ Files are written to `digests/YYYY-MM-DD/`. For each report type, the pipeline g
 
 `{locale}` is empty for the primary language (default: `en-US`, e.g. `ai-cli.md`) and the BCP-47 tag for all others (e.g. `ai-cli.zh-CN.md`). The primary language is set via `defaultPrimaryLanguage` in `config.yml`.
 
-A shared state file `digests/web-state.json` tracks which web URLs have been seen; it is committed alongside the daily digests.
+A shared state file `assets/digests/web-state.json` tracks which web URLs have been seen; it is committed alongside the daily digests.
 
-Historical digests are stored in [`digests/`](../digests/). Published issues are tagged by type: [`digest`](../../issues?label=digest) · [`openclaw`](../../issues?label=openclaw) · [`web`](../../issues?label=web) · [`trending`](../../issues?label=trending) · [`hn`](../../issues?label=hn) · [`ph`](../../issues?label=ph) · [`arxiv`](../../issues?label=arxiv) · [`hf`](../../issues?label=hf) · [`community`](../../issues?label=community) · [`weekly`](../../issues?label=weekly) · [`monthly`](../../issues?label=monthly).
+Historical digests are stored in [`assets/digests/`](../assets/digests/). Published issues are tagged by type: [`digest`](../../issues?label=digest) · [`openclaw`](../../issues?label=openclaw) · [`web`](../../issues?label=web) · [`trending`](../../issues?label=trending) · [`hn`](../../issues?label=hn) · [`ph`](../../issues?label=ph) · [`arxiv`](../../issues?label=arxiv) · [`hf`](../../issues?label=hf) · [`community`](../../issues?label=community) · [`weekly`](../../issues?label=weekly) · [`monthly`](../../issues?label=monthly).
 
 ## Report structures
 

@@ -35,9 +35,30 @@ Go to **Settings → Secrets and variables → Actions** and add:
 | `TELEGRAM_BOT_TOKEN` | optional | Telegram bot token from [@BotFather](https://t.me/BotFather). If set, a message is sent after each digest run |
 | `TELEGRAM_CHAT_ID` | optional | Telegram chat/channel/group ID to send notifications to |
 | `FEISHU_WEBHOOK_URLS` | optional | Comma-separated Feishu custom bot webhook URLs. If set, a card message is sent to each group after each digest run |
+| `GOOGLE_TRANSLATE_API_KEY` | optional | Google Cloud Translation API key. Required for the automatic README translation workflow — see [Setting up README translation](#setting-up-readme-translation-optional) below |
 | `PAGES_URL` | **Actions variable** | GitHub Pages base URL for notifications, RSS, and manifest links. Set as a [repository variable](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#creating-configuration-variables-for-a-repository) (e.g. `https://your-username.github.io/agents-radar`). Falls back to the centralized default in `packages/core/src/utils/constants.ts` if unset. |
 
 > `GITHUB_TOKEN` is provided automatically by GitHub Actions. When using `github-copilot` as the provider, the same `GITHUB_TOKEN` is used for LLM calls.
+
+### Setting up README translation (optional)
+
+The `translate-readme.yml` workflow translates `README.md` into all 21 supported languages whenever it changes on `main`. It uses the [Google Cloud Translation Basic API](https://cloud.google.com/translate/docs/basic/translating-text) (v2), which is free for the first 500,000 characters per month — well within the cost of a typical README update cycle.
+
+1. Create or select a project in the [Google Cloud Console](https://console.cloud.google.com/)
+2. Enable the **Cloud Translation API** for that project
+3. Go to **APIs & Services → Credentials → Create credentials → API key**
+4. (Recommended) Restrict the key to the Cloud Translation API under **API restrictions**
+5. Add the key as a repository secret named `GOOGLE_TRANSLATE_API_KEY`
+
+> A billing account must be attached to the project even when usage stays within the free tier. The first 500,000 characters per month are covered by a $10 monthly credit that does not roll over.
+
+To translate locally:
+
+```bash
+export GOOGLE_TRANSLATE_API_KEY=your-key
+bun run translate:readme          # translate README.md into all 20 non-English locales
+bun run translate:readme -V       # show per-locale progress
+```
 
 ### Setting up Telegram notifications (optional)
 

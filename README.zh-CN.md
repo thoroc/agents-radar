@@ -179,7 +179,7 @@ LLM 负责过滤非 AI 项目，将结果按维度分类（AI 基础工具 / AI 
 | Anthropic | [anthropic.com](https://www.anthropic.com) | `/news/`、`/research/`、`/engineering/`、`/learn/` |
 | OpenAI | [openai.com](https://openai.com) | research、publication、release、company、engineering、milestone、learn-guides、safety、product |
 
-通过对比 Sitemap 中的 `lastmod` 时间戳与持久化状态文件（`digests/web-state.json`）来检测新文章。**首次运行**时，每个站点最多抓取 25 篇近期文章并生成全量概览报告；后续运行仅处理新增或更新的 URL，无新内容则跳过网页报告步骤。
+通过对比 Sitemap 中的 `lastmod` 时间戳与持久化状态文件（`assets/digests/web-state.json`）来检测新文章。**首次运行**时，每个站点最多抓取 25 篇近期文章并生成全量概览报告；后续运行仅处理新增或更新的 URL，无新内容则跳过网页报告步骤。
 
 ## 功能特性
 
@@ -190,7 +190,7 @@ LLM 负责过滤非 AI 项目，将结果按维度分类（AI 基础工具 / AI 
 - 通过 Sitemap 抓取 Anthropic 和 OpenAI 官网内容，增量检测新文章
 - 每日监测 GitHub Trending + 搜索 6 个 AI 主题标签，按维度分类并提炼趋势信号
 - 抓取 Hacker News 过去 24 小时 AI 热门帖子（top 30，按分数排序），生成社区情绪报告
-- 以 GitHub Issues 形式发布报告，同时提交 Markdown 文件至 `digests/YYYY-MM-DD/`
+- 以 GitHub Issues 形式发布报告，同时提交 Markdown 文件至 `assets/digests/YYYY-MM-DD/`
 - 每日通过 GitHub Actions 定时运行，支持手动触发
 - 所有追踪仓库均可通过 `config.yml` 配置，无需修改代码
 - 集中式区域设置系统（`locales/*.json`）—— 21 种支持语言，通过 `src/utils/t.ts` 的 `t()` 函数调用
@@ -328,7 +328,7 @@ export REPORT_LANGS=en-US,ja-JP
 
 ## 输出格式
 
-文件写入 `digests/YYYY-MM-DD/`。每种报告类型会为每个启用的语言生成一个文件：
+文件写入 `assets/digests/YYYY-MM-DD/`。每种报告类型会为每个启用的语言生成一个文件：
 
 | 文件模式 | 内容 | GitHub Issue 标签 |
 |------|------|------------------|
@@ -344,10 +344,10 @@ export REPORT_LANGS=en-US,ja-JP
 
 其中 `{locale}` 对主语言（默认 `en-US`，如 `ai-cli.md`）为空，对其他语言为 BCP-47 标签（如 `ai-cli.zh-CN.md`、`ai-cli.ja-JP.md`）。主语言通过 `config.yml` 中的 `defaultPrimaryLanguage` 设置。
 
-例如，配置 `["en-US", "zh-CN"]` 时，`digests/2026-05-28/` 目录包含：
+例如，配置 `["en-US", "zh-CN"]` 时，`assets/digests/2026-05-28/` 目录包含：
 - `ai-cli.md`（英文，主语言）、`ai-cli.zh-CN.md`（中文）
 
-`digests/web-state.json` 用于记录已处理的 URL，随每日简报一并提交。
+`assets/digests/web-state.json` 用于记录已处理的 URL，随每日简报一并提交。
 
 ---
 
@@ -436,7 +436,7 @@ OpenAI 内容精选            (research / release / company / safety / ...)
 值得深读
 ```
 
-历史简报存储在 [`digests/`](./digests/)。已发布的 Issues 按类型打标签：[`digest`](../../issues?label=digest) · [`openclaw`](../../issues?label=openclaw) · [`web`](../../issues?label=web) · [`trending`](../../issues?label=trending) · [`hn`](../../issues?label=hn)。
+历史简报存储在 [`assets/digests/`](./assets/digests/)。已发布的 Issues 按类型打标签：[`digest`](../../issues?label=digest) · [`openclaw`](../../issues?label=openclaw) · [`web`](../../issues?label=web) · [`trending`](../../issues?label=trending) · [`hn`](../../issues?label=hn)。
 
 ## 定时计划
 
