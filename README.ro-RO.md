@@ -2,9 +2,7 @@
 
 ## Limbi acceptate
 
-🇬🇧 engleză · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇷 · Deutsch · 🇷 · Deutsch 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng ViỢ🇹🇹 🇳🇱 Nederlands · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Bahasa Indonesia · 🇺🇦 Українсь्दी · 🇳🇴
-
-engleză | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Italiano](./README.it-IT.md) | [Français](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Portugheză](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Español](./README.es-ES.md) | [Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Nederlands](./README.nl-NL.md) | [日本語](./README.ja-JP.md)
+🇬🇧 engleză | [🇺🇦 Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Deutsch](./README.de-DE.md) | [🇹🇷 Türkçe](./README.tr-TR.md) | [🇹🇭 ไทย](./README.th-TH.md) | [🇵🇱 Polski](./README.pl-PL.md) | [🇮🇹 Italiano](./README.it-IT.md) | [🇫🇷 Français](./README.fr-FR.md) | [🇨🇳 中文](./README.zh-CN.md) | [🇧🇷 Português](./README.pt-BR.md) | [🇻🇳 Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 Bahasa Indonesia](./README.id-ID.md) | [🇷🇴 Română](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱 Olanda](./README.nl-NL.md) | [🇯🇵 Limbi străine](./README.ja-JP.md)
 
 Pentru a activa limbi suplimentare pentru generarea de rapoarte, consultați [Suport multilingv](./docs/setup.md#multi-language-support).
 
@@ -13,25 +11,25 @@ Un flux de lucru GitHub Actions care rulează în fiecare dimineață la ora 08:
 ## Surse de date
 
 | Sursă | Tip | Date |
-|--------|------|-------|
+|--------|------|------|
 | [Depozite GitHub](https://github.com) | API | Probleme, PR-uri, lansări din peste 17 depozite de instrumente AI urmărite |
-| [Abilități de cod Claude](https://github.com/anthropics/skills) | API | Abilități în tendințe, sortate în funcție de implicarea comunității |
-| [Tendințe GitHub](https://github.com/trending) | HTML + API | Depozite zilnice în tendințe + căutare de subiecte AI (fereastră de 7 zile) |
+| [Claude Code Skills](https://github.com/anthropics/skills) | API | Competențe în tendințe, sortate în funcție de implicarea comunității |
+| [Tendințe GitHub](https://github.com/trending) | HTML + API | Repozitorii zilnice în tendințe + căutare de subiecte AI (fereastră de 7 zile) |
 | [Știri despre hackeri](https://news.ycombinator.com) | [API Algolia](https://hn.algolia.com/api) | Top 30 de știri despre AI din ultimele 24 de ore, 6 interogări paralele |
-| [Vânătoare de produse](https://www.producthunt.com) | API GraphQL | Cele mai bune produse AI de ieri, după voturi |
+| [Product Hunt](https://www.producthunt.com) | API GraphQL | Cele mai bune produse AI de ieri, în funcție de voturi |
 | [ArXiv](https://arxiv.org) | [API ArXiv](https://export.arxiv.org/api/query) | Cele mai recente articole de la cs.AI, cs.CL, cs.LG (ultimele 48 de ore) |
 | [Hugging Face](https://huggingface.co) | [API Hub](https://huggingface.co/api/models) | 30 de modele în tendințe, sortate după aprecieri săptămânale |
-| [Dev.to](https://dev.to) | [API Forem](https://dev.to/api) | Articole de top AI/LLM din 5 etichete |
+| [Dev.to](https://dev.to) | [API Forum](https://dev.to/api) | Articole AI/LLM de top din 5 etichete |
 | [Lobste.rs](https://lobste.rs) | API JSON | Articole etichetate AI/ML din ultimele 7 zile |
 | [Anthropic](https://anthropic.com) + [OpenAI](https://openai.com) | Harta site-ului | Articole noi detectate prin `lastmod` diff |
 
 ## Interfață web
 
-**`PAGES_URL`** — Setați aceasta ca variabilă de repozitoriu pentru a configura adresa URL de bază a interfeței web pentru fork-ul dvs.
+**`PAGES_URL`** — Setați aceasta ca variabilă de repozitoriu pentru a configura adresa URL de bază a interfeței web pentru furca dvs.
 
-Răsfoiți toate rezumatele istorice într-o interfață curată, cu tematică întunecată — nu este necesară autentificarea. Rapoartele sunt redate din fișierele Markdown din acest repozitoriu prin intermediul GitHub Pages.
+Răsfoiți toate rezumatele istorice într-o interfață curată, cu tematică întunecată — nu este necesară autentificarea. Rapoartele sunt redate din fișierele Markdown din acest repozitoriu prin intermediul paginilor GitHub.
 
-Interfața web este un SPA Vite + TypeScript în `packages/web/`. Preia `manifest.json` și fișierele rezumat individuale la momentul execuției — noile rezumate zilnice apar fără nicio reconstrucție a interfeței.
+Interfața web este un SPA Vite + TypeScript în `packages/web/`. Preia `manifest.json` și fișierele individuale de digest în timpul rulării — noile digesturi zilnice apar fără nicio reconstrucție a interfeței.
 
 ```bash
 bun run dev:web    # start Vite dev server for local UI development
@@ -140,7 +138,7 @@ wrangler deploy
 - Monitorizează zilnic tendințele GitHub + caută 6 etichete de subiecte AI; clasifică depozitele după dimensiune și extrage semnale de tendință
 - Preia top 30 de știri AI din Hacker News (ultimele 24 de ore, clasate după puncte); generează un raport de sentiment al comunității
 - Publică probleme GitHub pentru fiecare tip de raport; salvează fișierele Markdown în `assets/digests/AAAA-LL-ZZ/`
-- Rulează zilnic prin intermediul GitHub Actions; Acceptă declanșarea manuală
+- Rulează zilnic prin intermediul GitHub Actions; acceptă declanșarea manuală
 - Toate depozitele urmărite sunt configurabile prin `config.yml` — nu sunt necesare modificări de cod
 - Sistem centralizat de localizare prin `locales/*.json` — 21 de limbi acceptate cu catalogul `t()` în `packages/core/src/locales/t.ts`
 

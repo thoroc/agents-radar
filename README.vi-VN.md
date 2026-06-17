@@ -2,9 +2,7 @@
 
 ## Ngôn ngữ được hỗ trợ
 
-🇬🇧 Tiếng Anh · 🇨🇳 中文 · 🇯🇵 日本語 · 🇰🇷 한국어 · 🇪🇸 Español · 🇧🇷 Português · 🇫🇷 Français · 🇩🇪 Deutsch · 🇮🇹 Italiano · 🇵🇱 Polski · 🇷🇺 Русский · 🇸🇦 العربية · 🇹🇷 Türkçe · 🇻🇳 Tiếng Việt · 🇹🇭 ไทย · 🇳🇱 Hà Lan · 🇮🇳 हिन्दी · 🇷🇴 Română · 🇮🇩 Tiếng Bahasa Indonesia · 🇺🇦 Українська · 🇧🇩 বাংলা
-
-Tiếng Anh | [Українська](./README.uk-UA.md) | [العربية](./README.ar-SA.md) | [Русский](./README.ru-RU.md) | [हिन्दी](./README.hi-IN.md) | [Deutsch](./README.de-DE.md) | [Türkçe](./README.tr-TR.md) | [ไทย](./README.th-TH.md) | [Polski](./README.pl-PL.md) | [Tiếng Ý](./README.it-IT.md) | [Pháp](./README.fr-FR.md) | [中文](./README.zh-CN.md) | [Português](./README.pt-BR.md) | [Tiếng Việt](./README.vi-VN.md) | [বাংলা](./README.bn-BD.md) | [Tiếng Tây Ban Nha](./README.es-ES.md) | [Tiếng Bahasa Indonesia](./README.id-ID.md) | [Română](./README.ro-RO.md) | [한국어](./README.ko-KR.md) | [Hà Lan](./README.nl-NL.md) | [Tiếng Nhật](./README.ja-JP.md)
+🇬🇧 Tiếng Anh | [🇺🇦 Українська](./README.uk-UA.md) | [🇸🇦 العربية](./README.ar-SA.md) | [🇷🇺 Русский](./README.ru-RU.md) | [🇮🇳 हिन्दी](./README.hi-IN.md) | [🇩🇪 Tiếng Đức](./README.de-DE.md) | [🇹🇷 Tiếng Thổ Nhĩ Kỳ](./README.tr-TR.md) | [🇹🇭 Tiếng Thái](./README.th-TH.md) | [🇵🇱 Tiếng Ba Lan](./README.pl-PL.md) | [🇮🇹 Tiếng Ý](./README.it-IT.md) | [🇫🇷 Tiếng Pháp](./README.fr-FR.md) | [🇨🇳 Tiếng Trung](./README.zh-CN.md) | [🇧🇷 Tiếng Bồ Đào Nha](./README.pt-BR.md) | [🇻🇳 Tiếng Việt](./README.vi-VN.md) | [🇧🇩 বাংলা](./README.bn-BD.md) | [🇪🇸 Español](./README.es-ES.md) | [🇮🇩 Tiếng Bahasa Indonesia](./README.id-ID.md) | [🇷🇴 Română](./README.ro-RO.md) | [🇰🇷 한국어](./README.ko-KR.md) | [🇳🇱 Nederlands](./README.nl-NL.md) | [🇯🇵 Tiếng Nhật](./README.ja-JP.md)
 
 Để bật thêm ngôn ngữ cho việc tạo báo cáo, hãy xem [Hỗ trợ đa ngôn ngữ](./docs/setup.md#multi-language-support).
 
