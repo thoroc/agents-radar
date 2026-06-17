@@ -153,7 +153,7 @@ The pipeline runs in four sequential phases, split into separate modules under `
 | `packages/core/src/prompts/highlights.ts` | `buildHighlightsPrompt` — Telegram highlights prompt |
 | `packages/core/src/prompts/sample-note.ts` | `sampleNote(total, sampled)` — formats the sampling note |
 | `packages/core/src/report/call-llm.ts` | `callLlm` with concurrency limiter (`LLM_CONCURRENCY = 5`) and retry logic |
-| `packages/core/src/report/save-file.ts` | `saveFile` — writes a report file to `digests/YYYY-MM-DD/` |
+| `packages/core/src/report/save-file.ts` | `saveFile` — writes a report file to `assets/digests/YYYY-MM-DD/` |
 | `packages/core/src/report/auto-gen-footer.ts` | `autoGenFooter` — generates the report footer |
 | `packages/core/src/report/constants.ts` | LLM token budget constants |
 | `packages/core/src/report/build-cli-content.ts` | `buildCliReportContent` — final CLI Markdown assembler |
@@ -170,7 +170,7 @@ The pipeline runs in four sequential phases, split into separate modules under `
 | `packages/core/src/rollup/run-weekly.ts` | `runWeekly` — weekly rollup entry point |
 | `packages/core/src/rollup/run-monthly.ts` | `runMonthly` — monthly rollup entry point |
 | `packages/core/src/rollup/generate-highlights.ts` | Telegram highlights generation for rollups |
-| `packages/core/src/fetchers/fetch-site-content.ts` | Sitemap-based web content fetching; state persisted to `digests/web-state.json` |
+| `packages/core/src/fetchers/fetch-site-content.ts` | Sitemap-based web content fetching; state persisted to `assets/digests/web-state.json` |
 | `packages/core/src/fetchers/trending.ts` | GitHub Trending HTML scraper |
 | `packages/core/src/fetchers/fetch-github-trending.ts` | GitHub Search API topic queries (6 AI topics, 7-day window) |
 | `packages/core/src/fetchers/hacker-news.ts` | Hacker News top AI stories via Algolia HN Search API |
@@ -193,14 +193,14 @@ The pipeline runs in four sequential phases, split into separate modules under `
 | `packages/core/src/types/locale.ts` | Re-exports `Locale` from `@agents-radar/locales` (kept for backwards-compatible relative imports within core) |
 | `packages/core/src/generate-manifest/constants.ts` | `REPORT_FILES` list, `DIGESTS_DIR` |
 | `packages/core/src/generate-manifest/report-label.ts` | `reportLabel(reportId)` — human label for a report type |
-| `packages/core/src/generate-manifest/scan-digest-dirs.ts` | `scanDigestDirs()` — scans `digests/` for date directories and report files |
+| `packages/core/src/generate-manifest/scan-digest-dirs.ts` | `scanDigestDirs()` — scans `assets/digests/` for date directories and report files |
 | `packages/core/src/generate-manifest/build-feed-xml.ts` | `buildFeedXml()` — generates RSS feed XML |
 | `packages/cli/manifest/action.ts` | `generateManifestAction` — generates `manifest.json` + `feed.xml` |
 | `locales/*.json` | 21 locale files using BCP-47 tags (ar-SA, bn-BD, de-DE, en-US, es-ES, fr-FR, hi-IN, id-ID, it-IT, ja-JP, ko-KR, nl-NL, pl-PL, pt-BR, ro-RO, ru-RU, th-TH, tr-TR, uk-UA, vi-VN, zh-CN) — drop a new file to add a language |
 
 ## Report outputs
 
-Files written to `digests/YYYY-MM-DD/`. Each report type generates one file per enabled language:
+Files written to `assets/digests/YYYY-MM-DD/`. Each report type generates one file per enabled language:
 
 | File pattern | Label | Notes |
 |------|-------|-------|
@@ -221,7 +221,7 @@ Where `{locale}` is empty for the primary language (default: `en-US`, e.g. `ai-c
 - **CLI_REPOS** (9): claude-code, codex, gemini-cli, copilot-cli, kimi-cli, opencode, pi, qwen-code, deepseek-tui
 - **OPENCLAW** + **OPENCLAW_PEERS** (13): openclaw/openclaw + 12 peer projects (sorted by stars)
 - **CLAUDE_SKILLS_REPO**: anthropics/skills — no date filter, sorted by popularity
-- **Web**: anthropic.com + openai.com via sitemap, state in `digests/web-state.json`
+- **Web**: anthropic.com + openai.com via sitemap, state in `assets/digests/web-state.json`
 - **Trending**: github.com/trending (HTML) + GitHub Search API (6 AI topics, 7-day window)
 - **HN**: Algolia HN Search API — 6 parallel queries, top-30 AI stories by points, last 24h
 - **ArXiv**: cs.AI, cs.CL, cs.LG papers via arXiv API
@@ -242,7 +242,7 @@ Where `{locale}` is empty for the primary language (default: `en-US`, e.g. `ai-c
 - Provider implementations live in `packages/providers/`. Each file implements the `LlmProvider` interface. The factory in `packages/providers/index.ts` validates the provider name and logs only the provider name — never API keys or endpoint URLs. DeepSeek is also available as a 403 fallback provider (requires `DEEPSEEK_API_KEY`).
 - GitHub issue label colors are defined in `LABEL_COLORS` in `packages/core/src/github/labels.ts`. Add new labels there.
 - `sampleNote(total, sampled)` in `packages/core/src/prompts/sample-note.ts` formats the "(共 N 条，展示前 M 条)" note. Reuse it — do not inline the same string format.
-- Web state (`digests/web-state.json`) is committed to git on every run. It is the source of truth for which URLs have been seen.
+- Web state (`assets/digests/web-state.json`) is committed to git on every run. It is the source of truth for which URLs have been seen.
 
 ## Web UI & RSS Feed
 
@@ -250,7 +250,7 @@ The web UI lives in `packages/web/` as a Vite + TypeScript SPA (`@agents-radar/w
 
 - **Local dev**: `bun run dev:web` — starts Vite dev server; fetches manifest and digests from raw.githubusercontent.com at runtime.
 - **Production build**: `bun run build:web` — Vite outputs to `packages/web/dist/`. The `.github/workflows/deploy-pages.yml` workflow copies `manifest.json` and `feed.xml` into `dist/` and deploys to GitHub Pages via `actions/deploy-pages`.
-- **Digest URLs**: all digest fetches use `https://raw.githubusercontent.com/thoroc/agents-radar/main/digests/` — `digests/` is NOT copied into the Pages artifact.
+- **Digest URLs**: all digest fetches use `https://raw.githubusercontent.com/thoroc/agents-radar/main/assets/digests/` — `assets/digests/` is NOT copied into the Pages artifact.
 - **RSS Feed**: `feed.xml` at the repo root. Generated by `packages/cli/manifest/action.ts` in the same `bun run manifest` step. Contains the latest 30 items (newest first) across all report types. Item links use hash routing: `https://thoroc.github.io/agents-radar/#YYYY-MM-DD/report`.
 - Both `manifest.json` and `feed.xml` are committed together in the "Commit manifest and feed" GHA step, then copied into `packages/web/dist/` during deploy.
 - Report labels are generated from JSON locale files via `reportLabel()` in `packages/core/src/generate-manifest/report-label.ts`. When adding new report types, update the nav label logic in `packages/web/src/nav/`.
